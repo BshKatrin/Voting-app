@@ -61,7 +61,7 @@ def createListElector(listPos, listCandidate):
     return listElector
 
 
-def createListElector(n, listCandidate) :
+def createListElectorAlea(n, listCandidate) :
     listElector = []
     for _ in range(n):
         x=random.uniform(-1, 1)
