@@ -1,17 +1,15 @@
-def createElector(pos, listCandidate):
+def initScores(listCandidates, keyDict):
+    for i in listCandidates :
+        if keyDict not in i.scores: 
+            i.scores[keyDict]=[]
+        i.scores[keyDict].append(0)
+        
+            
 
-    v = vote(pos, listCandidate)
 
-    e = Elector(pos, v)
 
-    return e
-
-def createListElector(listPos, listCandidate):
-
-    listElector = []
-
-    for i in listPos:
-        listElector.append(createElector(i, listCandidate))
-
-    return listElector
-
+def plurality(listCandidates,elector,turn):
+    initScores(listCandidates,keyDict)
+    for i in range(listCandidates):
+        if listCandidates[i]== elector.candidate_ranking[0]:
+            listCandidates[i].scores[keyDict][turn]+=1
