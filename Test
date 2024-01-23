@@ -13,7 +13,7 @@ class Candidate(Person):
     pass
 
 
-def Elector(Person):
+class Elector(Person):
     def __init__(self, position, candidate_ranking=[]):
         self.position = position
         if candidate_ranking == []:
