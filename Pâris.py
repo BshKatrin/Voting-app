@@ -1,4 +1,5 @@
 from math import sqrt
+import random
 
 class Person:
     def __init__(self, position):
@@ -15,10 +16,11 @@ class Candidate(Person):
 
 
 class Elector(Person):
-    def __init__(self, position, candidate_ranking=[]):
+    def __init__(self, position, candidates, candidate_ranking=[]):
+        super().__init__(position)
         self.position = position
         if candidate_ranking == []:
-            candidate_ranking = self.pos_to_rank()
+            candidate_ranking = self.pos_to_rank(candidates)
         self.candidate_ranking = candidate_ranking
 
     def dist_from_cand(self, list_candidates):
@@ -39,4 +41,30 @@ class Elector(Person):
             )
         ]
         return ranking
-        
+
+
+def create_cand(pos) :
+    return Candidate(pos)
+
+
+def liste_cand_alea(n) :
+    liste_cand = []
+    for _ in range(n):
+        x=random.uniform(-1, 1)
+        y=random.uniform(-1, 1)
+        liste_cand.append(create_cand((x,y)))
+
+def createListElector(listPos, listCandidate):
+    listElector = []
+    for i in listPos:
+        listElector.append(Elector(i, listCandidate))
+    return listElector
+
+
+def createListElector(n, listCandidate) :
+    listElector = []
+    for _ in range(n):
+        x=random.uniform(-1, 1)
+        y=random.uniform(-1, 1)
+        listElector.append(Elector((x,y), listCandidate))
+    return listElector
