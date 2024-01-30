@@ -1,0 +1,127 @@
+====================================================================================================================================================================================================
+PERSON.PY 
+====================================================================================================================================================================================================
+
+"""
+Initialisation de la classe mère Person et de ses fonctions
+Elle sert à factoriser les fonctions utiles aux classes filles Candidate et Elector 
+"""
+ 
+    """__init__(Person, tuple : (float, float))
+    Initialise une instance de Person ayant pour attribut sa position (tuple de deux float)"""
+
+
+    """getPosition(Person) -> tuple (float, float)
+    Retourne le tuple de position d'une instance""""
+
+
+    """__str__(Person) -> string
+    Retourne une f-string décrivant la position (x,y) d'une instance"""
+
+
+    """__repr__(Person) -> string
+    Retourne une chaîne de caractères lisible par une fonction d'affichage à partir de __str__"""
+
+====================================================================================================================================================================================================
+CANDIDATE.PY ====================================================================================================================================================================================================
+
+"""
+Initialisation de la classe Candidate héritant de Person. Cette classe nous servira à représenter les candidats de l'élection
+"""
+
+  
+    """__init__(Candidate, tuple : (float, float))
+    Fonction d'initialisation d'intance de Candidate ayant pour attribut leur position (tuple de deux float) et leurs scores (dictionnaire contenant leurs scores pour chaque système de vote)"""
+
+====================================================================================================================================================================================================
+ELECTOR.PY 
+====================================================================================================================================================================================================
+
+"""
+Initialisation de la classe Elector héritant de Person. Cette classe nous servira à représenter les électeurs de l'élection
+Rappel : plus un électeur est loin d'un candidat sur le plan, moin il aura de chance de voter pour lui
+"""
+
+    """__init__(Elector, tuple : (float, float), Candidate, Candidate[])
+    Fonction d'initialisation d'intance de Candidate ayant pour attribut leur position (tuple de deux float) et leur classement des candidats (liste de candidats)"""
+    
+    """dist_from_cand(Elector, Candidate[]) -> float[]
+    Retourne une liste float correspondant à la distance entre l'instance d'Elector et les instances de Candidat dans la liste pris en argument"""
+    
+    """pos_to_rank(Elector, Candidate[]) -> float[]
+    Retourne la liste des rangs des candidats pris en argument dans l'ordre des distances à l'instance (du plus au moins proche)"""
+    
+====================================================================================================================================================================================================
+APPROVAL.PY
+====================================================================================================================================================================================================    
+
+"""apply_approval(Elector[], Candidate[], int) -> Candidate[]
+Retourne la liste de Candidate triée par score en fonction du système d'approbation"""  
+
+====================================================================================================================================================================================================
+UTLS.PY
+==================================================================================================================================================================================================== 
+    
+"""score_int_sort(Candidate[], string) -> Candidate[]
+Retourne la liste de Candidate trié par score en fonction du système de vote
+Les noms des systèmes de vote sont les constantes présentes dans constants.py"""
+
+"""scores_sort_round(Candidat[], string, int) -> Candidate[] 
+Retourne la liste de Candidate triée par score et par rapport au round"""
+
+====================================================================================================================================================================================================
+BORDA.PY
+==================================================================================================================================================================================================== 
+
+"""apply_borda(Elector[], Candidate[]) -> Candidate[]
+Retourne la liste de Candidate triée par score en fonction du système de borda"""  
+
+====================================================================================================================================================================================================
+CONDORCET.PY
+==================================================================================================================================================================================================== 
+
+"""apply_condorcet(Elector[], Candidate[]) -> Candidate[]
+Retourne la liste de Candidate triée par score en fonction du système de condorcet"""
+
+====================================================================================================================================================================================================
+PLURALITY.PY
+====================================================================================================================================================================================================   
+
+"""apply_plurality_simple(Elector[], Candidate[]) -> Candidate[]
+Retourne la liste de Candidate triée par score en fonction du système de pluralité simple"""
+
+"""apply_plurality_round(Elector[], Candidate[]) -> Candidate[]
+Retourne la liste de Candidate triée par score en fonction du système de pluralité à deux tours"""
+
+"""plurality_one_set_score(Elector[], Candidate[]) -> Candidate[]
+Retourne la liste de Candidate triée par score et au round 1 par rapport au système de pluralité"""
+
+"""plurality_two_set_score(Elector[], Candidate[]) -> Candidate[]
+Retourne la liste de Candidate triée par score et au round 2 par rapport au système de pluralité"""
+
+====================================================================================================================================================================================================
+VETO.PY
+==================================================================================================================================================================================================== 
+
+"""apply_veto(Elector[], Candidate[]) -> Candidate[]
+Retourne la liste de Candidate triée par score en fonction du système de veto"""
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
