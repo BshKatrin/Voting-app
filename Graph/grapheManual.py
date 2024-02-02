@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QApplication, QWidget, QMainWindow,QGridLayout, QPushButton, QVBoxLayout, QHBoxLayout, QLabel
 from votingSystem import VoteSystemWindow
-from grapheV2 import Graph
+from graphe import Graph
 import sys
 
 class GraphManualWindow(QMainWindow):
