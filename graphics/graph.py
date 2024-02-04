@@ -11,61 +11,40 @@ from people import Candidate
 
 
 class Graph(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
         self.electors = []  #   stock les coordonées cartésiennes des votants
         self.electors_positions = []  #   stock les coordonnées de -1 à 1 des votants
         self.candidates = []  #   stock les coordonées cartésiennes des candidats
         self.candidates_positions = []  # stock les coordonnées de -1 à 1 des candidats
+
+        self.election = Election()
+
         # dessiner grid qu'une seule fois
         self.grid_drawn = False
+        if self.parent != None:
+            self.setGeometry(0, 0, parent.width(), parent.height())
+
         self.initUI()
 
     def initUI(self):
 
         self.layout = QVBoxLayout(self)  # layout verticale
 
-        # Buttons pour commencer les elections
-        self.btn_start_elections = QPushButton("Start elections", self)
-        self.layout.addWidget(self.btn_start_elections)
-        self.btn_start_elections.clicked.connect(self.start_elections)
-        #####       lignes utiles pour des tests (à enlever)
-        #   ajoute un bouton d'affichage
-        self.btnShowPositions = QPushButton("Afficher les positions", self)
-        self.layout.addWidget(self.btnShowPositions)
-        #   Connecte le signal clicked du bouton
-        self.btnShowPositions.clicked.connect(self.showPositions)
-
-        # Ajoute deux zones de textes pour la création aléatoire d'electors et candidates
-        self.electorsTextBox = QLineEdit(self)
-        self.electorsTextBox.setPlaceholderText("Enter number of random electors")
-        self.layout.addWidget(self.electorsTextBox)
-
-        self.candidatesTextBox = QLineEdit(self)
-        self.candidatesTextBox.setPlaceholderText("Enter number of random candidates")
-        self.layout.addWidget(self.candidatesTextBox)
-
-        self.electorsTextBox.returnPressed.connect(
-            self.handleElectorsInput
-        )  #   connecte les zones de text avec la touche enter et appelle la fonction après enter
-        self.candidatesTextBox.returnPressed.connect(self.handleCandidatesInput)
-
-        #####       fin des lignes de test
-
-        # Pas besoin, initilisation en main window
-        # self.setGeometry(100, 100, 800, 600)
-        # self.setWindowTitle("Graph of political position")
-        # self.show()
+        self.setAutoFillBackground(True)
+        # Set background color : white
+        p = self.palette()
+        p.setColor(self.backgroundRole(), Qt.white)
+        self.setPalette(p)
 
     def paintEvent(self, event):  # appelle les fonctions de création graphique du graph
-        # print("event active")
         painter = QPainter(self)
         # dessiner grid qu'une seule fois
-        # if not self.grid_drawn:
-        self.drawGrid(painter)
-        self.drawAxes(painter)
-        self.drawAxisLabels(painter)
-        # self.grid_drawn = False
+        if not self.grid_drawn:
+            self.drawGrid(painter)
+            self.drawAxes(painter)
+            self.drawAxisLabels(painter)
+            self.grid_drawn = False
         self.drawPoints(painter)
 
     def drawGrid(self, painter):
@@ -131,6 +110,7 @@ class Graph(QWidget):
             painter.drawText(widget_pos + QPoint(5, 15), name)
 
     def mousePressEvent(self, event):
+        # print("click")
         if event.button() == Qt.LeftButton:  #   cas du clique gauche
             offset = QPoint(self.width() // 2, self.height() // 2)
 
@@ -139,14 +119,14 @@ class Graph(QWidget):
                 event.pos().x() - offset.x(), offset.y() - event.pos().y()
             )
             self.electors.append(cartesian_pos)
-
+            self.election.add_elector(Elector(candidates=self.election.candidates))
             #   ajoute la position x,y du curseur dans le tableau en modifiant les valeurs pour obtenir des valeurs entre -1 et 1
-            self.electors_positions.append(
-                (
-                    (cartesian_pos.x() / (self.width() // 2)),
-                    (cartesian_pos.y() / (self.height() // 2)),
-                )
-            )
+            # self.electors_positions.append(
+            #     (
+            #         (cartesian_pos.x() / (self.width() // 2)),
+            #         (cartesian_pos.y() / (self.height() // 2)),
+            #     )
+            # )
             self.update()  #   actualise l'état graphique du tableau (les points et leurs positions)
 
         if event.button() == Qt.RightButton:  #   cas du clique droit
@@ -176,59 +156,28 @@ class Graph(QWidget):
         cartesian_pos = QPoint(position.x() - offset.x(), offset.y() - position.y())
 
         self.candidates.append((name, cartesian_pos))
-
-        self.candidates_positions.append(
-            (
-                name,
-                (
-                    (cartesian_pos.x() / (self.width() // 2)),
-                    (cartesian_pos.y() / (self.height() // 2)),
-                ),
+        self.election.add_candidate(
+            Candidate(
+                first_name=name,
+                last_name=name,
+                position=self.normalizePosition(cartesian_pos),
             )
         )
+
         self.update()
         self.text_box.deleteLater()  #   supprime la zone de texte
 
-    def randomElectorsCreation(self, n):
-        for _ in range(n):
-            #   crée une position aléatoire et la stock
-            x = random.randint(-self.width() // 2, self.width() // 2)
-            y = random.randint(-self.height() // 2, self.height() // 2)
-            cartesian_pos = QPoint(x, y)
-            self.electors.append(cartesian_pos)
+    # generer QPoint(x, y), PAS normalise
+    def generatePosition(self):
+        x = random.randint(-self.width() // 2, self.width() // 2)
+        y = random.randint(-self.height() // 2, self.height() // 2)
+        return QPoint(x, y)
 
-            self.electors_positions.append(
-                (
-                    (cartesian_pos.x() / (self.width() // 2)),
-                    (cartesian_pos.y() / (self.height() // 2)),
-                )
-            )
-        self.update()
-
-    def randomCandidatesCreation(self, n):
-        for _ in range(n):
-            x = random.randint(-self.width() // 2, self.width() // 2)
-            y = random.randint(-self.height() // 2, self.height() // 2)
-            cartesian_pos = QPoint(x, y)
-            random_name = "".join(
-                random.choices(string.ascii_letters, k=10)
-            )  #   création de nom random
-
-            self.candidates.append((random_name, cartesian_pos))
-
-            self.candidates_positions.append(
-                (
-                    random_name,
-                    (
-                        (cartesian_pos.x() / (self.width() // 2)),
-                        (cartesian_pos.y() / (self.height() // 2)),
-                    ),
-                )
-            )
-        self.update()
+    # Position de type QPoint, retourne couple normale
+    def normalizePosition(self, position):
+        return (position.x() / self.width() // 2, position.y() / self.height() // 2)
 
     #####   fonctions de test (à enlever)
-
     def showPositions(self):
         #   affiches les positions politiques des electeurs et les noms et positions des candidats dans la console
         positions_text = "\n".join(
@@ -240,24 +189,6 @@ class Graph(QWidget):
             [f"Position: {pos[0]}, {pos[1]}" for pos in self.candidates_positions]
         )
         print(positions_text2)
-
-    def handleElectorsInput(self):
-        try:  #   vérification si l'utilisateur entre un nombre valide
-            num_electors = int(self.electorsTextBox.text())
-            self.randomElectorsCreation(num_electors)
-        except ValueError:
-            print("Please enter a valid number for electors.")
-        self.electorsTextBox.clear()  # vide la textbox
-
-    def handleCandidatesInput(self):
-        try:
-            num_candidates = int(self.candidatesTextBox.text())
-            self.randomCandidatesCreation(num_candidates)
-        except ValueError:
-            print("Please enter a valid number for candidates.")
-        self.candidatesTextBox.clear()
-
-    #####   fin des fonctions de test
 
     def start_elections(self):
         lst_candidates = [

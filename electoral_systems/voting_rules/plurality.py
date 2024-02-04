@@ -2,8 +2,6 @@ from .constants import PLURALITY_SIMPLE, PLURALITY_2_ROUNDS
 
 from .utls import init_scores, sort_cand_by_value, sort_cand_by_round
 
-from people.elector import Elector
-
 
 def apply_plurality_simple(electors, candidates):
     init_scores(candidates, PLURALITY_SIMPLE, 0)
@@ -18,7 +16,7 @@ def apply_plurality_rounds(electors, candidates):
 
     candidates_round_one = plurality_one_set_score(electors, candidates)
     candidates_round_two = candidates_round_one[:2]
-    
+
     candidates_round_two = plurality_two_set_score(electors, candidates_round_two)
 
     return candidates_round_one, candidates_round_two
@@ -41,7 +39,7 @@ def plurality_two_set_score(electors, candidates):
 def choose_next_candidate(elector, cand1, cand2):
     index = 0
     current_candidate = elector.candidates_ranked[index]
-    while (current_candidate != cand1 and current_candidate != cand2):
+    while current_candidate != cand1 and current_candidate != cand2:
         index += 1
         current_candidate = elector.candidates_ranked[index]
     return current_candidate

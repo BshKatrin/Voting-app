@@ -1,21 +1,27 @@
 from copy import deepcopy
 from dataclasses import dataclass, field
+from random import choices
+from string import ascii_lowercase
 from typing import Dict, Union, List
 
 from .person import Person
 
 
 @dataclass(kw_only=True, unsafe_hash=True, eq=True)
+# Keep in mind that no guarantee for unique first_name and last_name
 class Candidate(Person):
-    first_name: str = None
-    last_name: str = None
+    first_name: str = "".join(choices(ascii_lowercase, k=10))
+    last_name: str = "".join(choices(ascii_lowercase, k=10))
     # int -> 1 round, float -> Copeland, List -> N rounds
-    scores: Dict[str, Union[int, float, List[int]]] = field(default_factory=dict, hash=False, compare=False)
+    scores: Dict[str, Union[int, float, List[int]]] = field(
+        default_factory=dict, hash=False, compare=False
+    )
 
     def __str__(self):
         x, y = self.position
         return f"Candidate({self.id}, ({x:.2f},{y:.2f}), {self.first_name}, {self.last_name}, {self.scores})"
         # return f"Candidate({self.id})"
+
     def __repr__(self):
         return self.__str__()
 

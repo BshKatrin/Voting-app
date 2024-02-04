@@ -5,133 +5,93 @@ from PySide6.QtWidgets import (
     QPushButton,
     QVBoxLayout,
     QHBoxLayout,
+    QGridLayout,
     QWidget,
     QApplication,
+    QLineEdit,
 )
 import sys
 
-from .graph_manual import GraphManualWindow
-from .settings import *
-from .graph import Graph
+from .settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
+from .graph_manual import GraphManual
+from .graph_random import GraphRandom
 
-# from graph_random import GraphRandomWindow
-# from votingSystem import VoteSystemWindow
+from electoral_systems import Election
+from electoral_systems.voting_rules import constants
 
 
 class HomeWindow(QMainWindow):
     def __init__(self, app):
         super().__init__()
+
         self.app = app
+        self.election = Election()
 
         # dimension et titre de la fenetre (posX,posY,tailleX,tailleY)
         self.setGeometry(0, 0, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT)
         self.setWindowTitle("Voting app")
 
-        # Menu bar
-        self.menu_bar = self.menuBar()
-        # Menu FILE
-        self.file_menu = self.menu_bar.addMenu("file")
-        self.quit_action = self.file_menu.addAction("quit")
-        self.quit_action.triggered.connect(self.quit_app)
-        self.menu_bar.setNativeMenuBar(
-            False
-        )  # pour fixer le bug : menu_bar n'est pas visible
-
-        # Bouton permettant d'acceder au differentes fenêtres
-        self.button_qraphic = QPushButton("Manual graph")
-        self.button_qraphic.setFixedSize(150, 30)
-        self.button_qraphic.clicked.connect(self.graphManualButtonClicked)
-        self.button_randGraph = QPushButton("Random Graph")
-        self.button_randGraph.setFixedSize(150, 30)
-        # button_randGraph.clicked.connect(self.graphRandomButtonClicked)
-
-        # Layout du Central Widget
+        # Central Widget, layout (vertical)
+        self.main_widget = QWidget(parent=self)
         self.layout = QVBoxLayout()
-        self.layout.addWidget(self.button_qraphic)
-        self.layout.addWidget(self.button_randGraph)
+        self.main_widget.setLayout(self.layout)
+        self.setCentralWidget(self.main_widget)
+        self.layout.setSpacing(5)
+        self.layout.setContentsMargins(10, 10, 10, 10)
 
-        # Creation du widget central et affectation du layout
-        self.centralWidget = QWidget(self)
-        self.centralWidget.setLayout(self.layout)
-        self.setCentralWidget(self.centralWidget)
+        # Buttons
+        self.btn_random = QPushButton("Random")
+        # self.btn_random.setFixedSize(150, 30)
+        self.layout.addWidget(self.btn_random)
+        self.btn_random.clicked.connect(self.showRandomGraph)
 
-    def graphManualButtonClicked(self):
-        # clear window
-        self.clearWindow()
-        # place new widget
+        # Navigation buttons
+        self.button_home = QPushButton("Home")
+        self.button_vote = QPushButton("Vote")
+        self.button_vote.clicked.connect(self.startElection)
+        self.btn_manual = QPushButton("Manual")
+        # self.btn_manual.setFixedSize(150, 30)
+        self.layout.addWidget(self.btn_manual)
+        self.btn_manual.clicked.connect(self.showManualGraph)
 
-        self.manualGraph = Graph()
-        self.layout.addWidget(self.manualGraph)
-        # for i in range(self.layout.count()):
-        #     print(self.layout.itemAt(i).widget())
+    def initUIGraph(self):
+        self.cleanWindow()
+        self.layout.addWidget(self.button_home)
+        self.layout.addWidget(self.button_vote)
 
-    def clearWindow(self):
+    # Button handler
+    def showManualGraph(self):
+        self.initUIGraph()
+        self.graph_manual = GraphManual(parent=self.main_widget)
+        self.layout.addWidget(self.graph_manual)
+
+    def showRandomGraph(self):
+        self.initUIGraph()
+        self.graph_random = GraphRandom(parent=self.main_widget)
+        self.layout.addWidget(self.graph_random)
+
+    def startElection(self):
+        winner = self.election.choose_winner(constants.VETO)
+        print("WINNER : ", winner)
+
+        # for e in self.election.electors:
+        #     print(e, e.candidates_ranked)
+
+        # for c in self.election.candidates:
+        #     print(c, c.scores)
+
+    # delete all widgets from main_layout
+    def cleanWindow(self):
         for i in reversed(range(self.layout.count())):
             widgetToRemove = self.layout.itemAt(i).widget()
-            # Supprimer widget dans layout_list
+            # remove it from the layout list
             self.layout.removeWidget(widgetToRemove)
-            # Supprimer widget dans main_winddow
+            # remove it from the gui
             widgetToRemove.setParent(None)
-
-    #     graphWindow = GraphManualWindow(app)
-    #     self.close()
-    #     graphWindow.show()
-    #     # sys.exit(app.exec())
-
-    # def graphRandomButtonClicked(self, app):
-    #     graphWindow = GraphRandomWindow(app)
-    #     self.close()
-    #     graphWindow.show()
-
-    #  sys.exit(app.exec())
 
     def quit_app(self):
         self.app.quit()
 
-
-""""
-class GraphRandomWindow(QMainWindow):
-    def __init__(self,app):
-        super().__init__()
-        self.app=app
-        #Dimension et titre de la fenêtre 
-        self.setGeometry(0,0,1000,500)
-        self.setWindowTitle("Random graphic Window")
-
-        #creation des bouton
-        button_result=QPushButton("Voting results")
-        button_result.setFixedSize(150,30)
-        button_result.clicked.connect(self.resultButtonClicked)
-        button_home=QPushButton("Home")
-        button_home.setFixedSize(100,25)
-        button_home.clicked.connect(self.homeButtonClicked)
-
-        #def du layout
-        layout=QVBoxLayout()
-        layout.addWidget(button_result)
-
-        #Creation du widget central et affectation du layout
-        centralWidget=QWidget(self)
-        centralWidget.setLayout(layout)
-        self.setCentralWidget(centralWidget)
-
-        #Creation du status bar et mise du bouton
-        status_bar=self.statusBar()
-        status_bar.addWidget(button_home)
-
-
-    def resultButtonClicked(self,app):
-        voteWindow=VoteSystemWindow(app)
-        self.close()
-        voteWindow.show()
-        sys.exit(app.exec())
-
-    def homeButtonClicked(self,app):
-        homeWindow=HomeWindow(app)
-        self.close()
-        homeWindow.show()
-        sys.exit(app.exec())
-"""
 
 if __name__ == "__main__":
     app = QApplication()

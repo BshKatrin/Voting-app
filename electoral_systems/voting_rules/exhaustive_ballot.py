@@ -1,8 +1,6 @@
 from .constants import EXHAUSTIVE_BALLOT
 from .utls import init_scores, sort_cand_by_round
 
-from people.elector import Elector
-
 
 def apply_exhaustive_ballot(electors, candidates):
     rounds = len(candidates) - 1  # amount of rounds to play (worst case scenario)
@@ -20,7 +18,7 @@ def apply_exhaustive_ballot(electors, candidates):
     ):
         current_round += 1
         winners_backlog.append(set_scores_everyone(electors, candidates, current_round))
-        electors = Elector.gen_rand_electors(len_electors, candidates)
+        # electors = Elector.gen_rand_electors(len_electors, candidates)
     return winners_backlog
 
 

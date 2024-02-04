@@ -1,54 +1,72 @@
-# Pas d'interet d'utiliser ce fichier
+from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLineEdit
 
-from PySide6.QtWidgets import (
-    QApplication,
-    QWidget,
-    QPushButton,
-    QVBoxLayout,
-    QHBoxLayout,
-    QLabel,
-)
-import sys
-from votingSystem import VoteSystemWindow
+from .graph import Graph
+
+from electoral_systems import Election
+from people import Elector, Candidate
 
 
-class GraphRandomWindow(QWidget):
-    def __init__(self):
-        super().__init__()
+class GraphRandom(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
-        # creation des bouton
-        button_result = QPushButton("Voting results")
-        button_result.setFixedSize(150, 30)
-        button_result.clicked.connect(self.resultButtonClicked)
-        button_home = QPushButton("Home")
-        button_home.setFixedSize(100, 25)
-        button_home.clicked.connect(self.homeButtonClicked)
+        self.election = Election()
 
-        # def du layout
-        layout = QVBoxLayout()
-        layout.addWidget(button_result)
+        self.layout = QVBoxLayout()
+        self.setLayout(self.layout)
 
-        # Creation du widget central et affectation du layout
-        centralWidget = QWidget(self)
-        centralWidget.setLayout(layout)
-        self.setCentralWidget(centralWidget)
+        self.initUI()
 
-        # Creation du status bar et mise du bouton
-        status_bar = self.statusBar()
-        status_bar.addWidget(button_home)
+    def initUI(self):
+        self.graph = Graph(parent=self)
+        self.layout.addWidget(self.graph)
 
-    def resultButtonClicked(self):
-        pass
-        # voteWindow=VoteSystemWindow(app)
-        # self.close()
-        # voteWindow.show()
-        # sys.exit(app.exec())
+        # Fields
+        self.candidatesTextBox = QLineEdit(parent=self)
+        self.candidatesTextBox.setPlaceholderText("Number of candidates")
+        self.layout.addWidget(self.candidatesTextBox)
 
-    def homeButtonClicked(self):
-        pass
-        # from main_window import HomeWindow
+        self.electorsTextBox = QLineEdit(parent=self)
+        self.electorsTextBox.setPlaceholderText("Number of electors")
+        self.layout.addWidget(self.electorsTextBox)
 
-        # homeWindow = HomeWindow(app)
-        # self.close()
-        # homeWindow.show()
-        # sys.exit(app.exec())
+        # Button
+        self.btn_gen_random = QPushButton("Generate random")
+        self.layout.addWidget(self.btn_gen_random)
+        self.btn_gen_random.clicked.connect(self.generateData)
+
+    def generateData(self):
+        try:
+            nb_electors = int(self.electorsTextBox.text())
+            nb_candidates = int(self.candidatesTextBox.text())
+            # On est oblige de generer les candidates tout d'abord
+            for _ in range(nb_candidates):
+                generatedPosition = self.graph.generatePosition()
+                self.election.add_candidate(
+                    Candidate(position=self.graph.normalizePosition(generatedPosition))
+                )
+                self.graph.candidates.append(
+                    (
+                        Candidate.first_name + " " + Candidate.last_name,
+                        generatedPosition,
+                    )
+                )
+
+            for _ in range(nb_electors):
+                generatedPosition = self.graph.generatePosition()
+                self.election.add_elector(
+                    Elector(
+                        candidates=self.election.candidates,
+                        position=self.graph.normalizePosition(generatedPosition),
+                    )
+                )
+                self.graph.electors.append(generatedPosition)
+            self.graph.update()
+
+        except ValueError:
+            print("Please enter a valid number of electors and candidates")
+        self.cleanTextBoxes()
+
+    def cleanTextBoxes(self):
+        self.candidatesTextBox.clear()
+        self.electorsTextBox.clear()
