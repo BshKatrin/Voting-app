@@ -42,12 +42,13 @@ class GraphRandom(QWidget):
             # On est oblige de generer les candidates tout d'abord
             for _ in range(nb_candidates):
                 generatedPosition = self.graph.generatePosition()
-                self.election.add_candidate(
-                    Candidate(position=self.graph.normalizePosition(generatedPosition))
+                newCandidate = Candidate(
+                    position=self.graph.normalizePosition(generatedPosition)
                 )
+                self.election.add_candidate(newCandidate)
                 self.graph.candidates.append(
                     (
-                        Candidate.first_name + " " + Candidate.last_name,
+                        newCandidate.first_name + " " + newCandidate.last_name,
                         generatedPosition,
                     )
                 )

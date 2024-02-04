@@ -175,7 +175,8 @@ class Graph(QWidget):
 
     # Position de type QPoint, retourne couple normale
     def normalizePosition(self, position):
-        return (position.x() / self.width() // 2, position.y() / self.height() // 2)
+        print(position.x() / self.width() * 2, position.y() / self.height() * 2)
+        return position.x() / self.width() * 2, position.y() / self.height() * 2
 
     #####   fonctions de test (à enlever)
     def showPositions(self):

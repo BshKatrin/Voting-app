@@ -10,8 +10,15 @@ from .person import Person
 @dataclass(kw_only=True, unsafe_hash=True, eq=True)
 # Keep in mind that no guarantee for unique first_name and last_name
 class Candidate(Person):
-    first_name: str = "".join(choices(ascii_lowercase, k=10))
-    last_name: str = "".join(choices(ascii_lowercase, k=10))
+    def gen_first_name():
+        return "".join(choices(ascii_lowercase, k=10))
+
+    def gen_last_name():
+        return "".join(choices(ascii_lowercase, k=10))
+
+    first_name: str = field(default_factory=gen_first_name)
+    last_name: str = field(default_factory=gen_last_name)
+
     # int -> 1 round, float -> Copeland, List -> N rounds
     scores: Dict[str, Union[int, float, List[int]]] = field(
         default_factory=dict, hash=False, compare=False
