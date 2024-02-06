@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLineEdit
-
+from PySide6.QtCore import Qt
 from .graph import Graph
 
 from electoral_systems import Election
@@ -62,10 +62,12 @@ class GraphRandom(QWidget):
                     )
                 )
                 self.graph.electors.append(generatedPosition)
+            print(self.election.__dict__)
             self.graph.update()
 
         except ValueError:
             print("Please enter a valid number of electors and candidates")
+        print(self.election.candidates, self.election.electors)
         self.cleanTextBoxes()
 
     def cleanTextBoxes(self):

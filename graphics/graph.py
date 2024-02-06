@@ -21,8 +21,7 @@ class Graph(QWidget):
         self.election = Election()
 
         # dessiner grid qu'une seule fois
-        self.grid_drawn = False
-        if self.parent != None:
+        if self.parent:
             self.setFixedSize(600, 600)
 
         self.initUI()
@@ -39,12 +38,9 @@ class Graph(QWidget):
 
     def paintEvent(self, event):  # appelle les fonctions de création graphique du graph
         painter = QPainter(self)
-        # dessiner grid qu'une seule fois
-        if not self.grid_drawn:
-            self.drawGrid(painter)
-            self.drawAxes(painter)
-            self.drawAxisLabels(painter)
-            self.grid_drawn = False
+        self.drawGrid(painter)
+        self.drawAxes(painter)
+        self.drawAxisLabels(painter)
         self.drawPoints(painter)
 
     def drawGrid(self, painter):
@@ -190,20 +186,6 @@ class Graph(QWidget):
             [f"Position: {pos[0]}, {pos[1]}" for pos in self.candidates_positions]
         )
         print(positions_text2)
-
-    def start_elections(self):
-        lst_candidates = [
-            Candidate(first_name=name, last_name=name, position=pos)
-            for name, pos in self.candidates_positions
-        ]
-        lst_electors = [
-            Elector(candidates=lst_candidates, position=pos)
-            for pos in self.electors_positions
-        ]
-        self.elections = Election(electors=lst_electors, candidates=lst_candidates)
-        winner = self.elections.choose_winner(constants.VETO)
-        print(winner)
-        # clean window
 
 
 ### appelle du widget pour des tests, je ne sais pas comment ça marchera dans un mainWindow

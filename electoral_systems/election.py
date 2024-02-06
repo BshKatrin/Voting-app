@@ -12,13 +12,13 @@ from .singleton import Singleton
 from people import Elector, Candidate
 
 
-class Election(Singleton):
+class Election(metaclass=Singleton):
 
-    def __init__(self, electors=[], candidates=[]):
+    def __init__(self):
         super().__init__()
 
-        self.electors = deepcopy(electors)
-        self.candidates = deepcopy(candidates)
+        self.electors = []
+        self.candidates = []
         self.results = dict()
 
     def add_elector(self, new_elector):
