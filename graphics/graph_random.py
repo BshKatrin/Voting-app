@@ -19,7 +19,7 @@ class GraphRandom(QWidget):
 
     def initUI(self):
         self.graph = Graph(parent=self)
-        self.layout.addWidget(self.graph)
+        self.layout.addWidget(self.graph, 0, Qt.AlignHCenter)
 
         # Fields
         self.candidatesTextBox = QLineEdit(parent=self)
