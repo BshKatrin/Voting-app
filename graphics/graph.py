@@ -23,7 +23,7 @@ class Graph(QWidget):
         # dessiner grid qu'une seule fois
         self.grid_drawn = False
         if self.parent != None:
-            self.setGeometry(0, 0, parent.width(), parent.height())
+            self.setFixedSize(600, 600)
 
         self.initUI()
 
