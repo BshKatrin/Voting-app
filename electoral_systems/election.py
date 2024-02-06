@@ -8,17 +8,16 @@ from people import Elector
 import electoral_systems.voting_rules.constants as constants
 from . import func_constants
 from .singleton import Singleton
-
 from people import Elector, Candidate
 
 
 class Election(metaclass=Singleton):
 
-    def __init__(self):
+    def __init__(self, electors=None, candidates=None):
         super().__init__()
 
-        self.electors = []
-        self.candidates = []
+        self.electors = deepcopy(electors) if electors else []
+        self.candidates = deepcopy(candidates) if candidates else []
         self.results = dict()
 
     def add_elector(self, new_elector):
