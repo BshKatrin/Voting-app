@@ -13,7 +13,6 @@ from PySide6.QtWidgets import (
 import sys
 
 from .settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
-from .graph_manual import GraphManual
 from .graph_random import GraphRandom
 from .voting_checkbox import VotingCheckbox
 
@@ -57,8 +56,6 @@ class HomeWindow(QMainWindow):
         self.btn_random.clicked.connect(self.showRandomGraph)
         self.btn_manual = QPushButton("Manual")
         # self.btn_manual.setFixedSize(150, 30)
-        self.layout.addWidget(self.btn_manual)
-        self.btn_manual.clicked.connect(self.showManualGraph)
 
     def initUIGraph(self):
         self.cleanWindow()
@@ -66,10 +63,6 @@ class HomeWindow(QMainWindow):
         self.layout.addWidget(self.button_vote)
 
     # Button handler
-    def showManualGraph(self):
-        self.initUIGraph()
-        self.graph_manual = GraphManual(parent=self.main_widget)
-        self.layout.addWidget(self.graph_manual)
 
     def showRandomGraph(self):
         self.initUIGraph()
