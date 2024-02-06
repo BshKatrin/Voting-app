@@ -25,15 +25,15 @@ def apply_plurality_rounds(electors, candidates):
 def plurality_one_set_score(electors, candidates):
     for elector in electors:
         # Ajouter +1 uniquement au premier candidat
-        elector.candidates_ranked[0].add_score_round(PLURALITY_2_ROUNDS, 1, 1)
-    return sort_cand_by_round(candidates, PLURALITY_2_ROUNDS, 1)
+        elector.candidates_ranked[0].add_score_round(PLURALITY_2_ROUNDS, 1, 0)
+    return sort_cand_by_round(candidates, PLURALITY_2_ROUNDS, 0)
 
 
 def plurality_two_set_score(electors, candidates):
     for elector in electors:
         chosen_candidate = choose_next_candidate(elector, *candidates)
-        chosen_candidate.add_score_round(PLURALITY_2_ROUNDS, 1, 2)
-    return sort_cand_by_round(candidates, PLURALITY_2_ROUNDS, 2)
+        chosen_candidate.add_score_round(PLURALITY_2_ROUNDS, 1, 1)
+    return sort_cand_by_round(candidates, PLURALITY_2_ROUNDS, 1)
 
 
 def choose_next_candidate(elector, cand1, cand2):

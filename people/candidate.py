@@ -26,8 +26,8 @@ class Candidate(Person):
 
     def __str__(self):
         x, y = self.position
-        return f"Candidate({self.id}, ({x:.2f},{y:.2f}), {self.first_name}, {self.last_name}, {self.scores})"
-        # return f"Candidate({self.id})"
+        # return f"Candidate({self.id}, ({x:.2f},{y:.2f}), {self.first_name}, {self.last_name}, {self.scores})"
+        return f"Candidate({self.id})"
 
     def __repr__(self):
         return self.__str__()
@@ -43,9 +43,9 @@ class Candidate(Person):
             self.init_score(voting_system_name, 0)
         self.scores[voting_system_name] += score
 
-    # Round commence a partir de 1
+    # Round commence a partir de 0
     def add_score_round(self, voting_system_name, score, round):
         # OU try ... except (if key not in scores) -> a voir
         if voting_system_name not in self.scores:
             self.init_score(voting_system_name, [0] * round, True)
-        self.scores[voting_system_name][round - 1] += score
+        self.scores[voting_system_name][round] += score

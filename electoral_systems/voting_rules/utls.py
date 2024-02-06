@@ -12,10 +12,10 @@ def sort_cand_by_value(candidates, voting_system_name):
     return [c for (c, _) in sorted(lst, key=lambda e: e[1], reverse=True)]
 
 
-# Round commance a partir de 1
+# Round commance a partir de 0
 # Trier les candidats par rapport au round donne
 def sort_cand_by_round(candidates, voting_system_name, round):
     lst = [
         (candidate, candidate.scores[voting_system_name]) for candidate in candidates
     ]
-    return [c for (c, _) in sorted(lst, key=lambda e: e[1][round - 1], reverse=True)]
+    return [c for (c, _) in sorted(lst, key=lambda e: e[1][round], reverse=True)]
