@@ -8,13 +8,15 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QWidget,
     QApplication,
-    QLineEdit,
+    QLineEdit
 )
 import sys
 
 from .settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
 from .graph_manual import GraphManual
 from .graph_random import GraphRandom
+from .voting_checkbox import VotingCheckbox
+
 
 from electoral_systems import Election
 from electoral_systems.voting_rules import constants
@@ -38,17 +40,21 @@ class HomeWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
         self.layout.setSpacing(5)
         self.layout.setContentsMargins(10, 10, 10, 10)
+        self.initUIHome()
+        
 
-        # Buttons
+        # Navigation buttons
+        self.button_home = QPushButton("Home")
+        self.button_home.clicked.connect(self.backHomeWindow)
+        self.button_vote = QPushButton("Vote")
+        self.button_vote.clicked.connect(self.startElection)
+        
+    def initUIHome(self):
+        # Buttons graph
         self.btn_random = QPushButton("Random")
         # self.btn_random.setFixedSize(150, 30)
         self.layout.addWidget(self.btn_random)
         self.btn_random.clicked.connect(self.showRandomGraph)
-
-        # Navigation buttons
-        self.button_home = QPushButton("Home")
-        self.button_vote = QPushButton("Vote")
-        self.button_vote.clicked.connect(self.startElection)
         self.btn_manual = QPushButton("Manual")
         # self.btn_manual.setFixedSize(150, 30)
         self.layout.addWidget(self.btn_manual)
@@ -71,14 +77,11 @@ class HomeWindow(QMainWindow):
         self.layout.addWidget(self.graph_random)
 
     def startElection(self):
-        winner = self.election.choose_winner(constants.VETO)
-        print("WINNER : ", winner)
+        self.voteSelecttionWidget = VotingCheckbox()
+        self.layout = QVBoxLayout()
+        self.voteSelecttionWidget.show()
+        
 
-        # for e in self.election.electors:
-        #     print(e, e.candidates_ranked)
-
-        # for c in self.election.candidates:
-        #     print(c, c.scores)
 
     # delete all widgets from main_layout
     def cleanWindow(self):
@@ -88,6 +91,12 @@ class HomeWindow(QMainWindow):
             self.layout.removeWidget(widgetToRemove)
             # remove it from the gui
             widgetToRemove.setParent(None)
+
+
+    def backHomeWindow(self):
+        self.cleanWindow()
+        self.initUIHome()
+
 
     def quit_app(self):
         self.app.quit()
