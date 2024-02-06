@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLineEdit
 from PySide6.QtCore import Qt
 from .graph import Graph
-
+from PySide6.QtCore import Qt
 from electoral_systems import Election
 from people import Elector, Candidate
 

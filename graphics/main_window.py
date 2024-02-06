@@ -55,13 +55,13 @@ class HomeWindow(QMainWindow):
         self.btn_random.clicked.connect(self.showRandomGraph)
         # self.btn_manual = QPushButton("Manual")
         # self.btn_manual.setFixedSize(150, 30)
-        # self.layout.addWidget(self.btn_manual)
-        # self.btn_manual.clicked.connect(self.showManualGraph)
 
     def initUIGraph(self):
         self.cleanWindow()
         self.layout.addWidget(self.button_home)
         self.layout.addWidget(self.button_vote)
+
+    # Button handler
 
     def showRandomGraph(self):
         self.initUIGraph()
