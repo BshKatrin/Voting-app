@@ -1,13 +1,24 @@
 from .constants import APPROVAL
-from .utls import sort_cand_by_value
+from .utls import init_scores, sort_cand_by_value
+
+"""
+apply_approval([electors],[candidates])->[candidates]
+les votes des electeurs sont determinés par leur distance en fonction des candidats
+(chaque electeurs peut donc voter pour un nombre de candidats différents >=1)
+"""
+
+GAP_COEF = 0.3
 
 
-# min_index commence par 1
-# e.g. si min_index = 2 -> uniquement 2 premieres candidats recevront des points
-def apply_approval(electors, candidates, min_index=0):
+def apply_approval(electors, candidates):
+    init_scores(candidates, APPROVAL, 0)
     for elector in electors:
-        for i in range(min_index):
-            elector.candidates_ranked[i].add_score(APPROVAL, 1)
-    for i in range(min_index, len(candidates)):
-        candidates[i].init_score(APPROVAL, 0)
+        dist_max = elector.dist_from_one_cand(elector.candidates_ranked[0]) + GAP_COEF
+        for candidate in elector.candidates_ranked:
+            if elector.dist_from_one_cand(candidate) < dist_max:
+                candidate.add_score(APPROVAL, 1)
+            else:
+                candidate.add_score(APPROVAL, 0)
+                break
     return sort_cand_by_value(candidates, APPROVAL)
+
