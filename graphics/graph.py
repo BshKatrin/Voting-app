@@ -9,6 +9,8 @@ from electoral_systems.voting_rules import constants
 from people import Elector
 from people import Candidate
 
+from .settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
+
 
 class Graph(QWidget):
     def __init__(self, parent=None):
@@ -22,7 +24,7 @@ class Graph(QWidget):
 
         # dessiner grid qu'une seule fois
         if self.parent:
-            self.setFixedSize(600, 600)
+            self.setFixedSize(0.7 * MAIN_WINDOW_WIDTH, 0.7 * MAIN_WINDOW_HEIGHT)
 
         self.initUI()
 

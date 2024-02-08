@@ -27,7 +27,7 @@ class Candidate(Person):
     def __str__(self):
         x, y = self.position
         # return f"Candidate({self.id}, ({x:.2f},{y:.2f}), {self.first_name}, {self.last_name}, {self.scores})"
-        return f"Candidate({self.id})"
+        return f"Candidate({self.id}, {self.first_name} {self.last_name} {self.scores})"
 
     def __repr__(self):
         return self.__str__()

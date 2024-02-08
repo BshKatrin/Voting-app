@@ -4,7 +4,7 @@ from .utls import sort_cand_by_value
 
 # min_index commence par 1
 # e.g. si min_index = 2 -> uniquement 2 premieres candidats recevront des points
-def apply_approval(electors, candidates, min_index):
+def apply_approval(electors, candidates, min_index=0):
     for elector in electors:
         for i in range(min_index):
             elector.candidates_ranked[i].add_score(APPROVAL, 1)

@@ -4,10 +4,9 @@ import sys
 
 from graphics.main_window import HomeWindow
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    # app.setStyle("Fusion")
+    app.setStyle("Fusion")
 
     window = HomeWindow(app)
 

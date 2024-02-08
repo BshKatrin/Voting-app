@@ -15,7 +15,7 @@ import sys
 from .settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
 from .graph_random import GraphRandom
 from .voting_checkbox import VotingCheckbox
-
+from .widget_results import WidgetResults
 
 from electoral_systems import Election
 from electoral_systems.voting_rules import constants
@@ -44,8 +44,15 @@ class HomeWindow(QMainWindow):
         # Navigation buttons
         self.button_home = QPushButton("Home")
         self.button_home.clicked.connect(self.backHomeWindow)
+
+        # Disable button by default
         self.button_vote = QPushButton("Vote")
+        self.button_vote.setEnabled(False)
         self.button_vote.clicked.connect(self.startElection)
+
+        # Button to activate checkbox
+        self.button_choose = QPushButton("Choose voting rules")
+        self.button_choose.clicked.connect(self.chooseVotingRules)
 
     def initUIHome(self):
         # Buttons graph
@@ -53,28 +60,38 @@ class HomeWindow(QMainWindow):
         # self.btn_random.setFixedSize(150, 30)
         self.layout.addWidget(self.btn_random)
         self.btn_random.clicked.connect(self.showRandomGraph)
-        # self.btn_manual = QPushButton("Manual")
-        # self.btn_manual.setFixedSize(150, 30)
 
     def initUIGraph(self):
         self.cleanWindow()
         self.layout.addWidget(self.button_home)
         self.layout.addWidget(self.button_vote)
+        self.layout.addWidget(self.button_choose)
+
+    def initUIResults(self):
+        self.cleanWindow()
+        self.layout.addWidget(self.button_home)
+        self.widgetResults = WidgetResults(self.main_widget)
+        self.layout.addWidget(self.widgetResults)
 
     # Button handler
-
     def showRandomGraph(self):
         self.initUIGraph()
         self.graph_random = GraphRandom(parent=self)
         self.layout.addWidget(self.graph_random)
 
-    def startElection(self):
-        self.voteSelectionWidget = VotingCheckbox()
-        print(len(self.election.candidates))
-        self.voteSelectionWidget.desactivate_checkboxes()
-        self.layout = QVBoxLayout()
+    def chooseVotingRules(self):
+        # Show checkbox
+        self.voteSelectionWidget = VotingCheckbox(parent=None, main_window=self)
+        # Desactivate certain checkboxes based on nb of candidates
+        self.voteSelectionWidget.desactivateCheckboxes()
         self.voteSelectionWidget.show()
-        print(self.election.__dict__)
+
+    def startElection(self):
+        # Add keys to a results in Election
+        self.election.init_results_keys(self.voteSelectionWidget.getConstantsSet())
+        # Delete widget checkbox completely
+        self.voteSelectionWidget.destroy(destroyWindow=True)
+        self.initUIResults()
 
     # delete all widgets from main_layout
     def cleanWindow(self):
@@ -89,7 +106,7 @@ class HomeWindow(QMainWindow):
         self.cleanWindow()
         self.initUIHome()
 
-    def quit_app(self):
+    def quitApp(self):
         self.app.quit()
 
 

@@ -2,13 +2,16 @@ from PySide6.QtWidgets import QApplication, QWidget, QCheckBox, QVBoxLayout, QPu
 from PySide6.QtCore import Qt
 from electoral_systems import Election
 
+from electoral_systems.voting_rules import constants
+
 
 class VotingCheckbox(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, main_window, parent=None):
         super().__init__(parent)
         self.election = Election()
 
-        self.listfonct = set()
+        self.mainWindow = main_window
+        self.setConstants = set()
         self.initUI()
 
     def initUI(self):
@@ -45,6 +48,7 @@ class VotingCheckbox(QWidget):
 
         ## QVBoxLayout pour placer les widgets verticalement
         self.layout = QVBoxLayout()
+        self.setLayout(self.layout)
         self.layout.addWidget(self.checkboxps)
         self.layout.addWidget(self.checkboxp2r)
         self.layout.addWidget(self.checkboxv)
@@ -56,23 +60,23 @@ class VotingCheckbox(QWidget):
         self.layout.addWidget(self.checkboxap)
 
         #   ajoute un bouton d'affichage
-        self.btnShowPositions = QPushButton("Afficher les positions", self)
-        self.layout.addWidget(self.btnShowPositions)
+        self.btnConfirm = QPushButton("Confirm", self)
+        self.layout.addWidget(self.btnConfirm)
 
         #   Connecte le signal clicked du bouton
-        self.btnShowPositions.clicked.connect(self.showPositions)
-        self.setLayout(self.layout)
+        self.btnConfirm.clicked.connect(self.confirmVotingRules)
 
     ##   fonctions liés à chaque checkbox qui ajoutent à la liste de fontion le nom du système de vote utilisé quand la checkbox est cochée
     ##   décocher la checkbos retire l'élément de la liste
 
-    def desactivate_checkboxes(self):
+    def desactivateCheckboxes(self):
         nb_candidates = len(self.election.candidates)
         # Desactiver tous les checkbox
         if nb_candidates < 2:
             for i in range(self.layout.count()):
-                checkbox = self.layout.itemAt(i).widget()
-                checkbox.setEnabled(False)
+                widget = self.layout.itemAt(i).widget()
+                if isinstance(widget, QCheckBox):
+                    widget.setEnabled(False)
         elif nb_candidates < 3:
             # Desactiver les checkbox des systemes de vote a plusieurs tours
             self.checkboxp2r.setEnabled(False)
@@ -80,65 +84,68 @@ class VotingCheckbox(QWidget):
 
     def checkbox_stateps(self):
         if self.checkboxps.isChecked():
-            self.listfonct.add("PLURALITY_SIMPLE")
+            self.setConstants.add(constants.PLURALITY_SIMPLE)
         else:
-            self.listfonct.discard("PLURALITY_SIMPLE")
+            self.setConstants.discard(constants.PLURALITY_SIMPLE)
 
     def checkbox_statep2r(self):
-
         if self.checkboxp2r.isChecked():
-            self.listfonct.add("PLURALITY_2_ROUNDS")
+            self.setConstants.add(constants.PLURALITY_2_ROUNDS)
         else:
-            self.listfonct.discard("PLURALITY_2_ROUNDS")
+            self.setConstants.discard(constants.PLURALITY_2_ROUNDS)
 
     def checkbox_statev(self):
         if self.checkboxv.isChecked():
-            self.listfonct.add("VETO")
+            self.setConstants.add(constants.VETO)
         else:
-            self.listfonct.discard("VETO")
+            self.setConstants.discard(constants.VETO)
 
     def checkbox_stateb(self):
         if self.checkboxeb.isChecked():
-            self.listfonct.add("BORDA")
+            self.setConstants.add(constants.BORDA)
         else:
-            self.listfonct.discard("BORDA")
+            self.setConstants.discard(constants.BORDA)
 
     def checkbox_statecs(self):
         if self.checkboxcs.isChecked():
-            self.listfonct.add("CONDORCET_SIMPLE")
+            self.setConstants.add(constants.CONDORCET_SIMPLE)
         else:
-            self.listfonct.discard("CONDORCET_SIMPLE")
+            self.setConstants.discard(constants.CONDORCET_SIMPLE)
 
     def checkbox_statecc(self):
         if self.checkboxcc.isChecked():
-            self.listfonct.add("CONDORCET_COPELAND")
+            self.setConstants.add(constants.CONDORCET_COPELAND)
         else:
-            self.listfonct.discard("CONDORCET_COPELAND")
+            self.setConstants.discard(constants.CONDORCET_COPELAND)
 
     def checkbox_statecsimp(self):
         if self.checkboxcsimp.isChecked():
-            self.listfonct.add("CONDORCET_SIMPSON")
+            self.setConstants.add(constants.CONDORCET_SIMPSON)
         else:
-            self.listfonct.discard("CONDORCET_SIMPSON")
+            self.setConstants.discard(constants.CONDORCET_SIMPSON)
 
     def checkbox_stateeb(self):
         if self.checkboxeb.isChecked():
-            self.listfonct.add("EXHAUSTIVE_BALLOT")
+            self.setConstants.add(constants.EXHAUSTIVE_BALLOT)
         else:
-            self.listfonct.discard("EXHAUSTIVE_BALLOT")
+            self.setConstants.discard(constants.EXHAUSTIVE_BALLOT)
 
     def checkbox_stateap(self):
         if self.checkboxap.isChecked():
-            self.listfonct.add("APPROVAL")
+            self.setConstants.add(constants.APPROVAL)
         else:
-            self.listfonct.discard("APPROVAL")
+            self.setConstants.discard(constants.APPROVAL)
 
-    #####   fonctions de test (à enlever)
+    # Trigger for button 'Confirm'
+    def confirmVotingRules(self):
+        # Activate button on main_window only if at least 1 voting rule was chosen
+        if len(self.getConstantsSet()):
+            self.mainWindow.button_vote.setEnabled(True)
+        # Close checkbox widget
+        self.close()
 
-    def showPositions(self):
-        #   affiches les positions politiques des electeurs et les noms et positions des candidats dans la console
-        positions_text = "\n".join([f"Position: {fonct}" for fonct in self.listfonct])
-        print(positions_text)
+    def getConstantsSet(self):
+        return self.setConstants
 
 
 if __name__ == "__main__":
