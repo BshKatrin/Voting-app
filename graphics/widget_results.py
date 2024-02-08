@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QWidget, QGridLayout, QLabel
 from PySide6.QtCore import Qt
 
 # 3ieme page : afficher des resultats des elections
@@ -13,10 +13,10 @@ names = {
     PLURALITY_2_ROUNDS: "Plurality (2 rounds)",
     VETO: "Veto",
     BORDA: "Borda",
-    CONDORCET_SIMPLE: "Condorcet simplit",
+    CONDORCET_SIMPLE: "Condorcet Simple",
     CONDORCET_COPELAND: "Condorcet Copeland",
     CONDORCET_SIMPSON: "Condorcet Simpson",
-    EXHAUSTIVE_BALLOT: "Exhaustive ballot",
+    EXHAUSTIVE_BALLOT: "Exhaustive Ballot",
     APPROVAL: "Approval",
 }
 
@@ -30,23 +30,34 @@ class WidgetResults(QWidget):
         self.initLabels()
 
     def initUI(self):
-        self.layout = QVBoxLayout()
+        self.layout = QGridLayout()
         self.setLayout(self.layout)
-        self.layout.setSpacing(0)
+        self.layout.setSpacing(10)
 
     def initLabels(self):
-        self.election.calculate_results()
-        # Get amount of labels to create = nb of rows in a grid
-        nb_labels = len(self.election.results)
+        column_one_header = QLabel()
+        column_one_header.setText("Voting rule")
+        self.layout.addWidget(column_one_header, 0, 0, alignment=Qt.AlignHCenter)
+        column_one_header.setStyleSheet("font-weight: bold")
 
-        # Create labels based
-        for voting_rule in self.election.results:
+        column_two_header = QLabel()
+        column_two_header.setText("Winner")
+        self.layout.addWidget(column_two_header, 0, 1, alignment=Qt.AlignHCenter)
+        column_two_header.setStyleSheet("font-weight: bold")
+
+        self.election.calculate_results()
+
+        for row, voting_rule in enumerate(self.election.results, start=1):
             # Create label with name to find it later with findChild if necessary
-            label = QLabel(parent=self)
-            label.setObjectName(voting_rule)
-            self.layout.addWidget(label, 1, Qt.AlignTop)
-            # Set text
+            label_voting_rule = QLabel(parent=self)
+            label_winner = QLabel(parent=self)
+
+            label_voting_rule.setObjectName(voting_rule)
+            label_winner.setObjectName(f"{voting_rule}_winner")
+
+            label_voting_rule.setText(names[voting_rule])
             winner = self.election.choose_winner(voting_rule)
-            label.setText(
-                f"{names[voting_rule]}: {winner.first_name} {winner.last_name}"
-            )
+            label_winner.setText(f"{winner.first_name} {winner.last_name}")
+
+            self.layout.addWidget(label_voting_rule, row, 0, alignment=Qt.AlignHCenter)
+            self.layout.addWidget(label_winner, row, 1, alignment=Qt.AlignHCenter)

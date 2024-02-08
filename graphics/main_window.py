@@ -1,4 +1,4 @@
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QMainWindow,
@@ -71,7 +71,7 @@ class HomeWindow(QMainWindow):
         self.cleanWindow()
         self.layout.addWidget(self.button_home)
         self.widgetResults = WidgetResults(self.main_widget)
-        self.layout.addWidget(self.widgetResults)
+        self.layout.addWidget(self.widgetResults, alignment=Qt.AlignTop)
 
     # Button handler
     def showRandomGraph(self):
