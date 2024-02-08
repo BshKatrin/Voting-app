@@ -15,7 +15,7 @@ class Elector(Person):
         if not self.candidates_ranked:
             self.candidates_ranked = self.pos_to_rank(candidates)
 
-     def dist_from_cand(self, candidates):
+    def dist_from_cand(self, candidates):
         distances = []
         for candidate in candidates:
             distances.append(self.dist_from_one_cand(candidate))
