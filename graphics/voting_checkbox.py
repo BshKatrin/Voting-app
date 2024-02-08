@@ -83,6 +83,7 @@ class VotingCheckbox(QWidget):
             self.checkboxeb.setEnabled(False)
 
     def checkbox_stateps(self):
+
         if self.checkboxps.isChecked():
             self.setConstants.add(constants.PLURALITY_SIMPLE)
         else:
@@ -101,7 +102,7 @@ class VotingCheckbox(QWidget):
             self.setConstants.discard(constants.VETO)
 
     def checkbox_stateb(self):
-        if self.checkboxeb.isChecked():
+        if self.checkboxb.isChecked():
             self.setConstants.add(constants.BORDA)
         else:
             self.setConstants.discard(constants.BORDA)
@@ -139,6 +140,7 @@ class VotingCheckbox(QWidget):
     # Trigger for button 'Confirm'
     def confirmVotingRules(self):
         # Activate button on main_window only if at least 1 voting rule was chosen
+        print(self.setConstants)
         if len(self.getConstantsSet()):
             self.mainWindow.button_vote.setEnabled(True)
         # Close checkbox widget
