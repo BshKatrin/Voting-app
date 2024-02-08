@@ -15,19 +15,16 @@ class Elector(Person):
         if not self.candidates_ranked:
             self.candidates_ranked = self.pos_to_rank(candidates)
 
-    def dist_from_cand(self, candidates):
+     def dist_from_cand(self, candidates):
         distances = []
-        x, y = self.position
         for candidate in candidates:
-            x_c, y_c = candidate.get_position()
-            distances.append(sqrt((x_c - x) ** 2 + (y_c - y) ** 2))
+            distances.append(self.dist_from_one_cand(candidate))
         return distances
 
-    def dist_from_one_cand(self,candidate):
-        x,y=self.position
-        xc,yc=candidate.get_position()
-        return (sqrt((xc-x)**2+ (yc-y)**2)) 
-    
+    def dist_from_one_cand(self, candidate):
+        x, y = self.position
+        x_c, y_c = candidate.get_position()
+        return sqrt((x_c - x) ** 2 + (y_c - y) ** 2)
 
     # Calculate ranking from given position (x,y)
     def pos_to_rank(self, candidates):
