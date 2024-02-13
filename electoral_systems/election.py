@@ -54,3 +54,8 @@ class Election(metaclass=Singleton):
     def calculate_results(self):
         for voting_rule in self.results:
             self.apply_voting_rule(voting_rule)
+
+    def delete_all_data(self):
+        self.electors.clear()
+        self.candidates.clear()
+        self.results.clear()

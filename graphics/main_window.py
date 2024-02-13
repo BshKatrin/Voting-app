@@ -105,6 +105,7 @@ class HomeWindow(QMainWindow):
     def backHomeWindow(self):
         self.cleanWindow()
         self.initUIHome()
+        self.election.delete_all_data()
 
     def quitApp(self):
         self.app.quit()
