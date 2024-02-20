@@ -57,7 +57,10 @@ class WidgetResults(QWidget):
 
             label_voting_rule.setText(names[voting_rule])
             winner = self.election.choose_winner(voting_rule)
-            label_winner.setText(f"{winner.first_name} {winner.last_name}")
+            if winner is not None:
+                label_winner.setText(f"{winner.first_name} {winner.last_name}")
+            else:
+                label_winner.setText("No winner")
 
             self.layout.addWidget(label_voting_rule, row, 0, alignment=Qt.AlignHCenter)
             self.layout.addWidget(label_winner, row, 1, alignment=Qt.AlignHCenter)

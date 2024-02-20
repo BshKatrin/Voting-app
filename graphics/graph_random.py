@@ -55,13 +55,10 @@ class GraphRandom(QWidget):
 
             for _ in range(nb_electors):
                 generatedPosition = self.graph.generatePosition()
-                self.election.add_elector(
-                    Elector(
-                        candidates=self.election.candidates,
-                        position=self.graph.normalizePosition(generatedPosition),
-                    )
-                )
                 self.graph.electors.append(generatedPosition)
+                self.election.add_electors_position(
+                    self.graph.normalizePosition(generatedPosition)
+                )
             self.graph.update()
 
         except ValueError:

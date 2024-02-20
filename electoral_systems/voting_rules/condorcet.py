@@ -1,14 +1,39 @@
-from itertools import combinations
+from itertools import combinations, permutations
 
 from .constants import CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON
 from .utls import init_scores, sort_cand_by_value
 
 
-def apply_condorcet_simple(electors, candidates):
+# Utile pour les graphes et pour le condorcet simple
+# i.e. pour determiner s'il existe un gagnant ou pas
+def set_duels_scores(electors, candidates):
+    pairs = {comb: 0 for comb in combinations(candidates, 2)}
     for elector in electors:
-        pairs = combinations(elector.candidates_ranked, 2)
-        for fst, _ in pairs:
-            fst.add_score(CONDORCET_SIMPLE, 1)
+        pairs_elector = {comb: 0 for comb in combinations(elector.candidates_ranked, 2)}
+        for fst, snd in pairs_elector:
+            if (fst, snd) in pairs:
+                pairs[(fst, snd)] += 1
+            else:
+                pairs[(snd, fst)] -= 1
+
+    nb_opponents = len(candidates) - 1
+
+    duels = dict()
+    for pair, score in pairs.items():
+        if score < 0:
+            duels[pair[::-1]] = nb_opponents + score
+        elif score > 0:
+            duels[pair] = nb_opponents - score
+        else:
+            duels[pair] = score
+    return duels
+
+
+def apply_condorcet_simple(electors, candidates):
+    duels = set_duels_scores(electors, candidates)
+    init_scores(candidates, CONDORCET_SIMPLE, 0)
+    for winner, _ in duels:
+        winner.add_score(CONDORCET_SIMPLE, 1)
     return sort_cand_by_value(candidates, CONDORCET_SIMPLE)
 
 
@@ -24,8 +49,8 @@ def apply_condorcet_copeland(electors, candidates):
                 duels[(fst, snd)] += 1
             elif (snd, fst) in duels:
                 duels[(snd, fst)] -= 1
+
     # Ajouter des scores
-    # Le code a ete simplifie un peu
     for (fst, snd), value in duels.items():
         if value > 0:
             fst.add_score(CONDORCET_COPELAND, 1)
@@ -41,26 +66,20 @@ def apply_condorcet_copeland(electors, candidates):
     return sort_cand_by_value(candidates, CONDORCET_COPELAND)
 
 
-
 def apply_condorcet_simpson(electors, candidates):
     # Compter tous les preferences dans les duels
-    duels = dict()
-    for comb in combinations(candidates, 2):
-        duels[comb] = 0
-        duels[comb[::-1]] = 0  # add reversed comb
+    duels = {perm: 0 for perm in permutations(candidates, 2)}
 
     for elector in electors:
         pairs = combinations(elector.candidates_ranked, 2)
+        # combinations est inclus dans permutations -> pas de KeyError
         for fst, snd in pairs:
-            # if ... else pour protection
-            # changer a try ... except ?
             if (fst, snd) in duels:
                 duels[(fst, snd)] += 1
             else:
                 duels[(snd, fst)] += 1
 
     init_scores(candidates, CONDORCET_SIMPSON, 0)
-
     for (_, snd), value in duels.items():
         snd.init_score(
             CONDORCET_SIMPSON,

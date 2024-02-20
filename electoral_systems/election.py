@@ -16,9 +16,9 @@ class Election(metaclass=Singleton):
 
     def __init__(self, electors=None, candidates=None):
         super().__init__()
-
         self.electors = deepcopy(electors) if electors else []
         self.candidates = deepcopy(candidates) if candidates else []
+        self.electors_positions = list()
         self.results = dict()
 
     def add_elector(self, new_elector):
@@ -26,6 +26,9 @@ class Election(metaclass=Singleton):
 
     def add_candidate(self, new_candidate):
         self.candidates.append(new_candidate)
+
+    def add_electors_position(self, position):
+        self.electors_positions.append(position)
 
     def has_electors_candidates(self):
         if not self.electors and not self.candidates:
@@ -44,7 +47,14 @@ class Election(metaclass=Singleton):
             self.apply_voting_rule(voting_rule)
         if voting_rule == EXHAUSTIVE_BALLOT or voting_rule == PLURALITY_2_ROUNDS:
             return self.results[voting_rule][-1][0]
+        if voting_rule == CONDORCET_SIMPLE:
+            return self.choose_condorcet_winner()
         return self.results[voting_rule][0]
+
+    def choose_condorcet_winner(self):
+        fst_candidate = self.results[CONDORCET_SIMPLE][0]
+        score = fst_candidate.scores[CONDORCET_SIMPLE]
+        return fst_candidate if score == len(self.candidates) - 1 else None
 
     def init_results_keys(self, set_keys):
         for key in set_keys:
@@ -59,3 +69,13 @@ class Election(metaclass=Singleton):
         self.electors.clear()
         self.candidates.clear()
         self.results.clear()
+
+    ### fonction sans argument appelée dans le main avant l'utilisation des fonctions de vote, créé les electors dans la base de donnée election
+    def createElector(self):
+        for elec in self.electors_positions:
+            self.add_elector(
+                Elector(
+                    candidates=self.candidates,
+                    position=elec,
+                )
+            )

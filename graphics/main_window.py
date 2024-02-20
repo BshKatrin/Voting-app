@@ -63,6 +63,7 @@ class HomeWindow(QMainWindow):
 
     def initUIGraph(self):
         self.cleanWindow()
+        self.voteSelectionWidget = VotingCheckbox(parent=None, main_window=self)
         self.layout.addWidget(self.button_home)
         self.layout.addWidget(self.button_vote)
         self.layout.addWidget(self.button_choose)
@@ -81,7 +82,6 @@ class HomeWindow(QMainWindow):
 
     def chooseVotingRules(self):
         # Show checkbox
-        self.voteSelectionWidget = VotingCheckbox(parent=None, main_window=self)
         # Desactivate certain checkboxes based on nb of candidates
         self.voteSelectionWidget.desactivateCheckboxes()
         self.voteSelectionWidget.show()
