@@ -7,7 +7,10 @@ from people import Elector
 
 from electoral_systems.voting_rules.constants import *
 from .func_constants import VOTING_RULES_FUNC
+
 from .voting_rules.constants import *
+from .voting_rules.condorcet import set_duels_scores
+
 from .singleton import Singleton
 from people import Elector, Candidate
 
@@ -18,8 +21,10 @@ class Election(metaclass=Singleton):
         super().__init__()
         self.electors = deepcopy(electors) if electors else []
         self.candidates = deepcopy(candidates) if candidates else []
-        self.electors_positions = list()
+        self.electors_positions = []
+
         self.results = dict()
+        self.condorcet_graph_info = dict()
 
     def add_elector(self, new_elector):
         self.electors.append(new_elector)
@@ -38,6 +43,14 @@ class Election(metaclass=Singleton):
     def apply_voting_rule(self, voting_rule):
         if not self.has_electors_candidates():
             pass
+
+        if (
+            voting_rule == CONDORCET_SIMPLE
+            or voting_rule == CONDORCET_COPELAND
+            or voting_rule == CONDORCET_SIMPSON
+        ):
+            self.condorcet_graph_info = set_duels_scores(self.electors, self.candidates)
+
         self.results[voting_rule] = VOTING_RULES_FUNC[voting_rule](
             self.electors, self.candidates
         )
@@ -71,7 +84,7 @@ class Election(metaclass=Singleton):
         self.results.clear()
 
     ### fonction sans argument appelée dans le main avant l'utilisation des fonctions de vote, créé les electors dans la base de donnée election
-    def createElector(self):
+    def create_electors(self):
         for elec in self.electors_positions:
             self.add_elector(
                 Elector(

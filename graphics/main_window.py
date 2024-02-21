@@ -4,16 +4,12 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QPushButton,
     QVBoxLayout,
-    QHBoxLayout,
-    QGridLayout,
     QWidget,
-    QApplication,
-    QLineEdit,
 )
 import sys
 
 from .settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
-from .graph_random import GraphRandom
+from .widget_graph import GraphRandom
 from .voting_checkbox import VotingCheckbox
 from .widget_results import WidgetResults
 
@@ -87,8 +83,9 @@ class HomeWindow(QMainWindow):
         self.voteSelectionWidget.show()
 
     def startElection(self):
-        # Add keys to a results in Election
+        # Add keys to results dict in Election
         self.election.init_results_keys(self.voteSelectionWidget.getConstantsSet())
+        self.election.create_electors()
         # Delete widget checkbox completely
         self.voteSelectionWidget.destroy(destroyWindow=True)
         self.initUIResults()
@@ -109,10 +106,3 @@ class HomeWindow(QMainWindow):
 
     def quitApp(self):
         self.app.quit()
-
-
-if __name__ == "__main__":
-    app = QApplication()
-    window = HomeWindow(sys.argv)
-    window.show()
-    sys.exit(app.exec())

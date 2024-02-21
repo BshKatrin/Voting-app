@@ -7,8 +7,11 @@ from .utls import init_scores, sort_cand_by_value
 # Utile pour les graphes et pour le condorcet simple
 # i.e. pour determiner s'il existe un gagnant ou pas
 def set_duels_scores(electors, candidates):
+
     pairs = {comb: 0 for comb in combinations(candidates, 2)}
+    nb_electors = 0
     for elector in electors:
+        nb_electors += 1
         pairs_elector = {comb: 0 for comb in combinations(elector.candidates_ranked, 2)}
         for fst, snd in pairs_elector:
             if (fst, snd) in pairs:
@@ -16,16 +19,14 @@ def set_duels_scores(electors, candidates):
             else:
                 pairs[(snd, fst)] -= 1
 
-    nb_opponents = len(candidates) - 1
-
     duels = dict()
     for pair, score in pairs.items():
         if score < 0:
-            duels[pair[::-1]] = nb_opponents + score
+            duels[pair[::-1]] = nb_electors + score
         elif score > 0:
-            duels[pair] = nb_opponents - score
+            duels[pair] = nb_electors - score
         else:
-            duels[pair] = score
+            duels[pair] = 0
     return duels
 
 

@@ -173,7 +173,7 @@ class Graph(QWidget):
 
     # Position de type QPoint, retourne couple normale
     def normalizePosition(self, position):
-        print(position.x() / self.width() * 2, position.y() / self.height() * 2)
+        # print(position.x() / self.width() * 2, position.y() / self.height() * 2)
         return position.x() / self.width() * 2, position.y() / self.height() * 2
 
     #####   fonctions de test (à enlever)
@@ -182,7 +182,7 @@ class Graph(QWidget):
         positions_text = "\n".join(
             [f"Position: {pos[0]}, {pos[1]}" for pos in self.electors_positions]
         )
-        print(positions_text)
+        # (positions_text)
 
         positions_text2 = "\n".join(
             [f"Position: {pos[0]}, {pos[1]}" for pos in self.candidates_positions]
