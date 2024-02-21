@@ -9,8 +9,10 @@ from PySide6.QtWidgets import (
 import sys
 
 from .settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
-from .widget_graph import GraphRandom
-from .voting_checkbox import VotingCheckbox
+
+from .widget_map import WidgetMap
+from .widget_map_utls import VotingCheckbox
+
 from .widget_results import WidgetResults
 
 from electoral_systems import Election
@@ -50,12 +52,14 @@ class HomeWindow(QMainWindow):
         self.button_choose = QPushButton("Choose voting rules")
         self.button_choose.clicked.connect(self.chooseVotingRules)
 
+        self.widgetResults = None
+
     def initUIHome(self):
         # Buttons graph
         self.btn_random = QPushButton("Random")
         # self.btn_random.setFixedSize(150, 30)
         self.layout.addWidget(self.btn_random)
-        self.btn_random.clicked.connect(self.showRandomGraph)
+        self.btn_random.clicked.connect(self.showWidgetMap)
 
     def initUIGraph(self):
         self.cleanWindow()
@@ -71,10 +75,10 @@ class HomeWindow(QMainWindow):
         self.layout.addWidget(self.widgetResults, alignment=Qt.AlignTop)
 
     # Button handler
-    def showRandomGraph(self):
+    def showWidgetMap(self):
         self.initUIGraph()
-        self.graph_random = GraphRandom(parent=self)
-        self.layout.addWidget(self.graph_random)
+        self.widget_map = WidgetMap(parent=self)
+        self.layout.addWidget(self.widget_map)
 
     def chooseVotingRules(self):
         # Show checkbox
@@ -86,8 +90,9 @@ class HomeWindow(QMainWindow):
         # Add keys to results dict in Election
         self.election.init_results_keys(self.voteSelectionWidget.getConstantsSet())
         self.election.create_electors()
-        # Delete widget checkbox completely
-        self.voteSelectionWidget.destroy(destroyWindow=True)
+        # Delete widgets to free ressources
+        self.voteSelectionWidget.deleteLater()
+        self.widget_map.deleteLater()
         self.initUIResults()
 
     # delete all widgets from main_layout
@@ -103,6 +108,9 @@ class HomeWindow(QMainWindow):
         self.cleanWindow()
         self.initUIHome()
         self.election.delete_all_data()
+
+        if self.widgetResults:
+            self.widgetResults.deleteLater()
 
     def quitApp(self):
         self.app.quit()

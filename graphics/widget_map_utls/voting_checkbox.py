@@ -15,7 +15,7 @@ class VotingCheckbox(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle("Voting systems")
+        self.setWindowTitle("Voting rules")
         self.setGeometry(100, 100, 300, 200)
 
         ##   Création des checkbox
@@ -148,10 +148,3 @@ class VotingCheckbox(QWidget):
 
     def getConstantsSet(self):
         return self.setConstants
-
-
-if __name__ == "__main__":
-    app = QApplication([])
-    window = VotingCheckbox()
-    window.show()
-    app.exec()

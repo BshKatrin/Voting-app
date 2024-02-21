@@ -9,10 +9,10 @@ from electoral_systems.voting_rules import constants
 from people import Elector
 from people import Candidate
 
-from .settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
+from ..settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
 
 
-class Graph(QWidget):
+class QuadrantMap(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.electors = []  #   stock les coordonées cartésiennes des votants
@@ -188,10 +188,3 @@ class Graph(QWidget):
             [f"Position: {pos[0]}, {pos[1]}" for pos in self.candidates_positions]
         )
         print(positions_text2)
-
-
-### appelle du widget pour des tests, je ne sais pas comment ça marchera dans un mainWindow
-if __name__ == "__main__":
-    app = QApplication([])
-    g = Graph()
-    app.exec()

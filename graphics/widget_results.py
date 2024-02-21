@@ -1,9 +1,9 @@
 from PySide6.QtGui import QMouseEvent
-from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QGraphicsView, QPushButton
+from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton
 from PySide6.QtCore import Qt
 
-from .directed_graph import DirectedGraph
-from .settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
+from .widget_results_utls import DirectedGraph
+from .widget_results_utls import GraphsView
 
 # Doit afficher des resultats et ouvrir des charts assoicie
 from electoral_systems import Election
@@ -29,18 +29,16 @@ class WidgetResults(QWidget):
         self.election = Election()
         self.initUI()
         self.initLabels()
-        print(self.election.condorcet_graph_info)
+
         # Verifier si l'un des condorcet a ete choisi
         # Si oui, init directed graph
         if self.condorcetChosen():
             self.initDirectedGraph()
 
+    # Returns True if one the condorcet method was chosen
     def condorcetChosen(self):
         setCondorcet = {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}
-        for condorcet in setCondorcet:
-            if condorcet in self.election.results:
-                return True
-        return False
+        return bool(setCondorcet & self.election.results.keys())
 
     def initUI(self):
         self.layout = QGridLayout()
@@ -92,15 +90,8 @@ class WidgetResults(QWidget):
             self.layout.addWidget(show_graph_btn, row, 2, alignment=Qt.AlignHCenter)
 
     def initDirectedGraph(self):
-        self.scene = DirectedGraph()
-        self.view = QGraphicsView(self.scene)
-
-        # To suppress warning
-        self.view.viewport().setAttribute(
-            Qt.WidgetAttribute.WA_AcceptTouchEvents, False
-        )
-
-        self.view.resize(GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT)
+        self.scene = DirectedGraph(parent=self)
+        self.view = GraphsView(self.scene)
 
     # Button handler : condorcet simple, copeland
     def showDirectedGraph(self, weighted=False):

@@ -44,11 +44,7 @@ class Election(metaclass=Singleton):
         if not self.has_electors_candidates():
             pass
 
-        if (
-            voting_rule == CONDORCET_SIMPLE
-            or voting_rule == CONDORCET_COPELAND
-            or voting_rule == CONDORCET_SIMPSON
-        ):
+        if voting_rule in {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}:
             self.condorcet_graph_info = set_duels_scores(self.electors, self.candidates)
 
         self.results[voting_rule] = VOTING_RULES_FUNC[voting_rule](

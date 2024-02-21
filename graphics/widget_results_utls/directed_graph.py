@@ -4,15 +4,14 @@ from PySide6.QtWidgets import QGraphicsScene, QGraphicsPolygonItem
 from PySide6.QtGui import QPainterPath, QColor, QPolygonF
 from PySide6.QtCore import QPointF
 
-from .directed_graph_utls import Node
-from .directed_graph_utls import Edge
+from .node import Node
+from .edge import Edge
 
 from electoral_systems import Election
-from .settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
+from ..settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
 
 
 class DirectedGraph(QGraphicsScene):
-    # Set canvas
     def __init__(self, parent=None):
         super().__init__(parent)
         self.election = Election()
@@ -61,7 +60,7 @@ class DirectedGraph(QGraphicsScene):
 
             # Calculate edge of a node (end point of an arrow)
             lw_vector = loser_node.pos() - winner_node.pos()
-            lw_vector_norm = self.calculateDistance(winner_node, loser_node)
+            lw_vector_norm = self.calculateNorm(winner_node, loser_node)
 
             edge_point = (
                 loser_node.pos() - lw_vector / lw_vector_norm * loser_node.radius
@@ -71,44 +70,14 @@ class DirectedGraph(QGraphicsScene):
             self.path.moveTo(winner_node.pos())
             self.path.lineTo(edge_point)
 
-            # Calculate arrowHead
-            arrowHeadPolygon = self.calculateArrowHead(winner_node, edge_point)
-
-            arrowHead = QGraphicsPolygonItem(arrowHeadPolygon)
-            arrowHead.setBrush(QColor("black"))
-
-            # Put arrows on top
-            arrowHead.setZValue(2)
-
             edge = Edge(self.path, winner_node.pos(), edge_point)
             if weighted:
-                text = edge.setWeight(weight)
-            self.addItem(edge)
-            self.addItem(arrowHead)
+                edge.setWeight(weight)
 
-    # Calculate distance between 2 points
-    def calculateDistance(self, point1, point2):
+            self.addItem(edge)
+
+    # Calculate norm of a vector
+    def calculateNorm(self, point1, point2):
         x1, y1 = point1.x(), point1.y()
         x2, y2 = point2.x(), point2.y()
         return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-
-    def calculateArrowHead(self, start_pos, end_pos):
-        arrowSize = 20
-        # Calculate angle, -y since y-axe is inversed
-        angle = atan2(
-            -(start_pos.y() - end_pos.y()),
-            start_pos.x() - end_pos.x(),
-        )
-        # Calculate offset for each arrow point
-        # From polar to normal, inversing axes since we need counter-clockwize angle
-        offsetOne = QPointF(
-            sin(angle + pi / 3) * arrowSize, cos(angle + pi / 3) * arrowSize
-        )
-        offsetTwo = QPointF(
-            sin(angle + pi * 2 / 3) * arrowSize,
-            cos(angle + pi * 2 / 3) * arrowSize,
-        )
-
-        pointOne = end_pos + offsetOne
-        pointTwo = end_pos + offsetTwo
-        return QPolygonF([pointOne, pointTwo, end_pos])

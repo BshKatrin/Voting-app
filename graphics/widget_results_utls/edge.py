@@ -1,6 +1,13 @@
-from PySide6.QtWidgets import QGraphicsPathItem, QGraphicsSimpleTextItem
-from PySide6.QtGui import QPen, QColor
-from PySide6.QtCore import Qt
+from math import sin, cos, pi, sqrt, atan2
+
+
+from PySide6.QtWidgets import (
+    QGraphicsPathItem,
+    QGraphicsSimpleTextItem,
+    QGraphicsPolygonItem,
+)
+from PySide6.QtGui import QPen, QColor, QPolygonF, QPainter
+from PySide6.QtCore import Qt, QPointF
 
 
 # To connect nodes
@@ -13,19 +20,27 @@ class Edge(QGraphicsPathItem):
         self.end_point = end_point
         self.path = painter_path
 
-        self.initUI()
+        self.initArrowHead()
 
-    def initUI(self):
-        self.path.moveTo(self.start_pos)
-        self.path.lineTo(self.end_pos)
+    def initArrowHead(self):
+        # Calculate arrowHead
+        arrowHeadPolygon = self.calculateArrowHead(self.start_point, self.end_point)
+
+        arrowHead = QGraphicsPolygonItem(arrowHeadPolygon, self)
+        arrowHead.setBrush(QColor("black"))
+
+        # Put arrows on top
+        arrowHead.setZValue(2)
 
     def setWeight(self, weight):
-        print("setWeight")
+        middle = (self.start_point + self.end_point) / 2
+        textOffset = QPointF(0, 0)
+
         self.text = QGraphicsSimpleTextItem(parent=self)
         self.text.setText(str(weight))
-        self.text.setPos((self.start_point + self.end_point) / 2)
-    
-        def calculateArrowHead(self, start_pos, end_pos):
+        self.text.setPos(middle + textOffset)
+
+    def calculateArrowHead(self, start_pos, end_pos):
         arrowSize = 20
         # Calculate angle, -y since y-axe is inversed
         angle = atan2(
