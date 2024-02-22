@@ -7,7 +7,6 @@ from .utls import init_scores, sort_cand_by_value
 # Utile pour les graphes et pour le condorcet simple
 # i.e. pour determiner s'il existe un gagnant ou pas
 def set_duels_scores(electors, candidates):
-
     pairs = {comb: 0 for comb in combinations(candidates, 2)}
     nb_electors = 0
     for elector in electors:
@@ -86,5 +85,6 @@ def apply_condorcet_simpson(electors, candidates):
             CONDORCET_SIMPSON,
             max(snd.scores[CONDORCET_SIMPSON], value),
         )
-
-    return list(reversed(sort_cand_by_value(candidates, CONDORCET_SIMPSON)))
+    # Trier par l'ordre ascendant des scores des candidats, ensuite par leur nom
+    lst = [(candidate, candidate.scores[CONDORCET_SIMPSON]) for candidate in candidates]
+    return [c for (c, _) in sorted(lst, key=lambda e: (e[1], e[0]))]

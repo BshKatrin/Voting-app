@@ -18,7 +18,7 @@ generator_first_name = generator_names()
 generator_last_name = generator_names()
 
 
-@dataclass(kw_only=True, unsafe_hash=True, eq=True)
+@dataclass(kw_only=True, unsafe_hash=True, eq=True, order=True)
 # Keep in mind that no guarantee for unique first_name and last_name
 class Candidate(Person):
 

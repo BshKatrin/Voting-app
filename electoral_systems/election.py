@@ -17,10 +17,10 @@ from people import Elector, Candidate
 
 class Election(metaclass=Singleton):
 
-    def __init__(self, electors=None, candidates=None):
+    def __init__(self):
         super().__init__()
-        self.electors = deepcopy(electors) if electors else []
-        self.candidates = deepcopy(candidates) if candidates else []
+        self.electors = []
+        self.candidates = []
         self.electors_positions = []
 
         self.results = dict()
@@ -31,6 +31,12 @@ class Election(metaclass=Singleton):
 
     def add_candidate(self, new_candidate):
         self.candidates.append(new_candidate)
+
+    def add_electors(self, electors):
+        self.electors = deepcopy(electors)
+
+    def add_candidates(self, candidates):
+        self.candidates = deepcopy(candidates)
 
     def add_electors_position(self, position):
         self.electors_positions.append(position)
