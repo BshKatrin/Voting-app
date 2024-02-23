@@ -32,12 +32,6 @@ class Election(metaclass=Singleton):
     def add_candidate(self, new_candidate):
         self.candidates.append(new_candidate)
 
-    def add_electors(self, electors):
-        self.electors = deepcopy(electors)
-
-    def add_candidates(self, candidates):
-        self.candidates = deepcopy(candidates)
-
     def add_electors_position(self, position):
         self.electors_positions.append(position)
 
@@ -74,7 +68,6 @@ class Election(metaclass=Singleton):
     def init_results_keys(self, set_keys):
         for key in set_keys:
             self.results[key] = None
-        print(self.results)
 
     def calculate_results(self):
         for voting_rule in self.results:

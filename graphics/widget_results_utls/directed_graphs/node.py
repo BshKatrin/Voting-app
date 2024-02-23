@@ -5,7 +5,6 @@ from PySide6.QtGui import QColor
 RADIUS = 20.0
 
 
-# To draw nodes
 class Node(QGraphicsEllipseItem):
     def __init__(self, x, y, title):
         super().__init__(-RADIUS, -RADIUS, 2 * RADIUS, 2 * RADIUS, None)

@@ -5,8 +5,6 @@ from .utls import init_scores, sort_cand_by_round
 def apply_exhaustive_ballot(electors, candidates):
     rounds = len(candidates) - 1  # amount of rounds to play (worst case scenario)
     len_electors = len(electors)
-    print(len_electors)
-    print(rounds)
     # Dans tous les cas il existe au moins 1 tour
     init_scores(candidates, EXHAUSTIVE_BALLOT, [0], True)
     # Play 1st round

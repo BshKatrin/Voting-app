@@ -1,11 +1,14 @@
 from PySide6.QtGui import QMouseEvent
 from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 
-from .widget_results_utls import DirectedGraph
-from .widget_results_utls import GraphsView
+from .widget_results_utls import (
+    DirectedGraph,
+    DirectedGraphView,
+    ChartView,
+    ChartOneRound,
+)
 
-# Doit afficher des resultats et ouvrir des charts assoicie
 from electoral_systems import Election
 from electoral_systems.voting_rules.constants import *
 
@@ -30,12 +33,20 @@ class WidgetResults(QWidget):
         self.initUI()
         self.initLabels()
 
-        # Verifier si l'un des condorcet a ete choisi
-        # Si oui, init directed graph
         if self.condorcetChosen():
             self.initDirectedGraph()
 
-    # Returns True if one the condorcet method was chosen
+        oneRoundBool, oneRoundSet = self.oneRoundChosen()
+        if oneRoundBool:
+            self.initOneRoundChart(oneRoundSet)
+
+    # Returns True iff veto, plurality(1 round), veto, borda or approval was chosen
+    def oneRoundChosen(self):
+        setOneRound = {PLURALITY_SIMPLE, VETO, BORDA, APPROVAL}
+        intersect = setOneRound & self.election.results.keys()
+        return bool(intersect), intersect
+
+    # Returns True iff one the condorcet method was chosen
     def condorcetChosen(self):
         setCondorcet = {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}
         return bool(setCondorcet & self.election.results.keys())
@@ -69,10 +80,12 @@ class WidgetResults(QWidget):
             label_winner.setObjectName(f"{voting_rule}_winner")
             show_graph_btn.setObjectName(f"{voting_rule}_btn")
 
-            if voting_rule == CONDORCET_SIMPLE or voting_rule == CONDORCET_COPELAND:
+            if voting_rule in {CONDORCET_SIMPLE, CONDORCET_COPELAND}:
                 show_graph_btn.clicked.connect(self.showDirectedGraph)
             if voting_rule == CONDORCET_SIMPSON:
                 show_graph_btn.clicked.connect(lambda: self.showDirectedGraph(True))
+            if voting_rule in {PLURALITY_SIMPLE, BORDA, VETO, APPROVAL}:
+                show_graph_btn.clicked.connect(self.showOneRoundChart)
 
             label_voting_rule.setText(names[voting_rule])
 
@@ -90,10 +103,19 @@ class WidgetResults(QWidget):
             self.layout.addWidget(show_graph_btn, row, 2, alignment=Qt.AlignHCenter)
 
     def initDirectedGraph(self):
-        self.scene = DirectedGraph(parent=self)
-        self.view = GraphsView(self.scene)
+        self.graph_scene = DirectedGraph(parent=self)
+        self.graph_view = DirectedGraphView(self.graph_scene)
 
-    # Button handler : condorcet simple, copeland
+    @Slot()
     def showDirectedGraph(self, weighted=False):
-        self.scene.drawGraphics(weighted)
-        self.view.show()
+        self.graph_scene.drawGraphics(weighted)
+        self.graph_view.show()
+
+    @Slot()
+    def initOneRoundChart(self, oneRoundSet):
+        self.widget_chart_one_round = ChartOneRound(oneRoundSet)
+        self.view_chart_one_round = ChartView(self.widget_chart_one_round)
+
+    # Button handler : plurality(1 round), borda, veto, approval
+    def showOneRoundChart(self):
+        self.view_chart_one_round.show()

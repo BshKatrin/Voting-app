@@ -1,2 +1,2 @@
-from .directed_graph import DirectedGraph
-from .widget_view import GraphsView
+from .directed_graphs import DirectedGraph, DirectedGraphView
+from .charts import ChartView, ChartOneRound

@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import QGraphicsView
 from PySide6.QtCore import Qt
 
-from ..settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
+from ...settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
 
 
-class GraphsView(QGraphicsView):
+class DirectedGraphView(QGraphicsView):
     def __init__(self, scene):
         super().__init__(scene)
         # To suppress warning

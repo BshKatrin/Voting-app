@@ -1,16 +1,17 @@
 from PySide6.QtWidgets import QApplication, QWidget, QCheckBox, QVBoxLayout, QPushButton
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal, Slot
 from electoral_systems import Election
 
 from electoral_systems.voting_rules import constants
 
 
 class VotingCheckbox(QWidget):
-    def __init__(self, main_window, parent=None):
+    sig_toggle_btn = Signal(bool)
+
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.election = Election()
 
-        self.mainWindow = main_window
         self.setConstants = set()
         self.initUI()
 
@@ -138,11 +139,13 @@ class VotingCheckbox(QWidget):
             self.setConstants.discard(constants.APPROVAL)
 
     # Trigger for button 'Confirm'
+    @Slot()
     def confirmVotingRules(self):
-        # Activate button on main_window only if at least 1 voting rule was chosen
-        print(self.setConstants)
-        if len(self.getConstantsSet()):
-            self.mainWindow.button_vote.setEnabled(True)
+        # Activate button 'Start election' only if at least 1 voting rule was chosen
+        if self.setConstants:
+            self.sig_toggle_btn.emit(True)
+        else:
+            self.sig_toggle_btn.emit(False)
         # Close checkbox widget
         self.close()
 

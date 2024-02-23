@@ -8,7 +8,7 @@ from .node import Node
 from .edge import Edge
 
 from electoral_systems import Election
-from ..settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
+from ...settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
 
 
 class DirectedGraph(QGraphicsScene):
