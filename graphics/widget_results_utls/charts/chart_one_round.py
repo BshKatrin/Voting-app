@@ -9,19 +9,7 @@ from PySide6.QtCharts import (
 from PySide6.QtCore import Qt
 
 from electoral_systems import Election
-from electoral_systems.voting_rules.constants import (
-    VETO,
-    PLURALITY_SIMPLE,
-    BORDA,
-    APPROVAL,
-)
-
-names = {
-    PLURALITY_SIMPLE: "Plurality",
-    VETO: "Veto",
-    BORDA: "Borda",
-    APPROVAL: "Approval",
-}
+from ..names_constants import UI_VOTING_RULES
 
 
 class ChartOneRound(QChart):
@@ -32,8 +20,8 @@ class ChartOneRound(QChart):
         self.election = Election()
 
         self.series = QBarSeries()
-        self.initBarSets()
         self.addSeries(self.series)
+        self.initBarSets()
         self.initAxes()
 
     def initBarSets(self):
@@ -49,7 +37,9 @@ class ChartOneRound(QChart):
     def initAxes(self):
         # Set X axis
         self.axisX = QBarCategoryAxis(self)
-        self.axisX.append({names[voting_rule] for voting_rule in self.voting_rules})
+        self.axisX.append(
+            {UI_VOTING_RULES[voting_rule] for voting_rule in self.voting_rules}
+        )
         self.addAxis(self.axisX, Qt.AlignmentFlag.AlignBottom)
         self.series.attachAxis(self.axisX)
 
@@ -57,6 +47,7 @@ class ChartOneRound(QChart):
         self.axisY = QValueAxis(self)
         mx = self.findMax()
         self.axisY.setRange(0, mx + 5)
+        self.axisY.applyNiceNumbers()
         self.addAxis(self.axisY, Qt.AlignmentFlag.AlignLeft)
         self.series.attachAxis(self.axisY)
 

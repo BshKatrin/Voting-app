@@ -1,44 +1,45 @@
-from PySide6.QtGui import QMouseEvent
+from functools import partial
+
 from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, Signal
 
 from .widget_results_utls import (
     DirectedGraph,
     DirectedGraphView,
     ChartView,
-    ChartOneRound,
+    UI_VOTING_RULES,
 )
 
 from electoral_systems import Election
 from electoral_systems.voting_rules.constants import *
 
-names = {
-    PLURALITY_SIMPLE: "Plurality (1 round)",
-    PLURALITY_2_ROUNDS: "Plurality (2 rounds)",
-    VETO: "Veto",
-    BORDA: "Borda",
-    CONDORCET_SIMPLE: "Condorcet Simple",
-    CONDORCET_COPELAND: "Condorcet Copeland",
-    CONDORCET_SIMPSON: "Condorcet Simpson",
-    EXHAUSTIVE_BALLOT: "Exhaustive Ballot",
-    APPROVAL: "Approval",
-}
-
 
 class WidgetResults(QWidget):
+    sigShowChart = Signal(str)
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
         self.election = Election()
         self.initUI()
         self.initLabels()
+        self.initViews()
 
+    def initViews(self):
         if self.condorcetChosen():
             self.initDirectedGraph()
 
-        oneRoundBool, oneRoundSet = self.oneRoundChosen()
-        if oneRoundBool:
-            self.initOneRoundChart(oneRoundSet)
+        self.oneRoundBool, oneRoundSet = self.oneRoundChosen()
+        self.multiRoundBool, multiRoundSet = self.multiRoundChosen()
+
+        if self.oneRoundBool or self.multiRoundBool:
+            self.initChartsView()
+
+        if self.oneRoundBool:
+            self.charts_view.initOneRoundChart(oneRoundSet)
+
+        if self.multiRoundBool:
+            self.charts_view.initMultiRoundChart(multiRoundSet)
 
     # Returns True iff veto, plurality(1 round), veto, borda or approval was chosen
     def oneRoundChosen(self):
@@ -50,6 +51,11 @@ class WidgetResults(QWidget):
     def condorcetChosen(self):
         setCondorcet = {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}
         return bool(setCondorcet & self.election.results.keys())
+
+    def multiRoundChosen(self):
+        setMultiRound = {PLURALITY_2_ROUNDS, EXHAUSTIVE_BALLOT}
+        intersect = setMultiRound & self.election.results.keys()
+        return bool(intersect), intersect
 
     def initUI(self):
         self.layout = QGridLayout()
@@ -74,48 +80,45 @@ class WidgetResults(QWidget):
             # Create label with name to find it later with findChild if necessary
             label_voting_rule = QLabel(parent=self)
             label_winner = QLabel(parent=self)
-            show_graph_btn = QPushButton(parent=self)
+            show_btn = QPushButton(parent=self)
 
-            label_voting_rule.setObjectName(voting_rule)
-            label_winner.setObjectName(f"{voting_rule}_winner")
-            show_graph_btn.setObjectName(f"{voting_rule}_btn")
-
+            # Connect buttons to emitting signals
             if voting_rule in {CONDORCET_SIMPLE, CONDORCET_COPELAND}:
-                show_graph_btn.clicked.connect(self.showDirectedGraph)
-            if voting_rule == CONDORCET_SIMPSON:
-                show_graph_btn.clicked.connect(lambda: self.showDirectedGraph(True))
-            if voting_rule in {PLURALITY_SIMPLE, BORDA, VETO, APPROVAL}:
-                show_graph_btn.clicked.connect(self.showOneRoundChart)
+                show_btn.clicked.connect(self.showDirectedGraph)
+                show_btn.setText("Show graph")
+            elif voting_rule == CONDORCET_SIMPSON:
+                show_btn.clicked.connect(lambda: self.showDirectedGraph(True))
+                show_btn.setText("Show graph")
+            else:
+                show_btn.clicked.connect(partial(self.onShowChartBtnClick, voting_rule))
+                show_btn.setText("Show chart")
 
-            label_voting_rule.setText(names[voting_rule])
-
+            label_voting_rule.setText(UI_VOTING_RULES[voting_rule])
             winner = self.election.choose_winner(voting_rule)
 
             # None can be in condorcet simple
-            if winner is not None:
-                label_winner.setText(f"{winner.first_name} {winner.last_name}")
-            else:
+            if winner is None:
                 label_winner.setText("No winner")
+            else:
+                label_winner.setText(f"{winner.first_name} {winner.last_name}")
 
-            show_graph_btn.setText("Show graph")
             self.layout.addWidget(label_voting_rule, row, 0, alignment=Qt.AlignHCenter)
             self.layout.addWidget(label_winner, row, 1, alignment=Qt.AlignHCenter)
-            self.layout.addWidget(show_graph_btn, row, 2, alignment=Qt.AlignHCenter)
+            self.layout.addWidget(show_btn, row, 2, alignment=Qt.AlignHCenter)
 
     def initDirectedGraph(self):
         self.graph_scene = DirectedGraph(parent=self)
         self.graph_view = DirectedGraphView(self.graph_scene)
 
-    @Slot()
+    @Slot(bool)
     def showDirectedGraph(self, weighted=False):
         self.graph_scene.drawGraphics(weighted)
         self.graph_view.show()
 
-    @Slot()
-    def initOneRoundChart(self, oneRoundSet):
-        self.widget_chart_one_round = ChartOneRound(oneRoundSet)
-        self.view_chart_one_round = ChartView(self.widget_chart_one_round)
+    def initChartsView(self):
+        self.charts_view = ChartView()
+        self.sigShowChart.connect(self.charts_view.setChartBySig)
 
-    # Button handler : plurality(1 round), borda, veto, approval
-    def showOneRoundChart(self):
-        self.view_chart_one_round.show()
+    @Slot(str)
+    def onShowChartBtnClick(self, voting_rule):
+        self.sigShowChart.emit(voting_rule)

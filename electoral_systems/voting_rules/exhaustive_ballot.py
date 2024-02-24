@@ -18,7 +18,7 @@ def apply_exhaustive_ballot(electors, candidates):
     ):
         current_round += 1
 
-        # Ajouter un slot pour round supplementaire
+        # Ajouter un slot pour roupnd supplementaire
         for candidate in candidates:
             candidate.scores[EXHAUSTIVE_BALLOT].extend([0])
 
