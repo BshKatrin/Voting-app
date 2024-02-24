@@ -27,9 +27,7 @@ class ChartView(QChartView):
     def setChartBySig(self, voting_rule):
         if voting_rule in {EXHAUSTIVE_BALLOT, PLURALITY_2_ROUNDS}:
             chart = self.charts_multi_rounds[voting_rule]
-            print(voting_rule, self.charts_multi_rounds)
             self.setChart(chart)
         else:
             self.setChart(self.chart_one_round)
-            print("One round")
         self.show()

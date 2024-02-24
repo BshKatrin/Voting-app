@@ -9,7 +9,9 @@ class Person:
         return (uniform(-1, 1), uniform(-1, 1))
 
     id: int = field(default_factory=count().__next__, compare=False)
-    position: (float, float) = field(default_factory=gen_rand_position, compare=False)
+    position: tuple[float, float] = field(
+        default_factory=gen_rand_position, compare=False
+    )
 
     def get_position(self):
         return self.position

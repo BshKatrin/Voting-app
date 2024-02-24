@@ -9,7 +9,7 @@ from PySide6.QtCharts import (
 from PySide6.QtCore import Qt
 
 from electoral_systems import Election
-from ..names_constants import UI_VOTING_RULES
+from ...ui_constants import UI_VOTING_RULES
 
 
 class ChartOneRound(QChart):

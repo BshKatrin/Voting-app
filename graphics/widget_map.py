@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt, Signal, Slot
 from electoral_systems import Election
 from people import Elector, Candidate
 
-from .widget_map_utls import QuadrantMap, VotingCheckbox
+from .widget_map_utls import QuadrantMap, WidgetCheckbox
 
 
 class WidgetMap(QWidget):
@@ -24,9 +24,7 @@ class WidgetMap(QWidget):
     def initUI(self):
         # Navigation button
         self.choose_voting_rules_btn = QPushButton("Choose voting rules", parent=self)
-        self.choose_voting_rules_btn.clicked.connect(
-            lambda: self.voting_rules_checkbox.show()
-        )
+        self.choose_voting_rules_btn.clicked.connect(self.showWidgetCheckbox)
 
         self.start_election_btn = QPushButton("Start election", parent=self)
         self.start_election_btn.setEnabled(False)
@@ -35,9 +33,10 @@ class WidgetMap(QWidget):
         # Quadrant map
         self.quadrant_map = QuadrantMap(parent=self)
 
-        # Checkboxes for voting rules
-        self.voting_rules_checkbox = VotingCheckbox(parent=None)
-        self.voting_rules_checkbox.sig_toggle_btn.connect(self.toggleBtnState)
+        self.voting_rules_checkbox = WidgetCheckbox(parent=None)
+        self.voting_rules_checkbox.sig_toggle_election_btn.connect(
+            self.toggleElectionBtnState
+        )
 
         # User input for random data
         self.candidates_text_box = QLineEdit(parent=self)
@@ -89,6 +88,10 @@ class WidgetMap(QWidget):
         self.cleanTextBoxes()
 
     @Slot()
+    def showWidgetCheckbox(self):
+        self.voting_rules_checkbox.showCustom()
+
+    @Slot()
     def cleanTextBoxes(self):
         self.candidates_text_box.clear()
         self.electors_text_box.clear()
@@ -99,5 +102,5 @@ class WidgetMap(QWidget):
         self.sig_start_election.emit(list(constantsSet))
 
     @Slot()
-    def toggleBtnState(self, enable):
+    def toggleElectionBtnState(self, enable):
         self.start_election_btn.setEnabled(enable)

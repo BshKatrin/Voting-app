@@ -7,15 +7,16 @@ from .widget_results_utls import (
     DirectedGraph,
     DirectedGraphView,
     ChartView,
-    UI_VOTING_RULES,
 )
+
+from .ui_constants import UI_VOTING_RULES
 
 from electoral_systems import Election
 from electoral_systems.voting_rules.constants import *
 
 
 class WidgetResults(QWidget):
-    sigShowChart = Signal(str)
+    sig_show_chart = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -117,8 +118,8 @@ class WidgetResults(QWidget):
 
     def initChartsView(self):
         self.charts_view = ChartView()
-        self.sigShowChart.connect(self.charts_view.setChartBySig)
+        self.sig_show_chart.connect(self.charts_view.setChartBySig)
 
     @Slot(str)
     def onShowChartBtnClick(self, voting_rule):
-        self.sigShowChart.emit(voting_rule)
+        self.sig_show_chart.emit(voting_rule)

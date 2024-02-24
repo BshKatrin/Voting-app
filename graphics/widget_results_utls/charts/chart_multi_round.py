@@ -16,10 +16,9 @@ class ChartMultiRound(QChart):
         self.voting_rule = voting_rule
         self.election = Election()
         self.series = QStackedBarSeries(parent=self)
-
+        self.addSeries(self.series)
         self.initBarSets()
         self.initAxis()
-        self.addSeries(self.series)
 
     def initBarSets(self):
         # Create dict: key = candidate, value = its barset
