@@ -73,6 +73,7 @@ class HomeWindow(QMainWindow):
         self.election.init_results_keys(constantsList)
         # Crate all creators from stored positions
         self.election.create_electors()
+        self.election.calculate_prop_satisfation()
         # Delete widget with map
         self.widget_map.deleteLater()
         # Delete checkbox

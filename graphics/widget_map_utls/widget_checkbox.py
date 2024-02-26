@@ -57,7 +57,7 @@ class WidgetCheckbox(QWidget):
     def enableCheckboxes(self):
         nb_candidates = len(self.election.candidates)
         for checkbox in self.lst_checkboxes:
-            if nb_candidates > checkbox.min:
+            if nb_candidates >= checkbox.min:
                 checkbox.setEnabled(True)
 
     def showCustom(self):

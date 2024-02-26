@@ -75,12 +75,19 @@ class WidgetResults(QWidget):
         self.layout.addWidget(column_two_header, 0, 1, alignment=Qt.AlignHCenter)
         column_two_header.setStyleSheet("font-weight: bold")
 
+        column_three_header = QLabel()
+        column_three_header.setText("Satisfaction")
+        self.layout.addWidget(column_three_header, 0, 2, alignment=Qt.AlignHCenter)
+        column_two_header.setStyleSheet("font-weight: bold")
+
         self.election.calculate_results()
 
         for row, voting_rule in enumerate(self.election.results, start=1):
             # Create label with name to find it later with findChild if necessary
             label_voting_rule = QLabel(parent=self)
             label_winner = QLabel(parent=self)
+            label_satisfaction = QLabel(parent=self)
+
             show_btn = QPushButton(parent=self)
 
             # Connect buttons to emitting signals
@@ -95,17 +102,22 @@ class WidgetResults(QWidget):
                 show_btn.setText("Show chart")
 
             label_voting_rule.setText(UI_VOTING_RULES[voting_rule])
-            winner = self.election.choose_winner(voting_rule)
 
+            winner = self.election.choose_winner(voting_rule)
             # None can be in condorcet simple
             if winner is None:
                 label_winner.setText("No winner")
             else:
                 label_winner.setText(f"{winner.first_name} {winner.last_name}")
 
+            satisfaction = self.election.calculate_satisfaction(winner)
+            label_satisfaction.setText(f"{satisfaction:.2f}")
+
             self.layout.addWidget(label_voting_rule, row, 0, alignment=Qt.AlignHCenter)
             self.layout.addWidget(label_winner, row, 1, alignment=Qt.AlignHCenter)
-            self.layout.addWidget(show_btn, row, 2, alignment=Qt.AlignHCenter)
+            self.layout.addWidget(label_satisfaction, row, 2, alignment=Qt.AlignHCenter)
+
+            self.layout.addWidget(show_btn, row, 3, alignment=Qt.AlignHCenter)
 
     def initDirectedGraph(self):
         self.graph_scene = DirectedGraph(parent=self)

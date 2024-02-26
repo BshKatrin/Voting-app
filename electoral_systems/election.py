@@ -1,6 +1,5 @@
 from copy import deepcopy
-from dataclasses import dataclass, field
-from typing import Dict, List
+from math import sqrt
 
 from people import Candidate
 from people import Elector
@@ -25,6 +24,9 @@ class Election(metaclass=Singleton):
 
         self.results = dict()
         self.condorcet_graph_info = dict()
+
+        self.average_position_electors = (0, 0)
+        self.proportion_satisfaction = 0
 
     def add_elector(self, new_elector):
         self.electors.append(new_elector)
@@ -54,7 +56,7 @@ class Election(metaclass=Singleton):
     def choose_winner(self, voting_rule):
         if voting_rule not in self.results:
             self.apply_voting_rule(voting_rule)
-        if voting_rule == EXHAUSTIVE_BALLOT or voting_rule == PLURALITY_2_ROUNDS:
+        if voting_rule in {EXHAUSTIVE_BALLOT, PLURALITY_2_ROUNDS}:
             return self.results[voting_rule][-1][0]
         if voting_rule == CONDORCET_SIMPLE:
             return self.choose_condorcet_winner()
@@ -78,12 +80,49 @@ class Election(metaclass=Singleton):
         self.candidates.clear()
         self.results.clear()
 
+    def _calculate_distance(self, point1, point2):
+        x1, y1 = point1
+        x2, y2 = point2
+        return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+
     ### fonction sans argument appelée dans le main avant l'utilisation des fonctions de vote, créé les electors dans la base de donnée election
     def create_electors(self):
+        nb_electors = 0
+        x_average = 0
+        y_average = 0
         for elec in self.electors_positions:
+            nb_electors += 1
+
+            (x_elec, y_elec) = elec
+            x_average += x_elec
+            y_average += y_elec
+
             self.add_elector(
                 Elector(
                     candidates=self.candidates,
                     position=elec,
                 )
             )
+        x_average = x_average / nb_electors
+        y_average = y_average / nb_electors
+        self.average_position_electors = (x_average, y_average)
+        self.electors_positions.clear()
+
+    ### fonction sans argument appelée pour calculer le taux de satisfaction de la population utilisé ensuite dans l'affichage des vainqueurs des éléctions
+    def calculate_prop_satisfation(self):
+        proportion = 0
+        for candidate in self.candidates:
+            dist_cand_electors = self._calculate_distance(
+                candidate.position, self.average_position_electors
+            )
+            proportion = max(proportion, dist_cand_electors)
+
+        self.proportion_satisfaction = proportion
+
+    def calculate_satisfaction(self, candidate):
+        diff = abs(
+            self._calculate_distance(candidate.position, self.average_position_electors)
+            - self.proportion_satisfaction
+        )
+        percentage = diff / self.proportion_satisfaction * 100
+        return percentage

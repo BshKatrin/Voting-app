@@ -56,35 +56,37 @@ class WidgetMap(QWidget):
         self.layout.addWidget(self.electors_text_box)
         self.layout.addWidget(self.btn_gen_random)
 
+    def _get_int_text_box(self, text_box):
+        text = text_box.text()
+        return int(text) if text.isdigit() else 0
+
     @Slot()
     def generateData(self):
-        try:
-            nb_electors = int(self.electors_text_box.text())
-            nb_candidates = int(self.candidates_text_box.text())
-            # On est oblige de generer les candidates tout d'abord
-            for _ in range(nb_candidates):
-                generatedPosition = self.quadrant_map.generatePosition()
-                newCandidate = Candidate(
-                    position=self.quadrant_map.normalizePosition(generatedPosition)
-                )
-                self.election.add_candidate(newCandidate)
-                self.quadrant_map.candidates.append(
-                    (
-                        newCandidate.first_name + " " + newCandidate.last_name,
-                        generatedPosition,
-                    )
-                )
+        nb_candidates = self._get_int_text_box(self.candidates_text_box)
+        nb_electors = self._get_int_text_box(self.electors_text_box)
 
-            for _ in range(nb_electors):
-                generatedPosition = self.quadrant_map.generatePosition()
-                self.quadrant_map.electors.append(generatedPosition)
-                self.election.add_electors_position(
-                    self.quadrant_map.normalizePosition(generatedPosition)
+        for _ in range(nb_candidates):
+            generatedPosition = self.quadrant_map.generatePosition()
+            newCandidate = Candidate(
+                position=self.quadrant_map.normalizePosition(generatedPosition)
+            )
+            self.election.add_candidate(newCandidate)
+            self.quadrant_map.candidates.append(
+                (
+                    newCandidate.first_name,
+                    newCandidate.last_name,
+                    generatedPosition,
                 )
-            self.quadrant_map.update()
+            )
 
-        except ValueError:
-            print("Please enter a valid number of electors and candidates")
+        for _ in range(nb_electors):
+            generatedPosition = self.quadrant_map.generatePosition()
+            self.quadrant_map.electors.append(generatedPosition)
+            self.election.add_electors_position(
+                self.quadrant_map.normalizePosition(generatedPosition)
+            )
+        self.quadrant_map.update()
+
         self.cleanTextBoxes()
 
     @Slot()
