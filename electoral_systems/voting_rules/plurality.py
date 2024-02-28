@@ -19,7 +19,7 @@ def apply_plurality_rounds(electors, candidates):
 
     candidates_round_two = plurality_two_set_score(electors, candidates_round_two)
 
-    return candidates_round_one, candidates_round_two
+    return [candidates_round_one, candidates_round_two]
 
 
 def plurality_one_set_score(electors, candidates):
