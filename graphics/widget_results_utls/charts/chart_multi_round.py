@@ -5,6 +5,7 @@ from PySide6.QtCharts import (
     QBarCategoryAxis,
     QValueAxis,
 )
+from PySide6.QtGui import QColor, QBrush
 from PySide6.QtCore import Qt
 
 from electoral_systems import Election
@@ -15,6 +16,7 @@ class ChartMultiRound(QChart):
         super().__init__()
         self.voting_rule = voting_rule
         self.election = Election()
+
         self.series = QStackedBarSeries(parent=self)
         self.addSeries(self.series)
         self.initBarSets()
@@ -22,21 +24,27 @@ class ChartMultiRound(QChart):
 
     def initBarSets(self):
         # Create dict: key = candidate, value = its barset
-        barSetDict = dict()
+        barsetDict = dict()
+        winner = self.election.choose_winner(self.voting_rule)
+
         for cand in self.election.candidates:
             barSet = QBarSet(f"{cand.first_name} {cand.last_name}", parent=self)
-            barSetDict[cand] = barSet
+            barsetDict[cand] = barSet
 
         # Add scores to barSet so that candidats are positioned from the least to the best
         for i in range(len(self.election.results[self.voting_rule])):
             result_round = self.election.results[self.voting_rule][i]
             for cand in result_round:
-                candBarSet = barSetDict[cand]
+                candBarSet = barsetDict[cand]
                 candBarSet.append(cand.scores[self.voting_rule][i])
 
-        # Add all barSet to series
-        for barSet in barSetDict.values():
-            self.series.append(barSet)
+        # Add all barsets to series with winner_barset on top
+        for candidate, barset in barsetDict.items():
+            if candidate != winner:
+                self.series.append(barset)
+        self.series.append(barsetDict[winner])
+
+        barsetDict[winner].setBorderColor(QColor("black"))
 
     def initAxis(self):
         # Set axis X
@@ -49,7 +57,7 @@ class ChartMultiRound(QChart):
 
         # Set axis Y
         self.axisY = QValueAxis(parent=self)
-        self.axisY.setRange(0, self.findMax() + 5)
+        self.axisY.setRange(0, self.findMax())
         self.axisY.applyNiceNumbers()
         self.addAxis(self.axisY, Qt.AlignmentFlag.AlignLeft)
         self.series.attachAxis(self.axisY)

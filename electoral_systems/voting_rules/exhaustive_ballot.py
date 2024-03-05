@@ -1,10 +1,12 @@
 from .constants import EXHAUSTIVE_BALLOT
-from .utls import init_scores, sort_cand_by_round
+from .utls import init_scores, sort_cand_by_round, has_majority
 
 
 def apply_exhaustive_ballot(electors, candidates):
     rounds = len(candidates) - 1  # amount of rounds to play (worst case scenario)
     len_electors = len(electors)
+    print(len_electors)
+    print(rounds)
     # Dans tous les cas il existe au moins 1 tour
     init_scores(candidates, EXHAUSTIVE_BALLOT, [0], True)
     # Play 1st round
@@ -14,11 +16,16 @@ def apply_exhaustive_ballot(electors, candidates):
     # or there is only 1 candididate remains
 
     while current_round < rounds - 1 and (
-        not has_majority(winners_backlog[current_round], len_electors, current_round)
+        not has_majority(
+            winners_backlog[current_round],
+            len_electors,
+            EXHAUSTIVE_BALLOT,
+            current_round,
+        )
     ):
         current_round += 1
 
-        # Ajouter un slot pour roupnd supplementaire
+        # Ajouter un slot pour round supplementaire
         for candidate in candidates:
             candidate.scores[EXHAUSTIVE_BALLOT].extend([0])
 
@@ -56,11 +63,3 @@ def choose_next_candidate(elector, remaining_candidates):
     # Candidate does not exist,
     # if index == len(remaining_candidates):
     return current_candidate
-
-
-# Verifier s'il existe un candidat qui a un majorite absolue des votes
-def has_majority(candidates, len_electors, round):
-    for candidate in candidates:
-        if candidate.scores[EXHAUSTIVE_BALLOT][round] > len_electors / 2:
-            return True
-    return False

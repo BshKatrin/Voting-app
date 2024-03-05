@@ -1,6 +1,6 @@
 from .constants import PLURALITY_SIMPLE, PLURALITY_2_ROUNDS
 
-from .utls import init_scores, sort_cand_by_value, sort_cand_by_round
+from .utls import init_scores, sort_cand_by_value, sort_cand_by_round, has_majority
 
 
 def apply_plurality_simple(electors, candidates):
@@ -12,14 +12,20 @@ def apply_plurality_simple(electors, candidates):
 
 # avant appel a la fonction : verifier qu'il existe AU MOINS 3 candidats
 def apply_plurality_rounds(electors, candidates):
-    init_scores(candidates, PLURALITY_2_ROUNDS, [0, 0], True)
+    init_scores(candidates, PLURALITY_2_ROUNDS, [0], True)
 
     candidates_round_one = plurality_one_set_score(electors, candidates)
+    len_electors = len(electors)
+    if has_majority(candidates_round_one, len_electors, PLURALITY_2_ROUNDS, 0):
+        return [candidates_round_one]
+
+    # Add new slot to every candidate
+    for candidate in candidates:
+        candidate.scores[PLURALITY_2_ROUNDS].extend([0])
+
     candidates_round_two = candidates_round_one[:2]
-
     candidates_round_two = plurality_two_set_score(electors, candidates_round_two)
-
-    return candidates_round_one, candidates_round_two
+    return [candidates_round_one, candidates_round_two]
 
 
 def plurality_one_set_score(electors, candidates):
