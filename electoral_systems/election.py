@@ -28,6 +28,12 @@ class Election(metaclass=Singleton):
         self.average_position_electors = (0, 0)
         self.proportion_satisfaction = 0
 
+        #variable necessaire pour generation aleatoire
+        self.economical_constants=(280,100)
+        self.social_constants=(280,100)
+        self.coef_dir=1
+        
+
     def add_elector(self, new_elector):
         self.electors.append(new_elector)
 

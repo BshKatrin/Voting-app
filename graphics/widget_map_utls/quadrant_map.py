@@ -2,12 +2,12 @@ from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, Q
 from PySide6.QtGui import QPainter, QPen, QColor, QFont
 from PySide6.QtCore import Qt, QPoint
 import random, string
+import numpy as np
 
 from electoral_systems import Election
 from electoral_systems.voting_rules import constants
 
-from people import Elector
-from people import Candidate
+from people import Elector, Candidate
 
 from ..settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
 
@@ -160,11 +160,15 @@ class QuadrantMap(QWidget):
         self.update()
         self.text_box_active = False
         self.text_box.deleteLater()  #   supprime la zone de texte
+    
+    def ovalOrientation(self,x,mu,coef_dir):
+        return coef_dir*x+(mu-280)
 
     ### generer QPoint(x, y), PAS normalise
-    def generatePosition(self):
-        x = random.randint(-self.width() // 2, self.width() // 2)
-        y = random.randint(-self.height() // 2, self.height() // 2)
+    def generatePosition(self,economical_constants,social_constants,coef_dir):
+        x = np.random.normal(economical_constants[0] - 280,economical_constants[1],None)
+        y = np.random.normal(self.ovalOrientation(x,social_constants[0],coef_dir),social_constants[1],None)
+        
         return QPoint(x, y)
 
     ### Position de type QPoint, retourne couple normale

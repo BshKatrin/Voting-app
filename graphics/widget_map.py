@@ -66,7 +66,7 @@ class WidgetMap(QWidget):
         nb_electors = self._get_int_text_box(self.electors_text_box)
 
         for _ in range(nb_candidates):
-            generatedPosition = self.quadrant_map.generatePosition()
+            generatedPosition = self.quadrant_map.generatePosition(self.election.economical_constants,self.election.social_constants,self.election.coef_dir)
             newCandidate = Candidate(
                 position=self.quadrant_map.normalizePosition(generatedPosition)
             )
@@ -80,7 +80,7 @@ class WidgetMap(QWidget):
             )
 
         for _ in range(nb_electors):
-            generatedPosition = self.quadrant_map.generatePosition()
+            generatedPosition = self.quadrant_map.generatePosition(self.election.economical_constants,self.election.social_constants,self.election.coef_dir)
             self.quadrant_map.electors.append(generatedPosition)
             self.election.add_electors_position(
                 self.quadrant_map.normalizePosition(generatedPosition)
