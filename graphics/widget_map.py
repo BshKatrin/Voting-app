@@ -29,7 +29,11 @@ class WidgetMap(QWidget):
         self.start_election_btn = QPushButton("Start election", parent=self)
         self.start_election_btn.setEnabled(False)
         self.start_election_btn.clicked.connect(self.onStartElectionClick)
-
+        """
+        #MAJ 06.03.24
+        self.random_settings_btn = QPushButton("Random generation settings", parent=self)
+        self.random_settings_btn.clicked.connect(self.showWidgetRandomSettings)
+"""
         # Quadrant map
         self.quadrant_map = QuadrantMap(parent=self)
 
@@ -54,6 +58,7 @@ class WidgetMap(QWidget):
         self.layout.addWidget(self.quadrant_map, 0, Qt.AlignHCenter)
         self.layout.addWidget(self.candidates_text_box)
         self.layout.addWidget(self.electors_text_box)
+        #self.layout.addWidget(self.random_settings_btn)
         self.layout.addWidget(self.btn_gen_random)
 
     def _get_int_text_box(self, text_box):
@@ -106,3 +111,10 @@ class WidgetMap(QWidget):
     @Slot()
     def toggleElectionBtnState(self, enable):
         self.start_election_btn.setEnabled(enable)
+"""
+    #MAJ 06.03.24
+    @Slot()
+    def showWidgetRandomSettings(self):
+        self.widget_settings= WidgetSettings()
+        self.widget_settings.show()
+"""

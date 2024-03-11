@@ -161,13 +161,11 @@ class QuadrantMap(QWidget):
         self.text_box_active = False
         self.text_box.deleteLater()  #   supprime la zone de texte
     
-    def ovalOrientation(self,x,mu,coef_dir):
-        return coef_dir*x+(mu-280)
 
     ### generer QPoint(x, y), PAS normalise
     def generatePosition(self,economical_constants,social_constants,coef_dir):
-        x = np.random.normal(economical_constants[0] - 280,economical_constants[1],None)
-        y = np.random.normal(self.ovalOrientation(x,social_constants[0],coef_dir),social_constants[1],None)
+        x = np.random.normal(economical_constants[0] - 280 , economical_constants[1] , None)
+        y = np.random.normal((coef_dir*x+(social_constants[0]-280)) , social_constants[1] , None)
         
         return QPoint(x, y)
 
