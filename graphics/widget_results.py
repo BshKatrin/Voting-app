@@ -1,13 +1,15 @@
 from functools import partial
 
-from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton
+from PySide6.QtWidgets import (
+    QWidget,
+    QGridLayout,
+    QLabel,
+    QPushButton,
+    QCheckBox,
+)
 from PySide6.QtCore import Qt, Slot, Signal
 
-from .widget_results_utls import (
-    DirectedGraph,
-    DirectedGraphView,
-    ChartView,
-)
+from .widget_results_utls import DirectedGraph, DirectedGraphView, ChartView, MapImage
 
 from .ui_constants import UI_VOTING_RULES
 
@@ -62,6 +64,8 @@ class WidgetResults(QWidget):
         self.layout = QGridLayout()
         self.setLayout(self.layout)
         self.layout.setSpacing(10)
+        self.image = MapImage("graphics/temp/map.png")
+        self.image.closed.connect(self.toggleCheckbox)
 
     # Affichage des resultats sous la forme d'un tableau
     def initLabels(self):
@@ -78,7 +82,12 @@ class WidgetResults(QWidget):
         column_three_header = QLabel()
         column_three_header.setText("Satisfaction")
         self.layout.addWidget(column_three_header, 0, 2, alignment=Qt.AlignHCenter)
-        column_two_header.setStyleSheet("font-weight: bold")
+        column_three_header.setStyleSheet("font-weight: bold")
+
+        self.checkbox = QCheckBox("Show quadrant map", parent=self)
+        self.checkbox.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.checkbox.stateChanged.connect(self.toggleQuadrantMap)
+        self.layout.addWidget(self.checkbox, 0, 3, Qt.AlignRight | Qt.AlignVCenter)
 
         self.election.calculate_results()
 
@@ -135,3 +144,14 @@ class WidgetResults(QWidget):
     @Slot(str)
     def onShowChartBtnClick(self, voting_rule):
         self.sig_show_chart.emit(voting_rule)
+
+    @Slot(bool)
+    def toggleQuadrantMap(self, state):
+        if state and (not self.image.isVisible()):
+            self.image.show()
+        elif (not state) and self.image.isVisible():
+            self.image.close()
+
+    @Slot()
+    def toggleCheckbox(self):
+        self.checkbox.setChecked(False)

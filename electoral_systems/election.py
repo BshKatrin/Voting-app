@@ -63,8 +63,9 @@ class Election(metaclass=Singleton):
             if delegee is None:
                 continue
             # print("delegation to ", delegee)
-            elector.weight = 0
             delegee.weight += elector.weight
+            elector.weight = 0
+            
 
     def apply_voting_rule(self, voting_rule):
         if not self.has_electors_candidates():

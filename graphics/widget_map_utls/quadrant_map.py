@@ -19,7 +19,7 @@ class QuadrantMap(QWidget):
         self.candidates = []  #   stock les coordonées cartésiennes des candidats
 
         self.election = Election()
-
+        self.paint_event=False
         self.setFixedSize(0.7 * MAIN_WINDOW_WIDTH, 0.7 * MAIN_WINDOW_HEIGHT)
 
         self.initUI()
@@ -41,7 +41,10 @@ class QuadrantMap(QWidget):
         self.drawGrid(painter)
         self.drawAxes(painter)
         self.drawAxisLabels(painter)
-        self.drawPoints(painter)
+        if self.paint_event :
+            self.drawPoints_update(painter)
+        else :
+            self.drawPoints(painter)
 
     ### fonction sans argument de création de la grille du graph de dimensions fixées dans la fonction
     def drawGrid(self, painter):
@@ -93,6 +96,52 @@ class QuadrantMap(QWidget):
             #   crée un widget de position du point et lui affecte la position du point actuel
             widget_pos = QPoint(pos.x() + offset.x(), offset.y() - pos.y())
             painter.drawPoint(widget_pos)
+
+        #   dessin des points des candidates
+        pen2 = QPen(QColor(255, 0, 0))
+        pen2.setWidth(4)
+        painter.setPen(pen2)
+        for fst_name, lst_name, pos in self.candidates:
+            painter.setPen(
+                pen2
+            )  #   reconfiguration du pinceau après une itération de la boucle
+            widget_pos = QPoint(pos.x() + offset.x(), offset.y() - pos.y())
+            painter.drawPoint(widget_pos)
+
+            #   reconfiguration du style du pinceau pour le texte
+            painter.setPen(QColor(0, 0, 0))
+            painter.drawText(widget_pos + QPoint(5, 15), f"{fst_name} {lst_name}")
+            
+    def drawPoints_update(self, painter):
+        offset = QPoint(
+            self.width() / 2, self.height() / 2
+        )  #   position du milieu (0,0)
+
+        #   dessin des points des élécteurs
+        pen = QPen(QColor(128, 128, 128))
+        pen.setWidth(4)
+        painter.setPen(pen)
+        for elec in self.election.electors:
+            #   crée un widget de position du point et lui affecte la position du point actuel
+            if elec.weight==0 :
+                (x,y)=elec.position
+                x=x*self.width() / 2
+                y=y* self.height() / 2
+                widget_pos = QPoint(x + offset.x(), offset.y() - y)
+                painter.drawPoint(widget_pos)
+                
+        pen3 = QPen(QColor(30, 144, 255))
+        pen3.setWidth(4)
+        painter.setPen(pen3)
+        for elec in self.election.electors:
+            if elec.weight>0 :
+                (x,y)=elec.position
+                x=x*self.width() / 2
+                y=y* self.height() / 2
+                widget_pos = QPoint(x + offset.x(), offset.y() - y)
+                painter.drawPoint(widget_pos)
+                painter.drawText(widget_pos + QPoint(5, 15), f"{elec.weight}")
+            
 
         #   dessin des points des candidates
         pen2 = QPen(QColor(255, 0, 0))

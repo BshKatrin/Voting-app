@@ -1,7 +1,9 @@
 from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLineEdit
-from PySide6.QtCore import Qt, Signal, Slot
+from PySide6.QtCore import Qt, Signal, Slot, QPoint
 from electoral_systems import Election
 from people import Elector, Candidate
+
+from PySide6.QtGui import QPixmap, QPainter
 
 from .widget_map_utls import QuadrantMap, WidgetCheckbox, widget_settings
 
@@ -105,8 +107,22 @@ class WidgetMap(QWidget):
 
     @Slot()
     def onStartElectionClick(self):
+        self.election.create_electors()
+        self.election.make_delegations()
+        self.quadrant_map.paint_event=True
+        self.quadrant_map.update()
+        pixmap = QPixmap(self.quadrant_map.size())
+        pixmap_painter = QPainter(pixmap)
+
+        self.quadrant_map.render(pixmap_painter, QPoint(0, 0))
+        pixmap_painter.end()
+
+        success = pixmap.save("graphics/temp/map.png", "PNG", 50)
+        print("Saved") if success else print("Not saved")
+
         constantsSet = self.voting_rules_checkbox.getConstantsSet()
         self.sig_start_election.emit(list(constantsSet))
+
 
     @Slot()
     def toggleElectionBtnState(self, enable):

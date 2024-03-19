@@ -72,9 +72,9 @@ class HomeWindow(QMainWindow):
         # Add keys to results dict in Election
         self.election.init_results_keys(constantsList)
         # Crate all creators from stored positions
-        self.election.create_electors()
+        #self.election.create_electors()
         self.election.calculate_prop_satisfation()
-        self.election.make_delegations()
+        #self.election.make_delegations()
         # Delete widget with map
         self.widget_map.deleteLater()
         # Delete checkbox
