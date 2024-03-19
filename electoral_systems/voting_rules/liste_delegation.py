@@ -11,7 +11,7 @@ def carre(a):
 Retourne la liste des electeurs auquels delegator peut déléguer son vote"""
 def liste_delegation(electors, delegator):
 	electors_in_radius=[]
-	x1,y2=delegator.get_position()
+	x1,y1=delegator.get_position()
 	
 	for elector in electors:
 		x2,y2=elector.get_position()
