@@ -14,9 +14,9 @@ def set_duels_scores(electors, candidates):
         pairs_elector = {comb: 0 for comb in combinations(elector.candidates_ranked, 2)}
         for fst, snd in pairs_elector:
             if (fst, snd) in pairs:
-                pairs[(fst, snd)] += 1
+                pairs[(fst, snd)] += elector.weight
             else:
-                pairs[(snd, fst)] -= 1
+                pairs[(snd, fst)] -= elector.weight
 
     duels = dict()
     for pair, score in pairs.items():
@@ -42,13 +42,13 @@ def apply_condorcet_copeland(electors, candidates):
     # Chaque candidat va s'affronter chacun des autres -> pas des cas 'piege'
     duels = {comb: 0 for comb in combinations(candidates, 2)}
     # Comptage des win & loss
-    for e in electors:
-        pairs = combinations(e.candidates_ranked, 2)
+    for elector in electors:
+        pairs = combinations(elector.candidates_ranked, 2)
         for fst, snd in pairs:
             if (fst, snd) in duels:
-                duels[(fst, snd)] += 1
+                duels[(fst, snd)] += elector.weight
             elif (snd, fst) in duels:
-                duels[(snd, fst)] -= 1
+                duels[(snd, fst)] -= elector.weight
 
     # Ajouter des scores
     for (fst, snd), value in duels.items():
@@ -75,9 +75,9 @@ def apply_condorcet_simpson(electors, candidates):
         # combinations est inclus dans permutations -> pas de KeyError
         for fst, snd in pairs:
             if (fst, snd) in duels:
-                duels[(fst, snd)] += 1
+                duels[(fst, snd)] += elector.weight
             else:
-                duels[(snd, fst)] += 1
+                duels[(snd, fst)] += elector.weight
 
     init_scores(candidates, CONDORCET_SIMPSON, 0)
     for (_, snd), value in duels.items():
