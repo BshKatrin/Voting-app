@@ -42,7 +42,7 @@ def choose_possible_delegees(electors, delegator):
         x2, y2 = elector.get_position()
         dist = sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
-        if dist <= RADIUS:
+        if dist <= RADIUS and elector.weight != 0:
             electors_in_radius.append(elector)
 
     return electors_in_radius

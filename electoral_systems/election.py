@@ -3,6 +3,7 @@ from math import sqrt
 from random import uniform
 from people import Candidate
 from people import Elector
+import numpy as np
 
 from electoral_systems.voting_rules.constants import *
 from .func_constants import VOTING_RULES_FUNC
@@ -12,7 +13,6 @@ from .voting_rules.condorcet import set_duels_scores
 from .voting_rules.delegation import choose_delegee, choose_possible_delegees
 from .singleton import Singleton
 from people import Elector, Candidate
-import numpy as np
 
 
 class Election(metaclass=Singleton):
@@ -29,21 +29,12 @@ class Election(metaclass=Singleton):
         self.average_position_electors = (0, 0)
         self.proportion_satisfaction = 0
 
-<<<<<<< HEAD
         # variable necessaire pour generation aleatoire
         self.economical_constants = (280, 100)
         self.social_constants = (280, 100)
         self.coef_dir = 1
-=======
-        #variable necessaire pour generation aleatoire
-        self.economical_constants=(280,100)
-        self.social_constants=(280,100)
-        self.coef_dir=1
-        
-        #variable necessaire pour la creation du niveau de compétence d'un électeur
-        self.knowledge_constants=(0.5,0.3)
-        
->>>>>>> e38fe4a61ef7195fb51fe0b1d8bacf4c3a0b357a
+
+        self.knowledge_constants = (0.5, 0.3)
 
     def add_elector(self, new_elector):
         self.electors.append(new_elector)
@@ -62,18 +53,18 @@ class Election(metaclass=Singleton):
     def make_delegations(self):
         for elector in self.electors:
             proba = 1 - elector.knowledge
+            # print(f"proba{proba:.2f}")
+            # print("no delegation")
             # No delegation
             if uniform(0, 1) > proba:
                 continue
-            print("Proba", proba)
             # Make delegation
             delegee = choose_delegee(choose_possible_delegees(self.electors, elector))
             if delegee is None:
-                print("no delegation")
                 continue
-            print("delegation to ", delegee)
+            # print("delegation to ", delegee)
             elector.weight = 0
-            delegee.weight += 1
+            delegee.weight += elector.weight
 
     def apply_voting_rule(self, voting_rule):
         if not self.has_electors_candidates():
@@ -129,13 +120,17 @@ class Election(metaclass=Singleton):
             (x_elec, y_elec) = elec
             x_average += x_elec
             y_average += y_elec
-            (mu, sigma)=self.knowledge_constants
+            (mu, sigma) = self.knowledge_constants
+
+            random_knowledge = np.random.normal(mu, sigma, None)
+            while random_knowledge > 1:
+                random_knowledge = np.random.normal(mu, sigma, None)
 
             self.add_elector(
                 Elector(
                     candidates=self.candidates,
                     position=elec,
-                    knowledge=np.random.normal(mu, sigma, None),
+                    knowledge=random_knowledge,
                 )
             )
         x_average = x_average / nb_electors
