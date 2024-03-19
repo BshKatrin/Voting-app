@@ -33,10 +33,22 @@ people:
 Electoral_systems:
     voting_rules:
     On a modifié les fonctions de vote pour qu'elles prennent en compte le poids des electeurs
+    delegation:
+        choose_possible_delegees:
+        A partir d'une liste d'electeurs et d'un delegateur, retourne la liste des electeurs auquels il peut déléguer son vote
+        Les électeurs sont choisit en fonction de leur distance avec le délégateur 
+        choose_delegee:
+        A partir de la liste obtenue par choose_possible_delegees choisit l'électeur qui votera pour le délégateur
+        Le choisit en fonction de son poids de manière proportionnellement aléatoire
 
     election:
     On a modifié election afin de stocker un couple mu et sigma afin de créer les niveaux de compétences des élécteurs selon une loi normale qui suit ces constantes
     On a également modifié la manière de créer des élécteurs afin d'ajouter le niveau de compétence (knowledge) créé suivant la loi normale avec les mu et sigma défini précédemment
+    make_delegation:
+    Commence par calculer pour chaque électeur s'il devient un délégateur ou non en fonction de son niveau de compétence
+    A chaque fois qu'un électeur devient un délégateur, la fonction appelle choose_delegee pour trouver l'électeur à qui donner le vote
+    Modifie le poids des électeurs s'ils deviennent délégateur (modifie à 0) ou s'ils gagnent un poids (ajoute le poid du délégateur)
+    
 
 graphics:
     widget_map_utls/widget_settings:
