@@ -16,7 +16,7 @@ def apply_approval(electors, candidates):
         dist_max = elector.dist_from_one_cand(elector.candidates_ranked[0]) + GAP_COEF
         for candidate in elector.candidates_ranked:
             if elector.dist_from_one_cand(candidate) < dist_max:
-                candidate.add_score(APPROVAL, 1)
+                candidate.add_score(APPROVAL, elector.weight)
             else:
                 candidate.add_score(APPROVAL, 0)
                 break

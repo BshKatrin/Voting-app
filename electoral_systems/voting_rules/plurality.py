@@ -6,7 +6,7 @@ from .utls import init_scores, sort_cand_by_value, sort_cand_by_round, has_major
 def apply_plurality_simple(electors, candidates):
     init_scores(candidates, PLURALITY_SIMPLE, 0)
     for elector in electors:
-        elector.candidates_ranked[0].add_score(PLURALITY_SIMPLE, 1)
+        elector.candidates_ranked[0].add_score(PLURALITY_SIMPLE, elector.weight)
     return sort_cand_by_value(candidates, PLURALITY_SIMPLE)
 
 
@@ -31,14 +31,14 @@ def apply_plurality_rounds(electors, candidates):
 def plurality_one_set_score(electors, candidates):
     for elector in electors:
         # Ajouter +1 uniquement au premier candidat
-        elector.candidates_ranked[0].add_score_round(PLURALITY_2_ROUNDS, 1, 0)
+        elector.candidates_ranked[0].add_score_round(PLURALITY_2_ROUNDS, elector.weight, 0)
     return sort_cand_by_round(candidates, PLURALITY_2_ROUNDS, 0)
 
 
 def plurality_two_set_score(electors, candidates):
     for elector in electors:
         chosen_candidate = choose_next_candidate(elector, *candidates)
-        chosen_candidate.add_score_round(PLURALITY_2_ROUNDS, 1, 1)
+        chosen_candidate.add_score_round(PLURALITY_2_ROUNDS, elector.weight, 1)
     return sort_cand_by_round(candidates, PLURALITY_2_ROUNDS, 1)
 
 
