@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field, InitVar
 from typing import List
 from math import sqrt
+from numpy.random import normal
 
 from .person import Person
 from .candidate import Candidate
@@ -10,6 +11,10 @@ from .candidate import Candidate
 class Elector(Person):
     candidates: InitVar[List[Candidate]]
     candidates_ranked: List[Candidate] = field(default_factory=list, repr=False)
+    # weight = 0 -> delegation done
+    # weight > 0 -> no delegation
+    weight: int = 1
+    knowledge: float = normal(0.5, 0.3)
 
     def __post_init__(self, candidates):
         if not self.candidates_ranked:
