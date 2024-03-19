@@ -8,5 +8,5 @@ def apply_borda(electors, candidates):
     init_scores(candidates, BORDA, 0)
     for elector in electors:
         for i in range(nb_candidates):
-            elector.candidates_ranked[i].add_score(BORDA, max_score - i)
+            elector.candidates_ranked[i].add_score(BORDA, (max_score - i)*elector.weight)
     return sort_cand_by_value(candidates, BORDA)

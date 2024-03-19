@@ -41,13 +41,13 @@ def set_scores_round(electors, remaining_candidates, round):
     # Ajouter le score pour tout le monde
     if round == 0:
         for elector in electors:
-            elector.candidates_ranked[0].add_score_round(EXHAUSTIVE_BALLOT, 1, round)
+            elector.candidates_ranked[0].add_score_round(EXHAUSTIVE_BALLOT, elector.weight, round)
 
     else:
         # Donner les scores pour les candidats restants
         for elector in electors:
             chosen_candidate = choose_next_candidate(elector, remaining_candidates)
-            chosen_candidate.add_score_round(EXHAUSTIVE_BALLOT, 1, round)
+            chosen_candidate.add_score_round(EXHAUSTIVE_BALLOT, elector.weight, round)
     return sort_cand_by_round(remaining_candidates, EXHAUSTIVE_BALLOT, round)
 
 

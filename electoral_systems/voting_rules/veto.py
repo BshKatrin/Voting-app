@@ -8,7 +8,7 @@ def apply_veto(electors, candidates):
         i = 0
         for i in range(len(elector.candidates_ranked) - 1):
             # Ajouter +1 a chq candidat sauf le dernier
-            elector.candidates_ranked[i].add_score(VETO, 1)
+            elector.candidates_ranked[i].add_score(VETO, elector.weight)
         # Ajouter rien au dernier candidat
         # i += 1
         # elector.candidates_ranked[i].add_score(VETO, 0)
