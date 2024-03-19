@@ -12,6 +12,7 @@ from .voting_rules.condorcet import set_duels_scores
 from .voting_rules.delegation import choose_delegee, choose_possible_delegees
 from .singleton import Singleton
 from people import Elector, Candidate
+import numpy as np
 
 
 class Election(metaclass=Singleton):
@@ -28,10 +29,21 @@ class Election(metaclass=Singleton):
         self.average_position_electors = (0, 0)
         self.proportion_satisfaction = 0
 
+<<<<<<< HEAD
         # variable necessaire pour generation aleatoire
         self.economical_constants = (280, 100)
         self.social_constants = (280, 100)
         self.coef_dir = 1
+=======
+        #variable necessaire pour generation aleatoire
+        self.economical_constants=(280,100)
+        self.social_constants=(280,100)
+        self.coef_dir=1
+        
+        #variable necessaire pour la creation du niveau de compétence d'un électeur
+        self.knowledge_constants=(0.5,0.3)
+        
+>>>>>>> e38fe4a61ef7195fb51fe0b1d8bacf4c3a0b357a
 
     def add_elector(self, new_elector):
         self.electors.append(new_elector)
@@ -117,11 +129,13 @@ class Election(metaclass=Singleton):
             (x_elec, y_elec) = elec
             x_average += x_elec
             y_average += y_elec
+            (mu, sigma)=self.knowledge_constants
 
             self.add_elector(
                 Elector(
                     candidates=self.candidates,
                     position=elec,
+                    knowledge=np.random.normal(mu, sigma, None),
                 )
             )
         x_average = x_average / nb_electors
