@@ -1,30 +1,43 @@
 MINI SPRINT : DEMOCRATIE LIQUIDE 
 
-groupe tzb
-participants :
+Groupe tzb
+Participants :
 Haroun Zerdoumi 21212992
 Pâris Tran 
 Ekaterina Bogush
-Rehyann Bouteiller
+Rehyann Bouteiller 21100713
 Hadrien de La Taille Lolainville 21103191
+
+Execution:
+Executer le fichier main.py afin de lancer la simulation(branche sprint)
+1-Selectionner un nombre de candidats et de d'electeurs en bas de la fenetre ainsi que les parametres de génération puis appuyer sur "generate random"
+2-Choisir un ou plusieurs systemes de vote à partir du bouton "Choose voting rules"
+3-Appyer sur "start election"
 
 On cherche dans cette branche à instaurer un systeme de délégation de vote
 Chaque electeur (votant) peut choisir de donner son droit de vote à un autre electeur
 Chaque electeur possede un niveau de compétence compris entre 0 et 1
 L'electeur qui donne son droit de vote devient un delegateur (delegator dans le code)
-Plus le niveau de competence de l'électeur est élevé :
+Plus le niveau de compétence de l'électeur est élevé :
     -moins il a de chance de déléguer son vote
-    -plus il a de chance de recuperer les droits de vote des délégateurs
+    -plus il a de chance de recupérer les droits de vote des délégateurs
 Le delegateur choisit un votant (qui n'est pas délégateur) dans un cercle proche de ses coordonées 
 Un electeur peut être choisit par plusieurs délégateurs
 
 people:
     Classe Elector:
     On ajoute 2 attributs à la classe Elector:
-        -weight, qui represente le poids d'un votant (0 si c'est un délégateur, 1 par défaut, et plus s'il est choisit par un délégateur)
+        -weight, qui représente le poids d'un votant (0 si c'est un délégateur, 1 par défaut, et plus s'il est choisit par un ou plusieurs délégateurs)
         -knowledge, qui représente le niveau de compétence 
 
-Electoral_systems/voting_rules:
+Electoral_systems:
+    voting_rules:
     On a modifié les fonctions de vote pour qu'elles prennent en compte le poids des electeurs
-    
 
+    election:
+    On a modifié election afin de stocker un couple mu et sigma afin de créer les niveaux de compétences des élécteurs selon une loi normale qui suit ces constantes
+    On a également modifié la manière de créer des élécteurs afin d'ajouter le niveau de compétence (knowledge) créé suivant la loi normale avec les mu et sigma défini précédemment
+
+graphics:
+    widget_map_utls/widget_settings:
+    On a ajouté des sliders afin de modifier les valeurs des constantes de création de knowledge stockées dans le singleton elector
