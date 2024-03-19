@@ -14,11 +14,20 @@ class Elector(Person):
     # weight = 0 -> delegation done
     # weight > 0 -> no delegation
     weight: int = 1
-    knowledge: float = normal(0.5, 0.3)
+    knowledge: float = field(default_factory=lambda: normal(0.5, 0.3))
 
     def __post_init__(self, candidates):
         if not self.candidates_ranked:
             self.candidates_ranked = self.pos_to_rank(candidates)
+
+    def __str__(self):
+        return (
+            super().__str__()
+            + f" weight : {self.weight}, knowledge : {self.knowledge:.2f}"
+        )
+
+    def __repr__(self):
+        return self.__str__()
 
     def dist_from_cand(self, candidates):
         distances = []

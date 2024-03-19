@@ -1,1 +1,9 @@
-__all__ = ["approval", "borda", "condorcet", "exhaustive_ballot", "plurality", "veto"]
+__all__ = [
+    "approval",
+    "borda",
+    "condorcet",
+    "exhaustive_ballot",
+    "plurality",
+    "veto",
+    "delegation",
+]
