@@ -5,7 +5,7 @@ RADIUS=0.2
 """carre(float)->float
 Retourne l'argument au carré"""
 def carre(a):
-	return a
+	return a*a
 
 """liste_delegation(Elector[], Elector)->Elector[]
 Retourne la liste des electeurs auquels delegator peut déléguer son vote"""
