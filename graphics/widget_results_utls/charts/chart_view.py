@@ -1,5 +1,5 @@
 from PySide6.QtCharts import QChartView
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, Signal
 
 from ...settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
 from electoral_systems.voting_rules.constants import *
@@ -9,6 +9,8 @@ from .chart_one_round import ChartOneRound
 
 
 class ChartView(QChartView):
+    sig_chart_view_destroying = Signal()
+
     def __init__(self):
         super().__init__()
         # Suppress warning
@@ -31,3 +33,10 @@ class ChartView(QChartView):
         else:
             self.setChart(self.chart_one_round)
         self.show()
+
+    @Slot()
+    def delete_children(self):
+        self.setChart(None)  # because setChart takes ownership
+        self.chart_one_round.deleteLater()
+        for multi_chart in self.charts_multi_rounds.values():
+            multi_chart.deleteLater()

@@ -19,14 +19,21 @@ from electoral_systems.voting_rules.constants import *
 
 class WidgetResults(QWidget):
     sig_show_chart = Signal(str)
+    sig_widget_results_destroying = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
         self.election = Election()
+        # For destroy_children
+        self.graph_view = None
+        self.charts_view = None
+
         self.initUI()
         self.initLabels()
         self.initViews()
+
+        self.sig_widget_results_destroying.connect(self.destroyChildren)
 
     def initViews(self):
         if self.condorcetChosen():
@@ -155,3 +162,14 @@ class WidgetResults(QWidget):
     @Slot()
     def toggleCheckbox(self):
         self.checkbox.setChecked(False)
+
+    # Destroy "child widget" whose parent is NOT set
+    @Slot()
+    def destroyChildren(self):
+        self.image.deleteLater()
+        # All Condorcet
+        if self.graph_view:
+            self.graph_view.deleteLater()
+        # All 1 round, multi_round
+        if self.charts_view:
+            self.charts_view.deleteLater()

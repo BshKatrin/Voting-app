@@ -12,8 +12,9 @@ from electoral_systems import Election
 
 
 class ChartMultiRound(QChart):
-    def __init__(self, voting_rule):
-        super().__init__()
+    def __init__(self, voting_rule, parent=None):
+        super().__init__(parent)
+
         self.voting_rule = voting_rule
         self.election = Election()
 

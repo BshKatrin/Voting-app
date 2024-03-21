@@ -41,9 +41,18 @@ class WidgetCheckbox(QWidget):
             self.layout.addWidget(checkbox)
             self.lst_checkboxes.append(checkbox)
 
-        self.btnConfirm = QPushButton("Confirm", self)
-        self.layout.addWidget(self.btnConfirm)
-        self.btnConfirm.clicked.connect(self.confirmVotingRules)
+        self.confirm_btn = QPushButton("Confirm", self)
+        self.confirm_btn.clicked.connect(self.confirmVotingRules)
+
+        self.choose_all_btn = QPushButton("Choose all", self)
+        self.choose_all_btn.clicked.connect(self.chooseAllVotingRules)
+
+        self.layout.addWidget(self.confirm_btn)
+        self.layout.addWidget(self.choose_all_btn)
+
+    def destroying(self):
+        print("Voting rules checkbox destroying")
+        self.deleteLater()
 
     @Slot(str, bool)
     def onStateChanged(self, voting_rule, state):
@@ -72,6 +81,12 @@ class WidgetCheckbox(QWidget):
 
         # Close checkbox widget
         self.close()
+
+    # Check all checkboxes at once
+    def chooseAllVotingRules(self):
+        for checkbox in self.lst_checkboxes:
+            if checkbox.isEnabled():
+                checkbox.setChecked(True)
 
     def getConstantsSet(self):
         return self.set_constants
