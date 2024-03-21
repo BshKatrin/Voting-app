@@ -7,9 +7,12 @@ from .quadrant_map import QuadrantMap
 
 
 class WidgetSettings(QWidget):
-    def __init__(self, parent=None):
+    # map_size est de type QSize
+    def __init__(self, map_size, parent=None):
         super().__init__(parent)
         self.election = Election()
+        # En sachant que map_size.width = map_size.height()
+        self.map_side_size = map_size.width() / 100
         self.setWindowTitle("Random generation settings")
         self.initUI()
 
@@ -38,20 +41,24 @@ class WidgetSettings(QWidget):
 
         self.slider_mu_eco = QSlider(Qt.Horizontal, self)
         self.slider_mu_eco.valueChanged.connect(self.majMuEcoValue)
-        self.slider_mu_eco.setValue(int(self.election.economical_constants[0] / 5.6))
+        self.slider_mu_eco.setValue(
+            int(self.election.economical_constants[0] / self.map_side_size)
+        )
         self.slider_mu_eco.setRange(0, 100)
 
         self.slider_mu_socio = QSlider(Qt.Horizontal, self)
         self.slider_mu_socio.valueChanged.connect(self.majMuSocioValue)
-        self.slider_mu_socio.setValue(int(self.election.social_constants[0] / 5.6))
+        self.slider_mu_socio.setValue(
+            int(self.election.social_constants[0] / self.map_side_size)
+        )
         self.slider_mu_socio.setRange(0, 100)
 
         self.slider_sigma_eco = QSlider(Qt.Horizontal, self)
         self.slider_sigma_eco.valueChanged.connect(self.majSigmaEcoValue)
         self.slider_sigma_eco.setValue(
             int(
-                self.election.economical_constants[1] / 5.6
-                + self.election.economical_constants[0] / 5.6
+                self.election.economical_constants[1] / self.map_side_size
+                + self.election.economical_constants[0] / self.map_side_size
             )
         )
         self.slider_sigma_eco.setRange(0, 100)
@@ -60,8 +67,8 @@ class WidgetSettings(QWidget):
         self.slider_sigma_socio.valueChanged.connect(self.majSigmaSocioValue)
         self.slider_sigma_socio.setValue(
             int(
-                self.election.social_constants[1] / 5.6
-                + self.election.social_constants[0] / 5.6
+                self.election.social_constants[1] / self.map_side_size
+                + self.election.social_constants[0] / self.map_side_size
             )
         )
         self.slider_sigma_socio.setRange(0, 100)
@@ -107,14 +114,14 @@ class WidgetSettings(QWidget):
 
     def majMuEcoValue(self, value):
         self.election.economical_constants = (
-            int(value * (5.6)),
+            int(value * (self.map_side_size)),
             self.election.economical_constants[1],
         )
         self.mu_eco_result.setText(f"Current Value: {value}")
 
     def majMuSocioValue(self, value):
         self.election.social_constants = (
-            int(value * (5.6)),
+            int(value * (self.map_side_size)),
             self.election.social_constants[1],
         )
         self.mu_social_result.setText(f"Current Value: {value}")
@@ -122,14 +129,18 @@ class WidgetSettings(QWidget):
     def majSigmaEcoValue(self, value):
         self.election.economical_constants = (
             self.election.economical_constants[0],
-            abs(int(value * (5.6) - self.election.economical_constants[0])),
+            abs(
+                int(
+                    value * (self.map_side_size) - self.election.economical_constants[0]
+                )
+            ),
         )
         self.sigma_eco_result.setText(f"Current Value: {value}")
 
     def majSigmaSocioValue(self, value):
         self.election.social_constants = (
             self.election.social_constants[0],
-            abs(int(value * (5.6) - self.election.social_constants[0])),
+            abs(int(value * (self.map_side_size) - self.election.social_constants[0])),
         )
         self.sigma_social_result.setText(f"Current Value: {value}")
 

@@ -63,7 +63,7 @@ class WidgetMap(QWidget):
             self.toggleElectionBtnState
         )
         # MAJ 06.03.24
-        self.widget_settings = WidgetSettings()
+        self.widget_settings = WidgetSettings(self.quadrant_map.size())
 
         # User input for random data
         self.candidates_text_box = QLineEdit(parent=self)
