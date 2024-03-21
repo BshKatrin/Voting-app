@@ -6,10 +6,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from .settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
-
 from .widget_map import WidgetMap
-
 from .widget_results import WidgetResults
 
 from electoral_systems import Election
@@ -22,8 +19,10 @@ class HomeWindow(QMainWindow):
         self.app = app
         self.election = Election()
 
-        # dimension et titre de la fenetre (posX,posY,tailleX,tailleY)
-        self.setGeometry(0, 0, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT)
+        # Set main_window size
+        screen_size = app.primaryScreen().geometry()
+        size_size = min(screen_size.height(), screen_size.width())
+        self.setGeometry(screen_size.x(), screen_size.y(), size_size, size_size)
         self.setWindowTitle("Voting app")
 
         # Main widget, layout

@@ -1,7 +1,6 @@
 from PySide6.QtCharts import QChartView
 from PySide6.QtCore import Qt, Slot, Signal
 
-from ...settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
 from electoral_systems.voting_rules.constants import *
 
 from .chart_multi_round import ChartMultiRound
@@ -15,7 +14,6 @@ class ChartView(QChartView):
         super().__init__()
         # Suppress warning
         self.viewport().setAttribute(Qt.WidgetAttribute.WA_AcceptTouchEvents, False)
-        self.resize(GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT)
 
     def initOneRoundChart(self, oneRoundSet):
         self.chart_one_round = ChartOneRound(oneRoundSet)

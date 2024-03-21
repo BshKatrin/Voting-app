@@ -9,8 +9,6 @@ from electoral_systems.voting_rules import constants
 
 from people import Elector, Candidate
 
-from ..settings import MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT
-
 
 class QuadrantMap(QWidget):
     def __init__(self, parent):
@@ -19,8 +17,9 @@ class QuadrantMap(QWidget):
         self.candidates = []  #   stock les coordonées cartésiennes des candidats
 
         self.election = Election()
-        self.paint_event=False
-        self.setFixedSize(0.7 * MAIN_WINDOW_WIDTH, 0.7 * MAIN_WINDOW_HEIGHT)
+        self.final_painting = False
+        side_size = min(parent.width(), parent.height())
+        self.setFixedSize(0.8 * side_size, 0.8 * side_size)
 
         self.initUI()
 
@@ -32,6 +31,7 @@ class QuadrantMap(QWidget):
         p.setColor(self.backgroundRole(), Qt.white)
         self.setPalette(p)
         # Pour gérer les textbox de création de candidats
+        self.grid_step = 20  # pas de création de la grille
         self.text_box_active = False
 
     ### fonction sans argument crée tout ce qui doit être sessiné et est mit à jour lors d'un appel à update
@@ -41,9 +41,9 @@ class QuadrantMap(QWidget):
         self.drawGrid(painter)
         self.drawAxes(painter)
         self.drawAxisLabels(painter)
-        if self.paint_event :
-            self.drawPoints_update(painter)
-        else :
+        if self.final_painting:
+            self.drawPointsDelegation(painter)
+        else:
             self.drawPoints(painter)
 
     ### fonction sans argument de création de la grille du graph de dimensions fixées dans la fonction
@@ -51,22 +51,46 @@ class QuadrantMap(QWidget):
         pen = QPen(QColor(220, 220, 220))  #   couleur de la grille gris clair
         # tout les dessins appelant QPainter donc tout ce qui est déssiné ensuite utilisera le pinceau défini
         painter.setPen(pen)
-        step = 20  #   pas de création de la grille
+        # nb_lines = nb_rows = nb_cols
+        nb_lines = self.width() // self.grid_step
 
-        for x in range(0, self.width(), step):  #   lignes verticales
-            painter.drawLine(x, 0, x, self.height())  #   appelle de fonction de dessin
-        for y in range(0, self.height(), step):  #   lignes horozontales
-            painter.drawLine(0, y, self.width(), y)
+        for row in range(1, nb_lines + 1):
+            # lignes verticales
+            painter.drawLine(
+                row * self.grid_step, 0, row * self.grid_step, self.height()
+            )
+            # lignes horizontales
+            painter.drawLine(
+                0, row * self.grid_step, self.width(), row * self.grid_step
+            )
+
+        # for x in range(0, self.width(), step):  #   lignes verticales
+        #     painter.drawLine(x, 0, x, self.height())  #   appelle de fonction de dessin
+        # for y in range(0, self.height(), step):  #   lignes horozontales
+        #     painter.drawLine(0, y, self.width(), y)
 
     ### fonction sans argument de création des axes du graph
     def drawAxes(self, painter):
         pen = QPen(QColor(0, 0, 0))
         pen.setWidth(2)  #   taille du pinceau
+        step = 20
+        # Width = height, donc suffisant
+        central_line = self.width() // step / 2
         painter.setPen(pen)
-        center_x = self.width() / 2
-        center_y = self.height() / 2
-        painter.drawLine(0, center_y, self.width(), center_y)
-        painter.drawLine(center_x, 0, center_x, self.height())
+        # Axe x
+        painter.drawLine(
+            0,
+            central_line * self.grid_step,
+            self.width(),
+            central_line * self.grid_step,
+        )
+        # Axe y
+        painter.drawLine(
+            central_line * self.grid_step,
+            0,
+            central_line * self.grid_step,
+            self.height(),
+        )
 
     ### fonction sans argument qui donne des noms aux graphs
     def drawAxisLabels(self, painter):
@@ -111,8 +135,8 @@ class QuadrantMap(QWidget):
             #   reconfiguration du style du pinceau pour le texte
             painter.setPen(QColor(0, 0, 0))
             painter.drawText(widget_pos + QPoint(5, 15), f"{fst_name} {lst_name}")
-            
-    def drawPoints_update(self, painter):
+
+    def drawPointsDelegation(self, painter):
         offset = QPoint(
             self.width() / 2, self.height() / 2
         )  #   position du milieu (0,0)
@@ -123,25 +147,24 @@ class QuadrantMap(QWidget):
         painter.setPen(pen)
         for elec in self.election.electors:
             #   crée un widget de position du point et lui affecte la position du point actuel
-            if elec.weight==0 :
-                (x,y)=elec.position
-                x=x*self.width() / 2
-                y=y* self.height() / 2
+            if elec.weight == 0:
+                (x, y) = elec.position
+                x = x * self.width() / 2
+                y = y * self.height() / 2
                 widget_pos = QPoint(x + offset.x(), offset.y() - y)
                 painter.drawPoint(widget_pos)
-                
+
         pen3 = QPen(QColor(30, 144, 255))
         pen3.setWidth(4)
         painter.setPen(pen3)
         for elec in self.election.electors:
-            if elec.weight>0 :
-                (x,y)=elec.position
-                x=x*self.width() / 2
-                y=y* self.height() / 2
+            if elec.weight > 0:
+                (x, y) = elec.position
+                x = x * self.width() / 2
+                y = y * self.height() / 2
                 widget_pos = QPoint(x + offset.x(), offset.y() - y)
                 painter.drawPoint(widget_pos)
                 painter.drawText(widget_pos + QPoint(5, 15), f"{elec.weight}")
-            
 
         #   dessin des points des candidates
         pen2 = QPen(QColor(255, 0, 0))
@@ -209,13 +232,16 @@ class QuadrantMap(QWidget):
         self.update()
         self.text_box_active = False
         self.text_box.deleteLater()  #   supprime la zone de texte
-    
 
     ### generer QPoint(x, y), PAS normalise
-    def generatePosition(self,economical_constants,social_constants,coef_dir):
-        x = np.random.normal(economical_constants[0] - 280 , economical_constants[1] , None)
-        y = np.random.normal((coef_dir*x+(social_constants[0]-280)) , social_constants[1] , None)
-        
+    def generatePosition(self, economical_constants, social_constants, coef_dir):
+        x = np.random.normal(
+            economical_constants[0] - 280, economical_constants[1], None
+        )
+        y = np.random.normal(
+            (coef_dir * x + (social_constants[0] - 280)), social_constants[1], None
+        )
+
         return QPoint(x, y)
 
     ### Position de type QPoint, retourne couple normale

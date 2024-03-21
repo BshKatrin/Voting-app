@@ -22,12 +22,14 @@ class WidgetMap(QWidget):
     sig_start_election = Signal(list)
     sig_widget_map_destroying = Signal()
 
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super().__init__(parent)
 
         self.election = Election()
 
+        self.setGeometry(0, 0, parent.width(), parent.height())
         self.initUI()
+
         # Delete children whose parent is NOT set on a widget_map destroying
         self.sig_widget_map_destroying.connect(self.destroyChildren)
 
@@ -158,7 +160,8 @@ class WidgetMap(QWidget):
         # Draw version with delegations
         self.election.create_electors()
         self.election.make_delegations()
-        self.quadrant_map.paint_event = True
+        # Draw last time, with delegations
+        self.quadrant_map.final_painting = True
         self.quadrant_map.update()
 
         # Import drawing to an image

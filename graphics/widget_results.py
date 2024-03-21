@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QCheckBox,
 )
-from PySide6.QtCore import Qt, Slot, Signal
+from PySide6.QtCore import Qt, Slot, Signal, QSize
 
 from .widget_results_utls import DirectedGraph, DirectedGraphView, ChartView, MapImage
 
@@ -21,10 +21,12 @@ class WidgetResults(QWidget):
     sig_show_chart = Signal(str)
     sig_widget_results_destroying = Signal()
 
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super().__init__(parent)
 
         self.election = Election()
+
+        self.setGeometry(0, 0, parent.width(), parent.height())
         # For destroy_children
         self.graph_view = None
         self.charts_view = None
@@ -135,9 +137,16 @@ class WidgetResults(QWidget):
 
             self.layout.addWidget(show_btn, row, 3, alignment=Qt.AlignHCenter)
 
+    def _get_view_size(self):
+        return QSize(self.parent().width() * 0.8, self.parent().height() * 0.8)
+
+    def _resize_view(self, view):
+        view.resize(self._get_view_size())
+
     def initDirectedGraph(self):
-        self.graph_scene = DirectedGraph(parent=self)
+        self.graph_scene = DirectedGraph(self._get_view_size(), parent=self)
         self.graph_view = DirectedGraphView(self.graph_scene)
+        self._resize_view(self.graph_view)
 
     @Slot(bool)
     def showDirectedGraph(self, weighted=False):
@@ -146,6 +155,8 @@ class WidgetResults(QWidget):
 
     def initChartsView(self):
         self.charts_view = ChartView()
+        self._resize_view(self.charts_view)
+
         self.sig_show_chart.connect(self.charts_view.setChartBySig)
 
     @Slot(str)

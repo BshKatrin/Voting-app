@@ -8,14 +8,17 @@ from .node import Node
 from .edge import Edge
 
 from electoral_systems import Election
-from ...settings import GRAPHICS_VIEW_WIDTH, GRAPHICS_VIEW_HEIGHT
 
 
 class DirectedGraph(QGraphicsScene):
-    def __init__(self, parent=None):
+    # view_size est de type QSize
+    def __init__(self, view_size, parent=None):
+
         super().__init__(parent)
         self.election = Election()
         self.id_position = dict()  # dict will be filled on initNodes
+
+        self.view_size = view_size
 
         self.initUI()
         self.calculateCircle()
@@ -28,9 +31,9 @@ class DirectedGraph(QGraphicsScene):
         self.initNodes()
         self.initEdges(weighted)
 
-    # make math to place candidates in a circle
+    # math to place candidates in a circle
     def calculateCircle(self):
-        self.center = QPointF(GRAPHICS_VIEW_WIDTH / 2, GRAPHICS_VIEW_HEIGHT / 2)
+        self.center = QPointF(self.view_size.width() / 2, self.view_size.height() / 2)
         # Radius = 70% of window size
         self.radius = min(self.center.x() * 0.7, self.center.y() * 0.7)
         # Angle between candidates in radians

@@ -50,10 +50,6 @@ class WidgetCheckbox(QWidget):
         self.layout.addWidget(self.confirm_btn)
         self.layout.addWidget(self.choose_all_btn)
 
-    def destroying(self):
-        print("Voting rules checkbox destroying")
-        self.deleteLater()
-
     @Slot(str, bool)
     def onStateChanged(self, voting_rule, state):
         (
