@@ -1,3 +1,4 @@
 __pycache__/
 *.pyc
-temp/
+graphics/temp/map.png
+!graphics/temp.gitkeep
