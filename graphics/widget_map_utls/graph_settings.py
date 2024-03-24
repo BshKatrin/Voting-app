@@ -17,12 +17,13 @@ class GraphSettings(QWidget):
         self.graphWidget.setBackground('w')
         self.graphWidget.showGrid(x=True, y=True)
         self.graphWidget.setTitle(title)
-        self.graphWidget.setXRange(0, 1, padding=0)
-        self.graphWidget.setYRange(0, 10, padding=0)
         self.pen = pg.mkPen(color=(255, 0, 0), width=5)
         self.election = election
-        mu = 0.5
-        sigma = 0.1
+
+    def updateGraphGauss(self,mu,sigma):
+        self.graphWidget.clear()
+        self.graphWidget.setXRange(0, 1, padding=0)
+        self.graphWidget.setYRange(0, 10, padding=0)
         x = []
         y = []
         i = 0
@@ -33,17 +34,18 @@ class GraphSettings(QWidget):
         # plot data: x, y values
         self.graphWidget.plot(x, y, pen=self.pen)
 
-    def updateGraph(self,mu,sigma):
+    def updateGraphAffine(self,coeffdir,mu):
         self.graphWidget.clear()
+        self.graphWidget.setXRange(-1, 1, padding=0)
+        self.graphWidget.setYRange(-1, 1, padding=0)
         x = []
         y = []
-        i = 0
+        i = -1
         while i<=1:
             x.append(i)
-            y.append((1 / (sigma * np.sqrt(np.pi))) * np.exp(-0.5 * ((i - mu) / sigma) ** 2))
+            y.append((coeffdir*i)+mu)
             i=i+0.005
-        # plot data: x, y values
-        self.graphWidget.plot(x, y, pen=self.pen)
+        self.graphWidget.plot(x,y,pen=self.pen)
 
 
 

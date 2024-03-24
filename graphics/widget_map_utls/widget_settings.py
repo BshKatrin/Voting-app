@@ -14,18 +14,17 @@ class WidgetSettings(QWidget):
         self.economical_label = QLabel('Economical',self)
         self.social_label = QLabel('Social', self)
 
-        self.mu_eco_label=QLabel('mu', self)
-        self.sigma_eco_label=QLabel('sigma',self)
-        self.mu_social_label=QLabel('mu', self)
-        self.sigma_social_label=QLabel('sigma',self)
+        self.mu_eco_label = QLabel('Mu', self)
+        self.sigma_eco_label = QLabel('Sigma',self)
+        self.mu_social_label = QLabel('Mu', self)
+        self.sigma_social_label = QLabel('Sigma',self)
+        self.coeffdir_label = QLabel('Coeffdir',self)
 
-        self.mu_eco_result=QLabel('', self)
-        self.sigma_eco_result=QLabel('',self)
-        self.mu_social_result=QLabel('', self)
-        self.sigma_social_result=QLabel('',self)
-
-        self.economical_graph = GraphSettings(self.election,'Economical')
-        self.social_graph = GraphSettings(self.election, 'Social')
+        self.mu_eco_result = QLabel('', self)
+        self.sigma_eco_result = QLabel('',self)
+        self.mu_social_result = QLabel('', self)
+        self.sigma_social_result = QLabel('',self)
+        self.coeffdir_result = QLabel('',self)
         
         self.slider_mu_eco = QSlider(Qt.Horizontal,self)
         self.slider_mu_eco.valueChanged.connect(self.majMuEcoValue)
@@ -47,6 +46,21 @@ class WidgetSettings(QWidget):
         self.slider_sigma_socio.valueChanged.connect(self.majSigmaSocioValue)
         self.slider_sigma_socio.setValue(int(self.election.social_constants[1]/5.6+self.election.social_constants[0]/5.6))
         self.slider_sigma_socio.setRange(0,100)
+
+        #Creations des graph
+        self.economical_graph = GraphSettings(self.election,'Left-Right')
+        self.social_graph = GraphSettings(self.election, 'Liberal-Autoritarian')
+        self.coeffdir_graph = GraphSettings(self.election, 'Coefficient directeur')
+        
+        self.economical_graph.updateGraphGauss(self.election.economical_constants[0]/560,self.election.economical_constants[1]/560)
+        self.social_graph.updateGraphGauss(self.election.social_constants[0]/560,self.election.social_constants[1]/560)
+        self.coeffdir_graph.updateGraphAffine(self.election.coef_dir,(self.election.social_constants[0]-280)/560)
+
+        self.slider_coeffdir = QSlider(Qt.Horizontal, self)
+        self.slider_coeffdir.valueChanged.connect(self.majCoeffdirValue)
+        self.slider_coeffdir.setValue(self.election.coef_dir)
+        self.slider_coeffdir.setRange(-1,1)
+        self.slider_coeffdir.setTickInterval(1)
         
         #Labels ajoutés pour calculer les niveau de compétences des électeurs de manière aléatoire suivant une loi normale
         self.knowledge_label = QLabel('Knowledge', self)
@@ -83,6 +97,7 @@ class WidgetSettings(QWidget):
         self.layout_widget.addWidget(self.slider_sigma_socio,4,5)
         self.layout_widget.addWidget(self.slider_mu_knowledge,6,2)
         self.layout_widget.addWidget(self.slider_sigma_knowledge,7,2)
+        self.layout_widget.addWidget(self.slider_coeffdir,6,5)
         #implementation des labes des slider
         self.layout_widget.addWidget(self.mu_eco_label,3,1)
         self.layout_widget.addWidget(self.sigma_eco_label,4,1)
@@ -90,6 +105,7 @@ class WidgetSettings(QWidget):
         self.layout_widget.addWidget(self.sigma_social_label,4,4)
         self.layout_widget.addWidget(self.mu_knowledge_label,6,1)
         self.layout_widget.addWidget(self.sigma_knowledge_label,7,1)
+        self.layout_widget.addWidget(self.coeffdir_label,6,4)
         #implementation des valeurs des slider 
         self.layout_widget.addWidget(self.mu_eco_result,3,3)
         self.layout_widget.addWidget(self.sigma_eco_result,4,3)
@@ -97,33 +113,38 @@ class WidgetSettings(QWidget):
         self.layout_widget.addWidget(self.sigma_social_result,4,6)
         self.layout_widget.addWidget(self.mu_knowledge_result,6,3)
         self.layout_widget.addWidget(self.sigma_knowledge_result,7,3)
+        self.layout_widget.addWidget(self.coeffdir_result,6,6)
         #implementation des graphs
         self.layout_widget.addWidget(self.economical_graph,2,2)
         self.layout_widget.addWidget(self.social_graph,2,5)
+        self.layout_widget.addWidget(self.coeffdir_graph,5,5)
+
+        
 
 
     def majMuEcoValue(self, value):
         self.election.economical_constants=(int(value*(5.6)),self.election.economical_constants[1])
         self.mu_eco_result.setText(f'{value}')
-        self.economical_graph.updateGraph(self.election.economical_constants[0]/560,self.election.economical_constants[1]/560)
+        self.economical_graph.updateGraphGauss(self.election.economical_constants[0]/560,self.election.economical_constants[1]/560)
 
     def majMuSocioValue(self, value):
         self.election.social_constants=(int(value*(5.6)),self.election.social_constants[1])
         self.mu_social_result.setText(f'{value}')
-        self.social_graph.updateGraph(self.election.social_constants[0]/560,self.election.social_constants[1]/560)
+        self.social_graph.updateGraphGauss(self.election.social_constants[0]/560,self.election.social_constants[1]/560)
+        self.coeffdir_graph.updateGraphAffine(self.election.coef_dir,(self.election.social_constants[0]-280)/560)
         
 
     def majSigmaEcoValue(self, value):
         self.election.economical_constants=(self.election.economical_constants[0],abs(int(value*(5.6)-self.election.economical_constants[0])))
         self.sigma_eco_result.setText(f'{self.election.economical_constants[1]}')
-        self.economical_graph.updateGraph(self.election.economical_constants[0]/560,self.election.economical_constants[1]/560)
+        self.economical_graph.updateGraphGauss(self.election.economical_constants[0]/560,self.election.economical_constants[1]/560)
 
         
 
     def majSigmaSocioValue(self, value):
         self.election.social_constants=(self.election.social_constants[0],abs(int(value*(5.6)-self.election.social_constants[0])))
         self.sigma_social_result.setText(f'{self.election.social_constants[1]}')
-        self.social_graph.updateGraph(self.election.social_constants[0]/560,self.election.social_constants[1]/560)
+        self.social_graph.updateGraphGauss(self.election.social_constants[0]/560,self.election.social_constants[1]/560)
 
     def majMuKnowledgeValue(self, value):
         self.election.knowledge_constants=(value/100,self.election.knowledge_constants[1])
@@ -134,4 +155,10 @@ class WidgetSettings(QWidget):
     def majSigmaKnowledgeValue(self, value):
         self.election.knowledge_constants=(self.election.knowledge_constants[0],value/100)
         self.sigma_knowledge_result.setText(f'{value/100}')
+
+
+    def majCoeffdirValue(self,value):
+        self.election.coef_dir = value
+        self.coeffdir_result.setText(f'{self.election.coef_dir}')
+        self.coeffdir_graph.updateGraphAffine(self.election.coef_dir,(self.election.social_constants[0]-280)/560)
 
