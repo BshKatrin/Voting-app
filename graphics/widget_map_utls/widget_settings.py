@@ -11,6 +11,17 @@ class WidgetSettings(QWidget):
         self.election=election
         self.setWindowTitle("Random generation settings")
 
+        #Creations des graph
+        self.economical_graph = GraphSettings(self.election,'Left-Right')
+        self.social_graph = GraphSettings(self.election, 'Liberal-Autoritarian')
+        self.coeffdir_graph = GraphSettings(self.election, 'Coefficient directeur')
+        
+        """self.economical_graph.updateGraphGauss(self.election.economical_constants[0]/560,self.election.economical_constants[1]/560)
+        self.social_graph.updateGraphGauss(self.election.social_constants[0]/560,self.election.social_constants[1]/560)
+        self.coeffdir_graph.updateGraphAffine(self.election.coef_dir,(self.election.social_constants[0]-280)/560)"""
+
+        
+
         self.economical_label = QLabel('Economical',self)
         self.social_label = QLabel('Social', self)
 
@@ -46,21 +57,13 @@ class WidgetSettings(QWidget):
         self.slider_sigma_socio.valueChanged.connect(self.majSigmaSocioValue)
         self.slider_sigma_socio.setValue(int(self.election.social_constants[1]/5.6+self.election.social_constants[0]/5.6))
         self.slider_sigma_socio.setRange(0,100)
-
-        #Creations des graph
-        self.economical_graph = GraphSettings(self.election,'Left-Right')
-        self.social_graph = GraphSettings(self.election, 'Liberal-Autoritarian')
-        self.coeffdir_graph = GraphSettings(self.election, 'Coefficient directeur')
         
-        self.economical_graph.updateGraphGauss(self.election.economical_constants[0]/560,self.election.economical_constants[1]/560)
-        self.social_graph.updateGraphGauss(self.election.social_constants[0]/560,self.election.social_constants[1]/560)
-        self.coeffdir_graph.updateGraphAffine(self.election.coef_dir,(self.election.social_constants[0]-280)/560)
-
         self.slider_coeffdir = QSlider(Qt.Horizontal, self)
         self.slider_coeffdir.valueChanged.connect(self.majCoeffdirValue)
         self.slider_coeffdir.setValue(self.election.coef_dir)
         self.slider_coeffdir.setRange(-1,1)
         self.slider_coeffdir.setTickInterval(1)
+
         
         #Labels ajoutés pour calculer les niveau de compétences des électeurs de manière aléatoire suivant une loi normale
         self.knowledge_label = QLabel('Knowledge', self)
