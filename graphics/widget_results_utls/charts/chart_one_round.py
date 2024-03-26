@@ -25,7 +25,6 @@ class ChartOneRound(QChart):
         self.addSeries(self.series)
         self.initBarSets()
         self.initAxes()
-        print("init axes")
 
     def initBarSets(self):
         winner_barset = None
@@ -63,8 +62,7 @@ class ChartOneRound(QChart):
 
     def _setYRange(self):
         mx = self.findMax()
-        print(self.voting_rule, mx)
-        self.axisY.setRange(0, mx + 5)
+        self.axisY.setRange(0, mx)
 
     # Find maximum score (for Y axis)
     def findMax(self):
