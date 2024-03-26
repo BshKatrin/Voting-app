@@ -29,7 +29,7 @@ class GraphSettings(QWidget):
         i = 0
         while i<=1:
             x.append(i)
-            y.append((1 / (sigma * np.sqrt(np.pi))) * np.exp(-0.5 * ((i - mu) / sigma) ** 2))
+            y.append((1 / ((sigma+0.01) * np.sqrt(np.pi))) * np.exp(-0.5 * ((i - mu) / (sigma+0.01)) ** 2))
             i=i+0.005
         # plot data: x, y values
         self.graphWidget.plot(x, y, pen=self.pen)
