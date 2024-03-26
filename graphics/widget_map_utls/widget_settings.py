@@ -10,18 +10,19 @@ class WidgetSettings(QWidget):
         super().__init__()
         self.election=election
         self.setWindowTitle("Random generation settings")
+        
+        #configuration taille du window
+        side_size = min(parent.width(), parent.height())
+        self.setFixedSize(0.8*side_size,0.8* side_size)
+
+        self.scrollArea = QScrollArea()
 
         #Creations des graph
         self.economical_graph = GraphSettings(self.election,'Left-Right')
         self.social_graph = GraphSettings(self.election, 'Liberal-Autoritarian')
         self.coeffdir_graph = GraphSettings(self.election, 'Coefficient directeur')
+        self.knowledge_graph =GraphSettings(self.election, 'Knowledge')
         
-        """self.economical_graph.updateGraphGauss(self.election.economical_constants[0]/560,self.election.economical_constants[1]/560)
-        self.social_graph.updateGraphGauss(self.election.social_constants[0]/560,self.election.social_constants[1]/560)
-        self.coeffdir_graph.updateGraphAffine(self.election.coef_dir,(self.election.social_constants[0]-280)/560)"""
-
-        
-
         self.economical_label = QLabel('Economical',self)
         self.social_label = QLabel('Social', self)
 
@@ -86,43 +87,73 @@ class WidgetSettings(QWidget):
 
         
         
-        #mise en place du layout
-        self.layout_widget = QGridLayout()
-        self.setLayout(self.layout_widget)
-        #implementation des titres
-        self.layout_widget.addWidget(self.economical_label,1,2)
-        self.layout_widget.addWidget(self.social_label,1,5)
-        self.layout_widget.addWidget(self.knowledge_label,5,2)
-        #implementation des slider dans le layout
-        self.layout_widget.addWidget(self.slider_mu_eco,3,2)
-        self.layout_widget.addWidget(self.slider_sigma_eco,4,2)
-        self.layout_widget.addWidget(self.slider_mu_socio,3,5)
-        self.layout_widget.addWidget(self.slider_sigma_socio,4,5)
-        self.layout_widget.addWidget(self.slider_mu_knowledge,6,2)
-        self.layout_widget.addWidget(self.slider_sigma_knowledge,7,2)
-        self.layout_widget.addWidget(self.slider_coeffdir,6,5)
-        #implementation des labes des slider
-        self.layout_widget.addWidget(self.mu_eco_label,3,1)
-        self.layout_widget.addWidget(self.sigma_eco_label,4,1)
-        self.layout_widget.addWidget(self.mu_social_label,3,4)
-        self.layout_widget.addWidget(self.sigma_social_label,4,4)
-        self.layout_widget.addWidget(self.mu_knowledge_label,6,1)
-        self.layout_widget.addWidget(self.sigma_knowledge_label,7,1)
-        self.layout_widget.addWidget(self.coeffdir_label,6,4)
-        #implementation des valeurs des slider 
-        self.layout_widget.addWidget(self.mu_eco_result,3,3)
-        self.layout_widget.addWidget(self.sigma_eco_result,4,3)
-        self.layout_widget.addWidget(self.mu_social_result,3,6)
-        self.layout_widget.addWidget(self.sigma_social_result,4,6)
-        self.layout_widget.addWidget(self.mu_knowledge_result,6,3)
-        self.layout_widget.addWidget(self.sigma_knowledge_result,7,3)
-        self.layout_widget.addWidget(self.coeffdir_result,6,6)
-        #implementation des graphs
-        self.layout_widget.addWidget(self.economical_graph,2,2)
-        self.layout_widget.addWidget(self.social_graph,2,5)
-        self.layout_widget.addWidget(self.coeffdir_graph,5,5)
+        #mise en place Wigdet economical
+        self.layout_economical_widget = QGridLayout()
+        self.layout_economical_widget.addWidget(self.economical_label,1,2)
+        self.layout_economical_widget.addWidget(self.economical_graph,2,2)
+        self.layout_economical_widget.addWidget(self.mu_eco_label,3,1)
+        self.layout_economical_widget.addWidget(self.slider_mu_eco,3,2)
+        self.layout_economical_widget.addWidget(self.mu_eco_result,3,3)
+        self.layout_economical_widget.addWidget(self.sigma_eco_label,4,1)
+        self.layout_economical_widget.addWidget(self.slider_sigma_eco,4,2)
+        self.layout_economical_widget.addWidget(self.sigma_eco_result,4,3)
+        self.widget_economical = QWidget()
+        self.widget_economical.setFixedSize(400,400)
+        self.widget_economical.setLayout(self.layout_economical_widget)
 
+        #mise en place Wigdet social
+        self.layout_social_widget = QGridLayout()
+        self.layout_social_widget.addWidget(self.social_label,1,2)
+        self.layout_social_widget.addWidget(self.social_graph,2,2)
+        self.layout_social_widget.addWidget(self.mu_social_label,3,1)
+        self.layout_social_widget.addWidget(self.slider_mu_socio,3,2)
+        self.layout_social_widget.addWidget(self.mu_social_result,3,3)
+        self.layout_social_widget.addWidget(self.sigma_social_label,4,1)
+        self.layout_social_widget.addWidget(self.slider_sigma_socio,4,2)
+        self.layout_social_widget.addWidget(self.sigma_social_result,4,3)
+        self.widget_social = QWidget()
+        self.widget_social.setFixedSize(400,400)
+        self.widget_social.setLayout(self.layout_social_widget)
+
+        #mise en place Wigdet Coeffdir
+        self.layout_coeffdir_widget = QGridLayout()
+        self.layout_coeffdir_widget.addWidget(self.coeffdir_label,1,2)
+        self.layout_coeffdir_widget.addWidget(self.coeffdir_graph,2,2)
+        self.layout_coeffdir_widget.addWidget(self.coeffdir_label,3,1)
+        self.layout_coeffdir_widget.addWidget(self.slider_coeffdir,3,2)
+        self.layout_coeffdir_widget.addWidget(self.coeffdir_result,3,3)
+        self.widget_coeffdir = QWidget()
+        self.widget_coeffdir.setFixedSize(400,400)
+        self.widget_coeffdir.setLayout(self.layout_coeffdir_widget)
+
+        #mise en place Wigdet Knowledge
+        self.layout_knowledge_widget = QGridLayout()
+        self.layout_knowledge_widget.addWidget(self.knowledge_label,1,2)
+        self.layout_knowledge_widget.addWidget(self.knowledge_graph,2,2)
+        self.layout_knowledge_widget.addWidget(self.mu_knowledge_label,3,1)
+        self.layout_knowledge_widget.addWidget(self.slider_mu_knowledge,3,2)
+        self.layout_knowledge_widget.addWidget(self.mu_knowledge_result,3,3)
+        self.layout_knowledge_widget.addWidget(self.sigma_knowledge_label,4,1)
+        self.layout_knowledge_widget.addWidget(self.slider_sigma_knowledge,4,2)
+        self.layout_knowledge_widget.addWidget(self.sigma_knowledge_result,4,3)
+        self.widget_knowledge = QWidget()
+        self.widget_knowledge.setFixedSize(400,400)
+        self.widget_knowledge.setLayout(self.layout_knowledge_widget)
+
+        #mise en place du widget scrollable
+        self.layout_scroll_widget = QVBoxLayout()
+        self.layout_scroll_widget.addWidget(self.widget_economical)
+        self.layout_scroll_widget.addWidget(self.widget_social )
+        self.layout_scroll_widget.addWidget(self.widget_coeffdir)
+        self.layout_scroll_widget.addWidget(self.widget_knowledge)
+        self.widget_scroll = QWidget()
+        self.widget_scroll.setLayout(self.layout_scroll_widget)
         
+        #mise en place du layout de la fenetre implementant le widget scrolable 
+        self.scrollArea.setWidget(self.widget_scroll)
+        self.layout_principal = QVBoxLayout()
+        self.layout_principal.addWidget(self.scrollArea)
+        self.setLayout(self.layout_principal)
 
 
     def majMuEcoValue(self, value):
@@ -152,13 +183,13 @@ class WidgetSettings(QWidget):
     def majMuKnowledgeValue(self, value):
         self.election.knowledge_constants=(value/100,self.election.knowledge_constants[1])
         self.mu_knowledge_result.setText(f'{value/100}')
-        
+        self.knowledge_graph.updateGraphGauss(self.election.knowledge_constants[0],self.election.knowledge_constants[1])
         
 
     def majSigmaKnowledgeValue(self, value):
-        self.election.knowledge_constants=(self.election.knowledge_constants[0],value/100)
+        self.election.knowledge_constants=(self.election.knowledge_constants[0],abs(self.election.knowledge_constants[0]-value/100))
         self.sigma_knowledge_result.setText(f'{value/100}')
-
+        self.knowledge_graph.updateGraphGauss(self.election.knowledge_constants[0],self.election.knowledge_constants[1])
 
     def majCoeffdirValue(self,value):
         self.election.coef_dir = value
