@@ -16,7 +16,9 @@ class ChartView(QChartView):
         self.viewport().setAttribute(Qt.WidgetAttribute.WA_AcceptTouchEvents, False)
 
     def initOneRoundChart(self, oneRoundSet):
-        self.chart_one_round = ChartOneRound(oneRoundSet)
+        self.charts_one_rounds = {
+            voting_rule: ChartOneRound(voting_rule) for voting_rule in oneRoundSet
+        }
 
     def initMultiRoundChart(self, multiRoundSet):
         self.charts_multi_rounds = {
@@ -27,14 +29,16 @@ class ChartView(QChartView):
     def setChartBySig(self, voting_rule):
         if voting_rule in {EXHAUSTIVE_BALLOT, PLURALITY_2_ROUNDS}:
             chart = self.charts_multi_rounds[voting_rule]
-            self.setChart(chart)
         else:
-            self.setChart(self.chart_one_round)
+            chart = self.charts_one_rounds[voting_rule]
+        self.setChart(chart)
         self.show()
 
     @Slot()
     def delete_children(self):
         self.setChart(None)  # because setChart takes ownership
-        self.chart_one_round.deleteLater()
+        # self.chart_one_round.deleteLater()
         for multi_chart in self.charts_multi_rounds.values():
             multi_chart.deleteLater()
+        for one_chart in self.charts_one_rounds.values():
+            one_chart.deleteLater()
