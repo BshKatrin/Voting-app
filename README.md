@@ -1,8 +1,14 @@
 # Application de vote
 
-## Participant
+## À propos
 
-Groupe : **tzb**
+### Description générale
+
+### Features
+
+## Participants
+
+### Groupe : _tzb_
 
 - Haroun Zerdoumi 21212992
 - Pâris Tran
@@ -15,3 +21,5 @@ Groupe : **tzb**
 ## Installation
 
 ## Utilisation
+
+##
