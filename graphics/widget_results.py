@@ -20,6 +20,7 @@ from electoral_systems.voting_rules.constants import *
 class WidgetResults(QWidget):
     sig_show_chart = Signal(str)
     sig_widget_results_destroying = Signal()
+    sig_conduct_poll = Signal(int)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -30,9 +31,9 @@ class WidgetResults(QWidget):
         # For destroy_children
         self.graph_view = None
         self.charts_view = None
-
+        # True if nb_polls != 0, False otherwise
+        self.conduct_polls = True if self.election.nb_polls else False
         self.initUI()
-        self.initLabels()
         self.initViews()
 
         self.sig_widget_results_destroying.connect(self.destroyChildren)
@@ -73,34 +74,71 @@ class WidgetResults(QWidget):
         self.layout = QGridLayout()
         self.setLayout(self.layout)
         self.layout.setSpacing(10)
+        # Add polls row only if nb_polls != 0
+        if self.conduct_polls:
+            self.initPollsUI()
+
+        self.initColumns()
+
         self.image = MapImage("graphics/temp/map.png")
         self.image.closed.connect(self.toggleCheckbox)
 
+    def initPollsUI(self):
+        # Number of polls
+        self.nb_polls_conducted = 1
+
+        remaining_polls_label = QLabel(self)
+        remaining_polls_label.setStyleSheet("font-weight: bold")
+        remaining_polls_label.setText(
+            f"Polls {self.nb_polls_conducted}/{self.election.nb_polls}"
+        )
+
+        start_poll_btn = QPushButton("Apply new poll", self)
+        start_poll_btn.clicked.connect(
+            partial(self.conductNewPoll, self.nb_polls_conducted + 1)
+        )
+
+        # Add to layout (on the very top)
+        self.layout.addWidget(
+            remaining_polls_label, 0, 0, Qt.AlignmentFlag.AlignHCenter
+        )
+        self.layout.addWidget(start_poll_btn, 0, 1, 1, 3)
+
     # Affichage des resultats sous la forme d'un tableau
-    def initLabels(self):
+    def initColumns(self):
+        start_row = 1 if self.conduct_polls else 0
+
         column_one_header = QLabel()
         column_one_header.setText("Voting rule")
-        self.layout.addWidget(column_one_header, 0, 0, alignment=Qt.AlignHCenter)
+        self.layout.addWidget(
+            column_one_header, start_row, 0, alignment=Qt.AlignHCenter
+        )
         column_one_header.setStyleSheet("font-weight: bold")
 
         column_two_header = QLabel()
         column_two_header.setText("Winner")
-        self.layout.addWidget(column_two_header, 0, 1, alignment=Qt.AlignHCenter)
+        self.layout.addWidget(
+            column_two_header, start_row, 1, alignment=Qt.AlignHCenter
+        )
         column_two_header.setStyleSheet("font-weight: bold")
 
         column_three_header = QLabel()
         column_three_header.setText("Satisfaction")
-        self.layout.addWidget(column_three_header, 0, 2, alignment=Qt.AlignHCenter)
+        self.layout.addWidget(
+            column_three_header, start_row, 2, alignment=Qt.AlignHCenter
+        )
         column_three_header.setStyleSheet("font-weight: bold")
 
         self.checkbox = QCheckBox("Show quadrant map", parent=self)
         self.checkbox.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.checkbox.stateChanged.connect(self.toggleQuadrantMap)
-        self.layout.addWidget(self.checkbox, 0, 3, Qt.AlignRight | Qt.AlignVCenter)
+        self.layout.addWidget(
+            self.checkbox, start_row, 3, Qt.AlignRight | Qt.AlignVCenter
+        )
 
         self.election.calculate_results()
 
-        for row, voting_rule in enumerate(self.election.results, start=1):
+        for row, voting_rule in enumerate(self.election.results, start=start_row + 1):
             # Create label with name to find it later with findChild if necessary
             label_voting_rule = QLabel(parent=self)
             label_winner = QLabel(parent=self)
@@ -136,6 +174,16 @@ class WidgetResults(QWidget):
             self.layout.addWidget(label_satisfaction, row, 2, alignment=Qt.AlignHCenter)
 
             self.layout.addWidget(show_btn, row, 3, alignment=Qt.AlignHCenter)
+
+    @Slot(int)
+    def conductNewPoll(self, polls_conducted):
+        # Apply new poll
+
+        # Update nb of polls
+        self.nb_polls_conducted = polls_conducted
+        # Desactivate button if limit is reached
+        if polls_conducted == self.election.nb_polls:
+            self.start_poll_btn.setEnabled(False)
 
     def _get_view_size(self):
         return QSize(self.parent().width() * 0.8, self.parent().height() * 0.8)

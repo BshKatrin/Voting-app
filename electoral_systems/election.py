@@ -36,6 +36,8 @@ class Election(metaclass=Singleton):
 
         self.knowledge_constants = (0.5, 0.3)
 
+        self.nb_polls = 5
+
     def add_elector(self, new_elector):
         self.electors.append(new_elector)
 
@@ -65,7 +67,6 @@ class Election(metaclass=Singleton):
             # print("delegation to ", delegee)
             delegee.weight += elector.weight
             elector.weight = 0
-            
 
     def apply_voting_rule(self, voting_rule):
         if not self.has_electors_candidates():
