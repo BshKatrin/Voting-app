@@ -1,9 +1,9 @@
 from copy import deepcopy
 from math import sqrt
-from random import uniform
+from random import uniform, random, choices
 from people import Candidate
 from people import Elector
-import numpy as np
+from numpy.random import normal
 
 from electoral_systems.voting_rules.constants import *
 from .func_constants import VOTING_RULES_FUNC
@@ -29,14 +29,18 @@ class Election(metaclass=Singleton):
         self.average_position_electors = (0, 0)
         self.proportion_satisfaction = 0
 
+        self.set_default_settings()
+
+    def set_default_settings(self):
+        self.nb_polls = 5
+        self.liquid_democracy_activated = True
+
         # variable necessaire pour generation aleatoire
         self.economical_constants = (280, 100)
         self.social_constants = (280, 100)
         self.coef_dir = 1
 
         self.knowledge_constants = (0.5, 0.3)
-
-        self.nb_polls = 5
 
     def add_elector(self, new_elector):
         self.electors.append(new_elector)
@@ -124,9 +128,9 @@ class Election(metaclass=Singleton):
             y_average += y_elec
             (mu, sigma) = self.knowledge_constants
 
-            random_knowledge = np.random.normal(mu, sigma, None)
+            random_knowledge = normal(mu, sigma, None)
             while random_knowledge > 1:
-                random_knowledge = np.random.normal(mu, sigma, None)
+                random_knowledge = normal(mu, sigma, None)
 
             self.add_elector(
                 Elector(
@@ -158,3 +162,20 @@ class Election(metaclass=Singleton):
         )
         percentage = diff / self.proportion_satisfaction * 100
         return percentage
+
+    # Apply poll for every 1 ROUND voting system
+    def _conduct_poll_voting_rule(self, voting_rule):
+        pass
+
+    # Conduct polls for every chosen 1 round voting rule
+    def conduct_polls(self, voting_rules):
+        # Choose 1 ROUND voting rules
+        voting_rules_one_round = {
+            PLURALITY_SIMPLE,
+            VETO,
+            BORDA,
+            APPROVAL,
+        } & self.results.keys()
+
+        for voting_rule in voting_rules_one_round:
+            self._conduct_poll_voting_rule(voting_rule)

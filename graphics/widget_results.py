@@ -33,8 +33,8 @@ class WidgetResults(QWidget):
         self.charts_view = None
         # True if nb_polls != 0, False otherwise
         self.conduct_polls = True if self.election.nb_polls else False
-        self.initUI()
         self.initViews()
+        self.initUI()
 
         self.sig_widget_results_destroying.connect(self.destroyChildren)
 
@@ -42,14 +42,14 @@ class WidgetResults(QWidget):
         if self.condorcetChosen():
             self.initDirectedGraph()
 
-        self.oneRoundBool, oneRoundSet = self.oneRoundChosen()
+        self.oneRoundBool, self.oneRoundSet = self.oneRoundChosen()
         self.multiRoundBool, multiRoundSet = self.multiRoundChosen()
 
         if self.oneRoundBool or self.multiRoundBool:
             self.initChartsView()
 
         if self.oneRoundBool:
-            self.charts_view.initOneRoundChart(oneRoundSet)
+            self.charts_view.initOneRoundChart(self.oneRoundSet)
 
         if self.multiRoundBool:
             self.charts_view.initMultiRoundChart(multiRoundSet)
@@ -75,6 +75,7 @@ class WidgetResults(QWidget):
         self.setLayout(self.layout)
         self.layout.setSpacing(10)
         # Add polls row only if nb_polls != 0
+        # and at least one of 1 round voting rules were chosen
         if self.conduct_polls:
             self.initPollsUI()
 
@@ -87,22 +88,27 @@ class WidgetResults(QWidget):
         # Number of polls
         self.nb_polls_conducted = 1
 
-        remaining_polls_label = QLabel(self)
-        remaining_polls_label.setStyleSheet("font-weight: bold")
-        remaining_polls_label.setText(
+        self.remaining_polls_label = QLabel(self)
+        self.remaining_polls_label.setStyleSheet("font-weight: bold")
+        self.remaining_polls_label.setText(
             f"Polls {self.nb_polls_conducted}/{self.election.nb_polls}"
         )
 
-        start_poll_btn = QPushButton("Apply new poll", self)
-        start_poll_btn.clicked.connect(
-            partial(self.conductNewPoll, self.nb_polls_conducted + 1)
-        )
+        self.start_poll_btn = QPushButton("Apply new poll", self)
 
         # Add to layout (on the very top)
         self.layout.addWidget(
-            remaining_polls_label, 0, 0, Qt.AlignmentFlag.AlignHCenter
+            self.remaining_polls_label, 0, 0, Qt.AlignmentFlag.AlignHCenter
         )
-        self.layout.addWidget(start_poll_btn, 0, 1, 1, 3)
+        self.layout.addWidget(self.start_poll_btn, 0, 1, 1, 3)
+
+        # Disable button of NO 1 round voting rules were chosen
+        if not self.oneRoundBool:
+            self.start_poll_btn.setEnabled(False)
+            return
+
+        # Connect only if necessary
+        self.start_poll_btn.clicked.connect(partial(self.conductNewPoll))
 
     # Affichage des resultats sous la forme d'un tableau
     def initColumns(self):
@@ -135,8 +141,6 @@ class WidgetResults(QWidget):
         self.layout.addWidget(
             self.checkbox, start_row, 3, Qt.AlignRight | Qt.AlignVCenter
         )
-
-        self.election.calculate_results()
 
         for row, voting_rule in enumerate(self.election.results, start=start_row + 1):
             # Create label with name to find it later with findChild if necessary
@@ -175,14 +179,18 @@ class WidgetResults(QWidget):
 
             self.layout.addWidget(show_btn, row, 3, alignment=Qt.AlignHCenter)
 
-    @Slot(int)
-    def conductNewPoll(self, polls_conducted):
+    @Slot()
+    def conductNewPoll(self):
         # Apply new poll
-
+        self.election.conduct_polls(self.oneRoundSet)
         # Update nb of polls
-        self.nb_polls_conducted = polls_conducted
+        self.nb_polls_conducted += 1
+        # Update UI on nb of polls
+        self.remaining_polls_label.setText(
+            f"Polls {self.nb_polls_conducted}/{self.election.nb_polls}"
+        )
         # Desactivate button if limit is reached
-        if polls_conducted == self.election.nb_polls:
+        if self.nb_polls_conducted == self.election.nb_polls:
             self.start_poll_btn.setEnabled(False)
 
     def _get_view_size(self):
@@ -211,7 +219,7 @@ class WidgetResults(QWidget):
     def onShowChartBtnClick(self, voting_rule):
         self.sig_show_chart.emit(voting_rule)
 
-    @Slot(bool)
+    @Slot(int)
     def toggleQuadrantMap(self, state):
         if state and (not self.image.isVisible()):
             self.image.show()

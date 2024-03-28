@@ -50,7 +50,7 @@ class WidgetCheckbox(QWidget):
         self.layout.addWidget(self.confirm_btn)
         self.layout.addWidget(self.choose_all_btn)
 
-    @Slot(str, bool)
+    @Slot(str, int)
     def onStateChanged(self, voting_rule, state):
         (
             self.set_constants.add(voting_rule)
