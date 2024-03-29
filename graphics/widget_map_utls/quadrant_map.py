@@ -1,9 +1,12 @@
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLineEdit
+from itertools import product
+from math import sqrt
+
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit
 from PySide6.QtGui import QPainter, QPen, QColor, QFont
 from PySide6.QtCore import Qt, QPoint
-import random, string
-import numpy as np
 
+from numpy import clip
+from numpy.random import normal
 from electoral_systems import Election, RandomConstants
 
 from people import Elector, Candidate
@@ -232,32 +235,39 @@ class QuadrantMap(QWidget):
         self.text_box_active = False
         self.text_box.deleteLater()  #   supprime la zone de texte
 
-    ### generer QPoint(x, y), PAS normalise
+    # Generate x or y based on an already scaled mu & sigma
+    def _generate_coordinate(self, mu, sigma):
+        # Generate while not in border
+        coordinate = normal(mu, sigma)
+        while abs(coordinate) > self.width() / 2:
+            coordinate = normal(mu, sigma)
+        return coordinate
+
+        ### generer QPoint(x, y), PAS normalise
+
     def generatePosition(self):
+
         constants = self.election.generation_constants
         economical_constants = constants[RandomConstants.ECONOMICAL]
         social_constants = constants[RandomConstants.SOCIAL]
         coef_dir = constants[RandomConstants.ORIENTATION]
         print(economical_constants, social_constants)
-        # x = np.random.normal(
-        #     economical_constants[0] - 280, economical_constants[1], None
-        # )
-        # y = np.random.normal(
-        #     (coef_dir * x + (social_constants[0] - 280)), social_constants[1], None
-        # )
-        # print((coef_dir * x + (social_constants[0] - 280)), social_constants[1])
+        # Spread factor on a map for sigma
+        spread_factor = 1 / 4
+
         mu_scaled = economical_constants[0] * self.width() / 2
-        sigma_scaled = economical_constants[1] * self.width() / 4
-        x = np.random.normal(mu_scaled, sigma_scaled)
+        sigma_scaled = economical_constants[1] * self.width() * spread_factor
+        x = self._generate_coordinate(mu_scaled, sigma_scaled)
 
         mu_scaled = coef_dir * x + social_constants[0] * self.width() / 2
-        sigma_scaled = social_constants[1] * self.width() / 4
-        y = np.random.normal(mu_scaled, sigma_scaled)
-        half_width = self.width() / 2
+        sigma_scaled = social_constants[1] * self.width() * spread_factor
+        y = self._generate_coordinate(mu_scaled, sigma_scaled)
 
-        x = np.clip(x, -half_width, half_width)
-        y = np.clip(y, -half_width, half_width)
-        print(x, y)
+        # Limit values  to a map range
+        # half_width = self.width() / 2
+        # x = clip(x, -half_width, half_width)
+        # y = clip(y, -half_width, half_width)
+
         return QPoint(x, y)
 
     ### Position de type QPoint, retourne couple normale
