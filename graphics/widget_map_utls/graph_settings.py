@@ -1,24 +1,150 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QSlider,
+    QGridLayout,
+)
+from PySide6.QtCore import Qt, Slot
 
 from pyqtgraph import PlotWidget, mkPen
 
 from numpy import arange, array, sqrt, pi, exp
-from electoral_systems import Election
+from electoral_systems import Election, RandomConstants
 
 
 class GraphSettings(QWidget):
 
-    def __init__(self, parent, title):
+    def __init__(self, parent, title, type, graph_type, quadrant_map_size):
         super().__init__(parent)
 
         self.election = Election()
 
-        self.initPlot(title)
+        self.type = type
+
+        self.map_size = quadrant_map_size
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
+
+        self.initPlot(title)
         self.layout.addWidget(self.graphWidget)
+
+        # Init graphs based on a type
+        match graph_type:
+            case RandomConstants.LINEAR:
+                self.initLinearInput()
+            case RandomConstants.GAUSS:
+                self.initGaussInput()
+
+    @Slot(float)
+    def updateMuConstant(self, value):
+        map_coef = self.map_size / 100
+        _, old_sigma = self.election.generation_constants[self.type]
+        new_mu = int(value * map_coef)
+        self.election.generation_constants[self.type] = (
+            new_mu,
+            old_sigma,
+        )
+        self.mu_result_label.setText(str(value))
+        self.updateGraphGauss(new_mu / self.map_size, old_sigma / self.map_size)
+
+    @Slot(float)
+    def updateSigmaConstant(self, value):
+        map_coef = self.map_size / 100
+        old_mu, _ = self.election.generation_constants[self.type]
+        new_sigma = abs(int(value * map_coef) - old_mu)
+        self.election.generation_constants[self.type] = (
+            old_mu,
+            new_sigma,
+        )
+        self.mu_result_label.setText(str(value))
+        self.updateGraphGauss(old_mu / self.map_size, new_sigma / self.map_size)
+
+    @Slot(float)
+    def updateCoefDir(self, value):
+        self.election.generation_constants[self.type] = value
+        self.coeffdir_result.setText(str(value))
+
+        mu = self.election.generation_constants[RandomConstants.SOCIAL][0]
+        self.updateGraphAffine(value, (mu - self.map_size / 2) / self.map_size)
+
+    def initLinearInput(self):
+        sub_layout = QGridLayout()
+        self.coeffdir_label = QLabel("Coeffdir", self)
+
+        self.coeffdir_result = QLabel("", self)
+
+        self.slider_coeffdir = QSlider(Qt.Horizontal, self)
+        self.slider_coeffdir.valueChanged.connect(self.updateCoefDir)
+        self.slider_coeffdir.setValue(self.election.generation_constants[self.type])
+        self.slider_coeffdir.setRange(-1, 1)
+        self.slider_coeffdir.setTickInterval(1)
+
+        sub_layout.addWidget(self.coeffdir_label, 0, 0)
+        sub_layout.addWidget(self.slider_coeffdir, 0, 1, 1, 2)
+        sub_layout.addWidget(self.coeffdir_result, 0, 3)
+
+        self.layout.addLayout(sub_layout)
+
+    @Slot(float)
+    def updateMuKnowledge(self, value):
+        _, sigma_old = self.election.generation_constants[self.type]
+        mu_new = value / 100
+        self.mu_result_label.setText(str(value))
+        self.election.generation_constants[self.type] = mu_new, sigma_old
+        self.updateGraphGauss(mu_new, sigma_old)
+
+    @Slot(float)
+    def updateSigmaKnowledge(self, value):
+        mu_old, _ = self.election.generation_constants[self.type]
+        sigma_new = abs(mu_old - value / 100)
+
+        self.sigma_result_label.setText(str(value))
+        self.election.generation_constants[self.type] = mu_old, sigma_new
+        self.updateGraphGauss(mu_old, sigma_new)
+
+    def initGaussInput(self):
+        # Grid()
+        sub_layout = QGridLayout()
+
+        mu_label = QLabel("Mu", self)
+        sigma_label = QLabel("Sigma", self)
+
+        self.mu_result_label = QLabel("", self)
+        self.sigma_result_label = QLabel("", self)
+
+        self.mu_slider = QSlider(Qt.Horizontal, self)
+        self.sigma_slider = QSlider(Qt.Horizontal, self)
+
+        constants = self.election.generation_constants[self.type]
+        print(self.type, constants)
+        if self.type != RandomConstants.KNOWLEDGE:
+            self.mu_slider.valueChanged.connect(self.updateMuConstant)
+            self.sigma_slider.valueChanged.connect(self.updateSigmaConstant)
+            map_coef = self.map_size / 100
+
+            self.mu_slider.setValue(int(constants[0] / map_coef))
+            self.sigma_slider.setValue(int((constants[1] + constants[0]) / map_coef))
+        else:
+            self.mu_slider.valueChanged.connect(self.updateMuKnowledge)
+            self.sigma_slider.valueChanged.connect(self.updateSigmaKnowledge)
+
+            self.mu_slider.setValue(constants[0] * 100)
+            self.sigma_slider.setValue(constants[1] * 100)
+
+        self.mu_slider.setRange(0, 100)
+        self.sigma_slider.setRange(0, 100)
+
+        sub_layout.addWidget(mu_label, 0, 0)
+        sub_layout.addWidget(self.mu_slider, 0, 1, 1, 2)
+        sub_layout.addWidget(self.mu_result_label, 0, 3)
+
+        sub_layout.addWidget(sigma_label, 1, 0)
+        sub_layout.addWidget(self.sigma_slider, 1, 1, 1, 2)
+        sub_layout.addWidget(self.sigma_result_label, 1, 3)
+
+        self.layout.addLayout(sub_layout)
 
     def initPlot(self, title):
         self.graphWidget = PlotWidget()

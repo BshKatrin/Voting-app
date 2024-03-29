@@ -5,9 +5,8 @@ from PySide6.QtCore import Signal, Slot
 from electoral_systems import Election
 
 from electoral_systems.voting_rules.constants import *
+from electoral_systems import VotingRulesConstants
 from .voting_rule_checkbox import VotingRuleCheckbox
-
-from ..ui_constants import UI_VOTING_RULES
 
 
 class WidgetCheckbox(QWidget):
@@ -29,9 +28,9 @@ class WidgetCheckbox(QWidget):
 
         self.lst_checkboxes = []
 
-        for voting_rule, voting_rule_name in UI_VOTING_RULES.items():
+        for voting_rule, voting_rule_name in VotingRulesConstants.UI.items():
             # Minimum number of candidate for each voting rule
-            min = 3 if voting_rule in {EXHAUSTIVE_BALLOT, PLURALITY_2_ROUNDS} else 2
+            min = 3 if voting_rule in VotingRulesConstants.MULTI_ROUND else 2
 
             checkbox = VotingRuleCheckbox(voting_rule_name, min, parent=self)
 

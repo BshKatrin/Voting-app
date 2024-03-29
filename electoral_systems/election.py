@@ -1,14 +1,12 @@
 from copy import deepcopy
 from math import sqrt
-from random import uniform, random, choices
+from random import uniform, random
 from people import Candidate
 from people import Elector
 from numpy.random import normal
 
-from electoral_systems.voting_rules.constants import *
-from .func_constants import VOTING_RULES_FUNC
+from .election_constants import RandomConstants, VotingRulesConstants
 
-from .voting_rules.constants import *
 from .voting_rules.condorcet import set_duels_scores
 from .voting_rules.delegation import choose_delegee, choose_possible_delegees
 from .singleton import Singleton
@@ -36,11 +34,18 @@ class Election(metaclass=Singleton):
         self.liquid_democracy_activated = True
 
         # variable necessaire pour generation aleatoire
-        self.economical_constants = (280, 100)
-        self.social_constants = (280, 100)
-        self.coef_dir = 1
+        self.generation_constants = {
+            RandomConstants.ECONOMICAL: (280, 100),
+            RandomConstants.SOCIAL: (280, 100),
+            RandomConstants.ORIENTATION: 1,
+            RandomConstants.KNOWLEDGE: (0.5, 0.3),
+        }
 
-        self.knowledge_constants = (0.5, 0.3)
+        # self.economical_constants = (280, 100)
+        # self.social_constants = (280, 100)
+        # self.coef_dir = 1
+
+        # self.knowledge_constants = (0.5, 0.3)
 
     def add_elector(self, new_elector):
         self.electors.append(new_elector)
@@ -76,25 +81,28 @@ class Election(metaclass=Singleton):
         if not self.has_electors_candidates():
             pass
 
-        if voting_rule in {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}:
+        if voting_rule in VotingRulesConstants.CONDORCET:
             self.condorcet_graph_info = set_duels_scores(self.electors, self.candidates)
 
-        self.results[voting_rule] = VOTING_RULES_FUNC[voting_rule](
+        self.results[voting_rule] = VotingRulesConstants.VOTING_RULES_FUNC[voting_rule](
             self.electors, self.candidates
         )
 
     def choose_winner(self, voting_rule):
         if voting_rule not in self.results:
             self.apply_voting_rule(voting_rule)
-        if voting_rule in {EXHAUSTIVE_BALLOT, PLURALITY_2_ROUNDS}:
+
+        if voting_rule in VotingRulesConstants.MULTI_ROUND:
             return self.results[voting_rule][-1][0]
-        if voting_rule == CONDORCET_SIMPLE:
+
+        if voting_rule == VotingRulesConstants.CONDORCET_SIMPLE:
             return self.choose_condorcet_winner()
+
         return self.results[voting_rule][0]
 
     def choose_condorcet_winner(self):
-        fst_candidate = self.results[CONDORCET_SIMPLE][0]
-        score = fst_candidate.scores[CONDORCET_SIMPLE]
+        fst_candidate = self.results[VotingRulesConstants.CONDORCET_SIMPLE][0]
+        score = fst_candidate.scores[VotingRulesConstants.CONDORCET_SIMPLE]
         return fst_candidate if score == len(self.candidates) - 1 else None
 
     def init_results_keys(self, set_keys):
@@ -126,7 +134,7 @@ class Election(metaclass=Singleton):
             (x_elec, y_elec) = elec
             x_average += x_elec
             y_average += y_elec
-            (mu, sigma) = self.knowledge_constants
+            (mu, sigma) = self.generation_constants[RandomConstants.KNOWLEDGE]
 
             random_knowledge = normal(mu, sigma, None)
             while random_knowledge > 1:
@@ -170,12 +178,7 @@ class Election(metaclass=Singleton):
     # Conduct polls for every chosen 1 round voting rule
     def conduct_polls(self, voting_rules):
         # Choose 1 ROUND voting rules
-        voting_rules_one_round = {
-            PLURALITY_SIMPLE,
-            VETO,
-            BORDA,
-            APPROVAL,
-        } & self.results.keys()
+        voting_rules_one_round = VotingRulesConstants.ONE_ROUND & self.results.keys()
 
         for voting_rule in voting_rules_one_round:
             self._conduct_poll_voting_rule(voting_rule)

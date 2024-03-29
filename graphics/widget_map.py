@@ -62,8 +62,10 @@ class WidgetMap(QWidget):
         self.voting_rules_checkbox.sig_toggle_election_btn.connect(
             self.toggleElectionBtnState
         )
-        # MAJ 06.03.24
-        self.widget_settings = WidgetSettings(self.parent().size())
+
+        self.widget_settings = WidgetSettings(
+            self.parent().size(), self.quadrant_map.size()
+        )
 
         # User input for random data
         self.candidates_text_box = QLineEdit(parent=self)
@@ -115,11 +117,7 @@ class WidgetMap(QWidget):
         nb_electors = self._get_int_text_box(self.electors_text_box)
 
         for _ in range(nb_candidates):
-            generatedPosition = self.quadrant_map.generatePosition(
-                self.election.economical_constants,
-                self.election.social_constants,
-                self.election.coef_dir,
-            )
+            generatedPosition = self.quadrant_map.generatePosition()
             newCandidate = Candidate(
                 position=self.quadrant_map.normalizePosition(generatedPosition)
             )
@@ -133,11 +131,7 @@ class WidgetMap(QWidget):
             )
 
         for _ in range(nb_electors):
-            generatedPosition = self.quadrant_map.generatePosition(
-                self.election.economical_constants,
-                self.election.social_constants,
-                self.election.coef_dir,
-            )
+            generatedPosition = self.quadrant_map.generatePosition()
             self.quadrant_map.electors.append(generatedPosition)
             self.election.add_electors_position(
                 self.quadrant_map.normalizePosition(generatedPosition)

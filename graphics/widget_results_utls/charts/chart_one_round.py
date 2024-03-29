@@ -10,14 +10,13 @@ from PySide6.QtCharts import (
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
 
-from electoral_systems import Election
-from ...ui_constants import UI_VOTING_RULES
+from electoral_systems import Election, VotingRulesConstants
 
 
 class ChartOneRound(QChart):
     def __init__(self, voting_rule, parent=None):
         super().__init__(parent)
-        self.setTitle(f"{UI_VOTING_RULES[voting_rule]} results")
+        self.setTitle(f"{VotingRulesConstants.UI[voting_rule]} results")
         self.voting_rule = voting_rule
         self.election = Election()
 

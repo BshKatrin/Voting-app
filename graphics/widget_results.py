@@ -11,7 +11,7 @@ from PySide6.QtCore import Qt, Slot, Signal, QSize
 
 from .widget_results_utls import DirectedGraph, DirectedGraphView, ChartView, MapImage
 
-from .ui_constants import UI_VOTING_RULES
+from electoral_systems import VotingRulesConstants
 
 from electoral_systems import Election
 from electoral_systems.voting_rules.constants import *
@@ -56,18 +56,16 @@ class WidgetResults(QWidget):
 
     # Returns True iff veto, plurality(1 round), veto, borda or approval was chosen
     def oneRoundChosen(self):
-        setOneRound = {PLURALITY_SIMPLE, VETO, BORDA, APPROVAL}
-        intersect = setOneRound & self.election.results.keys()
+        intersect = VotingRulesConstants.ONE_ROUND & self.election.results.keys()
         return bool(intersect), intersect
 
     # Returns True iff one the condorcet method was chosen
     def condorcetChosen(self):
-        setCondorcet = {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}
+        setCondorcet = VotingRulesConstants.CONDORCET
         return bool(setCondorcet & self.election.results.keys())
 
     def multiRoundChosen(self):
-        setMultiRound = {PLURALITY_2_ROUNDS, EXHAUSTIVE_BALLOT}
-        intersect = setMultiRound & self.election.results.keys()
+        intersect = VotingRulesConstants.MULTI_ROUND & self.election.results.keys()
         return bool(intersect), intersect
 
     def initUI(self):
@@ -151,17 +149,20 @@ class WidgetResults(QWidget):
             show_btn = QPushButton(parent=self)
 
             # Connect buttons to emitting signals
-            if voting_rule in {CONDORCET_SIMPLE, CONDORCET_COPELAND}:
+            if voting_rule in {
+                VotingRulesConstants.CONDORCET_SIMPLE,
+                VotingRulesConstants.CONDORCET_COPELAND,
+            }:
                 show_btn.clicked.connect(self.showDirectedGraph)
                 show_btn.setText("Show graph")
-            elif voting_rule == CONDORCET_SIMPSON:
+            elif voting_rule == VotingRulesConstants.CONDORCET_SIMPSON:
                 show_btn.clicked.connect(lambda: self.showDirectedGraph(True))
                 show_btn.setText("Show graph")
             else:
                 show_btn.clicked.connect(partial(self.onShowChartBtnClick, voting_rule))
                 show_btn.setText("Show chart")
 
-            label_voting_rule.setText(UI_VOTING_RULES[voting_rule])
+            label_voting_rule.setText(VotingRulesConstants.UI[voting_rule])
 
             winner = self.election.choose_winner(voting_rule)
             # None can be in condorcet simple

@@ -4,8 +4,7 @@ from PySide6.QtCore import Qt, QPoint
 import random, string
 import numpy as np
 
-from electoral_systems import Election
-from electoral_systems.voting_rules import constants
+from electoral_systems import Election, RandomConstants
 
 from people import Elector, Candidate
 
@@ -234,7 +233,12 @@ class QuadrantMap(QWidget):
         self.text_box.deleteLater()  #   supprime la zone de texte
 
     ### generer QPoint(x, y), PAS normalise
-    def generatePosition(self, economical_constants, social_constants, coef_dir):
+    def generatePosition(self):
+        constants = self.election.generation_constants
+        economical_constants = constants[RandomConstants.ECONOMICAL]
+        social_constants = constants[RandomConstants.SOCIAL]
+        coef_dir = constants[RandomConstants.ORIENTATION]
+
         x = np.random.normal(
             economical_constants[0] - 280, economical_constants[1], None
         )

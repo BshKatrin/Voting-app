@@ -1,7 +1,7 @@
 from PySide6.QtCharts import QChartView
 from PySide6.QtCore import Qt, Slot, Signal
 
-from electoral_systems.voting_rules.constants import *
+from electoral_systems import VotingRulesConstants
 
 from .chart_multi_round import ChartMultiRound
 from .chart_one_round import ChartOneRound
@@ -27,7 +27,7 @@ class ChartView(QChartView):
 
     @Slot(str)
     def setChartBySig(self, voting_rule):
-        if voting_rule in {EXHAUSTIVE_BALLOT, PLURALITY_2_ROUNDS}:
+        if voting_rule in VotingRulesConstants.MULTI_ROUND:
             chart = self.charts_multi_rounds[voting_rule]
         else:
             chart = self.charts_one_rounds[voting_rule]
