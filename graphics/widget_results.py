@@ -11,10 +11,7 @@ from PySide6.QtCore import Qt, Slot, Signal, QSize
 
 from .widget_results_utls import DirectedGraph, DirectedGraphView, ChartView, MapImage
 
-from electoral_systems import VotingRulesConstants
-
-from electoral_systems import Election
-from electoral_systems.voting_rules.constants import *
+from electoral_systems import Election, VotingRulesConstants
 
 
 class WidgetResults(QWidget):

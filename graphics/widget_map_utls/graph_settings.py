@@ -41,25 +41,26 @@ class GraphSettings(QWidget):
     def updateMuConstant(self, value):
         map_coef = self.map_size / 100
         _, old_sigma = self.election.generation_constants[self.type]
-        new_mu = int(value * map_coef)
+        new_mu = value / 100
         self.election.generation_constants[self.type] = (
             new_mu,
             old_sigma,
         )
-        self.mu_result_label.setText(str(value))
-        self.updateGraphGauss(new_mu / self.map_size, old_sigma / self.map_size)
+        self.mu_result_label.setText(f"{new_mu:.2f}")
+        self.updateGraphGauss(new_mu, old_sigma)
 
     @Slot(float)
     def updateSigmaConstant(self, value):
         map_coef = self.map_size / 100
         old_mu, _ = self.election.generation_constants[self.type]
-        new_sigma = abs(int(value * map_coef) - old_mu)
+        # new_sigma = abs(int(value * map_coef) - old_mu)
+        new_sigma = abs(value / 100)
         self.election.generation_constants[self.type] = (
             old_mu,
             new_sigma,
         )
-        self.mu_result_label.setText(str(value))
-        self.updateGraphGauss(old_mu / self.map_size, new_sigma / self.map_size)
+        self.sigma_result_label.setText(f"{value / 100:.2f}")
+        self.updateGraphGauss(old_mu, new_sigma)
 
     @Slot(float)
     def updateCoefDir(self, value):
@@ -67,7 +68,8 @@ class GraphSettings(QWidget):
         self.coeffdir_result.setText(str(value))
 
         mu = self.election.generation_constants[RandomConstants.SOCIAL][0]
-        self.updateGraphAffine(value, (mu - self.map_size / 2) / self.map_size)
+        # self.updateGraphAffine(value, (mu - self.map_size / 2) / self.map_size)
+        self.updateGraphAffine(value, mu)
 
     def initLinearInput(self):
         sub_layout = QGridLayout()
@@ -124,8 +126,8 @@ class GraphSettings(QWidget):
             self.sigma_slider.valueChanged.connect(self.updateSigmaConstant)
             map_coef = self.map_size / 100
 
-            self.mu_slider.setValue(int(constants[0] / map_coef))
-            self.sigma_slider.setValue(int((constants[1] + constants[0]) / map_coef))
+            self.mu_slider.setValue(constants[0] * 100)
+            self.sigma_slider.setValue((constants[1] + constants[0]) * 100)
         else:
             self.mu_slider.valueChanged.connect(self.updateMuKnowledge)
             self.sigma_slider.valueChanged.connect(self.updateSigmaKnowledge)
@@ -133,7 +135,7 @@ class GraphSettings(QWidget):
             self.mu_slider.setValue(constants[0] * 100)
             self.sigma_slider.setValue(constants[1] * 100)
 
-        self.mu_slider.setRange(0, 100)
+        self.mu_slider.setRange(-100, 100)
         self.sigma_slider.setRange(0, 100)
 
         sub_layout.addWidget(mu_label, 0, 0)
@@ -168,11 +170,11 @@ class GraphSettings(QWidget):
 
     def updateGraphGauss(self, mu, sigma):
         self.graphWidget.clear()
-        self.graphWidget.setXRange(0, 1, padding=0)
-        self.graphWidget.setYRange(0, 10, padding=0)
+        self.graphWidget.setXRange(-1, 1, padding=0)
+        self.graphWidget.setYRange(0, 5, padding=0)
 
         step = 0.005
-        x = arange(start=0, stop=1 + step, step=step, dtype=float)
+        x = arange(start=-1, stop=1 + step, step=step, dtype=float)
         y = array([self._calculateYGauss(i, mu, sigma) for i in x])
 
         # plot data: x, y values
@@ -186,8 +188,8 @@ class GraphSettings(QWidget):
         self.graphWidget.setXRange(-1, 1, padding=0)
         self.graphWidget.setYRange(-1, 1, padding=0)
 
-        step = 0.005
-        x = arange(start=-1, stop=1 + step, step=0.005)
+        step = 0.05
+        x = arange(start=-1, stop=1 + step, step=step, dtype=float)
         y = array([self._calculateYAffine(i, coeffdir, mu) for i in x])
 
         self.graphWidget.plot(x, y, pen=self.pen)

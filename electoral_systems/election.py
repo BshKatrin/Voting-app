@@ -35,8 +35,8 @@ class Election(metaclass=Singleton):
 
         # variable necessaire pour generation aleatoire
         self.generation_constants = {
-            RandomConstants.ECONOMICAL: (280, 100),
-            RandomConstants.SOCIAL: (280, 100),
+            RandomConstants.ECONOMICAL: (0, 0.5),
+            RandomConstants.SOCIAL: (0, 0.5),
             RandomConstants.ORIENTATION: 1,
             RandomConstants.KNOWLEDGE: (0.5, 0.3),
         }

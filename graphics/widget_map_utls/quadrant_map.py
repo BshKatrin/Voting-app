@@ -238,14 +238,26 @@ class QuadrantMap(QWidget):
         economical_constants = constants[RandomConstants.ECONOMICAL]
         social_constants = constants[RandomConstants.SOCIAL]
         coef_dir = constants[RandomConstants.ORIENTATION]
+        print(economical_constants, social_constants)
+        # x = np.random.normal(
+        #     economical_constants[0] - 280, economical_constants[1], None
+        # )
+        # y = np.random.normal(
+        #     (coef_dir * x + (social_constants[0] - 280)), social_constants[1], None
+        # )
+        # print((coef_dir * x + (social_constants[0] - 280)), social_constants[1])
+        mu_scaled = economical_constants[0] * self.width() / 2
+        sigma_scaled = economical_constants[1] * self.width() / 4
+        x = np.random.normal(mu_scaled, sigma_scaled)
 
-        x = np.random.normal(
-            economical_constants[0] - 280, economical_constants[1], None
-        )
-        y = np.random.normal(
-            (coef_dir * x + (social_constants[0] - 280)), social_constants[1], None
-        )
+        mu_scaled = coef_dir * x + social_constants[0] * self.width() / 2
+        sigma_scaled = social_constants[1] * self.width() / 4
+        y = np.random.normal(mu_scaled, sigma_scaled)
+        half_width = self.width() / 2
 
+        x = np.clip(x, -half_width, half_width)
+        y = np.clip(y, -half_width, half_width)
+        print(x, y)
         return QPoint(x, y)
 
     ### Position de type QPoint, retourne couple normale
