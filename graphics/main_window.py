@@ -1,6 +1,7 @@
 from functools import partial
 
 from PySide6.QtCore import Qt, Slot
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import (
     QMainWindow,
     QPushButton,
@@ -32,6 +33,7 @@ class HomeWindow(QMainWindow):
         self.setGeometry(screen_size.x(), screen_size.y(), size_size, size_size)
         self.setWindowTitle("Voting app")
 
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         # Main widget, layout
         self.main_widget = QWidget(parent=self)
         self.layout = QVBoxLayout()
@@ -191,3 +193,6 @@ class HomeWindow(QMainWindow):
         if self.widgetResults:
             self.widgetResults.sig_widget_results_destroying.emit()
             self.widgetResults.deleteLater()
+
+    def closeEvent(self, event):
+        self.app.quit()
