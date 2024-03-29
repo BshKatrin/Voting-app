@@ -92,8 +92,9 @@ class GraphSettings(QWidget):
         mu_label = QLabel("Mu", self)
         sigma_label = QLabel("Sigma", self)
 
-        self.mu_result_label = QLabel("", self)
-        self.sigma_result_label = QLabel("", self)
+        mu, sigma = self.election.generation_constants[self.type]
+        self.mu_result_label = QLabel(f"{mu:.2f}", self)
+        self.sigma_result_label = QLabel(f"{sigma:.2f}", self)
 
         self.mu_slider = QSlider(Qt.Horizontal, self)
         self.sigma_slider = QSlider(Qt.Horizontal, self)

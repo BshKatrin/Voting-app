@@ -251,7 +251,6 @@ class QuadrantMap(QWidget):
         economical_constants = constants[RandomConstants.ECONOMICAL]
         social_constants = constants[RandomConstants.SOCIAL]
         coef_dir = constants[RandomConstants.ORIENTATION]
-        print(economical_constants, social_constants)
         # Spread factor on a map for sigma
         spread_factor = 1 / 4
 
