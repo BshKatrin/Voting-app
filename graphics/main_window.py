@@ -28,9 +28,11 @@ class HomeWindow(QMainWindow):
         self.election = Election()
 
         # Set main_window size
-        screen_size = app.primaryScreen().geometry()
-        size_size = min(screen_size.height(), screen_size.width())
-        self.setGeometry(screen_size.x(), screen_size.y(), size_size, size_size)
+        # screen_size = app.primaryScreen().availableGeometry()
+        screen_size = app.primaryScreen().availableSize()
+        side_size = min(screen_size.height(), screen_size.width())
+        # self.setGeometry(screen_size.x(), screen_size.y(), side_size, side_size)
+        self.setGeometry(0, 0, side_size, side_size)
         self.setWindowTitle("Voting app")
 
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
