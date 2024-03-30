@@ -236,10 +236,10 @@ class QuadrantMap(QWidget):
         self.text_box.deleteLater()  #   supprime la zone de texte
 
     # Generate x or y based on an already scaled mu & sigma
-    def _generate_coordinate(self, mu, sigma):
+    def _generate_coordinate(self, mu, sigma, limit):
         # Generate while not in border
         coordinate = normal(mu, sigma)
-        while abs(coordinate) > self.width() / 2:
+        while abs(coordinate) > limit:
             coordinate = normal(mu, sigma)
         return coordinate
 
@@ -252,22 +252,22 @@ class QuadrantMap(QWidget):
         social_constants = constants[RandomConstants.SOCIAL]
         coef_dir = constants[RandomConstants.ORIENTATION]
         # Spread factor on a map for sigma
-        spread_factor = 1 / 4
 
-        mu_scaled = economical_constants[0] * self.width() / 2
-        sigma_scaled = economical_constants[1] * self.width() * spread_factor
-        x = self._generate_coordinate(mu_scaled, sigma_scaled)
+        mu, sigma = economical_constants[0], economical_constants[1]
+        print(mu, sigma)
+        x = self._generate_coordinate(mu, sigma, limit=1)
 
-        mu_scaled = coef_dir * x + social_constants[0] * self.width() / 2
-        sigma_scaled = social_constants[1] * self.width() * spread_factor
-        y = self._generate_coordinate(mu_scaled, sigma_scaled)
+        mu, sigma = coef_dir * x + social_constants[0], social_constants[1]
+        print(mu, sigma)
+        y = self._generate_coordinate(mu, sigma, limit=1)
 
         # Limit values  to a map range
-        # half_width = self.width() / 2
-        # x = clip(x, -half_width, half_width)
-        # y = clip(y, -half_width, half_width)
+        # x = clip(x, -1, 1)
+        # y = clip(y, -1, 1)
 
-        return QPoint(x, y)
+        # Scaling
+        half_width = self.width() / 2
+        return QPoint(x * half_width, y * half_width)
 
     ### Position de type QPoint, retourne couple normale
     def normalizePosition(self, position):
