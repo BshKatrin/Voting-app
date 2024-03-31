@@ -165,11 +165,11 @@ class WidgetResults(QWidget):
             # None can be in condorcet simple
             if winner is None:
                 label_winner.setText("No winner")
+                label_satisfaction.setText("---")
             else:
                 label_winner.setText(f"{winner.first_name} {winner.last_name}")
-
-            satisfaction = self.election.calculate_satisfaction(winner)
-            label_satisfaction.setText(f"{satisfaction:.2f}")
+                satisfaction = self.election.calculate_satisfaction(winner)
+                label_satisfaction.setText(f"{satisfaction:.2f}")
 
             self.layout.addWidget(label_voting_rule, row, 0, alignment=Qt.AlignHCenter)
             self.layout.addWidget(label_winner, row, 1, alignment=Qt.AlignHCenter)

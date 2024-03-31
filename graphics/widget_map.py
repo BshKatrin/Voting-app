@@ -133,9 +133,13 @@ class WidgetMap(QWidget):
         for _ in range(nb_electors):
             generatedPosition = self.quadrant_map.generatePosition()
             self.quadrant_map.electors.append(generatedPosition)
-            self.election.add_electors_position(
-                self.quadrant_map.normalizePosition(generatedPosition)
+            norm_position = self.quadrant_map.normalizePosition(generatedPosition)
+            self.election.add_elector(
+                Elector(position=norm_position, candidates=self.election.candidates)
             )
+            # self.election.add_electors_position(
+            #     self.quadrant_map.normalizePosition(generatedPosition)
+            # )
         self.quadrant_map.update()
 
         self.cleanTextBoxes()
@@ -152,7 +156,7 @@ class WidgetMap(QWidget):
     @Slot()
     def onStartElectionClick(self):
         # Draw version with delegations
-        self.election.create_electors()
+        self.election.define_ranking()
         self.election.make_delegations()
         # Draw last time, with delegations
         self.quadrant_map.final_painting = True

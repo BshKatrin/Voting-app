@@ -9,16 +9,24 @@ from .candidate import Candidate
 
 @dataclass(kw_only=True)
 class Elector(Person):
-    candidates: InitVar[List[Candidate]]
+    # candidates: InitVar[List[Candidate]]
+    candidates: List[Candidate]
     candidates_ranked: List[Candidate] = field(default_factory=list, repr=False)
     # weight = 0 -> delegation done
     # weight > 0 -> no delegation
     weight: int = 1
-    knowledge: float = field(default_factory=lambda: normal(0.5, 0.3))
+    knowledge: float = 0
 
-    def __post_init__(self, candidates):
-        if not self.candidates_ranked:
-            self.candidates_ranked = self.pos_to_rank(candidates)
+    def __post_init__(self):
+        # if not self.candidates_ranked:
+        #     self.candidates_ranked = self.pos_to_rank(candidates)
+        self.knowledge = self._generate_knowledge()
+
+    def _generate_knowledge(self, mu=0.5, sigma=0.3):
+        knowledge = normal(mu, sigma)
+        while abs(knowledge) > 1:
+            knowledge = normal(mu, sigma)
+        return knowledge
 
     def __str__(self):
         return (
@@ -47,6 +55,11 @@ class Elector(Person):
             c for (c, _) in sorted(zip(candidates, distances), key=lambda t: t[1])
         ]
         return ranking
+
+    def rank_candidates(self, candidates):
+        self.candidates_ranked = self.pos_to_rank(candidates)
+        print(self.candidates_ranked)
+        # Clean candidates, make changes to other files if necessary
 
     # Retourne une liste des electeurs genere de maniere aleatoire
     @classmethod

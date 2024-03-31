@@ -3,7 +3,7 @@ from math import sqrt
 
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit
 from PySide6.QtGui import QPainter, QPen, QColor, QFont
-from PySide6.QtCore import Qt, QPoint
+from PySide6.QtCore import Qt, QPointF
 
 from numpy import clip
 from numpy.random import normal
@@ -110,7 +110,7 @@ class QuadrantMap(QWidget):
 
     ### fonction sans argument qui dessines les points de candidates et electors dans le graph
     def drawPoints(self, painter):
-        offset = QPoint(
+        offset = QPointF(
             self.width() / 2, self.height() / 2
         )  #   position du milieu (0,0)
 
@@ -118,28 +118,33 @@ class QuadrantMap(QWidget):
         pen = QPen(QColor(0, 0, 255))
         pen.setWidth(4)
         painter.setPen(pen)
-        for pos in self.electors:
+        for elector in self.election.electors:
+            (x, y) = elector.position
+            pos = QPointF(x, y) * self.width() / 2
             #   crée un widget de position du point et lui affecte la position du point actuel
-            widget_pos = QPoint(pos.x() + offset.x(), offset.y() - pos.y())
+            widget_pos = QPointF(pos.x() + offset.x(), offset.y() - pos.y())
             painter.drawPoint(widget_pos)
 
         #   dessin des points des candidates
         pen2 = QPen(QColor(255, 0, 0))
         pen2.setWidth(4)
         painter.setPen(pen2)
-        for fst_name, lst_name, pos in self.candidates:
+        for candidate in self.election.candidates:
+            fst_name, lst_name = candidate.first_name, candidate.last_name
+            x, y = candidate.position
+            pos = QPointF(x, y) * self.width() / 2
             painter.setPen(
                 pen2
             )  #   reconfiguration du pinceau après une itération de la boucle
-            widget_pos = QPoint(pos.x() + offset.x(), offset.y() - pos.y())
+            widget_pos = QPointF(pos.x() + offset.x(), offset.y() - pos.y())
             painter.drawPoint(widget_pos)
 
             #   reconfiguration du style du pinceau pour le texte
             painter.setPen(QColor(0, 0, 0))
-            painter.drawText(widget_pos + QPoint(5, 15), f"{fst_name} {lst_name}")
+            painter.drawText(widget_pos + QPointF(5, 15), f"{fst_name} {lst_name}")
 
     def drawPointsDelegation(self, painter):
-        offset = QPoint(
+        offset = QPointF(
             self.width() / 2, self.height() / 2
         )  #   position du milieu (0,0)
 
@@ -153,7 +158,7 @@ class QuadrantMap(QWidget):
                 (x, y) = elec.position
                 x = x * self.width() / 2
                 y = y * self.height() / 2
-                widget_pos = QPoint(x + offset.x(), offset.y() - y)
+                widget_pos = QPointF(x + offset.x(), offset.y() - y)
                 painter.drawPoint(widget_pos)
 
         pen3 = QPen(QColor(30, 144, 255))
@@ -164,9 +169,9 @@ class QuadrantMap(QWidget):
                 (x, y) = elec.position
                 x = x * self.width() / 2
                 y = y * self.height() / 2
-                widget_pos = QPoint(x + offset.x(), offset.y() - y)
+                widget_pos = QPointF(x + offset.x(), offset.y() - y)
                 painter.drawPoint(widget_pos)
-                painter.drawText(widget_pos + QPoint(5, 15), f"{elec.weight}")
+                painter.drawText(widget_pos + QPointF(5, 15), f"{elec.weight}")
 
         #   dessin des points des candidates
         pen2 = QPen(QColor(255, 0, 0))
@@ -176,24 +181,25 @@ class QuadrantMap(QWidget):
             painter.setPen(
                 pen2
             )  #   reconfiguration du pinceau après une itération de la boucle
-            widget_pos = QPoint(pos.x() + offset.x(), offset.y() - pos.y())
+            widget_pos = QPointF(pos.x() + offset.x(), offset.y() - pos.y())
             painter.drawPoint(widget_pos)
 
             #   reconfiguration du style du pinceau pour le texte
             painter.setPen(QColor(0, 0, 0))
-            painter.drawText(widget_pos + QPoint(5, 15), f"{fst_name} {lst_name}")
+            painter.drawText(widget_pos + QPointF(5, 15), f"{fst_name} {lst_name}")
 
     ### fonction sans argument qui est appelé lors d'un clique de souris et créé un candidat en clique droit ou stock les coordonnées d'un elector
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:  #   cas du clique gauche
-            offset = QPoint(self.width() // 2, self.height() // 2)
+            offset = QPointF(self.width() // 2, self.height() // 2)
 
             #   récupère la position du point cliqué en position cartésienne
-            cartesian_pos = QPoint(
+            cartesian_pos = QPointF(
                 event.pos().x() - offset.x(), offset.y() - event.pos().y()
             )
             self.electors.append(cartesian_pos)
-            self.election.add_electors_position(self.normalizePosition(cartesian_pos))
+            # self.election.add_electors_position(self.normalizePosition(cartesian_pos))
+            self.election.add_elector(Elector(candidates=self.election.candidates))
             self.update()  #   actualise l'état graphique du tableau (les points et leurs positions)
 
         # cas du clique droit
@@ -220,9 +226,9 @@ class QuadrantMap(QWidget):
         first_name, last_name = tuple(full_name)
 
         #   création du candidat et stockage dans le tableau
-        offset = QPoint(self.width() // 2, self.height() // 2)
+        offset = QPointF(self.width() // 2, self.height() // 2)
 
-        cartesian_pos = QPoint(position.x() - offset.x(), offset.y() - position.y())
+        cartesian_pos = QPointF(position.x() - offset.x(), offset.y() - position.y())
         self.candidates.append((first_name, last_name, cartesian_pos))
         self.election.add_candidate(
             Candidate(
@@ -243,7 +249,7 @@ class QuadrantMap(QWidget):
             coordinate = normal(mu, sigma)
         return coordinate
 
-        ### generer QPoint(x, y), PAS normalise
+        ### generer QPointF(x, y), PAS normalise
 
     def generatePosition(self):
 
@@ -267,8 +273,8 @@ class QuadrantMap(QWidget):
 
         # Scaling
         half_width = self.width() / 2
-        return QPoint(x * half_width, y * half_width)
+        return QPointF(x * half_width, y * half_width)
 
-    ### Position de type QPoint, retourne couple normale
+    ### Position de type QPointF, retourne couple normale
     def normalizePosition(self, position):
         return position.x() / self.width() * 2, position.y() / self.height() * 2

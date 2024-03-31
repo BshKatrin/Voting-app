@@ -1,7 +1,7 @@
 from functools import partial
 
-from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QCloseEvent
+from PySide6.QtCore import Qt, Slot, QObject, Signal
+from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
     QMainWindow,
     QPushButton,
@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QGridLayout,
     QSizePolicy,
+    QFileDialog,
 )
 
 from .widget_map import WidgetMap
@@ -19,20 +20,27 @@ from .widget_results import WidgetResults
 
 from electoral_systems import Election
 
+from sqlite import ImportData, ExportData
+import sqlite3
+
 
 class HomeWindow(QMainWindow):
+    # Signal to indicate that data import (resp. export) was succesful
+    # Bool indicated if with or without results
+    sig_data_imported = Signal(bool)
+    sig_data_exported = Signal(bool)
+
+    # Signal to indicate that widgetmap if ON (resp. OFF)
+    sig_widget_map_on = Signal(bool)
+
     def __init__(self, app):
         super().__init__()
 
         self.app = app
         self.election = Election()
 
-        # Set main_window size
-        # screen_size = app.primaryScreen().availableGeometry()
-        screen_size = app.primaryScreen().availableSize()
-        side_size = min(screen_size.height(), screen_size.width())
-        # self.setGeometry(screen_size.x(), screen_size.y(), side_size, side_size)
-        self.setGeometry(0, 0, side_size, side_size)
+        self.setScreenGeometry()
+
         self.setWindowTitle("Voting app")
 
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
@@ -49,10 +57,119 @@ class HomeWindow(QMainWindow):
         self.voteSelectionWidget = None
         self.widgetResults = None
         self.widgetMap = None
+
+        self.sig_data_imported.connect(self.switchWidgetImport)
+
+        self.createActions()
+        self.createMenus()
         self.initUIHome()
 
+    # Set main_window size
+    def setScreenGeometry(self):
+        # Find center
+        x = self.app.primaryScreen().availableGeometry().x()
+        screen_size = self.app.primaryScreen().availableSize()
+        center_x = screen_size.width() / 2 + x
+
+        # Determine main_window one side size
+        side_size = min(screen_size.height(), screen_size.width())
+        self.setGeometry(center_x - side_size / 2, 0, side_size, side_size)
+
+    # With results : MainWindow, WidgetResults only
+    # No results : MainWindow, WidgetMap only
+    @Slot(bool)
+    def importData(self, with_results):
+        db_file_name = QFileDialog.getOpenFileName(
+            self, "Choose database", "", "SQLite databases : (*.db)"
+        )
+
+        # Do nothing if no file was chosen
+        if not db_file_name[0]:
+            return
+
+        connection = sqlite3.connect(db_file_name[0])
+
+        success, msg = ImportData.import_people(connection, with_results)
+
+        connection.close()
+
+        if success:
+            self.sig_data_imported.emit(with_results)
+        else:
+            # Add a pop up in that case with return msg
+            print(msg)
+
+    @Slot(bool)
+    def exportData(self, with_results):
+        db_file_name = QFileDialog.getSaveFileName(
+            self, "Save database", "", "SQLite databases : (*.db)"
+        )
+
+        # Do nothing if no file was chosen
+        if not db_file_name[0]:
+            return
+
+        connection = sqlite3.connect(db_file_name[0])
+        ExportData.create_database_people(connection)
+
+        if with_results:
+            ExportData.create_database_results(connection)
+
+        connection.close()
+        self.sig_data_exported.emit(with_results)
+
+    @Slot()
+    def switchWidgetImport(self, with_results):
+        self.cleanWindow()
+        if not with_results:
+            self.initUIMap()
+            return
+
+        self.election.calculate_prop_satisfation()
+        # For polls
+        self.election.define_ranking()
+        self.election.calculate_results(imported=True)
+        self.initUIResults()
+
+    def createActions(self):
+        # Import
+        self.import_with_results = QAction("Import with results", self)
+        self.import_no_results = QAction("Import without results", self)
+
+        self.import_with_results.triggered.connect(lambda: self.importData(True))
+        self.import_no_results.triggered.connect(lambda: self.importData(False))
+
+        # Export
+        self.export_with_results = QAction("Export with results", self)
+        self.export_no_results = QAction("Export without results", self)
+
+        self.export_with_results.triggered.connect(lambda: self.exportData(True))
+        self.export_no_results.triggered.connect(lambda: self.exportData(False))
+
+    def createMenus(self):
+        menu_bar = self.menuBar()
+        menu_bar.setNativeMenuBar(False)
+        file_menu = menu_bar.addMenu(QObject.tr("&File"))
+
+        import_menu = file_menu.addMenu(QObject.tr("&Import"))
+        import_menu.addAction(self.import_with_results)
+        import_menu.addAction(self.import_no_results)
+
+        export_menu = file_menu.addMenu(QObject.tr("&Export"))
+        export_menu.addAction(self.export_with_results)
+        export_menu.addAction(self.export_no_results)
+
+    def toggleIEOptions(self, type, with_results_status, no_results_status):
+        match type:
+            case ImportData.IMPORT:
+                self.import_with_results.setEnabled(with_results_status)
+                self.import_no_results.setEnabled(no_results_status)
+            case ExportData.EXPORT:
+                self.export_with_results.setEnabled(with_results_status)
+                self.export_no_results.setEnabled(no_results_status)
+
     def initNavigation(self):
-        self.button_home = QPushButton("Home", parent=self.main_widget)
+        self.button_home = QPushButton("Home", parent=self)
         self.button_home.clicked.connect(self.backHomeWindow)
         self.layout.addWidget(self.button_home)
 
@@ -70,6 +187,10 @@ class HomeWindow(QMainWindow):
         settings_btn = QPushButton("Settings", parent=self.main_widget)
         settings_btn.setFixedSize(self.width() * 0.3, 30)
         settings_btn.clicked.connect(self.initSettings)
+
+        # Toggle import, export
+        self.toggleIEOptions(ExportData.EXPORT, False, False)
+        self.toggleIEOptions(ImportData.IMPORT, True, True)
 
         layout.addWidget(
             self.start,
@@ -147,17 +268,24 @@ class HomeWindow(QMainWindow):
     def toggleLiquidDemocracy(self, state):
         self.election.liquid_democracy_activated = bool(state)
 
+    @Slot()
     def initUIMap(self):
         self.cleanWindow()
-        print(self.election.liquid_democracy_activated)
 
         self.initNavigation()
+
+        self.toggleIEOptions(ExportData.EXPORT, False, True)
+        self.toggleIEOptions(ImportData.IMPORT, False, True)
 
         self.widget_map = WidgetMap(parent=self)
         self.widget_map.sig_start_election.connect(self.startElection)
         self.layout.addWidget(self.widget_map)
 
+    @Slot()
     def initUIResults(self):
+        self.toggleIEOptions(ExportData.EXPORT, True, True)
+        self.toggleIEOptions(ImportData.IMPORT, False, False)
+
         self.widgetResults = WidgetResults(self.main_widget)
         self.layout.addWidget(self.widgetResults, alignment=Qt.AlignTop)
 

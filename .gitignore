@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 graphics/temp/map.png
 !graphics/temp.gitkeep
+*.db
