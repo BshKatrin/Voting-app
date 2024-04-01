@@ -15,10 +15,6 @@ from PySide6.QtGui import QPixmap, QPainter
 
 from .widget_map_utls import QuadrantMap, WidgetCheckbox, WidgetSettings
 
-"""POUR L'IMPORT-EXPORT"""
-from sqlite import ExportData, ImportData
-import sqlite3
-"""FIN DE L'AJOUT"""
 
 class WidgetMap(QWidget):
     # signal to main window to show results page
@@ -85,21 +81,6 @@ class WidgetMap(QWidget):
             QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         )
 
-        """AJOUT POUR 
-                L'IMPORT-EXPORT"""
-        self.btn_exprt = QPushButton("Export", parent=self)
-        self.btn_exprt.clicked.connect(self.export_data)
-        self.btn_exprt.setSizePolicy(
-            QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        )
-        
-        self.btn_imprt = QPushButton("Import", parent=self)
-        self.btn_imprt.clicked.connect(self.import_data)
-        self.btn_imprt.setSizePolicy(
-            QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        )
-        """FIN DE L'AJOUT"""
-
         # MAJ 06.03.24
         # Button to configure data generation
         self.random_settings_btn = QPushButton(
@@ -116,12 +97,6 @@ class WidgetMap(QWidget):
         layout_btns.addWidget(self.choose_voting_rules_btn)
         layout_btns.addWidget(self.start_election_btn)
 
-        """AJOUT POUR 
-                L'IMPORT-EXPORT"""
-        layout_btns.addWidget(self.btn_imprt)
-        layout_btns.addWidget(self.btn_exprt)
-        """FIN DE L'AJOUT"""
-
         # Map
         self.layout.addWidget(self.quadrant_map, 0, Qt.AlignHCenter)
 
@@ -135,30 +110,6 @@ class WidgetMap(QWidget):
     def _get_int_text_box(self, text_box):
         text = text_box.text()
         return int(text) if text.isdigit() else 0
-
-    """FONCTION POUR 
-                L'IMPORT ET L'EXPORT"""
-    def export_data(self):
-        # Demander à l'utilisateur de sélectionner un répertoire
-        directory = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
-        
-        # Demander à l'utilisateur d'entrer un nom de fichier
-        db_name, ok = QInputDialog.getText(self, 'Input Dialog', 'Enter database name:')
-        db_name='/'+directory+'/'+db_name+'.db'
-        ExportData.create_database_people(sqlite3.connect(db_name))
-        
-            
-
-    def import_data(self):
-        db_name,Haroun = QFileDialog.getOpenFileName(self, "Import Graph", "", "*.db")
-        ImportData.import_people(sqlite3.connect(db_name), False)
-        for pos in self.election.electors :
-            self.quadrant_map.electors.append(pos)
-        for name,surname,pos in self.election.candidates :
-            self.quadrant_map.candidates.append((name,surname,pos))
-        self.quadrant_map.update()
-    """FIN DE 
-            L'AJOUT"""
 
     @Slot()
     def generateData(self):
