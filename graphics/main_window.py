@@ -188,6 +188,9 @@ class HomeWindow(QMainWindow):
         settings_btn.setFixedSize(self.width() * 0.3, 30)
         settings_btn.clicked.connect(self.initSettings)
 
+        quit_btn = QPushButton("Quit", parent=self.main_widget)
+        quit_btn.setFixedSize(self.width() * 0.3, 30)
+        quit_btn.clicked.connect(self.quit_app)
         # Toggle import, export
         self.toggleIEOptions(ExportData.EXPORT, False, False)
         self.toggleIEOptions(ImportData.IMPORT, True, True)
@@ -198,6 +201,11 @@ class HomeWindow(QMainWindow):
         )
         layout.addWidget(
             settings_btn,
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+
+        layout.addWidget(
+            quit_btn,
             alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
         )
 
@@ -325,4 +333,8 @@ class HomeWindow(QMainWindow):
             self.widgetResults.deleteLater()
 
     def closeEvent(self, event):
+        self.quit_app()
+
+    @Slot()
+    def quit_app(self):
         self.app.quit()
