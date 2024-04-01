@@ -120,8 +120,8 @@ class ExportData:
             CREATE TABLE results_multi_round (
                 candidate_id INTEGER,
                 voting_rule TEXT CHECK(voting_rule IN {str(tuple(chosen_multi_round))}),
-                round INT CHECK(round >= 0),
-                score REAL,
+                round INTEGER CHECK(round >= 0),
+                score REAL NOT NULL,
 
                 FOREIGN KEY(candidate_id) REFERENCES candidates(id)
             )
@@ -153,7 +153,7 @@ class ExportData:
             CREATE TABLE condorcet_duels (
                 winner_id INTEGER NOT NULL,
                 loser_id INTEGER NOT NULL,
-                score REAL,
+                score REAL NOT NULL,
 
                 FOREIGN KEY(winner_id) REFERENCES candidates(id),
                 FOREIGN KEY(loser_id) REFERENCES candidates(id)
@@ -165,7 +165,7 @@ class ExportData:
         table_scores = f"""CREATE TABLE "results_condorcet" (
                 candidate_id INTEGER,
                 voting_rule TEXT CHECK(voting_rule IN {str(tuple(chosen_condorcet))}),
-                score REAL,
+                score REAL NOT NULL,
 
                 FOREIGN KEY(candidate_id) REFERENCES candidates(id)
             )

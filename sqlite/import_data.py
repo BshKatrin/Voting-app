@@ -19,6 +19,39 @@ class ImportData:
         return {row[0] for row in cursor.fetchall()}
 
     @classmethod
+    def _check_columns(cls, connection, tables_cols):
+        cursor = connection.cursor()
+        for table, columns in tables_cols.items():
+            cursor.execute(f"SELECT name, type FROM pragma_table_info('{table}')")
+            existing_columns = {(row[0], row[1]) for row in cursor.fetchall()}
+            missing_columns = columns - (columns & existing_columns)
+            if missing_columns:
+                return True
+        return False
+
+    @classmethod
+    def _check_columns_people(cls, connection):
+        return cls._check_columns(
+            connection,
+            {
+                "candidates": {
+                    ("id", "INTEGER"),
+                    ("x", "REAL"),
+                    ("y", "REAL"),
+                    ("first_name", "TEXT"),
+                    ("last_name", "TEXT"),
+                },
+                "electors": {
+                    ("id", "INTEGER"),
+                    ("x", "REAL"),
+                    ("y", "REAL"),
+                    ("weight", "INTEGER"),
+                    ("knowledge", "REAL"),
+                },
+            },
+        )
+
+    @classmethod
     def import_people(cls, connection, with_results):
         if with_results:
             return cls.import_people_with_results(connection)
@@ -28,14 +61,20 @@ class ImportData:
     # Return (True, msg) if saved, (False, msg) if not
     @classmethod
     def import_people_no_results(cls, connection):
-        # Necessary cause of ID (which is unique) and hash
         # cls.election.delete_all_data()
         existing_tables = cls._get_existing_tables(connection)
+        # Check tables
         missing, missing_tables = cls._check_tables(
             {"candidates", "electors"}, existing_tables
         )
         if missing:
             return False, f"Tables {missing_tables} are not found"
+
+        # Check columns
+        missing = cls._check_columns_people(connection)
+
+        if missing:
+            return False, f"Database does not correspond"
 
         cursor = connection.cursor()
 
@@ -63,13 +102,19 @@ class ImportData:
     @classmethod
     def import_people_with_results(cls, connection):
         cls.election.delete_all_data()
-
+        # Check tables
         existing_tables = cls._get_existing_tables(connection)
         missing, missing_tables = cls._check_tables(
             {"candidates", "electors"}, existing_tables
         )
         if missing:
             return False, f"Tables {missing_tables} are not found"
+
+        # Check columns
+        # Check columns
+        missing = cls._check_columns_people(connection)
+        if missing:
+            return False, f"Database does not correspond"
 
         cursor = connection.cursor()
 
@@ -112,15 +157,60 @@ class ImportData:
             return False, "No tables related to scores found"
 
         if "results_one_round" in existing_tables:
+            # Check columns
+            missing = cls._check_columns(
+                connection,
+                {
+                    "results_one_round": {
+                        ("candidate_id", "INTEGER"),
+                        ("voting_rule", "TEXT"),
+                        ("score", "REAL"),
+                    },
+                },
+            )
+            if missing:
+                return False, f"Database does not correspond"
+
             cls._import_one_round(connection, assoc)
 
         if "results_multi_round" in existing_tables:
+            missing = cls._check_columns(
+                connection,
+                {
+                    "results_multi_round": {
+                        ("candidate_id", "INTEGER"),
+                        ("voting_rule", "TEXT"),
+                        ("round", "INTEGER"),
+                        ("score", "REAL"),
+                    },
+                },
+            )
+            if missing:
+                return False, f"Database does not correspond"
             cls._import_multi_round(connection, assoc)
 
         if (
             "results_condorcet" in existing_tables
             and "condorcet_duels" in existing_tables
         ):
+            missing = cls._check_columns(
+                connection,
+                {
+                    "results_condorcet": {
+                        ("candidate_id", "INTEGER"),
+                        ("voting_rule", "TEXT"),
+                        ("score", "REAL"),
+                    },
+                    "condorcet_duels": {
+                        ("winner_id", "INTEGER"),
+                        ("loser_id", "INTEGER"),
+                        ("score", "REAL"),
+                    },
+                },
+            )
+            if missing:
+                return False, f"Database does not correspond"
+
             cls._import_condorcet(connection, assoc)
 
         return True, "Data imported"
