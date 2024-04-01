@@ -16,8 +16,8 @@ from people import Elector, Candidate
 class QuadrantMap(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
-        self.electors_map_data = []
-        self.candidates_map_data = []
+        # self.electors_map_data = []
+        # self.candidates_map_data = []
 
         self.election = Election()
         self.final_painting = False
@@ -26,22 +26,6 @@ class QuadrantMap(QWidget):
 
         self.setTransformation()
         self.initUI()
-
-    # Called only when data is imported
-    def setPeopleMapData(self):
-        self._setElectorsMapData()
-        self._setCandidatesMapData()
-
-    def _setElectorsMapData(self):
-        for elector in self.election.electors:
-            self.electors_map_data.append(self.scaleCoordinates(elector.position))
-
-    def _setCandidatesMapData(self):
-        for candidate in self.election.candidates:
-            point = self.scaleCoordinates(candidate.position)
-            fst_name = candidate.first_name
-            lst_name = candidate.last_name
-            self.candidates_map_data.append((fst_name, lst_name, point))
 
     def setTransformation(self):
         self.transform = QTransform()
@@ -143,21 +127,23 @@ class QuadrantMap(QWidget):
         pen = QPen(QColor(0, 0, 255))
         pen.setWidth(4)
         painter.setPen(pen)
-        for point in self.electors_map_data:
-            painter.drawPoint(point)
+        for elector in self.election.electors:
+            painter.drawPoint(self.scaleCoordinates(elector.position))
 
     def _drawCandidates(self, painter):
         pen = QPen(QColor(255, 0, 0))
         pen.setWidth(4)
         painter.setPen(pen)
-        for fst_name, lst_name, point in self.candidates_map_data:
+        for candidate in self.election.candidates:
+            fst_name, lst_name = candidate.first_name, candidate.last_name
             #   reconfiguration du pinceau après une itération de la boucle
+            point_scaled = self.scaleCoordinates(candidate.position)
             painter.setPen(pen)
-            painter.drawPoint(point)
+            painter.drawPoint(point_scaled)
 
             #   reconfiguration du style du pinceau pour le texte
             painter.setPen(QColor(0, 0, 0))
-            point_mapped = self.transform.map(point)
+            point_mapped = self.transform.map(point_scaled)
             # To prevent text inverse
             painter.setWorldMatrixEnabled(False)
             painter.drawText(point_mapped + QPointF(5, 15), f"{fst_name} {lst_name}")
@@ -174,30 +160,27 @@ class QuadrantMap(QWidget):
         pen = QPen(QColor(128, 128, 128))
         pen.setWidth(4)
         painter.setPen(pen)
-        for elec in self.election.electors:
+        for elector in self.election.electors:
             #   crée un widget de position du point et lui affecte la position du point actuel
-            if elec.weight == 0:
-                painter.drawPoint(self.scaleCoordinates(elec.position))
+            if elector.weight == 0:
+                painter.drawPoint(self.scaleCoordinates(elector.position))
 
-        for elec in self.election.electors:
-            if elec.weight > 0:
+        for elector in self.election.electors:
+            if elector.weight > 0:
                 pen3 = QPen(QColor(30, 144, 255))
                 pen3.setWidth(4)
                 painter.setPen(pen3)
 
-                scaled_point = self.scaleCoordinates(elec.position)
+                scaled_point = self.scaleCoordinates(elector.position)
                 point_mapped = self.transform.map(scaled_point)
 
                 painter.drawPoint(scaled_point)
                 # To prevent text inverse
                 painter.setWorldMatrixEnabled(False)
-                painter.drawText(point_mapped + QPointF(5, 15), f"{elec.weight}")
+                painter.drawText(point_mapped + QPointF(5, 15), f"{elector.weight}")
                 painter.setWorldMatrixEnabled(True)
 
         self._drawCandidates(painter)
-
-    def normalizeCoordiantes(self, point):
-        return (point.x() / self.width() * 2, point.y() / self.height() * 2)
 
     def scaleCoordinates(self, position):
         x, y = position
@@ -207,37 +190,45 @@ class QuadrantMap(QWidget):
     def mousePressEvent(self, event):
         inverted_transform, _ = self.transform.inverted()
         point_inv = inverted_transform.map(event.position())
-        normalized_pos = self.normalizeCoordiantes(point_inv)
+        normalized_pos = self.normalizeCoordinates(point_inv)
 
         if event.button() == Qt.LeftButton:  #   cas du clique gauche
             self.election.add_elector(Elector(position=normalized_pos))
 
-            self.electors_map_data.append(point_inv)
+            # self.electors_map_data.append(point_inv)
             self.update()  #   actualise l'état graphique du tableau (les points et leurs positions)
 
         # cas du clique droit
         if event.button() == Qt.RightButton and not self.text_box_active:
             # appelle de la création de la zone de texte
-            self.createTextBox(event.position(), point_inv, normalized_pos)
+            self.createTextBox(event.position(), normalized_pos)
             self.text_box_active = True
 
     ### fonction sans argument qui créé une textbox lors de la création manuelle d'un candidat
-    def createTextBox(self, point, point_inv, normalized_pos):
+    def createTextBox(self, point, normalized_pos):
         self.text_box = QLineEdit(self)  #   création de la zone de texte
         #   placement de la zone de texte à la position clique
         self.text_box.move(point.toPoint())
         #   appelle de la fonction de création et de stockage du nom connecté avec la touche enter
-        self.text_box.returnPressed.connect(
-            lambda: self.storeName(point_inv, normalized_pos)
-        )
+        self.text_box.returnPressed.connect(lambda: self.storeName(normalized_pos))
         self.text_box.show()  #   Affiche la zone de texte la zone de texte
 
     ### fonction sans argument appelée par la textbox de création du candidat pour stocker le nom det créer le candidat
-    def storeName(self, point_inv, normalized_pos):
+    def storeName(self, normalized_pos):
         # récupère le texte dans une variable
         full_name = self.text_box.text().split(" ", 1)
-        first_name, last_name = tuple(full_name)
-        self.candidates_map_data.append((first_name, last_name, point_inv))
+
+        if len(full_name) == 1:
+            first_name = full_name[0]
+            last_name = " "
+            if not first_name:
+                self.text_box_active = False
+                self.text_box.deleteLater()  #   supprime la zone de texte
+                return
+        else:
+            first_name, last_name = tuple(full_name)
+
+        # self.candidates_map_data.append((first_name, last_name, point_inv))
         self.election.add_candidate(
             Candidate(
                 first_name=first_name, last_name=last_name, position=normalized_pos
@@ -255,8 +246,7 @@ class QuadrantMap(QWidget):
             coordinate = normal(mu, sigma)
         return coordinate
 
-        ### generer QPointF(x, y), PAS normalise
-
+    # Generate (x, y) normalized
     def generatePosition(self):
 
         constants = self.election.generation_constants
@@ -275,10 +265,4 @@ class QuadrantMap(QWidget):
         # x = clip(x, -1, 1)
         # y = clip(y, -1, 1)
 
-        # Scaling
-        half_width = self.width() / 2
         return (x, y)
-
-    ### Position de type QPointF, retourne couple normale
-    def normalizePosition(self, position):
-        return position.x() / self.width() * 2, position.y() / self.height() * 2

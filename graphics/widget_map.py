@@ -22,18 +22,18 @@ class WidgetMap(QWidget):
     sig_start_election = Signal(list)
     sig_widget_map_destroying = Signal()
 
-    def __init__(self, imported, parent):
+    def __init__(self, parent):
         super().__init__(parent)
 
         self.election = Election()
 
         self.setGeometry(0, 0, parent.width(), parent.height())
-        self.initUI(imported)
+        self.initUI()
 
         # Delete children whose parent is NOT set on a widget_map destroying
         self.sig_widget_map_destroying.connect(self.destroyChildren)
 
-    def initUI(self, imported):
+    def initUI(self):
         # Set layouts
         # Main layout
         self.layout = QVBoxLayout()
@@ -56,8 +56,7 @@ class WidgetMap(QWidget):
 
         # Quadrant map
         self.quadrant_map = QuadrantMap(parent=self)
-        if imported:
-            self.quadrant_map.setPeopleMapData()
+
         # Voting rules checkbox
         self.voting_rules_checkbox = WidgetCheckbox(parent=None)
         self.voting_rules_checkbox.sig_toggle_election_btn.connect(
@@ -123,20 +122,9 @@ class WidgetMap(QWidget):
             new_candidate = Candidate(position=generated_position)
             self.election.add_candidate(new_candidate)
 
-            self.quadrant_map.candidates_map_data.append(
-                (
-                    new_candidate.first_name,
-                    new_candidate.last_name,
-                    self.quadrant_map.scaleCoordinates(generated_position),
-                )
-            )
-
         for _ in range(nb_electors):
             # Normalized
             generated_position = self.quadrant_map.generatePosition()
-            self.quadrant_map.electors_map_data.append(
-                self.quadrant_map.scaleCoordinates(generated_position)
-            )
             # Knowledge generation
             mu, sigma = self.election.generation_constants[RandomConstants.KNOWLEDGE]
             knowledge = Elector.generate_knowledge(mu, sigma)
@@ -159,9 +147,12 @@ class WidgetMap(QWidget):
 
     @Slot()
     def onStartElectionClick(self):
-        # Make every elector rank candidates
-        self.election.define_ranking()
-        self.election.make_delegations()
+        constantsSet = self.voting_rules_checkbox.getConstantsSet()
+        # Perform necessary calculations
+        self.election.start_election(
+            liquid_democracy=self.election.liquid_democracy_activated,
+            chosen_voting_rules=constantsSet,
+        )
         # Draw version with delegations
         self.quadrant_map.final_painting = True
         self.quadrant_map.update()
@@ -175,8 +166,6 @@ class WidgetMap(QWidget):
 
         success = pixmap.save("graphics/temp/map.png", "PNG", 50)
         print("Saved") if success else print("Not saved")
-
-        constantsSet = self.voting_rules_checkbox.getConstantsSet()
 
         self.sig_start_election.emit(list(constantsSet))
 

@@ -122,13 +122,12 @@ class HomeWindow(QMainWindow):
     def switchWidgetImport(self, with_results):
         self.cleanWindow()
         if not with_results:
-            self.initUIMap(True)
+            self.initUIMap()
             return
 
-        self.election.calculate_prop_satisfation()
-        # For polls
-        self.election.define_ranking()
-        self.election.calculate_results(imported=True)
+        self.election.start_election(
+            liquid_democracy=self.election.liquid_democracy_activated, imported=True
+        )
         self.initUIResults()
 
     def createActions(self):
@@ -277,7 +276,7 @@ class HomeWindow(QMainWindow):
         self.election.liquid_democracy_activated = bool(state)
 
     @Slot()
-    def initUIMap(self, imported=False):
+    def initUIMap(self):
         self.cleanWindow()
 
         self.initNavigation()
@@ -285,7 +284,7 @@ class HomeWindow(QMainWindow):
         self.toggleIEOptions(ExportData.EXPORT, False, True)
         self.toggleIEOptions(ImportData.IMPORT, False, True)
 
-        self.widget_map = WidgetMap(imported, parent=self)
+        self.widget_map = WidgetMap(parent=self)
         self.widget_map.sig_start_election.connect(self.startElection)
         self.layout.addWidget(self.widget_map)
 
@@ -299,18 +298,13 @@ class HomeWindow(QMainWindow):
 
     @Slot(list)
     def startElection(self, constantsList):
-        # Add keys to results dict in Election
-        self.election.init_results_keys(constantsList)
-        self.election.set_average_electors_position()
-        self.election.calculate_prop_satisfation()
-        # self.election.make_delegations() -> WidgetMap
+        # self.election.start_election -> WidgetMap
 
         # Delete widget with map
         self.widget_map.sig_widget_map_destroying.emit()
         self.widget_map.deleteLater()
-        # Delete checkbox
         # Initialize Results page (winners, results, graphs)
-        self.election.calculate_results()
+
         self.initUIResults()
 
     # delete all widgets from main_layout
