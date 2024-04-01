@@ -6,6 +6,8 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLineEdit,
     QSizePolicy,
+    QFileDialog,
+    QInputDialog
 )
 from PySide6.QtCore import Qt, Signal, Slot, QPoint
 from electoral_systems import Election
