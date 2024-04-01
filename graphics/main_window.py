@@ -122,7 +122,7 @@ class HomeWindow(QMainWindow):
     def switchWidgetImport(self, with_results):
         self.cleanWindow()
         if not with_results:
-            self.initUIMap()
+            self.initUIMap(True)
             return
 
         self.election.calculate_prop_satisfation()
@@ -277,7 +277,7 @@ class HomeWindow(QMainWindow):
         self.election.liquid_democracy_activated = bool(state)
 
     @Slot()
-    def initUIMap(self):
+    def initUIMap(self, imported=False):
         self.cleanWindow()
 
         self.initNavigation()
@@ -285,7 +285,7 @@ class HomeWindow(QMainWindow):
         self.toggleIEOptions(ExportData.EXPORT, False, True)
         self.toggleIEOptions(ImportData.IMPORT, False, True)
 
-        self.widget_map = WidgetMap(parent=self)
+        self.widget_map = WidgetMap(imported, parent=self)
         self.widget_map.sig_start_election.connect(self.startElection)
         self.layout.addWidget(self.widget_map)
 
@@ -301,10 +301,9 @@ class HomeWindow(QMainWindow):
     def startElection(self, constantsList):
         # Add keys to results dict in Election
         self.election.init_results_keys(constantsList)
-        # Crate all creators from stored positions
-        # self.election.create_electors()
+        self.election.set_average_electors_position()
         self.election.calculate_prop_satisfation()
-        # self.election.make_delegations()
+        # self.election.make_delegations() -> WidgetMap
 
         # Delete widget with map
         self.widget_map.sig_widget_map_destroying.emit()

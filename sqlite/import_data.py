@@ -53,7 +53,6 @@ class ImportData:
         for x, y, weight, knowledge in electors_data:
             cls.election.add_elector(
                 Elector(
-                    candidates=cls.election.candidates,
                     position=(x, y),
                     weight=weight,
                     knowledge=knowledge,
@@ -94,7 +93,6 @@ class ImportData:
             cls.election.add_elector(
                 Elector(
                     id=id,
-                    candidates=cls.election.candidates,
                     position=(x, y),
                     weight=weight,
                     knowledge=knowledge,
@@ -144,7 +142,9 @@ class ImportData:
         cursor = connection.cursor()
 
         # Init lists bases on length
-        cursor.execute("SELECT max(round), name FROM results_multi_round GROUP BY name")
+        cursor.execute(
+            "SELECT max(round), voting_rule FROM results_multi_round GROUP BY voting_rule"
+        )
 
         nb_rounds = cursor.fetchall()
         for rounds, voting_rule in nb_rounds:
@@ -159,10 +159,6 @@ class ImportData:
 
     @classmethod
     def _import_condorcet(cls, connection, assoc):
-        error, missing_table = cls._check_tables(connection, "condorcet_duels")
-        if error:
-            return False, f"Table {missing_table} not found"
-
         cursor = connection.cursor()
         # Duels
         cursor.execute("SELECT * FROM condorcet_duels")

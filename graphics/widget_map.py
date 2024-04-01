@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
 )
 from PySide6.QtCore import Qt, Signal, Slot, QPoint
-from electoral_systems import Election
+from electoral_systems import Election, RandomConstants
 from people import Elector, Candidate
 
 from PySide6.QtGui import QPixmap, QPainter
@@ -22,18 +22,18 @@ class WidgetMap(QWidget):
     sig_start_election = Signal(list)
     sig_widget_map_destroying = Signal()
 
-    def __init__(self, parent):
+    def __init__(self, imported, parent):
         super().__init__(parent)
 
         self.election = Election()
 
         self.setGeometry(0, 0, parent.width(), parent.height())
-        self.initUI()
+        self.initUI(imported)
 
         # Delete children whose parent is NOT set on a widget_map destroying
         self.sig_widget_map_destroying.connect(self.destroyChildren)
 
-    def initUI(self):
+    def initUI(self, imported):
         # Set layouts
         # Main layout
         self.layout = QVBoxLayout()
@@ -56,7 +56,8 @@ class WidgetMap(QWidget):
 
         # Quadrant map
         self.quadrant_map = QuadrantMap(parent=self)
-
+        if imported:
+            self.quadrant_map.setPeopleMapData()
         # Voting rules checkbox
         self.voting_rules_checkbox = WidgetCheckbox(parent=None)
         self.voting_rules_checkbox.sig_toggle_election_btn.connect(
@@ -117,29 +118,32 @@ class WidgetMap(QWidget):
         nb_electors = self._get_int_text_box(self.electors_text_box)
 
         for _ in range(nb_candidates):
-            generatedPosition = self.quadrant_map.generatePosition()
-            newCandidate = Candidate(
-                position=self.quadrant_map.normalizePosition(generatedPosition)
-            )
-            self.election.add_candidate(newCandidate)
-            self.quadrant_map.candidates.append(
+            # Normalized
+            generated_position = self.quadrant_map.generatePosition()
+            new_candidate = Candidate(position=generated_position)
+            self.election.add_candidate(new_candidate)
+
+            self.quadrant_map.candidates_map_data.append(
                 (
-                    newCandidate.first_name,
-                    newCandidate.last_name,
-                    generatedPosition,
+                    new_candidate.first_name,
+                    new_candidate.last_name,
+                    self.quadrant_map.scaleCoordinates(generated_position),
                 )
             )
 
         for _ in range(nb_electors):
-            generatedPosition = self.quadrant_map.generatePosition()
-            self.quadrant_map.electors.append(generatedPosition)
-            norm_position = self.quadrant_map.normalizePosition(generatedPosition)
-            self.election.add_elector(
-                Elector(position=norm_position, candidates=self.election.candidates)
+            # Normalized
+            generated_position = self.quadrant_map.generatePosition()
+            self.quadrant_map.electors_map_data.append(
+                self.quadrant_map.scaleCoordinates(generated_position)
             )
-            # self.election.add_electors_position(
-            #     self.quadrant_map.normalizePosition(generatedPosition)
-            # )
+            # Knowledge generation
+            mu, sigma = self.election.generation_constants[RandomConstants.KNOWLEDGE]
+            knowledge = Elector.generate_knowledge(mu, sigma)
+            self.election.add_elector(
+                Elector(position=generated_position, knowledge=knowledge)
+            )
+
         self.quadrant_map.update()
 
         self.cleanTextBoxes()
@@ -155,10 +159,10 @@ class WidgetMap(QWidget):
 
     @Slot()
     def onStartElectionClick(self):
-        # Draw version with delegations
+        # Make every elector rank candidates
         self.election.define_ranking()
         self.election.make_delegations()
-        # Draw last time, with delegations
+        # Draw version with delegations
         self.quadrant_map.final_painting = True
         self.quadrant_map.update()
 

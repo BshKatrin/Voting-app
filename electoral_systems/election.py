@@ -1,8 +1,7 @@
 from copy import deepcopy
 from math import sqrt
 from random import uniform, random
-from people import Candidate
-from people import Elector
+
 from numpy.random import normal
 
 from .election_constants import RandomConstants, VotingRulesConstants
@@ -11,7 +10,6 @@ from .voting_rules.condorcet import set_duels_scores
 from .voting_rules.delegation import choose_delegee, choose_possible_delegees
 from .voting_rules.utls import sort_cand_by_round, sort_cand_by_value
 from .singleton import Singleton
-from people import Elector, Candidate
 
 
 class Election(metaclass=Singleton):
@@ -20,7 +18,6 @@ class Election(metaclass=Singleton):
         super().__init__()
         self.electors = []
         self.candidates = []
-        # self.electors_positions = []
 
         self.results = dict()
         self.condorcet_graph_info = dict()
@@ -52,7 +49,18 @@ class Election(metaclass=Singleton):
         for elector in self.electors:
             elector.rank_candidates(self.candidates)
 
+    def set_average_electors_position(self):
+        x, y = self.average_position_electors
+        x /= len(self.electors)
+        y /= len(self.electors)
+        self.average_position_electors = (x, y)
+
     def add_elector(self, new_elector):
+        x, y = new_elector.position
+        x_avg, y_avg = self.average_position_electors
+        x_avg += x
+        y_avg += y
+        self.average_position_electors = (x_avg, y_avg)
         self.electors.append(new_elector)
 
     def add_candidate(self, new_candidate):
@@ -63,9 +71,6 @@ class Election(metaclass=Singleton):
 
     def add_electors(self, electors):
         self.electors = deepcopy(electors)
-
-    # def add_electors_position(self, position):
-    #     self.electors_positions.append(position)
 
     def has_electors_candidates(self):
         if not self.electors and not self.candidates:
@@ -124,17 +129,31 @@ class Election(metaclass=Singleton):
         if not self.has_electors_candidates:
             return
 
+        # Assuming every candidate has the same voting_rules
         candidate = self.candidates[0]
         keys = candidate.scores.keys()
 
         for voting_rule in keys:
-            if (
-                voting_rule in VotingRulesConstants.ONE_ROUND
-                or voting_rule in VotingRulesConstants.CONDORCET
-            ):
-                self.results[voting_rule] = sort_cand_by_value(
-                    self.candidates, voting_rule
+            if voting_rule in VotingRulesConstants.ONE_ROUND:
+                result = sort_cand_by_value(self.candidates, voting_rule)
+                self.results[voting_rule] = result
+            elif voting_rule in VotingRulesConstants.MULTI_ROUND:
+                self.results[voting_rule] = [None] * len(candidate.scores[voting_rule])
+                for round in range(len(candidate.scores[voting_rule])):
+                    result = sort_cand_by_round(self.candidates, voting_rule, round)
+                    self.results[voting_rule][round] = result
+            elif voting_rule in VotingRulesConstants.CONDORCET:
+                sort_asc = (
+                    True
+                    if voting_rule == VotingRulesConstants.CONDORCET_SIMPSON
+                    else False
                 )
+
+                result = sort_cand_by_value(self.candidates, voting_rule, sort_asc)
+                self.results[voting_rule] = result
+
+        for voting_rule, res in self.results.items():
+            print(voting_rule, res)
 
     def calculate_results(self, imported=False):
         if imported:
@@ -153,35 +172,6 @@ class Election(metaclass=Singleton):
         x2, y2 = point2
         return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
-    ### fonction sans argument appelée dans le main avant l'utilisation des fonctions de vote, créé les electors dans la base de donnée election
-    # def create_electors(self):
-    #     nb_electors = 0
-    #     x_average = 0
-    #     y_average = 0
-    #     for elec in self.electors_positions:
-    #         nb_electors += 1
-
-    #         (x_elec, y_elec) = elec
-    #         x_average += x_elec
-    #         y_average += y_elec
-    #         (mu, sigma) = self.generation_constants[RandomConstants.KNOWLEDGE]
-
-    #         random_knowledge = normal(mu, sigma, None)
-    #         while random_knowledge > 1:
-    #             random_knowledge = normal(mu, sigma, None)
-
-    #         self.add_elector(
-    #             Elector(
-    #                 candidates=self.candidates,
-    #                 position=elec,
-    #                 knowledge=random_knowledge,
-    #             )
-    #         )
-    #     x_average = x_average / nb_electors
-    #     y_average = y_average / nb_electors
-    #     self.average_position_electors = (x_average, y_average)
-    #     self.electors_positions.clear()
-
     ### fonction sans argument appelée pour calculer le taux de satisfaction de la population utilisé ensuite dans l'affichage des vainqueurs des éléctions
     def calculate_prop_satisfation(self):
         proportion = 0
@@ -190,7 +180,7 @@ class Election(metaclass=Singleton):
                 candidate.position, self.average_position_electors
             )
             proportion = max(proportion, dist_cand_electors)
-
+        # print("Proportion", proportion)
         self.proportion_satisfaction = proportion
 
     def calculate_satisfaction(self, candidate):
@@ -203,6 +193,7 @@ class Election(metaclass=Singleton):
             if self.proportion_satisfaction != 0
             else 0
         )
+        # print(candidate, percentage)
         return percentage
 
     # Apply poll for every 1 ROUND voting system

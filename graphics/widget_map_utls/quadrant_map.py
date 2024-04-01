@@ -1,8 +1,9 @@
 from itertools import product
 from math import sqrt
+from functools import partial
 
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit
-from PySide6.QtGui import QPainter, QPen, QColor, QFont
+from PySide6.QtGui import QPainter, QPen, QColor, QFont, QTransform
 from PySide6.QtCore import Qt, QPointF
 
 from numpy import clip
@@ -15,15 +16,40 @@ from people import Elector, Candidate
 class QuadrantMap(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
-        self.electors = []  #   stock les coordonées cartésiennes des votants
-        self.candidates = []  #   stock les coordonées cartésiennes des candidats
+        self.electors_map_data = []
+        self.candidates_map_data = []
 
         self.election = Election()
         self.final_painting = False
         side_size = min(parent.width(), parent.height())
         self.setFixedSize(0.8 * side_size, 0.8 * side_size)
 
+        self.setTransformation()
         self.initUI()
+
+    # Called only when data is imported
+    def setPeopleMapData(self):
+        self._setElectorsMapData()
+        self._setCandidatesMapData()
+
+    def _setElectorsMapData(self):
+        for elector in self.election.electors:
+            self.electors_map_data.append(self.scaleCoordinates(elector.position))
+
+    def _setCandidatesMapData(self):
+        for candidate in self.election.candidates:
+            point = self.scaleCoordinates(candidate.position)
+            fst_name = candidate.first_name
+            lst_name = candidate.last_name
+            self.candidates_map_data.append((fst_name, lst_name, point))
+
+    def setTransformation(self):
+        self.transform = QTransform()
+        # Order matters!
+        # Flip Y-axis
+        self.transform.scale(1, -1)
+        # Move center
+        self.transform.translate(self.width() / 2, -self.height() / 2)
 
     def initUI(self):
         self.layout = QVBoxLayout(self)
@@ -43,6 +69,9 @@ class QuadrantMap(QWidget):
         self.drawGrid(painter)
         self.drawAxes(painter)
         self.drawAxisLabels(painter)
+
+        painter.setTransform(self.transform)
+
         if self.final_painting:
             self.drawPointsDelegation(painter)
         else:
@@ -108,46 +137,39 @@ class QuadrantMap(QWidget):
         painter.drawText(self.width() / 150, self.height() / 2 + 30, "Left")
         painter.drawText(self.width() / 2 - 60, self.height() - 10, "Liberal")
 
-    ### fonction sans argument qui dessines les points de candidates et electors dans le graph
-    def drawPoints(self, painter):
-        offset = QPointF(
-            self.width() / 2, self.height() / 2
-        )  #   position du milieu (0,0)
+    def _drawElectors(self, painter):
 
         #   dessin des points des élécteurs
         pen = QPen(QColor(0, 0, 255))
         pen.setWidth(4)
         painter.setPen(pen)
-        for elector in self.election.electors:
-            (x, y) = elector.position
-            pos = QPointF(x, y) * self.width() / 2
-            #   crée un widget de position du point et lui affecte la position du point actuel
-            widget_pos = QPointF(pos.x() + offset.x(), offset.y() - pos.y())
-            painter.drawPoint(widget_pos)
+        for point in self.electors_map_data:
+            painter.drawPoint(point)
 
-        #   dessin des points des candidates
-        pen2 = QPen(QColor(255, 0, 0))
-        pen2.setWidth(4)
-        painter.setPen(pen2)
-        for candidate in self.election.candidates:
-            fst_name, lst_name = candidate.first_name, candidate.last_name
-            x, y = candidate.position
-            pos = QPointF(x, y) * self.width() / 2
-            painter.setPen(
-                pen2
-            )  #   reconfiguration du pinceau après une itération de la boucle
-            widget_pos = QPointF(pos.x() + offset.x(), offset.y() - pos.y())
-            painter.drawPoint(widget_pos)
+    def _drawCandidates(self, painter):
+        pen = QPen(QColor(255, 0, 0))
+        pen.setWidth(4)
+        painter.setPen(pen)
+        for fst_name, lst_name, point in self.candidates_map_data:
+            #   reconfiguration du pinceau après une itération de la boucle
+            painter.setPen(pen)
+            painter.drawPoint(point)
 
             #   reconfiguration du style du pinceau pour le texte
             painter.setPen(QColor(0, 0, 0))
-            painter.drawText(widget_pos + QPointF(5, 15), f"{fst_name} {lst_name}")
+            point_mapped = self.transform.map(point)
+            # To prevent text inverse
+            painter.setWorldMatrixEnabled(False)
+            painter.drawText(point_mapped + QPointF(5, 15), f"{fst_name} {lst_name}")
+            painter.setWorldMatrixEnabled(True)
+
+    ### fonction sans argument qui dessines les points de candidates et electors dans le graph
+    def drawPoints(self, painter):
+        #   dessin des points des élécteurs
+        self._drawElectors(painter)
+        self._drawCandidates(painter)
 
     def drawPointsDelegation(self, painter):
-        offset = QPointF(
-            self.width() / 2, self.height() / 2
-        )  #   position du milieu (0,0)
-
         #   dessin des points des élécteurs
         pen = QPen(QColor(128, 128, 128))
         pen.setWidth(4)
@@ -155,86 +177,70 @@ class QuadrantMap(QWidget):
         for elec in self.election.electors:
             #   crée un widget de position du point et lui affecte la position du point actuel
             if elec.weight == 0:
-                (x, y) = elec.position
-                x = x * self.width() / 2
-                y = y * self.height() / 2
-                widget_pos = QPointF(x + offset.x(), offset.y() - y)
-                painter.drawPoint(widget_pos)
+                painter.drawPoint(self.scaleCoordinates(elec.position))
 
-        pen3 = QPen(QColor(30, 144, 255))
-        pen3.setWidth(4)
-        painter.setPen(pen3)
         for elec in self.election.electors:
             if elec.weight > 0:
-                (x, y) = elec.position
-                x = x * self.width() / 2
-                y = y * self.height() / 2
-                widget_pos = QPointF(x + offset.x(), offset.y() - y)
-                painter.drawPoint(widget_pos)
-                painter.drawText(widget_pos + QPointF(5, 15), f"{elec.weight}")
+                pen3 = QPen(QColor(30, 144, 255))
+                pen3.setWidth(4)
+                painter.setPen(pen3)
 
-        #   dessin des points des candidates
-        pen2 = QPen(QColor(255, 0, 0))
-        pen2.setWidth(4)
-        painter.setPen(pen2)
-        for fst_name, lst_name, pos in self.candidates:
-            painter.setPen(
-                pen2
-            )  #   reconfiguration du pinceau après une itération de la boucle
-            widget_pos = QPointF(pos.x() + offset.x(), offset.y() - pos.y())
-            painter.drawPoint(widget_pos)
+                scaled_point = self.scaleCoordinates(elec.position)
+                point_mapped = self.transform.map(scaled_point)
 
-            #   reconfiguration du style du pinceau pour le texte
-            painter.setPen(QColor(0, 0, 0))
-            painter.drawText(widget_pos + QPointF(5, 15), f"{fst_name} {lst_name}")
+                painter.drawPoint(scaled_point)
+                # To prevent text inverse
+                painter.setWorldMatrixEnabled(False)
+                painter.drawText(point_mapped + QPointF(5, 15), f"{elec.weight}")
+                painter.setWorldMatrixEnabled(True)
+
+        self._drawCandidates(painter)
+
+    def normalizeCoordiantes(self, point):
+        return (point.x() / self.width() * 2, point.y() / self.height() * 2)
+
+    def scaleCoordinates(self, position):
+        x, y = position
+        return QPointF(x * self.width() / 2, y * self.height() / 2)
 
     ### fonction sans argument qui est appelé lors d'un clique de souris et créé un candidat en clique droit ou stock les coordonnées d'un elector
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:  #   cas du clique gauche
-            offset = QPointF(self.width() // 2, self.height() // 2)
+        inverted_transform, _ = self.transform.inverted()
+        point_inv = inverted_transform.map(event.position())
+        normalized_pos = self.normalizeCoordiantes(point_inv)
 
-            #   récupère la position du point cliqué en position cartésienne
-            cartesian_pos = QPointF(
-                event.pos().x() - offset.x(), offset.y() - event.pos().y()
-            )
-            self.electors.append(cartesian_pos)
-            # self.election.add_electors_position(self.normalizePosition(cartesian_pos))
-            self.election.add_elector(Elector(candidates=self.election.candidates))
+        if event.button() == Qt.LeftButton:  #   cas du clique gauche
+            self.election.add_elector(Elector(position=normalized_pos))
+
+            self.electors_map_data.append(point_inv)
             self.update()  #   actualise l'état graphique du tableau (les points et leurs positions)
 
         # cas du clique droit
         if event.button() == Qt.RightButton and not self.text_box_active:
             # appelle de la création de la zone de texte
-            self.createTextBox(event.pos())
+            self.createTextBox(event.position(), point_inv, normalized_pos)
             self.text_box_active = True
 
     ### fonction sans argument qui créé une textbox lors de la création manuelle d'un candidat
-    def createTextBox(self, position):
+    def createTextBox(self, point, point_inv, normalized_pos):
         self.text_box = QLineEdit(self)  #   création de la zone de texte
-        self.text_box.move(
-            position
-        )  #   placement de la zone de texte à la position clique
+        #   placement de la zone de texte à la position clique
+        self.text_box.move(point.toPoint())
+        #   appelle de la fonction de création et de stockage du nom connecté avec la touche enter
         self.text_box.returnPressed.connect(
-            lambda: self.storeName(position)
-        )  #   appelle de la fonction de création et de stockage du nom connecté avec la touche enter
+            lambda: self.storeName(point_inv, normalized_pos)
+        )
         self.text_box.show()  #   Affiche la zone de texte la zone de texte
 
     ### fonction sans argument appelée par la textbox de création du candidat pour stocker le nom det créer le candidat
-    def storeName(self, position):
+    def storeName(self, point_inv, normalized_pos):
         # récupère le texte dans une variable
         full_name = self.text_box.text().split(" ", 1)
         first_name, last_name = tuple(full_name)
-
-        #   création du candidat et stockage dans le tableau
-        offset = QPointF(self.width() // 2, self.height() // 2)
-
-        cartesian_pos = QPointF(position.x() - offset.x(), offset.y() - position.y())
-        self.candidates.append((first_name, last_name, cartesian_pos))
+        self.candidates_map_data.append((first_name, last_name, point_inv))
         self.election.add_candidate(
             Candidate(
-                first_name=first_name,
-                last_name=last_name,
-                position=self.normalizePosition(cartesian_pos),
+                first_name=first_name, last_name=last_name, position=normalized_pos
             )
         )
         self.update()
@@ -260,11 +266,9 @@ class QuadrantMap(QWidget):
         # Spread factor on a map for sigma
 
         mu, sigma = economical_constants[0], economical_constants[1]
-        print(mu, sigma)
         x = self._generate_coordinate(mu, sigma, limit=1)
 
         mu, sigma = coef_dir * x + social_constants[0], social_constants[1]
-        print(mu, sigma)
         y = self._generate_coordinate(mu, sigma, limit=1)
 
         # Limit values  to a map range
@@ -273,7 +277,7 @@ class QuadrantMap(QWidget):
 
         # Scaling
         half_width = self.width() / 2
-        return QPointF(x * half_width, y * half_width)
+        return (x, y)
 
     ### Position de type QPointF, retourne couple normale
     def normalizePosition(self, position):

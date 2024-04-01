@@ -5,11 +5,14 @@ def init_scores(candidates, voting_system_name, new_score, list_type=False):
 
 
 # Trier des candidats selon leurs scores (int / float)
-def sort_cand_by_value(candidates, voting_system_name):
+def sort_cand_by_value(candidates, voting_system_name, scores_asc=False):
     lst = [
         (candidate, candidate.scores[voting_system_name]) for candidate in candidates
     ]
-    return [c for (c, _) in sorted(lst, key=lambda e: e[1], reverse=True)]
+    if not scores_asc:
+        return [c for (c, _) in sorted(lst, key=lambda e: e[1], reverse=True)]
+    else:
+        return [c for (c, _) in sorted(lst, key=lambda e: (e[1], e[0]))]
 
 
 # Round commance a partir de 0
