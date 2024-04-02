@@ -52,9 +52,13 @@ class RandomConstants:
     SOCIAL = "SOC"
     ORIENTATION = "ORIENT"
     KNOWLEDGE = "KNW"
+    DOGMATISM = "DGC"
+    OPPOSITION = "OPP"
+    TRAVEL_DIST = "TD"  # In percentage, between 1 and
 
     LINEAR = 0
     GAUSS = 1
+    SLIDER = 2
 
     # UI constants (QT)
     UI = {
@@ -62,6 +66,9 @@ class RandomConstants:
         SOCIAL: "Social (liberal-autoritarian)",
         ORIENTATION: "Orientation",
         KNOWLEDGE: "Knowledge",
+        DOGMATISM: "Dogmatism",
+        OPPOSITION: "Opposition",
+        TRAVEL_DIST: "Candidate's travel distance",
     }
 
     # Graph type for each category
@@ -70,4 +77,18 @@ class RandomConstants:
         SOCIAL: GAUSS,
         ORIENTATION: LINEAR,
         KNOWLEDGE: GAUSS,
+        DOGMATISM: GAUSS,
+        OPPOSITION: GAUSS,
+        TRAVEL_DIST: SLIDER,
+    }
+
+    # Change later
+    VALUES_MIN_MAX = {
+        ECONOMICAL: (-85, 85),  # Div by 100
+        SOCIAL: (85, 85),
+        ORIENTATION: (-100, 100),  # Div by 100
+        KNOWLEDGE: (-1, 1),
+        DOGMATISM: (-100, 100),  # Div by 100
+        OPPOSITION: (-100, 100),  # Div by 100
+        TRAVEL_DIST: (1, 100),
     }

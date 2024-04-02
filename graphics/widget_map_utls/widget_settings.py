@@ -36,19 +36,15 @@ class WidgetSettings(QWidget):
 
         scrollArea = QScrollArea()
         main_layout.addWidget(scrollArea)
-        # scrollArea.setStyleSheet("background-color : white")
 
         scroll_widget = QWidget()
-
-        # scroll_widget.setStyleSheet("background-color : green")
-        # main_layout.addWidget(scroll_widget)
 
         layout = QVBoxLayout()
         scroll_widget.setLayout(layout)
         for type, title in RandomConstants.UI.items():
             graph_type = RandomConstants.GRAPH_TYPE[type]
             graph = GraphSettings(self, title, type, graph_type, self.quadrant_map_size)
-            graph.setFixedSize(self.size() * 0.8)
+
             layout.addWidget(graph)
 
         scrollArea.setWidget(scroll_widget)

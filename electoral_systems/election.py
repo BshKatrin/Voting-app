@@ -50,6 +50,9 @@ class Election(metaclass=Singleton):
             RandomConstants.SOCIAL: (0, 0.5),
             RandomConstants.ORIENTATION: 1,
             RandomConstants.KNOWLEDGE: (0.5, 0.3),
+            RandomConstants.DOGMATISM: (0, 0.5),
+            RandomConstants.OPPOSITION: (0, 0.5),
+            RandomConstants.TRAVEL_DIST: 0.1,
         }
 
         # self.economical_constants = (280, 100)

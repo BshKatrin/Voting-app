@@ -19,7 +19,6 @@ class GraphSettings(QWidget):
         super().__init__(parent)
 
         self.election = Election()
-
         self.type = type
 
         self.map_size = quadrant_map_size
@@ -27,15 +26,43 @@ class GraphSettings(QWidget):
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
-        self.initPlot(title)
-        self.layout.addWidget(self.graphWidget)
-
         # Init graphs based on a type
         match graph_type:
             case RandomConstants.LINEAR:
+                self.initPlot(title)
+                self.setFixedSize(self.parent().size() * 0.8)
                 self.initLinearInput()
             case RandomConstants.GAUSS:
+                self.initPlot(title)
+                self.setFixedSize(self.parent().size() * 0.8)
                 self.initGaussInput()
+            case RandomConstants.SLIDER:
+                # self.setFixedSize(self.parent().size() * 0.2)
+                self.initDistInput(title)
+                self.setFixedWidth(self.parent().width() * 0.8)
+
+    @Slot(float)
+    def updateDistUpdate(self, value):
+        self.election.generation_constants[self.type] = value / 100
+        self.dist_result.setText(f"{value / 100:.2f}")
+
+    def initDistInput(self, title):
+        sub_layout = QGridLayout()
+        self.dist_label = QLabel(title, self)
+        current_value = self.election.generation_constants[self.type]
+        self.dist_result = QLabel(f"{current_value:.2f}", self)
+        self.dist_slider = QSlider(Qt.Horizontal, self)
+
+        min, max = RandomConstants.VALUES_MIN_MAX[self.type]
+        self.dist_slider.setRange(min, max)
+        self.dist_slider.setValue(int(current_value * 100))
+        self.dist_slider.valueChanged.connect(self.updateDistUpdate)
+
+        sub_layout.addWidget(self.dist_label, 0, 1)
+        sub_layout.addWidget(self.dist_slider, 1, 0, 1, 2)
+        sub_layout.addWidget(self.dist_result, 1, 2)
+
+        self.layout.addLayout(sub_layout)
 
     @Slot(float)
     def updateMuConstant(self, value):
@@ -65,7 +92,7 @@ class GraphSettings(QWidget):
         self.orientation_result.setText(str(value))
 
         mu = self.election.generation_constants[RandomConstants.SOCIAL][0]
-        self.updateGraphAffine(value, mu)
+        self.updateGraphAffine(value)
 
     def initLinearInput(self):
         sub_layout = QGridLayout()
@@ -135,6 +162,8 @@ class GraphSettings(QWidget):
         self.graphWidget.setTitle(title)
         self.pen = mkPen(color=(255, 0, 0), width=5)
 
+        self.layout.addWidget(self.graphWidget)
+
     def _calculateYGauss(self, i, mu, sigma):
         return (1 / ((sigma + 0.01) * sqrt(pi))) * exp(
             -0.5 * ((i - mu) / (sigma + 0.01)) ** 2
@@ -152,16 +181,16 @@ class GraphSettings(QWidget):
         # plot data: x, y values
         self.graphWidget.plot(x, y, pen=self.pen)
 
-    def _calculateYLinear(self, i, slope, mu):
-        return (slope * i) + mu
+    def _calculateYLinear(self, i, slope):
+        return slope * i
 
-    def updateGraphAffine(self, slope, mu):
+    def updateGraphAffine(self, slope):
         self.graphWidget.clear()
         self.graphWidget.setXRange(-1, 1, padding=0)
         self.graphWidget.setYRange(-1, 1, padding=0)
 
         step = 0.05
         x = arange(start=-1, stop=1 + step, step=step, dtype=float)
-        y = array([self._calculateYLinear(i, slope, mu) for i in x])
+        y = array([self._calculateYLinear(i, slope) for i in x])
 
         self.graphWidget.plot(x, y, pen=self.pen)

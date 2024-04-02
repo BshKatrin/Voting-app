@@ -186,12 +186,15 @@ class QuadrantMap(QWidget):
         x, y = position
         return QPointF(x * self.width() / 2, y * self.height() / 2)
 
+    def normalizeCoordinates(self, point):
+        return point.x() / self.width() * 2, point.y() / self.height() * 2
+
     ### fonction sans argument qui est appelé lors d'un clique de souris et créé un candidat en clique droit ou stock les coordonnées d'un elector
     def mousePressEvent(self, event):
         inverted_transform, _ = self.transform.inverted()
         point_inv = inverted_transform.map(event.position())
         normalized_pos = self.normalizeCoordinates(point_inv)
-
+        print(normalized_pos)
         if event.button() == Qt.LeftButton:  #   cas du clique gauche
             self.election.add_elector(Elector(position=normalized_pos))
 
