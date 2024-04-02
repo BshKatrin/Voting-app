@@ -149,10 +149,7 @@ class WidgetMap(QWidget):
     def onStartElectionClick(self):
         constantsSet = self.voting_rules_checkbox.getConstantsSet()
         # Perform necessary calculations
-        self.election.start_election(
-            liquid_democracy=self.election.liquid_democracy_activated,
-            chosen_voting_rules=constantsSet,
-        )
+        self.election.start_election(chosen_voting_rules=constantsSet)
         # Draw version with delegations
         self.quadrant_map.final_painting = True
         self.quadrant_map.update()

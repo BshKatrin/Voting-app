@@ -125,9 +125,7 @@ class HomeWindow(QMainWindow):
             self.initUIMap()
             return
 
-        self.election.start_election(
-            liquid_democracy=self.election.liquid_democracy_activated, imported=True
-        )
+        self.election.start_election(imported=True)
         self.initUIResults()
 
     def createActions(self):
@@ -290,6 +288,9 @@ class HomeWindow(QMainWindow):
 
     @Slot()
     def initUIResults(self):
+        self.cleanWindow()
+
+        self.initNavigation()
         self.toggleIEOptions(ExportData.EXPORT, True, True)
         self.toggleIEOptions(ImportData.IMPORT, False, False)
 

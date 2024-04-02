@@ -27,15 +27,13 @@ class Election(metaclass=Singleton):
 
         self.set_default_settings()
 
-    def start_election(
-        self, liquid_democracy=False, imported=False, chosen_voting_rules=None
-    ):
+    def start_election(self, imported=False, chosen_voting_rules=None):
         # Make every elector rank candidates
         self.define_ranking()
         self.set_average_electors_position()
         self.calculate_prop_satisfation()
 
-        if liquid_democracy:
+        if self.liquid_democracy_activated:
             self.make_delegations()
         if chosen_voting_rules:
             self.init_results_keys(chosen_voting_rules)
