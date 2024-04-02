@@ -55,7 +55,7 @@ class WidgetMap(QWidget):
         self.start_election_btn.clicked.connect(self.onStartElectionClick)
 
         # Quadrant map
-        self.quadrant_map = QuadrantMap(parent=self)
+        self.quadrant_map = QuadrantMap(0.8, parent=self)
 
         # Voting rules checkbox
         self.voting_rules_checkbox = WidgetCheckbox(parent=None)
@@ -149,20 +149,20 @@ class WidgetMap(QWidget):
     def onStartElectionClick(self):
         constantsSet = self.voting_rules_checkbox.getConstantsSet()
         # Perform necessary calculations
-        self.election.start_election(chosen_voting_rules=constantsSet)
+        # self.election.start_election(chosen_voting_rules=constantsSet)
         # Draw version with delegations
-        self.quadrant_map.final_painting = True
-        self.quadrant_map.update()
+        # self.quadrant_map.final_painting = True
+        # self.quadrant_map.update()
 
-        # Import drawing to an image
-        pixmap = QPixmap(self.quadrant_map.size())
-        pixmap_painter = QPainter(pixmap)
+        # # Import drawing to an image
+        # pixmap = QPixmap(self.quadrant_map.size())
+        # pixmap_painter = QPainter(pixmap)
 
-        self.quadrant_map.render(pixmap_painter, QPoint(0, 0))
-        pixmap_painter.end()
+        # self.quadrant_map.render(pixmap_painter, QPoint(0, 0))
+        # pixmap_painter.end()
 
-        success = pixmap.save("graphics/temp/map.png", "PNG", 50)
-        print("Saved") if success else print("Not saved")
+        # success = pixmap.save("graphics/temp/map.png", "PNG", 50)
+        # print("Saved") if success else print("Not saved")
 
         self.sig_start_election.emit(list(constantsSet))
 

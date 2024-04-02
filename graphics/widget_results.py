@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Slot, Signal, QSize
 
 from .widget_results_utls import DirectedGraph, DirectedGraphView, ChartView, MapImage
+from .widget_map_utls import QuadrantMap
 
 from electoral_systems import Election, VotingRulesConstants
 
@@ -75,8 +76,9 @@ class WidgetResults(QWidget):
             self.initPollsUI()
 
         self.initColumns()
-
-        self.image = MapImage("graphics/temp/map.png")
+        self.image = MapImage()
+        # self.image.disableMouseEvent()
+        # self.image = MapImage("graphics/temp/map.png")
         self.image.closed.connect(self.toggleCheckbox)
 
     def initPollsUI(self):

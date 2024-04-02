@@ -72,10 +72,10 @@ class HomeWindow(QMainWindow):
         center_x = screen_size.width() / 2 + x
 
         # Determine main_window one side size
-        side_size = min(screen_size.height(), screen_size.width())
+        side_size = min(screen_size.height(), screen_size.width()) * 0.9
         self.setGeometry(center_x - side_size / 2, 0, side_size, side_size)
 
-    # With results : MainWindow, WidgetResults only
+    # With results : MainWindow, WidgetsResults only
     # No results : MainWindow, WidgetMap only
     @Slot(bool)
     def importData(self, with_results):
@@ -304,6 +304,7 @@ class HomeWindow(QMainWindow):
         # Delete widget with map
         self.widget_map.sig_widget_map_destroying.emit()
         self.widget_map.deleteLater()
+        self.election.start_election(constantsList)
         # Initialize Results page (winners, results, graphs)
 
         self.initUIResults()

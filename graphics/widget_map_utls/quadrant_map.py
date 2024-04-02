@@ -2,7 +2,7 @@ from itertools import product
 from math import sqrt
 from functools import partial
 
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QSizePolicy
 from PySide6.QtGui import QPainter, QPen, QColor, QFont, QTransform
 from PySide6.QtCore import Qt, QPointF
 
@@ -14,15 +14,14 @@ from people import Elector, Candidate
 
 
 class QuadrantMap(QWidget):
-    def __init__(self, parent):
+    def __init__(self, size_proportion, parent):
         super().__init__(parent)
-        # self.electors_map_data = []
-        # self.candidates_map_data = []
 
         self.election = Election()
         self.final_painting = False
+
         side_size = min(parent.width(), parent.height())
-        self.setFixedSize(0.8 * side_size, 0.8 * side_size)
+        self.setFixedSize(size_proportion * side_size, size_proportion * side_size)
 
         self.setTransformation()
         self.initUI()
