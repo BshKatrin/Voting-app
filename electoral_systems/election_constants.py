@@ -85,10 +85,20 @@ class RandomConstants:
     # Change later
     VALUES_MIN_MAX = {
         ECONOMICAL: (-85, 85),  # Div by 100
-        SOCIAL: (85, 85),
-        ORIENTATION: (-100, 100),  # Div by 100
-        KNOWLEDGE: (-1, 1),
-        DOGMATISM: (-100, 100),  # Div by 100
-        OPPOSITION: (-100, 100),  # Div by 100
-        TRAVEL_DIST: (1, 100),
+        SOCIAL: (-85, 85),  # Div by 100
+        ORIENTATION: (-1, 1),  # NO div by 100
+        KNOWLEDGE: (10, 90),  # Div by 100
+        DOGMATISM: (10, 90),  # Div by 100
+        OPPOSITION: (10, 90),  # Div by 100
+        TRAVEL_DIST: (1, 100),  # Div by 100
+    }
+
+    DEFAULT_VALUES = {
+        ECONOMICAL: (0.0, 0.5),
+        SOCIAL: (0.0, 0.5),
+        ORIENTATION: 1,
+        KNOWLEDGE: (0.5, 0.3),
+        DOGMATISM: (0.3, 0.3),
+        OPPOSITION: (0.3, 0.3),
+        TRAVEL_DIST: 0.1,
     }

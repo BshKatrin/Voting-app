@@ -45,15 +45,10 @@ class Election(metaclass=Singleton):
         self.liquid_democracy_activated = True
 
         # variable necessaire pour generation aleatoire
-        self.generation_constants = {
-            RandomConstants.ECONOMICAL: (0, 0.5),
-            RandomConstants.SOCIAL: (0, 0.5),
-            RandomConstants.ORIENTATION: 1,
-            RandomConstants.KNOWLEDGE: (0.5, 0.3),
-            RandomConstants.DOGMATISM: (0, 0.5),
-            RandomConstants.OPPOSITION: (0, 0.5),
-            RandomConstants.TRAVEL_DIST: 0.1,
-        }
+
+        self.generation_constants = dict()
+        for type, default_value in RandomConstants.DEFAULT_VALUES.items():
+            self.generation_constants[type] = default_value
 
         # self.economical_constants = (280, 100)
         # self.social_constants = (280, 100)

@@ -4,7 +4,7 @@ from functools import partial
 
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QSizePolicy
 from PySide6.QtGui import QPainter, QPen, QColor, QFont, QTransform
-from PySide6.QtCore import Qt, QPointF
+from PySide6.QtCore import Qt, QPointF, QPoint
 
 from numpy import clip
 from numpy.random import normal
@@ -145,7 +145,8 @@ class QuadrantMap(QWidget):
             point_mapped = self.transform.map(point_scaled)
             # To prevent text inverse
             painter.setWorldMatrixEnabled(False)
-            painter.drawText(point_mapped + QPointF(5, 15), f"{fst_name} {lst_name}")
+            point_text = self.getTextPosition(point_mapped, shift_point=QPointF(5, 15))
+            painter.drawText(point_mapped + point_text, f"{fst_name} {lst_name}")
             painter.setWorldMatrixEnabled(True)
 
     ### fonction sans argument qui dessines les points de candidates et electors dans le graph
@@ -176,7 +177,10 @@ class QuadrantMap(QWidget):
                 painter.drawPoint(scaled_point)
                 # To prevent text inverse
                 painter.setWorldMatrixEnabled(False)
-                painter.drawText(point_mapped + QPointF(5, 15), f"{elector.weight}")
+                point_text = self.getTextPosition(
+                    point_mapped, shift_point=QPointF(5, 15)
+                )
+                painter.drawText(point_mapped + point_text, f"{elector.weight}")
                 painter.setWorldMatrixEnabled(True)
 
         self._drawCandidates(painter)
@@ -193,9 +197,13 @@ class QuadrantMap(QWidget):
         inverted_transform, _ = self.transform.inverted()
         point_inv = inverted_transform.map(event.position())
         normalized_pos = self.normalizeCoordinates(point_inv)
-        print(normalized_pos)
         if event.button() == Qt.LeftButton:  #   cas du clique gauche
-            self.election.add_elector(Elector(position=normalized_pos))
+            knowledge_const = self.election.generation_constants[
+                RandomConstants.KNOWLEDGE
+            ]
+            self.election.add_elector(
+                Elector(position=normalized_pos, knowledge_const=knowledge_const)
+            )
 
             # self.electors_map_data.append(point_inv)
             self.update()  #   actualise l'état graphique du tableau (les points et leurs positions)
@@ -209,8 +217,9 @@ class QuadrantMap(QWidget):
     ### fonction sans argument qui créé une textbox lors de la création manuelle d'un candidat
     def createTextBox(self, point, normalized_pos):
         self.text_box = QLineEdit(self)  #   création de la zone de texte
+
         #   placement de la zone de texte à la position clique
-        self.text_box.move(point.toPoint())
+        self.text_box.move(self.getTextBoxPosition(point, self.text_box.size()))
         #   appelle de la fonction de création et de stockage du nom connecté avec la touche enter
         self.text_box.returnPressed.connect(lambda: self.storeName(normalized_pos))
         self.text_box.show()  #   Affiche la zone de texte la zone de texte
@@ -231,9 +240,15 @@ class QuadrantMap(QWidget):
             first_name, last_name = tuple(full_name)
 
         # self.candidates_map_data.append((first_name, last_name, point_inv))
+        dogma_const = self.election.generation_constants[RandomConstants.DOGMATISM]
+        oppos_const = self.election.generation_constants[RandomConstants.OPPOSITION]
         self.election.add_candidate(
             Candidate(
-                first_name=first_name, last_name=last_name, position=normalized_pos
+                first_name=first_name,
+                last_name=last_name,
+                position=normalized_pos,
+                dogmatism_const=dogma_const,
+                opposition_const=oppos_const,
             )
         )
         self.update()
@@ -268,3 +283,33 @@ class QuadrantMap(QWidget):
         # y = clip(y, -1, 1)
 
         return (x, y)
+
+    # point : QPoitntF of a point to which text is associated
+    # Function returns QPointF where text should be drawn so it is visible
+    # point IS mapped (meaning it is computer coordinate)
+    def getTextPosition(self, point, shift_point):
+        point_text = shift_point
+        shift = point + point_text
+
+        # Over the map on X & Y
+        if shift.x() + 100 > self.width() and shift.y() + 100 > self.height():
+            # Inverse, flip X & Y
+            point_text = QPointF(-point_text.y(), -point_text.x())
+        # Over the map on X
+        elif shift.x() + 100 > self.width():
+            point_text = QPointF(-point_text.x(), point_text.y())
+        # Over the map on Y
+        elif shift.y() + 100 > self.height():
+            point_text = QPointF(point_text.x(), -point_text.y())
+
+        return point_text
+
+    def getTextBoxPosition(self, point, size):
+        width, height = size.width(), size.height()
+        point_textbox = point.toPoint()
+        if point.x() + width > self.width():
+            point_textbox = QPoint(point_textbox.x() - width, point_textbox.y())
+        if point.y() + height > self.height():
+            point_textbox = QPoint(point_textbox.x(), point_textbox.y() - height)
+
+        return point_textbox

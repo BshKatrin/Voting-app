@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from itertools import count
 from random import uniform
+from numpy.random import normal
 
 
 @dataclass(kw_only=True, eq=True)
@@ -12,6 +13,15 @@ class Person:
     position: tuple[float, float] = field(
         default_factory=gen_rand_position, compare=False
     )
+
+    # Generate parameters based on Gauss normal distribution
+    # Confine generated parameter between lower and upper limits
+    @staticmethod
+    def generate_parameter(mu, sigma, lower_limit, upper_limit):
+        param = normal(mu, sigma)
+        while param < lower_limit or param > upper_limit:
+            param = normal(mu, sigma)
+        return param
 
     def get_position(self):
         return self.position

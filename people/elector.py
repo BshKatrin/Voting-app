@@ -1,10 +1,11 @@
 from dataclasses import dataclass, field, InitVar
-from typing import List
+from typing import List, Tuple
 from math import sqrt
-from numpy.random import normal
 
 from .person import Person
 from .candidate import Candidate
+
+from electoral_systems import RandomConstants
 
 
 @dataclass(kw_only=True)
@@ -13,17 +14,17 @@ class Elector(Person):
     # weight = 0 -> delegation done
     # weight > 0 -> no delegation
     weight: int = 1
-    knowledge: float = 0
+    knowledge: float = -1.0
+    knowledge_const: InitVar[Tuple[float, float]] = RandomConstants.DEFAULT_VALUES[
+        RandomConstants.KNOWLEDGE
+    ]
 
-    def __post_init__(self):
-        self.knowledge = Elector.generate_knowledge()
-
-    @staticmethod
-    def generate_knowledge(mu=0.5, sigma=0.3):
-        knowledge = normal(mu, sigma)
-        while abs(knowledge) > 1:
-            knowledge = normal(mu, sigma)
-        return knowledge
+    def __post_init__(self, knowledge_const):
+        mu, sigma = knowledge_const
+        if self.knowledge < 0:
+            self.knowledge = Person.generate_parameter(
+                mu=mu, sigma=sigma, lower_limit=0, upper_limit=1
+            )
 
     def __str__(self):
         return (

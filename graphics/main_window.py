@@ -304,7 +304,8 @@ class HomeWindow(QMainWindow):
         # Delete widget with map
         self.widget_map.sig_widget_map_destroying.emit()
         self.widget_map.deleteLater()
-        self.election.start_election(constantsList)
+        self.election.start_election(chosen_voting_rules=constantsList)
+
         # Initialize Results page (winners, results, graphs)
 
         self.initUIResults()

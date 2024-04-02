@@ -1,10 +1,11 @@
 from copy import deepcopy
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, InitVar
 from string import ascii_uppercase
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Tuple
 from itertools import product
-
 from .person import Person
+
+from electoral_systems import RandomConstants
 
 
 def generator_names():
@@ -24,21 +25,41 @@ class Candidate(Person):
     first_name: str = ""
     last_name: str = ""
 
+    dogmatism: float = -1.0
+    opposition: float = -1.0
+    dogmatism_const: InitVar[Tuple[float, float]] = RandomConstants.DEFAULT_VALUES[
+        RandomConstants.DOGMATISM
+    ]
+    opposition_const: InitVar[Tuple[float, float]] = RandomConstants.DEFAULT_VALUES[
+        RandomConstants.OPPOSITION
+    ]
+
     # int -> 1 round, float -> Copeland, List -> N rounds
     scores: Dict[str, Union[int, float, List[int]]] = field(
         default_factory=dict, hash=False, compare=False
     )
 
-    def __post_init__(self):
+    def __post_init__(self, dogmatism_const, opposition_const):
         if not self.first_name:
             self.first_name = next(generator_first_name)
         if not self.last_name:
             self.last_name = next(generator_last_name)
 
+        if self.dogmatism < 0:
+            mu, sigma = dogmatism_const
+            self.dogmatism = Person.generate_parameter(
+                mu=mu, sigma=sigma, lower_limit=0, upper_limit=1
+            )
+        if self.opposition:
+            mu, sigma = opposition_const
+            self.opposition = Person.generate_parameter(
+                mu=mu, sigma=sigma, lower_limit=0, upper_limit=1
+            )
+
     def __str__(self):
         x, y = self.position
         # return f"Candidate({self.id}, ({x:.2f},{y:.2f}), {self.first_name}, {self.last_name}, {self.scores})"
-        return f"Candidate({self.id}, {self.first_name} {self.last_name})"
+        return f"Candidate({self.id}, {self.first_name} {self.last_name}, domgat:{self.dogmatism:.2f}, oppos:{self.opposition:.2f})"
 
     def __repr__(self):
         return self.__str__()

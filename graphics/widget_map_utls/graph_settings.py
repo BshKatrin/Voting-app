@@ -37,7 +37,6 @@ class GraphSettings(QWidget):
                 self.setFixedSize(self.parent().size() * 0.8)
                 self.initGaussInput()
             case RandomConstants.SLIDER:
-                # self.setFixedSize(self.parent().size() * 0.2)
                 self.initDistInput(title)
                 self.setFixedWidth(self.parent().width() * 0.8)
 
@@ -103,7 +102,9 @@ class GraphSettings(QWidget):
         self.slider_orientation = QSlider(Qt.Horizontal, self)
         self.slider_orientation.valueChanged.connect(self.updateOrientation)
         self.slider_orientation.setValue(self.election.generation_constants[self.type])
-        self.slider_orientation.setRange(-1, 1)
+
+        min, max = RandomConstants.VALUES_MIN_MAX[self.type]
+        self.slider_orientation.setRange(min, max)
         self.slider_orientation.setTickInterval(1)
 
         sub_layout.addWidget(self.orientation_label, 0, 0)
@@ -113,7 +114,6 @@ class GraphSettings(QWidget):
         self.layout.addLayout(sub_layout)
 
     def initGaussInput(self):
-        # Grid()
         sub_layout = QGridLayout()
 
         mu_label = QLabel("Mu", self)
@@ -134,7 +134,8 @@ class GraphSettings(QWidget):
         self.mu_slider.setValue(constants[0] * 100)
         self.sigma_slider.setValue(constants[1] * 100)
 
-        self.mu_slider.setRange(-85, 85)
+        min, max = RandomConstants.VALUES_MIN_MAX[self.type]
+        self.mu_slider.setRange(min, max)
         self.sigma_slider.setRange(0, 100)
 
         sub_layout.addWidget(mu_label, 0, 0)

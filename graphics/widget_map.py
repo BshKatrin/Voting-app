@@ -119,17 +119,25 @@ class WidgetMap(QWidget):
         for _ in range(nb_candidates):
             # Normalized
             generated_position = self.quadrant_map.generatePosition()
-            new_candidate = Candidate(position=generated_position)
+            dogmat_const = self.election.generation_constants[RandomConstants.DOGMATISM]
+            oppos_const = self.election.generation_constants[RandomConstants.OPPOSITION]
+            new_candidate = Candidate(
+                position=generated_position,
+                dogmatism_const=dogmat_const,
+                opposition=oppos_const,
+            )
             self.election.add_candidate(new_candidate)
 
         for _ in range(nb_electors):
             # Normalized
             generated_position = self.quadrant_map.generatePosition()
             # Knowledge generation
-            mu, sigma = self.election.generation_constants[RandomConstants.KNOWLEDGE]
-            knowledge = Elector.generate_knowledge(mu, sigma)
+            knowledge_const = self.election.generation_constants[
+                RandomConstants.KNOWLEDGE
+            ]
+            # knowledge = Elector.generate_knowledge(mu, sigma)
             self.election.add_elector(
-                Elector(position=generated_position, knowledge=knowledge)
+                Elector(position=generated_position, knowledge_const=knowledge_const)
             )
 
         self.quadrant_map.update()
@@ -148,22 +156,6 @@ class WidgetMap(QWidget):
     @Slot()
     def onStartElectionClick(self):
         constantsSet = self.voting_rules_checkbox.getConstantsSet()
-        # Perform necessary calculations
-        # self.election.start_election(chosen_voting_rules=constantsSet)
-        # Draw version with delegations
-        # self.quadrant_map.final_painting = True
-        # self.quadrant_map.update()
-
-        # # Import drawing to an image
-        # pixmap = QPixmap(self.quadrant_map.size())
-        # pixmap_painter = QPainter(pixmap)
-
-        # self.quadrant_map.render(pixmap_painter, QPoint(0, 0))
-        # pixmap_painter.end()
-
-        # success = pixmap.save("graphics/temp/map.png", "PNG", 50)
-        # print("Saved") if success else print("Not saved")
-
         self.sig_start_election.emit(list(constantsSet))
 
     @Slot()
