@@ -1,1 +1,2 @@
-from .liquid_democracy import choose_delegee, choose_possible_delegees
+from .liquid_democracy import LiquidDemocracy
+from .polls import Polls

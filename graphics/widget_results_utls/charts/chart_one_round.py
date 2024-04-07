@@ -74,8 +74,17 @@ class ChartOneRound(QChart):
             mx = max(candidate.scores[self.voting_rule], mx)
         return mx
 
+    # For polls
     def updateData(self):
         self._setYRange()
+        self.removeBarsets()
         for cand in self.election.candidates:
             barset = self.candidates_barsets[cand]
             barset.replace(0, cand.scores[self.voting_rule])
+
+    # For polls
+    def removeBarsets(self):
+        for cand, barset in self.candidates_barsets.items():
+            if cand not in self.election.candidates and barset:
+                self.series.remove(barset)
+                self.candidates_barsets[cand] = None

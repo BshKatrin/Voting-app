@@ -185,7 +185,7 @@ class WidgetResults(QWidget):
             satisf_label.setText("---")
         else:
             winner_label.setText(f"{winner.first_name} {winner.last_name}")
-            satisfaction = self.election.calculate_satisfaction(winner)
+            satisfaction = self.election.calc_satisfaction(winner)
             satisf_label.setText(f"{satisfaction:.2f}")
 
     @Slot()

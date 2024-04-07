@@ -56,7 +56,7 @@ class DirectedGraph(QGraphicsScene):
     # draw edges between nodes
     def initEdges(self, weighted):
         # Dict of id of candidates who were already placed with corresponding node position
-        for (winner, loser), weight in self.election.condorcet_graph_info.items():
+        for (winner, loser), weight in self.election.duels_scores.items():
 
             winner_node = self.id_position[winner.id]
             loser_node = self.id_position[loser.id]

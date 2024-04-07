@@ -5,9 +5,10 @@ from numpy.random import normal
 from numpy import std
 
 from .election_constants import RandomConstants, VotingRulesConstants
+from electoral_systems.extensions import Polls
 
 from .voting_rules.condorcet import set_duels_scores
-from .extensions.liquid_democracy import choose_delegee, choose_possible_delegees
+from .extensions import LiquidDemocracy
 from .voting_rules.utls import sort_cand_by_round, sort_cand_by_value
 from .utls import Singleton
 
@@ -22,10 +23,11 @@ class Election(metaclass=Singleton):
         self.results = dict()
         self.duels_scores = dict()
 
-        self.average_position_electors = (0, 0)  # For satisfaction
-
+        # For satisfaction
+        self.average_position_electors = (0, 0)
         self.proportion_satisfaction = 0
 
+        # Init constants
         self.set_default_settings()
 
     def set_default_settings(self):
@@ -38,19 +40,17 @@ class Election(metaclass=Singleton):
             self.generation_constants[type] = default_value
 
         # For polls
-        self.directions_data = {
-            "CENTER": self._init_direction_data(),
-            "NW": self._init_direction_data(),
-            "NE": self._init_direction_data(),
-            "SW": self._init_direction_data(),
-            "SE": self._init_direction_data(),
-        }
+        self.directions_data = Polls.get_default_directions_data()
 
     def start_election(self, imported=False, chosen_voting_rules=None):
         self._define_ranking()
-        self._set_avg_electors_position()
-        self._set_std_deviation()
+        self.set_avg_electors_position()
         self._calc_proportion_satisfaction()
+
+        # Set data for polls
+        if self.nb_polls:
+            Polls.set_avg_electors_positions(self.directions_data)
+            Polls.set_std_deviation(self.directions_data, len(self.electors))
 
         if self.liquid_democracy_activated:
             self._make_delegations()
@@ -70,99 +70,29 @@ class Election(metaclass=Singleton):
         for voting_rule in self.results:
             self.apply_voting_rule(voting_rule)
 
-    def _init_direction_data(self):
-        return {
-            "AVG": (0, 0),
-            "STD_DEV": 0,
-            "NB_ELECTORS": 0,
-            "ELECTORS": [],  # For std deviation
-            "NB_CANDIDATES": 0,
-        }
-
-    # Call after average is set
-    def _set_std_deviation(self):
-        for direct in self.directions_data:
-            direct_electors = self.directions_data[direct]["ELECTORS"]
-
-            # Zero values wont be counted
-            if len(direct_electors) == 0:
-                continue
-
-            direct_x = [elector.position[0] for elector in direct_electors]
-            direct_y = [elector.position[1] for elector in direct_electors]
-
-            # Take average value
-            self.directions_data[direct]["STD_DEV"] = (
-                std(direct_x) + std(direct_y)
-            ) / 2
-            # To make it equal to other parameters
-            self.directions_data[direct]["NB_ELECTORS"] /= len(self.electors)
-            self.directions_data[direct]["ELECTORS"].clear()
-
-    def _choose_direction(self, position):
-        x, y = position
-        if x > 0 and y > 0:
-            return "NE"
-        if x > 0 and y < 0:
-            return "SE"
-        if x < 0 and y > 0:
-            return "NW"
-        if x < 0 and y < 0:
-            return "SW"
-
-    # Center is considered between -0.3 and 0.3
-    def _in_center(self, position):
-        x, y = position
-        if abs(x) < 0.3 and abs(y) < 0.3:
-            return "CENTER"
-        return None
-
-    def _set_avg_electors_position(self):
-        for direct, data in self.directions_data.items():
-            (x_avg, y_avg), nb_electors = data["AVG"], data["NB_ELECTORS"]
-            x_avg = x_avg / nb_electors if nb_electors else 0
-            y_avg = y_avg / nb_electors if nb_electors else 0
-            self.directions_data[direct]["AVG"] = (x_avg, y_avg)
-
-        # All electors average
+    def set_avg_electors_position(self):
         x_avg, y_avg = self.average_position_electors
         x_avg /= len(self.electors)
         y_avg /= len(self.electors)
+        self.average_position_electors = (x_avg, y_avg)
 
     def add_elector(self, new_elector):
         x, y = new_elector.position
 
-        # Center
-        if self._in_center(new_elector.position):
-            x_avg, y_avg = self.directions_data["CENTER"]["AVG"]
-            x_avg, y_avg = x_avg + x, y_avg + y
-            self.directions_data["CENTER"]["AVG"] = (x_avg, y_avg)
-            self.directions_data["CENTER"]["ELECTORS"].append(new_elector)
-            self.directions_data["CENTER"]["NB_ELECTORS"] += 1
-
-        direct = self._choose_direction(new_elector.position)
-        x_avg, y_avg = self.directions_data[direct]["AVG"]
-        x_avg, y_avg = x_avg + x, y_avg + y
-        self.directions_data[direct]["AVG"] = (x_avg, y_avg)
-        self.directions_data[direct]["ELECTORS"].append(new_elector)
-        self.directions_data[direct]["NB_ELECTORS"] += 1
+        if self.nb_polls:
+            Polls.add_elector_data(self.directions_data, new_elector)
 
         # All electors average
         x_avg, y_avg = self.average_position_electors
+        x_avg, y_avg = x_avg + x, y_avg + y
         self.average_position_electors = (x_avg, y_avg)
 
         self.electors.append(new_elector)
 
     def add_candidate(self, new_candidate):
-        x, y = new_candidate.position
-        if self._in_center(new_candidate.position):
-            x_avg, y_avg = self.directions_data["CENTER"]["AVG"]
-            x_avg, y_avg = x_avg + x, y_avg + y
-            self.directions_data["CENTER"]["AVG"] = (x_avg, y_avg)
-            self.directions_data["CENTER"]["NB_CANDIDATES"] += 1
+        if self.nb_polls:
+            Polls.add_candidate_data(self.directions_data, new_candidate)
 
-        direct = self._choose_direction(new_candidate.position)
-        self.directions_data[direct]["NB_CANDIDATES"] += 1
         self.candidates.append(new_candidate)
 
     def _has_electors_candidates(self):
@@ -177,7 +107,10 @@ class Election(metaclass=Singleton):
             if uniform(0, 1) > proba:
                 continue
             # Make delegation
-            delegee = choose_delegee(choose_possible_delegees(self.electors, elector))
+            possible_delegees = LiquidDemocracy.choose_possible_delegees(
+                self.electors, elector
+            )
+            delegee = LiquidDemocracy.choose_delegee(possible_delegees)
             if delegee is None:
                 continue
             delegee.weight += elector.weight
@@ -190,9 +123,14 @@ class Election(metaclass=Singleton):
         if voting_rule in VotingRulesConstants.CONDORCET:
             self.duels_scores = set_duels_scores(self.electors, self.candidates)
 
-        self.results[voting_rule] = VotingRulesConstants.VOTING_RULES_FUNC[voting_rule](
-            self.electors, self.candidates
-        )
+        if voting_rule == VotingRulesConstants.APPROVAL:
+            self.results[voting_rule] = VotingRulesConstants.VOTING_RULES_FUNC[
+                voting_rule
+            ](self.electors, self.candidates, VotingRulesConstants.APPROVAL_GAP_COEF)
+        else:
+            self.results[voting_rule] = VotingRulesConstants.VOTING_RULES_FUNC[
+                voting_rule
+            ](self.electors, self.candidates)
 
     def choose_winner(self, voting_rule):
         if voting_rule not in self.results:
@@ -273,7 +211,7 @@ class Election(metaclass=Singleton):
 
     # Apply poll for 1 ROUND voting rule
     def _change_ranking_electors(self):
-        # Protection
+        # Protection, normally OK
         voting_rule = self.liquid_democracy_voting_rule
         if voting_rule not in self.results:
             self.apply_voting_rule(voting_rule)
@@ -304,91 +242,6 @@ class Election(metaclass=Singleton):
                     break
             # Elector changes his vote
 
-    def _choose_directions_scores(self, directions_scores):
-        lst = [(direct, score) for direct, score in directions_scores.items()]
-        lst = sorted(lst, key=lambda e: e[1])
-
-        # Gap between 1st min and next values
-        percentage = 1.6
-        mn = lst[0][1]
-        chosen = []
-        for direct, score in lst:
-            if score < mn * percentage:
-                chosen.append((direct, score))
-                percentage -= 0.3
-        return chosen
-
-    def _move_candidate(self, candidate, chosen_directions):
-        avg_positions = []
-        for direct, _ in chosen_directions:
-            avg_positions.append(self.directions_data[direct]["AVG"])
-        candidate.move_to_avg(
-            avg_positions, self.generation_constants[RandomConstants.TRAVEL_DIST]
-        )
-
-    def _move_in_direction(self, candidate):
-        directions_scores = {direct: 0 for direct in self.directions_data}
-        for direct, data in self.directions_data.items():
-            # To avoid to choose that direction
-            if self.directions_data[direct]["NB_ELECTORS"] <= 0.2:
-                directions_scores[direct] = float("inf")
-                continue
-            dist = self._calc_distance(candidate.position, data["AVG"])
-            # Weighted sum.
-            # Goal : Min dist, std_dev, nb_candidates. Max nb_electors (min negative value)
-            score = (
-                0.5 * dist
-                + 0.2 * self.directions_data[direct]["STD_DEV"]
-                - 0.2 * self.directions_data[direct]["NB_ELECTORS"]
-                + 0.1 * self.directions_data[direct]["NB_CANDIDATES"]
-            )
-
-            directions_scores[direct] = score
-        chosen_directions = self._choose_directions_scores(directions_scores)
-        self._move_candidate(candidate, chosen_directions)
-
-    # Posssible allies is a sublist of candidate whose score is higher than that of a candidate
-    # Function return True iff alliance is formed, we dont care with whom
-    def _alliance_formed(self, candidate, possible_allies):
-        # Conditions :
-        # 1. Score of an ally > candidate
-        # 2. Ally is in a circle of a candidate
-        for ally in possible_allies:
-            dist = self._calc_distance(candidate.position, ally.position)
-            if dist == 0.0:
-                return True
-            if random() < 1 / ((dist * 10) ** 2):
-                return True
-        return False
-
-    def _change_position_candidates(self):
-        curr_winner = self.choose_winner(self.liquid_democracy_voting_rule)
-        curr_ranking = self.results[self.liquid_democracy_voting_rule]
-        for i, candidate in enumerate(curr_ranking):
-            # If candidate is already the winner, he does NOT move
-            if candidate == curr_winner:
-                continue
-            # Check if candidate moves at all
-            # If dogmacy is high -> low change to move
-            # Dogmacy is low -> high change to move
-            if random() > 1 - candidate.dogmatism:
-                continue
-            # Candidate moves.
-            # Alliance?
-            if self._alliance_formed(candidate, curr_ranking[:i]):
-                self.candidates.remove(candidate)
-                continue
-            # If no alliance, move in a winner direction
-            # Based on opposition. Opposition is high -> low chance. Opposition is low -> high chance
-            if random() < 1 - candidate.opposition:
-                candidate.move_to_point(
-                    curr_winner.position,
-                    self.generation_constants[RandomConstants.TRAVEL_DIST],
-                )
-                continue
-            # Else, move based on weighted sum
-            self._move_in_direction(candidate)
-
     def update_data_poll(self):
         # Recalc satisfaction 'cause of movement of candidates
         # Redefine ranking after candidates change their positions
@@ -399,9 +252,27 @@ class Election(metaclass=Singleton):
                 print(c, c.scores[vr])
 
     def conduct_poll(self):
-        self._change_position_candidates()
+        voting_rule = self.liquid_democracy_voting_rule
+        winner = self.choose_winner(voting_rule)
+        ranking = self.results[voting_rule]
+
+        Polls.change_position_candidates(
+            self.candidates,
+            winner,
+            ranking,
+            self.directions_data,
+            self.generation_constants[RandomConstants.TRAVEL_DIST],
+        )
+
         self._define_ranking()
-        self._change_ranking_electors()
+
+        score_winner = winner.scores[voting_rule]
+        Polls.change_ranking_electors(
+            self.electors,
+            score_winner,
+            voting_rule,
+            VotingRulesConstants.APPROVAL_GAP_COEF,
+        )
         self.update_data_poll()
 
     def _clean_direction_data(self):
