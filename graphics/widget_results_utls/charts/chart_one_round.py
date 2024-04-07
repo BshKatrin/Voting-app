@@ -28,8 +28,12 @@ class ChartOneRound(QChart):
     def initBarSets(self):
         winner_barset = None
         # BarSet for every candidate
+        self.candidates_barsets = dict()
+
         for cand in self.election.candidates:
             barSet = QBarSet(f"{cand.first_name} {cand.last_name}")
+            self.candidates_barsets[cand] = barSet
+
             score = cand.scores[self.voting_rule]
             barSet.append(score)
 
@@ -55,7 +59,7 @@ class ChartOneRound(QChart):
         # Set Y axis
         self.axisY = QValueAxis(self)
         self._setYRange()
-        self.axisY.applyNiceNumbers()
+        # self.axisY.applyNiceNumbers()
         self.addAxis(self.axisY, Qt.AlignmentFlag.AlignLeft)
         self.series.attachAxis(self.axisY)
 
@@ -69,3 +73,9 @@ class ChartOneRound(QChart):
         for candidate in self.election.results[self.voting_rule]:
             mx = max(candidate.scores[self.voting_rule], mx)
         return mx
+
+    def updateData(self):
+        self._setYRange()
+        for cand in self.election.candidates:
+            barset = self.candidates_barsets[cand]
+            barset.replace(0, cand.scores[self.voting_rule])

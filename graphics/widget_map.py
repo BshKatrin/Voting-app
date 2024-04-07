@@ -48,10 +48,14 @@ class WidgetMap(QWidget):
 
         # Navigation button
         self.choose_voting_rules_btn = QPushButton("Choose voting rules", parent=self)
+
         self.choose_voting_rules_btn.clicked.connect(self.showWidgetCheckbox)
 
         self.start_election_btn = QPushButton("Start election", parent=self)
-        self.start_election_btn.setEnabled(False)
+
+        if not self.election.nb_polls:
+            self.start_election_btn.setEnabled(False)
+
         self.start_election_btn.clicked.connect(self.onStartElectionClick)
 
         # Quadrant map

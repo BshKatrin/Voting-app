@@ -18,6 +18,10 @@ class WidgetCheckbox(QWidget):
         self.set_constants = set()
         self.initUI()
 
+        if self.election.liquid_democracy_activated:
+            self.choosePollVotingRule(self.election.liquid_democracy_voting_rule)
+            self.disableAllVotingRules()
+
     def initUI(self):
 
         self.setWindowTitle("Voting rules")
@@ -26,7 +30,7 @@ class WidgetCheckbox(QWidget):
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
-        self.lst_checkboxes = []
+        self.rule_checkbox = dict()
 
         for voting_rule, voting_rule_name in VotingRulesConstants.UI.items():
             # Minimum number of candidate for each voting rule
@@ -38,19 +42,22 @@ class WidgetCheckbox(QWidget):
             checkbox.setEnabled(False)
 
             self.layout.addWidget(checkbox)
-            self.lst_checkboxes.append(checkbox)
+            self.rule_checkbox[voting_rule] = checkbox
 
         self.confirm_btn = QPushButton("Confirm", self)
         self.confirm_btn.clicked.connect(self.confirmVotingRules)
 
         self.choose_all_btn = QPushButton("Choose all", self)
         self.choose_all_btn.clicked.connect(self.chooseAllVotingRules)
+        if self.election.nb_polls:
+            self.choose_all_btn.setDisabled(True)
 
         self.layout.addWidget(self.confirm_btn)
         self.layout.addWidget(self.choose_all_btn)
 
     @Slot(str, int)
     def onStateChanged(self, voting_rule, state):
+        print("State changed", voting_rule, state)
         (
             self.set_constants.add(voting_rule)
             if state
@@ -60,12 +67,13 @@ class WidgetCheckbox(QWidget):
     # Enable checkboxes whose candidates min was reached
     def enableCheckboxes(self):
         nb_candidates = len(self.election.candidates)
-        for checkbox in self.lst_checkboxes:
+        for checkbox in self.rule_checkbox.values():
             if nb_candidates >= checkbox.min:
                 checkbox.setEnabled(True)
 
     def showCustom(self):
-        self.enableCheckboxes()
+        if not self.election.nb_polls:
+            self.enableCheckboxes()
         self.show()
 
     @Slot()
@@ -79,9 +87,16 @@ class WidgetCheckbox(QWidget):
 
     # Check all checkboxes at once
     def chooseAllVotingRules(self):
-        for checkbox in self.lst_checkboxes:
+        for checkbox in self.rule_checkbox.values():
             if checkbox.isEnabled():
                 checkbox.setChecked(True)
 
     def getConstantsSet(self):
         return self.set_constants
+
+    def choosePollVotingRule(self, voting_rule):
+        self.rule_checkbox[voting_rule].setChecked(True)
+
+    def disableAllVotingRules(self):
+        for checkbox in self.rule_checkbox.values():
+            checkbox.setEnabled(False)

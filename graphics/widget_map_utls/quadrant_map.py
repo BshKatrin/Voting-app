@@ -259,8 +259,13 @@ class QuadrantMap(QWidget):
     def _generate_coordinate(self, mu, sigma, limit):
         # Generate while not in border
         coordinate = normal(mu, sigma)
-        while abs(coordinate) > limit:
+        max_iterations = 5
+        while abs(coordinate) > limit and max_iterations:
             coordinate = normal(mu, sigma)
+            max_iterations -= 1
+
+        # If value is still out of border, otherwise eternal loop
+        coordinate = clip(coordinate, -1, 1)
         return coordinate
 
     # Generate (x, y) normalized
@@ -277,10 +282,6 @@ class QuadrantMap(QWidget):
 
         mu, sigma = coef_dir * x + social_constants[0], social_constants[1]
         y = self._generate_coordinate(mu, sigma, limit=1)
-
-        # Limit values  to a map range
-        # x = clip(x, -1, 1)
-        # y = clip(y, -1, 1)
 
         return (x, y)
 

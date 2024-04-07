@@ -40,6 +40,8 @@ class ImportData:
                     ("y", "REAL"),
                     ("first_name", "TEXT"),
                     ("last_name", "TEXT"),
+                    ("dogmatism", "REAL"),
+                    ("opposition", "REAL"),
                 },
                 "electors": {
                     ("id", "INTEGER"),
@@ -124,9 +126,14 @@ class ImportData:
         # id : candidate
         candidates_id_assoc = dict()
 
-        for id, x, y, first_name, last_name in candidates_data:
+        for id, x, y, first_name, last_name, dogm, oppos in candidates_data:
             new_candidate = Candidate(
-                id=id, position=(x, y), first_name=first_name, last_name=last_name
+                id=id,
+                position=(x, y),
+                first_name=first_name,
+                last_name=last_name,
+                dogmatism=dogm,
+                opposition=oppos,
             )
             cls.election.add_candidate(new_candidate)
             candidates_id_assoc[id] = new_candidate

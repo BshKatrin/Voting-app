@@ -1,18 +1,19 @@
 from .voting_rules import *
-
-# from .voting_rules.constants import *
+from .voting_rules.constants import *
 
 
 class VotingRulesConstants:
-    PLURALITY_SIMPLE = "PS"
-    PLURALITY_2_ROUNDS = "PR"
-    VETO = "VT"
-    BORDA = "BRD"
-    CONDORCET_SIMPLE = "CS"
-    CONDORCET_COPELAND = "CC"
-    CONDORCET_SIMPSON = "CSN"
-    EXHAUSTIVE_BALLOT = "EB"
-    APPROVAL = "AL"
+    PLURALITY_SIMPLE = PLURALITY_SIMPLE
+    PLURALITY_2_ROUNDS = PLURALITY_2_ROUNDS
+    VETO = VETO
+    BORDA = BORDA
+    CONDORCET_SIMPLE = CONDORCET_SIMPLE
+    CONDORCET_COPELAND = CONDORCET_COPELAND
+    CONDORCET_SIMPSON = CONDORCET_SIMPSON
+    EXHAUSTIVE_BALLOT = EXHAUSTIVE_BALLOT
+    APPROVAL = APPROVAL
+
+    APPROVAL_GAP_COEF = 0.3  # Approval constant
 
     # functions association
     VOTING_RULES_FUNC = {

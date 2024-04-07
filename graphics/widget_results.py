@@ -10,7 +10,6 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Slot, Signal, QSize
 
 from .widget_results_utls import DirectedGraph, DirectedGraphView, ChartView, MapImage
-from .widget_map_utls import QuadrantMap
 
 from electoral_systems import Election, VotingRulesConstants
 
@@ -18,7 +17,7 @@ from electoral_systems import Election, VotingRulesConstants
 class WidgetResults(QWidget):
     sig_show_chart = Signal(str)
     sig_widget_results_destroying = Signal()
-    sig_conduct_poll = Signal(int)
+    sig_poll_conducted = Signal()
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -163,15 +162,12 @@ class WidgetResults(QWidget):
 
             label_voting_rule.setText(VotingRulesConstants.UI[voting_rule])
 
-            winner = self.election.choose_winner(voting_rule)
-            # None can be in condorcet simple
-            if winner is None:
-                label_winner.setText("No winner")
-                label_satisfaction.setText("---")
-            else:
-                label_winner.setText(f"{winner.first_name} {winner.last_name}")
-                satisfaction = self.election.calculate_satisfaction(winner)
-                label_satisfaction.setText(f"{satisfaction:.2f}")
+            self.sig_poll_conducted.connect(
+                partial(
+                    self.setResultsLabel, label_winner, label_satisfaction, voting_rule
+                )
+            )
+            self.setResultsLabel(label_winner, label_satisfaction, voting_rule)
 
             self.layout.addWidget(label_voting_rule, row, 0, alignment=Qt.AlignHCenter)
             self.layout.addWidget(label_winner, row, 1, alignment=Qt.AlignHCenter)
@@ -179,10 +175,23 @@ class WidgetResults(QWidget):
 
             self.layout.addWidget(show_btn, row, 3, alignment=Qt.AlignHCenter)
 
+    @Slot(QLabel, QLabel, str)
+    def setResultsLabel(self, winner_label, satisf_label, voting_rule):
+        print("Labels update")
+        winner = self.election.choose_winner(voting_rule)
+        # None can be in condorcet simple
+        if winner is None:
+            winner_label.setText("No winner")
+            satisf_label.setText("---")
+        else:
+            winner_label.setText(f"{winner.first_name} {winner.last_name}")
+            satisfaction = self.election.calculate_satisfaction(winner)
+            satisf_label.setText(f"{satisfaction:.2f}")
+
     @Slot()
     def conductNewPoll(self):
         # Apply new poll
-        self.election.conduct_polls(self.oneRoundSet)
+        self.election.conduct_poll()
         # Update nb of polls
         self.nb_polls_conducted += 1
         # Update UI on nb of polls
@@ -192,6 +201,15 @@ class WidgetResults(QWidget):
         # Desactivate button if limit is reached
         if self.nb_polls_conducted == self.election.nb_polls:
             self.start_poll_btn.setEnabled(False)
+
+        self.election.update_data_poll()
+        self.image.update()
+        self.sig_poll_conducted.emit()
+
+        if self.charts_view:
+            self.charts_view.sig_poll_conducted.emit(
+                self.election.liquid_democracy_voting_rule
+            )
 
     def _get_view_size(self):
         return QSize(self.parent().width() * 0.8, self.parent().height() * 0.8)

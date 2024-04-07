@@ -86,5 +86,4 @@ def apply_condorcet_simpson(electors, candidates):
             max(snd.scores[CONDORCET_SIMPSON], value),
         )
     # Trier par l'ordre ascendant des scores des candidats, ensuite par leur nom
-    lst = [(candidate, candidate.scores[CONDORCET_SIMPSON]) for candidate in candidates]
-    return [c for (c, _) in sorted(lst, key=lambda e: (e[1], e[0]))]
+    return sort_cand_by_value(candidates, CONDORCET_SIMPSON, scores_asc=True)

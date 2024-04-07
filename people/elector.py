@@ -56,10 +56,3 @@ class Elector(Person):
 
     def rank_candidates(self, candidates):
         self.candidates_ranked = self.pos_to_rank(candidates)
-        # print(self.candidates_ranked)
-        # Clean candidates, make changes to other files if necessary
-
-    # Retourne une liste des electeurs genere de maniere aleatoire
-    # @classmethod
-    # def gen_rand_electors(cls, n, candidates):
-    #     return [Elector() for _ in range(n)]

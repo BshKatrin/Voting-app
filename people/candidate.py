@@ -59,7 +59,8 @@ class Candidate(Person):
     def __str__(self):
         x, y = self.position
         # return f"Candidate({self.id}, ({x:.2f},{y:.2f}), {self.first_name}, {self.last_name}, {self.scores})"
-        return f"Candidate({self.id}, {self.first_name} {self.last_name}, domgat:{self.dogmatism:.2f}, oppos:{self.opposition:.2f})"
+        # return f"Candidate({self.id}, {self.first_name} {self.last_name}, domgat:{self.dogmatism:.2f}, oppos:{self.opposition:.2f})"
+        return f"Candidate({self.id}, {self.first_name} {self.last_name})"
 
     def __repr__(self):
         return self.__str__()
@@ -81,3 +82,23 @@ class Candidate(Person):
         if voting_system_name not in self.scores:
             self.init_score(voting_system_name, [0] * round, True)
         self.scores[voting_system_name][round] += score
+
+    # For polls. Move candidate to the average of the given positions
+    def move_to_avg(self, positions, travel_dist):
+        sum_x, sum_y = 0, 0
+        for x, y in positions:
+            sum_x, sum_y = sum_x + x, sum_y + y
+        x_goal, y_goal = sum_x / len(positions), sum_y / len(positions)
+
+        # print(self, f"{x_curr:.2f}, {y_curr:.2f}")
+        self.move_to_point((x_goal, y_goal), travel_dist)
+
+    def move_to_point(self, position_goal, travel_dist):
+        x_curr, y_curr = self.position
+        x_goal, y_goal = position_goal
+
+        # Move towards x_goal
+        x_curr += (x_goal - x_curr) * travel_dist
+        y_curr += (y_goal - y_curr) * travel_dist
+
+        self.position = (x_curr, y_curr)

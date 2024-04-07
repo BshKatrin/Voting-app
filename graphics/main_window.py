@@ -1,4 +1,5 @@
 from functools import partial
+from typing import Dict
 
 from PySide6.QtCore import Qt, Slot, QObject, Signal
 from PySide6.QtGui import QAction
@@ -11,14 +12,14 @@ from PySide6.QtWidgets import (
     QLabel,
     QCheckBox,
     QGridLayout,
-    QSizePolicy,
+    QComboBox,
     QFileDialog,
 )
 
 from .widget_map import WidgetMap
 from .widget_results import WidgetResults
 
-from electoral_systems import Election
+from electoral_systems import Election, VotingRulesConstants
 
 from sqlite import ImportData, ExportData
 import sqlite3
@@ -236,6 +237,19 @@ class HomeWindow(QMainWindow):
         nb_polls_btn.setValue(self.election.nb_polls)
         nb_polls_btn.valueChanged.connect(self.setNumberPolls)
 
+        # Choose poll voting rule
+        self.polls_dropdown = QComboBox(settings_widget)
+
+        self.reverse_assoc = dict()
+        for voting_rule in VotingRulesConstants.ONE_ROUND:
+            self.reverse_assoc[VotingRulesConstants.UI[voting_rule]] = voting_rule
+
+        self.polls_dropdown.addItems(self.reverse_assoc.keys())
+        self.polls_dropdown.setCurrentText(
+            VotingRulesConstants.UI[self.election.liquid_democracy_voting_rule]
+        )
+        self.polls_dropdown.currentTextChanged.connect(self.setPollVotingRule)
+
         # Activate liquid democracy checkbox
         liquid_democracy_label = QLabel(parent=settings_widget)
         liquid_democracy_label.setText("Activate liquid democracy")
@@ -248,17 +262,23 @@ class HomeWindow(QMainWindow):
         save_button.clicked.connect(self.saveSettings)
         save_button.setFixedHeight(30)
 
-        # Add to grid layout (rows = 3 x cols = 3)
+        # Add to grid layout (rows = 4 x cols = 3)
         # Polls
         settings_layout.addWidget(polls_label, 0, 0, 1, 2)
         settings_layout.addWidget(nb_polls_btn, 0, 2, 1, 1)
+        settings_layout.addWidget(self.polls_dropdown, 1, 1, 1, 2)
         # Liquid democracy
-        settings_layout.addWidget(liquid_democracy_label, 1, 0, 1, 2)
+        settings_layout.addWidget(liquid_democracy_label, 2, 0, 1, 2)
         settings_layout.addWidget(
-            liquid_democracy_checkbox, 1, 2, 1, 1, alignment=Qt.AlignmentFlag.AlignRight
+            liquid_democracy_checkbox, 2, 2, 1, 1, alignment=Qt.AlignmentFlag.AlignRight
         )
         # Save button
-        settings_layout.addWidget(save_button, 2, 0, 1, 3)
+        settings_layout.addWidget(save_button, 3, 0, 1, 3)
+
+    @Slot(str)
+    def setPollVotingRule(self, text):
+        const = self.reverse_assoc[text]
+        self.election.liquid_democracy_voting_rule = const
 
     @Slot()
     def saveSettings(self):
@@ -268,6 +288,7 @@ class HomeWindow(QMainWindow):
     @Slot(int)
     def setNumberPolls(self, nb_polls):
         self.election.nb_polls = nb_polls
+        self.polls_dropdown.setEnabled(bool(nb_polls))
 
     @Slot(int)
     def toggleLiquidDemocracy(self, state):

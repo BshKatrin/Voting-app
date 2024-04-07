@@ -19,14 +19,16 @@ class ExportData:
             x REAL CHECK(x <= 1 AND x >= -1),
             y REAL CHECK(y <= 1 AND y >= -1),
             weight INTEGER CHECK(weight >= 0),
-            knowledge REAL CHECK(knowledge <= 1 AND knowledge >= -1)
+            knowledge REAL CHECK(knowledge <= 1 AND knowledge >= 0)
         );
         CREATE TABLE candidates (
             id INTEGER PRIMARY KEY,
             x REAL CHECK(x <= 1 AND x >= -1),
             y REAL CHECK(y <= 1 AND y >= -1),
             first_name TEXT NOT NULL,
-            last_name TEXT NOT NULL
+            last_name TEXT NOT NULL,
+            dogmatism REAL CHECK(dogmatism <= 1 AND dogmatism >= 0),
+            opposition REAL CHECK(opposition <= 1 AND opposition >= 0)
         );
         """
 
@@ -48,12 +50,20 @@ class ExportData:
 
         # for candidate in candidates:
         query = """
-            INSERT INTO candidates(id, x, y, first_name, last_name)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO candidates(id, x, y, first_name, last_name, dogmatism, opposition)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
             """
 
         data = [
-            (c.id, c.position[0], c.position[1], c.first_name, c.last_name)
+            (
+                c.id,
+                c.position[0],
+                c.position[1],
+                c.first_name,
+                c.last_name,
+                c.dogmatism,
+                c.opposition,
+            )
             for c in cls.election.candidates
         ]
         cursor.executemany(query, data)
