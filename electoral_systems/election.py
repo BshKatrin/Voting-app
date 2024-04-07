@@ -34,6 +34,7 @@ class Election(metaclass=Singleton):
         self.nb_polls = 0
         self.liquid_democracy_activated = False
         self.liquid_democracy_voting_rule = VotingRulesConstants.PLURALITY_SIMPLE
+        self.tie_breaker_activated = True
 
         self.generation_constants = dict()
         for type, default_value in RandomConstants.DEFAULT_VALUES.items():
@@ -132,10 +133,14 @@ class Election(metaclass=Singleton):
                 self.electors,
                 self.candidates,
                 VotingRulesConstants.APPROVAL_GAP_COEF,
-                self.duels_scores,
+                self.duels_scores if self.tie_breaker_activated else None,
             )
         else:
-            result = func(self.electors, self.candidates, self.duels_scores)
+            result = func(
+                self.electors,
+                self.candidates,
+                self.duels_scores if self.tie_breaker_activated else None,
+            )
 
         self.results[voting_rule] = result
 

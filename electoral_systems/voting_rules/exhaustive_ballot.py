@@ -3,7 +3,7 @@ from .utls import Utls
 from .condorcet import set_duels_scores
 
 
-def apply_exhaustive_ballot(electors, candidates, duels):
+def apply_exhaustive_ballot(electors, candidates, duels=None):
     rounds = len(candidates) - 1  # amount of rounds to play (worst case scenario)
     len_electors = len(electors)
     # print(len_electors)
@@ -31,8 +31,10 @@ def apply_exhaustive_ballot(electors, candidates, duels):
             candidate.scores[EXHAUSTIVE_BALLOT].extend([0])
 
         candidates_curr_round = winners_backlog[current_round - 1][:-1]
-        duels_curr_round = set_duels_scores(electors, candidates_curr_round)
-        print(len(duels_curr_round))
+        duels_curr_round = None
+        if duels:
+            duels_curr_round = set_duels_scores(electors, candidates_curr_round)
+
         results = set_scores_round(
             electors, candidates_curr_round, current_round, duels_curr_round
         )

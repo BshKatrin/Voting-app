@@ -8,7 +8,7 @@ les votes des electeurs sont determinés par leur distance en fonction des candi
 """
 
 
-def apply_approval(electors, candidates, gap, duels):
+def apply_approval(electors, candidates, gap, duels=None):
     Utls.init_scores(candidates, APPROVAL, 0)
     for elector in electors:
         dist_max = elector.dist_from_one_cand(elector.candidates_ranked[0]) + gap

@@ -2,7 +2,7 @@ from .constants import VETO
 from .utls import Utls
 
 
-def apply_veto(electors, candidates, duels):
+def apply_veto(electors, candidates, duels=None):
     Utls.init_scores(candidates, VETO, 0)
     for elector in electors:
         i = 0

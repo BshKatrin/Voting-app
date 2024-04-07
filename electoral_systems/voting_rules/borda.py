@@ -2,7 +2,7 @@ from .constants import BORDA
 from .utls import Utls
 
 
-def apply_borda(electors, candidates, duels):
+def apply_borda(electors, candidates, duels=None):
     nb_candidates = len(candidates)
     max_score = len(candidates) - 1
     Utls.init_scores(candidates, BORDA, 0)

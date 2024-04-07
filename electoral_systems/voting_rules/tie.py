@@ -28,17 +28,13 @@ class Tie:
 
     # Ties are resolved based on duels. Ranking is modified in place
     def resolve_ties(ranking, voting_rule, duels):
+        print("Apply tie breaker")
         ties = Tie.get_ties(ranking, voting_rule)
-        print("Before", ranking)
         for tie in ties:
             for index1, index2 in combinations(tie, 2):
                 candidate1, candidate2 = ranking[index1], ranking[index2]
                 # candidate 1 is winner, do not rearrange
                 if (candidate1, candidate2) in duels:
-                    print(duels[(candidate1, candidate2)], (candidate1, candidate2))
                     continue
                 if (candidate2, candidate1) in duels:
-                    print(duels[(candidate2, candidate1)], (candidate1, candidate2))
                     ranking[index1], ranking[index2] = ranking[index2], ranking[index1]
-
-        print("After", ranking)

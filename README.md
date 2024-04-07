@@ -6,6 +6,19 @@
 
 ### Features
 
+- Plusieurs règles du vote proposés
+- - Pluralité simple et à 2 tours
+- - Borda
+- - Veto
+- - Approbation
+- - Condorcet, Condorcet Copeland, Condorcet Simpson
+- - Éliminations successives
+- La génération des données selon la loi normale customizable
+- La résolution des égalités en fonction des duels entre les candidats
+- Importation & Exportation des données avec SQLite
+- Les sondages
+- Démocratie liquides
+
 ## Participants
 
 ### Groupe : _tzb_
@@ -21,5 +34,3 @@
 ## Installation
 
 ## Utilisation
-
-##

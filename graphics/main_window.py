@@ -257,6 +257,13 @@ class HomeWindow(QMainWindow):
         liquid_democracy_checkbox.setChecked(self.election.liquid_democracy_activated)
         liquid_democracy_checkbox.stateChanged.connect(self.toggleLiquidDemocracy)
 
+        # Activate tie-breaker by duels
+        tie_breaker_label = QLabel(parent=settings_widget)
+        tie_breaker_label.setText("Activate tie-breaker by duels")
+        tie_breaker_checkbox = QCheckBox(parent=settings_widget)
+        tie_breaker_checkbox.setChecked(self.election.tie_breaker_activated)
+        tie_breaker_checkbox.stateChanged.connect(self.toggleTieBreaker)
+
         # Save button, go back on main window
         save_button = QPushButton("Save", parent=settings_widget)
         save_button.clicked.connect(self.saveSettings)
@@ -273,7 +280,9 @@ class HomeWindow(QMainWindow):
             liquid_democracy_checkbox, 2, 2, 1, 1, alignment=Qt.AlignmentFlag.AlignRight
         )
         # Save button
-        settings_layout.addWidget(save_button, 3, 0, 1, 3)
+        settings_layout.addWidget(tie_breaker_label, 3, 0, 1, 2)
+        settings_layout.addWidget(tie_breaker_checkbox, 3, 2, 1, 1)
+        settings_layout.addWidget(save_button, 4, 0, 1, 3)
 
     @Slot(str)
     def setPollVotingRule(self, text):
@@ -293,6 +302,10 @@ class HomeWindow(QMainWindow):
     @Slot(int)
     def toggleLiquidDemocracy(self, state):
         self.election.liquid_democracy_activated = bool(state)
+
+    @Slot(int)
+    def toggleTieBreaker(self, state):
+        self.election.tie_breaker_activated = bool(state)
 
     @Slot()
     def initUIMap(self):

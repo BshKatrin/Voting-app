@@ -6,7 +6,7 @@ from .utls import Utls
 from .condorcet import set_duels_scores
 
 
-def apply_plurality_simple(electors, candidates, duels):
+def apply_plurality_simple(electors, candidates, duels=None):
     Utls.init_scores(candidates, PLURALITY_SIMPLE, 0)
     for elector in electors:
         elector.candidates_ranked[0].add_score(PLURALITY_SIMPLE, elector.weight)
@@ -14,7 +14,7 @@ def apply_plurality_simple(electors, candidates, duels):
 
 
 # avant appel a la fonction : verifier qu'il existe AU MOINS 3 candidats
-def apply_plurality_rounds(electors, candidates, duels):
+def apply_plurality_rounds(electors, candidates, duels=None):
     Utls.init_scores(candidates, PLURALITY_2_ROUNDS, [0], True)
 
     candidates_round_one = plurality_one_set_score(electors, candidates, duels)
@@ -27,8 +27,9 @@ def apply_plurality_rounds(electors, candidates, duels):
         candidate.scores[PLURALITY_2_ROUNDS].extend([0])
 
     candidates_round_two = candidates_round_one[:2]
-    duels_round_two = set_duels_scores(electors, candidates_round_two)
-    print(duels_round_two)
+    duels_round_two = None
+    if duels:
+        set_duels_scores(electors, candidates_round_two)
 
     candidates_round_two = plurality_two_set_score(
         electors, candidates_round_two, duels_round_two
