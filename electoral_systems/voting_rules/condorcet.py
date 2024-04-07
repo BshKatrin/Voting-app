@@ -1,15 +1,40 @@
-from itertools import combinations
+from itertools import combinations, permutations
 
 from .constants import CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON
-from .utls import init_scores, sort_cand_by_value
+from .utls import Utls
+
+
+# Utile pour les graphes et pour le condorcet simple
+# i.e. pour determiner s'il existe un gagnant ou pas
+def set_duels_scores(electors, candidates):
+    pairs = {comb: 0 for comb in combinations(candidates, 2)}
+    nb_electors = 0
+    for elector in electors:
+        nb_electors += 1
+        pairs_elector = {comb: 0 for comb in combinations(elector.candidates_ranked, 2)}
+        for fst, snd in pairs_elector:
+            if (fst, snd) in pairs:
+                pairs[(fst, snd)] += elector.weight
+            elif (snd, fst) in pairs:
+                pairs[(snd, fst)] -= elector.weight
+
+    duels = dict()
+    for pair, score in pairs.items():
+        if score < 0:
+            duels[pair[::-1]] = nb_electors + score
+        elif score > 0:
+            duels[pair] = nb_electors - score
+        else:
+            duels[pair] = 0
+    return duels
 
 
 def apply_condorcet_simple(electors, candidates):
-    for elector in electors:
-        pairs = combinations(elector.candidates_ranked, 2)
-        for fst, _ in pairs:
-            fst.add_score(CONDORCET_SIMPLE, 1)
-    return sort_cand_by_value(candidates, CONDORCET_SIMPLE)
+    duels = set_duels_scores(electors, candidates)
+    Utls.init_scores(candidates, CONDORCET_SIMPLE, 0)
+    for winner, _ in duels:
+        winner.add_score(CONDORCET_SIMPLE, 1)
+    return Utls.sort_cand_by_value(candidates, CONDORCET_SIMPLE)
 
 
 def apply_condorcet_copeland(electors, candidates):
@@ -17,15 +42,15 @@ def apply_condorcet_copeland(electors, candidates):
     # Chaque candidat va s'affronter chacun des autres -> pas des cas 'piege'
     duels = {comb: 0 for comb in combinations(candidates, 2)}
     # Comptage des win & loss
-    for e in electors:
-        pairs = combinations(e.candidates_ranked, 2)
+    for elector in electors:
+        pairs = combinations(elector.candidates_ranked, 2)
         for fst, snd in pairs:
             if (fst, snd) in duels:
-                duels[(fst, snd)] += 1
+                duels[(fst, snd)] += elector.weight
             elif (snd, fst) in duels:
-                duels[(snd, fst)] -= 1
+                duels[(snd, fst)] -= elector.weight
+
     # Ajouter des scores
-    # Le code a ete simplifie un peu
     for (fst, snd), value in duels.items():
         if value > 0:
             fst.add_score(CONDORCET_COPELAND, 1)
@@ -38,33 +63,27 @@ def apply_condorcet_copeland(electors, candidates):
         else:
             fst.add_score(CONDORCET_COPELAND, 0.5)
             snd.add_score(CONDORCET_COPELAND, 0.5)
-    return sort_cand_by_value(candidates, CONDORCET_COPELAND)
-
+    return Utls.sort_cand_by_value(candidates, CONDORCET_COPELAND)
 
 
 def apply_condorcet_simpson(electors, candidates):
     # Compter tous les preferences dans les duels
-    duels = dict()
-    for comb in combinations(candidates, 2):
-        duels[comb] = 0
-        duels[comb[::-1]] = 0  # add reversed comb
+    duels = {perm: 0 for perm in permutations(candidates, 2)}
 
     for elector in electors:
         pairs = combinations(elector.candidates_ranked, 2)
+        # combinations est inclus dans permutations -> pas de KeyError
         for fst, snd in pairs:
-            # if ... else pour protection
-            # changer a try ... except ?
             if (fst, snd) in duels:
-                duels[(fst, snd)] += 1
+                duels[(fst, snd)] += elector.weight
             else:
-                duels[(snd, fst)] += 1
+                duels[(snd, fst)] += elector.weight
 
-    init_scores(candidates, CONDORCET_SIMPSON, 0)
-
+    Utls.init_scores(candidates, CONDORCET_SIMPSON, 0)
     for (_, snd), value in duels.items():
         snd.init_score(
             CONDORCET_SIMPSON,
             max(snd.scores[CONDORCET_SIMPSON], value),
         )
-
-    return list(reversed(sort_cand_by_value(candidates, CONDORCET_SIMPSON)))
+    # Trier par l'ordre ascendant des scores des candidats, ensuite par leur nom
+    return Utls.sort_cand_by_value(candidates, CONDORCET_SIMPSON, scores_asc=True)

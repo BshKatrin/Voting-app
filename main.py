@@ -1,15 +1,13 @@
-from PySide6.QtWidgets import QApplication, QStyleFactory
-
-import sys
+from PySide6.QtWidgets import QApplication
+from sys import argv, exit
 
 from graphics.main_window import HomeWindow
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    app = QApplication(argv)
     app.setStyle("Fusion")
 
     window = HomeWindow(app)
 
     window.show()
-
-    sys.exit(app.exec())
+    exit(app.exec())
