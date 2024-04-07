@@ -246,7 +246,7 @@ class HomeWindow(QMainWindow):
 
         self.polls_dropdown.addItems(self.reverse_assoc.keys())
         self.polls_dropdown.setCurrentText(
-            VotingRulesConstants.UI[self.election.liquid_democracy_voting_rule]
+            VotingRulesConstants.UI[self.election.poll_voting_rule]
         )
         self.polls_dropdown.currentTextChanged.connect(self.setPollVotingRule)
 
@@ -287,7 +287,7 @@ class HomeWindow(QMainWindow):
     @Slot(str)
     def setPollVotingRule(self, text):
         const = self.reverse_assoc[text]
-        self.election.liquid_democracy_voting_rule = const
+        self.election.poll_voting_rule = const
 
     @Slot()
     def saveSettings(self):

@@ -18,8 +18,8 @@ class WidgetCheckbox(QWidget):
         self.set_constants = set()
         self.initUI()
 
-        if self.election.liquid_democracy_activated:
-            self.choosePollVotingRule(self.election.liquid_democracy_voting_rule)
+        if self.election.nb_polls:
+            self.choosePollVotingRule(self.election.poll_voting_rule)
             self.disableAllVotingRules()
 
     def initUI(self):
@@ -57,7 +57,6 @@ class WidgetCheckbox(QWidget):
 
     @Slot(str, int)
     def onStateChanged(self, voting_rule, state):
-        print("State changed", voting_rule, state)
         (
             self.set_constants.add(voting_rule)
             if state
@@ -95,6 +94,7 @@ class WidgetCheckbox(QWidget):
         return self.set_constants
 
     def choosePollVotingRule(self, voting_rule):
+        print("Setting checked", voting_rule)
         self.rule_checkbox[voting_rule].setChecked(True)
 
     def disableAllVotingRules(self):

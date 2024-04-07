@@ -4,33 +4,8 @@ from .constants import CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON
 from .utls import Utls
 
 
-# Utile pour les graphes et pour le condorcet simple
-# i.e. pour determiner s'il existe un gagnant ou pas
-def set_duels_scores(electors, candidates):
-    pairs = {comb: 0 for comb in combinations(candidates, 2)}
-    nb_electors = 0
-    for elector in electors:
-        nb_electors += 1
-        pairs_elector = {comb: 0 for comb in combinations(elector.candidates_ranked, 2)}
-        for fst, snd in pairs_elector:
-            if (fst, snd) in pairs:
-                pairs[(fst, snd)] += elector.weight
-            elif (snd, fst) in pairs:
-                pairs[(snd, fst)] -= elector.weight
-
-    duels = dict()
-    for pair, score in pairs.items():
-        if score < 0:
-            duels[pair[::-1]] = nb_electors + score
-        elif score > 0:
-            duels[pair] = nb_electors - score
-        else:
-            duels[pair] = 0
-    return duels
-
-
 def apply_condorcet_simple(electors, candidates):
-    duels = set_duels_scores(electors, candidates)
+    duels = Utls.set_duels_scores(electors, candidates)
     Utls.init_scores(candidates, CONDORCET_SIMPLE, 0)
     for winner, _ in duels:
         winner.add_score(CONDORCET_SIMPLE, 1)

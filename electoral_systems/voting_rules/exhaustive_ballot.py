@@ -1,6 +1,5 @@
 from .constants import EXHAUSTIVE_BALLOT
 from .utls import Utls
-from .condorcet import set_duels_scores
 
 
 def apply_exhaustive_ballot(electors, candidates, duels=None):
@@ -33,7 +32,7 @@ def apply_exhaustive_ballot(electors, candidates, duels=None):
         candidates_curr_round = winners_backlog[current_round - 1][:-1]
         duels_curr_round = None
         if duels:
-            duels_curr_round = set_duels_scores(electors, candidates_curr_round)
+            duels_curr_round = Utls.set_duels_scores(electors, candidates_curr_round)
 
         results = set_scores_round(
             electors, candidates_curr_round, current_round, duels_curr_round

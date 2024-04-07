@@ -3,7 +3,6 @@ from copy import deepcopy
 from .constants import PLURALITY_SIMPLE, PLURALITY_2_ROUNDS
 
 from .utls import Utls
-from .condorcet import set_duels_scores
 
 
 def apply_plurality_simple(electors, candidates, duels=None):
@@ -29,7 +28,7 @@ def apply_plurality_rounds(electors, candidates, duels=None):
     candidates_round_two = candidates_round_one[:2]
     duels_round_two = None
     if duels:
-        set_duels_scores(electors, candidates_round_two)
+        Utls.set_duels_scores(electors, candidates_round_two)
 
     candidates_round_two = plurality_two_set_score(
         electors, candidates_round_two, duels_round_two

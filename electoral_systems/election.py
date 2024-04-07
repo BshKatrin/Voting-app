@@ -7,7 +7,6 @@ from numpy import std
 from .election_constants import RandomConstants, VotingRulesConstants
 from electoral_systems.extensions import Polls
 
-from .voting_rules.condorcet import set_duels_scores
 from .extensions import LiquidDemocracy
 from .voting_rules.utls import Utls
 from .utls import Singleton
@@ -31,9 +30,9 @@ class Election(metaclass=Singleton):
         self.set_default_settings()
 
     def set_default_settings(self):
-        self.nb_polls = 0
+        self.nb_polls = 5
         self.liquid_democracy_activated = False
-        self.liquid_democracy_voting_rule = VotingRulesConstants.PLURALITY_SIMPLE
+        self.poll_voting_rule = VotingRulesConstants.PLURALITY_SIMPLE
         self.tie_breaker_activated = True
 
         self.generation_constants = dict()
@@ -65,7 +64,7 @@ class Election(metaclass=Singleton):
             elector.rank_candidates(self.candidates)
 
     def calc_results(self, imported=False):
-        self.duels_scores = set_duels_scores(self.electors, self.candidates)
+        self.duels_scores = Utls.set_duels_scores(self.electors, self.candidates)
         if imported:
             self.set_results()
             return
@@ -233,7 +232,7 @@ class Election(metaclass=Singleton):
                 print(c, c.scores[vr])
 
     def conduct_poll(self):
-        voting_rule = self.liquid_democracy_voting_rule
+        voting_rule = self.poll_voting_rule
         winner = self.choose_winner(voting_rule)
         ranking = self.results[voting_rule]
 

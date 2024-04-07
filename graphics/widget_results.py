@@ -177,7 +177,6 @@ class WidgetResults(QWidget):
 
     @Slot(QLabel, QLabel, str)
     def setResultsLabel(self, winner_label, satisf_label, voting_rule):
-        print("Labels update")
         winner = self.election.choose_winner(voting_rule)
         # None can be in condorcet simple
         if winner is None:
@@ -207,9 +206,7 @@ class WidgetResults(QWidget):
         self.sig_poll_conducted.emit()
 
         if self.charts_view:
-            self.charts_view.sig_poll_conducted.emit(
-                self.election.liquid_democracy_voting_rule
-            )
+            self.charts_view.sig_poll_conducted.emit(self.election.poll_voting_rule)
 
     def _get_view_size(self):
         return QSize(self.parent().width() * 0.8, self.parent().height() * 0.8)
