@@ -5,4 +5,5 @@ __all__ = [
     "exhaustive_ballot",
     "plurality",
     "veto",
+    "tie",
 ]

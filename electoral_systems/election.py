@@ -7,6 +7,7 @@ from numpy import std
 from .election_constants import RandomConstants, VotingRulesConstants
 from electoral_systems.extensions import Polls
 
+from .voting_rules.tie import Tie
 from .voting_rules.condorcet import set_duels_scores
 from .extensions import LiquidDemocracy
 from .voting_rules.utls import sort_cand_by_round, sort_cand_by_value
@@ -31,8 +32,8 @@ class Election(metaclass=Singleton):
         self.set_default_settings()
 
     def set_default_settings(self):
-        self.nb_polls = 5
-        self.liquid_democracy_activated = True
+        self.nb_polls = 0
+        self.liquid_democracy_activated = False
         self.liquid_democracy_voting_rule = VotingRulesConstants.PLURALITY_SIMPLE
 
         self.generation_constants = dict()
@@ -64,10 +65,12 @@ class Election(metaclass=Singleton):
             elector.rank_candidates(self.candidates)
 
     def calc_results(self, imported=False):
+        self.duels_scores = set_duels_scores(self.electors, self.candidates)
         if imported:
             self.set_results()
             return
         for voting_rule in self.results:
+
             self.apply_voting_rule(voting_rule)
 
     def set_avg_electors_position(self):
@@ -120,9 +123,6 @@ class Election(metaclass=Singleton):
         if not self._has_electors_candidates():
             pass
 
-        if voting_rule in VotingRulesConstants.CONDORCET:
-            self.duels_scores = set_duels_scores(self.electors, self.candidates)
-
         if voting_rule == VotingRulesConstants.APPROVAL:
             self.results[voting_rule] = VotingRulesConstants.VOTING_RULES_FUNC[
                 voting_rule
@@ -131,6 +131,10 @@ class Election(metaclass=Singleton):
             self.results[voting_rule] = VotingRulesConstants.VOTING_RULES_FUNC[
                 voting_rule
             ](self.electors, self.candidates)
+
+        ties = Tie.get_ties(self.results[voting_rule], voting_rule)
+        if ties:
+            Tie.resolve_ties(self.results[voting_rule], ties, self.duels_scores)
 
     def choose_winner(self, voting_rule):
         if voting_rule not in self.results:
@@ -208,39 +212,6 @@ class Election(metaclass=Singleton):
         )
         # print(candidate, percentage)
         return percentage
-
-    # Apply poll for 1 ROUND voting rule
-    def _change_ranking_electors(self):
-        # Protection, normally OK
-        voting_rule = self.liquid_democracy_voting_rule
-        if voting_rule not in self.results:
-            self.apply_voting_rule(voting_rule)
-
-        score_max = self.choose_winner(voting_rule).scores[voting_rule]
-        for elector in self.electors:
-            if random() < elector.knowledge:
-                continue
-
-            # Elector changes his vote
-            # Rearrange his rank
-            for i, candidate in enumerate(elector.candidates_ranked):
-                circle_limit = (
-                    1 - elector.knowledge
-                ) * VotingRulesConstants.APPROVAL_GAP_COEF
-
-                if elector.dist_from_one_cand(candidate) > circle_limit:
-                    break
-
-                score_ratio = candidate.scores[voting_rule] / score_max
-                if random() < score_ratio:
-                    # New candidate to vote for
-                    chosen_candidate = candidate
-                    # Shift candidates on a right
-                    for j in range(i, 0, -1):
-                        elector.candidates_ranked[j] = elector.candidates_ranked[j - 1]
-                    elector.candidates_ranked[0] = chosen_candidate
-                    break
-            # Elector changes his vote
 
     def update_data_poll(self):
         # Recalc satisfaction 'cause of movement of candidates
