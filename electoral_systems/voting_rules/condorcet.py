@@ -1,13 +1,12 @@
 from itertools import combinations, permutations
 
 from .constants import CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON
-from .utls import init_scores, sort_cand_by_value
+from .utls import Utls
 
 
 # Utile pour les graphes et pour le condorcet simple
 # i.e. pour determiner s'il existe un gagnant ou pas
 def set_duels_scores(electors, candidates):
-    print("Setting duels")
     pairs = {comb: 0 for comb in combinations(candidates, 2)}
     nb_electors = 0
     for elector in electors:
@@ -16,7 +15,7 @@ def set_duels_scores(electors, candidates):
         for fst, snd in pairs_elector:
             if (fst, snd) in pairs:
                 pairs[(fst, snd)] += elector.weight
-            else:
+            elif (snd, fst) in pairs:
                 pairs[(snd, fst)] -= elector.weight
 
     duels = dict()
@@ -32,10 +31,10 @@ def set_duels_scores(electors, candidates):
 
 def apply_condorcet_simple(electors, candidates):
     duels = set_duels_scores(electors, candidates)
-    init_scores(candidates, CONDORCET_SIMPLE, 0)
+    Utls.init_scores(candidates, CONDORCET_SIMPLE, 0)
     for winner, _ in duels:
         winner.add_score(CONDORCET_SIMPLE, 1)
-    return sort_cand_by_value(candidates, CONDORCET_SIMPLE)
+    return Utls.sort_cand_by_value(candidates, CONDORCET_SIMPLE)
 
 
 def apply_condorcet_copeland(electors, candidates):
@@ -64,7 +63,7 @@ def apply_condorcet_copeland(electors, candidates):
         else:
             fst.add_score(CONDORCET_COPELAND, 0.5)
             snd.add_score(CONDORCET_COPELAND, 0.5)
-    return sort_cand_by_value(candidates, CONDORCET_COPELAND)
+    return Utls.sort_cand_by_value(candidates, CONDORCET_COPELAND)
 
 
 def apply_condorcet_simpson(electors, candidates):
@@ -80,11 +79,11 @@ def apply_condorcet_simpson(electors, candidates):
             else:
                 duels[(snd, fst)] += elector.weight
 
-    init_scores(candidates, CONDORCET_SIMPSON, 0)
+    Utls.init_scores(candidates, CONDORCET_SIMPSON, 0)
     for (_, snd), value in duels.items():
         snd.init_score(
             CONDORCET_SIMPSON,
             max(snd.scores[CONDORCET_SIMPSON], value),
         )
     # Trier par l'ordre ascendant des scores des candidats, ensuite par leur nom
-    return sort_cand_by_value(candidates, CONDORCET_SIMPSON, scores_asc=True)
+    return Utls.sort_cand_by_value(candidates, CONDORCET_SIMPSON, scores_asc=True)

@@ -7,10 +7,9 @@ from numpy import std
 from .election_constants import RandomConstants, VotingRulesConstants
 from electoral_systems.extensions import Polls
 
-from .voting_rules.tie import Tie
 from .voting_rules.condorcet import set_duels_scores
 from .extensions import LiquidDemocracy
-from .voting_rules.utls import sort_cand_by_round, sort_cand_by_value
+from .voting_rules.utls import Utls
 from .utls import Singleton
 
 
@@ -123,18 +122,22 @@ class Election(metaclass=Singleton):
         if not self._has_electors_candidates():
             pass
 
-        if voting_rule == VotingRulesConstants.APPROVAL:
-            self.results[voting_rule] = VotingRulesConstants.VOTING_RULES_FUNC[
-                voting_rule
-            ](self.electors, self.candidates, VotingRulesConstants.APPROVAL_GAP_COEF)
-        else:
-            self.results[voting_rule] = VotingRulesConstants.VOTING_RULES_FUNC[
-                voting_rule
-            ](self.electors, self.candidates)
+        result = []
+        func = VotingRulesConstants.VOTING_RULES_FUNC[voting_rule]
+        if voting_rule in VotingRulesConstants.CONDORCET:
+            result = func(self.electors, self.candidates)
 
-        ties = Tie.get_ties(self.results[voting_rule], voting_rule)
-        if ties:
-            Tie.resolve_ties(self.results[voting_rule], ties, self.duels_scores)
+        elif voting_rule == VotingRulesConstants.APPROVAL:
+            result = func(
+                self.electors,
+                self.candidates,
+                VotingRulesConstants.APPROVAL_GAP_COEF,
+                self.duels_scores,
+            )
+        else:
+            result = func(self.electors, self.candidates, self.duels_scores)
+
+        self.results[voting_rule] = result
 
     def choose_winner(self, voting_rule):
         if voting_rule not in self.results:
@@ -168,12 +171,14 @@ class Election(metaclass=Singleton):
 
         for voting_rule in keys:
             if voting_rule in VotingRulesConstants.ONE_ROUND:
-                result = sort_cand_by_value(self.candidates, voting_rule)
+                result = Utls.sort_cand_by_value(self.candidates, voting_rule)
                 self.results[voting_rule] = result
             elif voting_rule in VotingRulesConstants.MULTI_ROUND:
                 self.results[voting_rule] = [None] * len(candidate.scores[voting_rule])
                 for round in range(len(candidate.scores[voting_rule])):
-                    result = sort_cand_by_round(self.candidates, voting_rule, round)
+                    result = Utls.sort_cand_by_round(
+                        self.candidates, voting_rule, round
+                    )
                     self.results[voting_rule][round] = result
             elif voting_rule in VotingRulesConstants.CONDORCET:
                 sort_asc = (
@@ -182,7 +187,7 @@ class Election(metaclass=Singleton):
                     else False
                 )
 
-                result = sort_cand_by_value(self.candidates, voting_rule, sort_asc)
+                result = Utls.sort_cand_by_value(self.candidates, voting_rule, sort_asc)
                 self.results[voting_rule] = result
 
     def _calc_distance(self, point1, point2):

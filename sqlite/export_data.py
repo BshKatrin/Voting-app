@@ -95,6 +95,10 @@ class ExportData:
     @classmethod
     def _one_round_create_table(cls, connection, chosen_one_round):
         cursor = connection.cursor()
+
+        cursor.execute("DROP TABLE IF EXISTS results_one_round")
+        connection.commit()
+
         table_scores = f"""
             CREATE TABLE results_one_round (
                 candidate_id INTEGER,
@@ -126,6 +130,10 @@ class ExportData:
     @classmethod
     def _multi_round_create_table(cls, connection, chosen_multi_round):
         cursor = connection.cursor()
+
+        cursor.execute("DROP TABLE IF EXISTS results_multi_round")
+        connection.commit()
+
         table_scores = f"""
             CREATE TABLE results_multi_round (
                 candidate_id INTEGER,
@@ -159,6 +167,11 @@ class ExportData:
     @classmethod
     def _condorcet_create_table(cls, connection, chosen_condorcet):
         cursor = connection.cursor()
+        cursor.executescript(
+            "DROP TABLE IF EXISTS condorcet_duels;DROP TABLE IF EXISTS results_condorcet"
+        )
+        connection.commit()
+
         table_duels = f"""
             CREATE TABLE condorcet_duels (
                 winner_id INTEGER NOT NULL,
@@ -172,7 +185,7 @@ class ExportData:
         cursor.execute(table_duels)
         connection.commit()
 
-        table_scores = f"""CREATE TABLE "results_condorcet" (
+        table_scores = f"""CREATE TABLE results_condorcet (
                 candidate_id INTEGER,
                 voting_rule TEXT CHECK(voting_rule IN {str(tuple(chosen_condorcet))}),
                 score REAL NOT NULL,
@@ -193,7 +206,7 @@ class ExportData:
 
         tuples = [
             (pair[0].id, pair[1].id, score)
-            for pair, score in cls.election.condorcet_graph_info.items()
+            for pair, score in cls.election.duels_scores.items()
         ]
 
         cursor.executemany(query, tuples)

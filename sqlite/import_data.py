@@ -264,7 +264,7 @@ class ImportData:
         for winner_id, loser_id, score in data:
             winner = assoc[winner_id]
             loser = assoc[loser_id]
-            cls.election.condorcet_graph_info[(winner, loser)] = score
+            cls.election.duels_scores[(winner, loser)] = score
 
         # Scores
         cursor.execute("SELECT * FROM results_condorcet")
