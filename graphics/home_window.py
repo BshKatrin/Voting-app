@@ -108,50 +108,49 @@ class HomeWindow(QMainWindow):
     # No results : MainWindow, WidgetMap only
     @Slot(bool)
     def importData(self, with_results):
-        db_file_name = QFileDialog.getOpenFileName(
+        db_file_path, _ = QFileDialog.getOpenFileName(
             self, "Choose database", "", "SQLite databases : (*.db)"
         )
 
         # Do nothing if no file was chosen
-        if not db_file_name[0]:
+        if not db_file_path:
             return
-        # Check if there is suffix .db
-        if db_file_name[0].split(".")[-1] != ".db":
-            db_file_name[0] += ".db"
 
-        connection = sqlite3.connect(db_file_name[0])
+        connection = sqlite3.connect(db_file_path)
 
         success, msg = ImportData.import_people(connection, with_results)
-
         connection.close()
         if not success:
             self.showPopupMsg(msg)
+        else:
+            self.sig_data_imported.emit(with_results)
 
     @Slot(bool)
     def exportData(self, with_results):
-        db_file_name = QFileDialog.getSaveFileName(
+        db_file_path, _ = QFileDialog.getSaveFileName(
             self, "Save database", "", "SQLite databases : (*.db)"
         )
 
         # Do nothing if no file was chosen
-        if not db_file_name[0]:
+        if not db_file_path:
             return
 
-        connection = sqlite3.connect(db_file_name[0])
+        connection = sqlite3.connect(db_file_path)
         success, msg = ExportData.create_database_people(connection)
 
         if not success:
             self.showPopupMsg(msg)
-            remove(db_file_name[0])
+            remove(db_file_path)
             
         if success and with_results:
             success, msg = ExportData.create_database_results(connection)
             
             if not success:
                 self.showPopupMsg(msg)
-                remove(db_file_name[0])
+                remove(db_file_path)
                 
         connection.close()
+
 
     def toggleIEOptions(self, type, with_results_status, no_results_status):
         if type == ImportData.IMPORT:
