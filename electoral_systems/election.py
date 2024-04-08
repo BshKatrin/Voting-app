@@ -284,8 +284,8 @@ class Election(metaclass=Singleton):
         # Recalculate results
         self.calc_results()
 
-    def _clean_direction_data(self):
-        self.directions_data.clear()
+    # def _clean_direction_data(self):
+    #     self.directions_data.clear()
 
     def delete_all_data(self):
         self.electors.clear()

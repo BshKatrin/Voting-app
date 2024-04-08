@@ -63,7 +63,6 @@ class ImportData:
     # Return (True, msg) if saved, (False, msg) if not
     @classmethod
     def import_people_no_results(cls, connection):
-        # cls.election.delete_all_data()
         existing_tables = cls._get_existing_tables(connection)
         # Check tables
         missing, missing_tables = cls._check_tables(
@@ -104,6 +103,7 @@ class ImportData:
     @classmethod
     def import_people_with_results(cls, connection):
         cls.election.delete_all_data()
+        cls.election.nb_polls = 0
         # Check tables
         existing_tables = cls._get_existing_tables(connection)
         missing, missing_tables = cls._check_tables(
@@ -126,10 +126,9 @@ class ImportData:
         # id : candidate
         candidates_id_assoc = dict()
 
-        for x, y, first_name, last_name, dogm, oppos in candidates_data:
-            id = next(cls.election.id_iter)
+        for id, x, y, first_name, last_name, dogm, oppos in candidates_data:
             new_candidate = Candidate(
-                id=id,
+                id=next(cls.election.id_iter),
                 position=(x, y),
                 first_name=first_name,
                 last_name=last_name,
@@ -149,7 +148,7 @@ class ImportData:
                 weight=weight,
                 knowledge=knowledge,
             )
-            cls.election.add_elector(new_elector)
+            cls.election.add_elector_import(new_elector)
         return cls._import_results(connection, existing_tables, candidates_id_assoc)
 
     @classmethod

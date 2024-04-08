@@ -217,7 +217,6 @@ class WidgetResults(QWidget):
         if self.nb_polls_conducted == self.election.nb_polls:
             self.start_poll_btn.setEnabled(False)
 
-        self.election.update_data_poll()
         self.map_image.update()
         self.sig_poll_conducted.emit()
 
