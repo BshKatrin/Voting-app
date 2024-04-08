@@ -43,8 +43,8 @@ class HomeWindow(QMainWindow):
         self.layout.setContentsMargins(10, 10, 10, 10)
         self.setCentralWidget(self.main_widget)
 
-        self.widgetResults = None
-        self.widgetMap = None
+        self.widget_results = None
+        self.widget_map = None
 
         self.sig_data_imported.connect(self.switchWidgetImport)
 
@@ -245,8 +245,8 @@ class HomeWindow(QMainWindow):
         self.toggleIEOptions(ExportData.EXPORT, True, True)
         self.toggleIEOptions(ImportData.IMPORT, False, False)
 
-        self.widgetResults = WidgetResults(self.main_widget)
-        self.layout.addWidget(self.widgetResults, alignment=Qt.AlignTop)
+        self.widget_results = WidgetResults(self.main_widget)
+        self.layout.addWidget(self.widget_results, alignment=Qt.AlignTop)
 
     @Slot(list)
     def startElection(self, constantsList):
@@ -267,14 +267,17 @@ class HomeWindow(QMainWindow):
         self.election.delete_all_data()
         self.election.set_default_settings()
 
-        if self.widgetResults:
-            self.widgetResults.sig_widget_results_destroying.emit()
-            self.widgetResults.deleteLater()
-
     @Slot()
     def cleanWindow(self):
         for i in reversed(range(self.layout.count())):
             widgetToRemove = self.layout.itemAt(i).widget()
+
+            if widgetToRemove == self.widget_map:
+                self.widget_map.destroyChildren()
+
+            if widgetToRemove == self.widget_results:
+                self.widget_results.destroyChildren()
+
             widgetToRemove.deleteLater()
 
     @Slot()

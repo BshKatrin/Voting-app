@@ -16,7 +16,6 @@ from electoral_systems import Election, VotingRulesConstants
 
 class WidgetResults(QWidget):
     sig_show_chart = Signal(str)
-    sig_widget_results_destroying = Signal()
     sig_poll_conducted = Signal()
 
     def __init__(self, parent):
@@ -28,7 +27,6 @@ class WidgetResults(QWidget):
 
         self.graph_view = None
         self.charts_view = None
-        self.sig_widget_results_destroying.connect(self.destroyChildren)
 
         self.conduct_polls = True if self.election.nb_polls else False
 
