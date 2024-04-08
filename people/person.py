@@ -1,19 +1,12 @@
 from dataclasses import dataclass, field
-from itertools import count
-from random import uniform
 from numpy.random import normal
 from numpy import clip
 
 
 @dataclass(kw_only=True, eq=True)
 class Person:
-    def gen_rand_position():
-        return (uniform(-1, 1), uniform(-1, 1))
-
-    id: int = field(default_factory=count().__next__, compare=False)
-    position: tuple[float, float] = field(
-        default_factory=gen_rand_position, compare=False
-    )
+    id: int = field(compare=False)
+    position: tuple[float, float] = field(compare=False)
 
     # Generate parameters based on Gauss normal distribution
     # Confine generated parameter between lower and upper limits

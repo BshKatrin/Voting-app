@@ -1,38 +1,18 @@
 from copy import deepcopy
 from dataclasses import dataclass, field, InitVar
-from string import ascii_uppercase
 from typing import Dict, Union, List, Tuple
-from itertools import product
 from .person import Person
-
-from electoral_systems import RandomConstants
-
-
-def generator_names():
-    for length in range(1, 5):
-        for combination in product(ascii_uppercase, repeat=length):
-            yield "".join(combination)
-
-
-generator_first_name = generator_names()
-generator_last_name = generator_names()
 
 
 @dataclass(kw_only=True, unsafe_hash=True, eq=True, order=True)
-# Keep in mind that no guarantee for unique first_name and last_name
 class Candidate(Person):
-
     first_name: str = ""
     last_name: str = ""
 
     dogmatism: float = -1.0
     opposition: float = -1.0
-    dogmatism_const: InitVar[Tuple[float, float]] = RandomConstants.DEFAULT_VALUES[
-        RandomConstants.DOGMATISM
-    ]
-    opposition_const: InitVar[Tuple[float, float]] = RandomConstants.DEFAULT_VALUES[
-        RandomConstants.OPPOSITION
-    ]
+    dogmatism_const: InitVar[Tuple[float, float]] = (0.5, 0.3)
+    opposition_const: InitVar[Tuple[float, float]] = (0.5, 0.3)
 
     # int -> 1 round, float -> Copeland, List -> N rounds
     scores: Dict[str, Union[int, float, List[int]]] = field(
@@ -40,11 +20,6 @@ class Candidate(Person):
     )
 
     def __post_init__(self, dogmatism_const, opposition_const):
-        if not self.first_name:
-            self.first_name = next(generator_first_name)
-        if not self.last_name:
-            self.last_name = next(generator_last_name)
-
         if self.dogmatism < 0:
             mu, sigma = dogmatism_const
             self.dogmatism = Person.generate_parameter(
@@ -60,7 +35,8 @@ class Candidate(Person):
         x, y = self.position
         # return f"Candidate({self.id}, ({x:.2f},{y:.2f}), {self.first_name}, {self.last_name}, {self.scores})"
         # return f"Candidate({self.id}, {self.first_name} {self.last_name}, domgat:{self.dogmatism:.2f}, oppos:{self.opposition:.2f})"
-        return f"Candidate({self.id}, {self.first_name} {self.last_name})"
+        # return f"Candidate({self.id}, {self.first_name} {self.last_name})"
+        return str(self.id)
 
     def __repr__(self):
         return self.__str__()
@@ -90,7 +66,6 @@ class Candidate(Person):
             sum_x, sum_y = sum_x + x, sum_y + y
         x_goal, y_goal = sum_x / len(positions), sum_y / len(positions)
 
-        # print(self, f"{x_curr:.2f}, {y_curr:.2f}")
         self.move_to_point((x_goal, y_goal), travel_dist)
 
     def move_to_point(self, position_goal, travel_dist):

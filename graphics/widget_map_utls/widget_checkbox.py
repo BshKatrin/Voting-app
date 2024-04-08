@@ -15,7 +15,7 @@ class WidgetCheckbox(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.election = Election()
-        self.set_constants = set()
+        self.chosen_voting_rules = set()
         self.initUI()
 
         if self.election.nb_polls:
@@ -23,7 +23,6 @@ class WidgetCheckbox(QWidget):
             self.disableAllVotingRules()
 
     def initUI(self):
-
         self.setWindowTitle("Voting rules")
         self.setGeometry(100, 100, 300, 200)
 
@@ -58,9 +57,9 @@ class WidgetCheckbox(QWidget):
     @Slot(str, int)
     def onStateChanged(self, voting_rule, state):
         (
-            self.set_constants.add(voting_rule)
+            self.chosen_voting_rules.add(voting_rule)
             if state
-            else self.set_constants.discard(voting_rule)
+            else self.chosen_voting_rules.discard(voting_rule)
         )
 
     # Enable checkboxes whose candidates min was reached
@@ -78,23 +77,24 @@ class WidgetCheckbox(QWidget):
     @Slot()
     def confirmVotingRules(self):
         # Activate button 'Start election' only if at least 1 voting rule was chosen
-        emit_value = bool(self.set_constants)
+        emit_value = bool(self.chosen_voting_rules)
         self.sig_toggle_election_btn.emit(emit_value)
 
         # Close checkbox widget
         self.close()
 
     # Check all checkboxes at once
+    @Slot()
     def chooseAllVotingRules(self):
         for checkbox in self.rule_checkbox.values():
             if checkbox.isEnabled():
                 checkbox.setChecked(True)
 
-    def getConstantsSet(self):
-        return self.set_constants
+    def getChosenVotingRules(self):
+        return self.chosen_voting_rules
 
+    # For polls
     def choosePollVotingRule(self, voting_rule):
-        print("Setting checked", voting_rule)
         self.rule_checkbox[voting_rule].setChecked(True)
 
     def disableAllVotingRules(self):

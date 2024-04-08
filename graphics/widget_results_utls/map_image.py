@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
-from PySide6.QtGui import QCloseEvent, QPixmap
-from PySide6.QtCore import Signal, Slot
+from PySide6.QtWidgets import QWidget, QVBoxLayout
+from PySide6.QtGui import QCloseEvent
+from PySide6.QtCore import Signal
 from PySide6.QtCore import Qt
 
 from electoral_systems import Election
@@ -24,7 +24,7 @@ class MapImage(QWidget):
 
         self.quadrant_map = QuadrantMap(0.95, self)
         if self.election.liquid_democracy_activated:
-            self.quadrant_map.final_painting = True
+            self.quadrant_map.draw_delegations = True
 
         self.layout.addWidget(self.quadrant_map, 0, Qt.AlignVCenter | Qt.AlignHCenter)
 

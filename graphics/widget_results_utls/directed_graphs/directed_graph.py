@@ -1,7 +1,7 @@
 from math import sin, cos, pi, sqrt, atan2
 
-from PySide6.QtWidgets import QGraphicsScene, QGraphicsPolygonItem
-from PySide6.QtGui import QPainterPath, QColor, QPolygonF
+from PySide6.QtWidgets import QGraphicsScene
+from PySide6.QtGui import QPainterPath, QColor
 from PySide6.QtCore import QPointF
 
 from .node import Node
@@ -11,7 +11,6 @@ from electoral_systems import Election
 
 
 class DirectedGraph(QGraphicsScene):
-    # view_size est de type QSize
     def __init__(self, view_size, parent=None):
 
         super().__init__(parent)
@@ -31,16 +30,8 @@ class DirectedGraph(QGraphicsScene):
         self.initNodes()
         self.initEdges(weighted)
 
-    # math to place candidates in a circle
-    def calculateCircle(self):
-        self.center = QPointF(self.view_size.width() / 2, self.view_size.height() / 2)
-        # Radius = 70% of window size
-        self.radius = min(self.center.x() * 0.7, self.center.y() * 0.7)
-        # Angle between candidates in radians
-        nb_candidates = len(self.election.candidates)
-        self.angle = 0 if nb_candidates == 0 else 2 * pi / nb_candidates
+        # draw nodes, fill dict
 
-    # draw nodes, fill dict
     def initNodes(self):
         # Dict such as key : id of a candidate, value : it's associated node
         for i in range(len(self.election.candidates)):
@@ -66,7 +57,7 @@ class DirectedGraph(QGraphicsScene):
             lw_vector_norm = self.calculateNorm(winner_node, loser_node)
 
             edge_point = (
-                loser_node.pos() - lw_vector / lw_vector_norm * loser_node.radius
+                loser_node.pos() - lw_vector / lw_vector_norm * loser_node.RADIUS
             )
 
             # Connect nodes
@@ -78,6 +69,15 @@ class DirectedGraph(QGraphicsScene):
                 edge.setWeight(weight)
 
             self.addItem(edge)
+
+    # math to place candidates in a circle
+    def calculateCircle(self):
+        self.center = QPointF(self.view_size.width() / 2, self.view_size.height() / 2)
+        # Radius = 70% of window size
+        self.radius = min(self.center.x() * 0.7, self.center.y() * 0.7)
+        # Angle between candidates in radians
+        nb_candidates = len(self.election.candidates)
+        self.angle = 0 if nb_candidates == 0 else 2 * pi / nb_candidates
 
     # Calculate norm of a vector
     def calculateNorm(self, point1, point2):

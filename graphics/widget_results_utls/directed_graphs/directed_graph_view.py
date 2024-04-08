@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt
 class DirectedGraphView(QGraphicsView):
     def __init__(self, scene):
         super().__init__(scene)
-        # To suppress warning
+        # To suppress warning (MacOS)
         self.viewport().setAttribute(Qt.WidgetAttribute.WA_AcceptTouchEvents, False)
 
     def closeEvent(self, event):

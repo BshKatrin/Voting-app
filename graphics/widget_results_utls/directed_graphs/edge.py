@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
     QGraphicsSimpleTextItem,
     QGraphicsPolygonItem,
 )
-from PySide6.QtGui import QPen, QColor, QPolygonF, QPainter
+from PySide6.QtGui import QPen, QColor, QPolygonF
 from PySide6.QtCore import Qt, QPointF
 
 

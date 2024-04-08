@@ -16,6 +16,11 @@ class Polls:
     SW = "SW"
     CENTER = "CNT"
 
+    def calc_distance(point1, point2):
+        x1, y1 = point1
+        x2, y2 = point2
+        return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+
     def add_elector_data(directions_data, new_elector):
         x, y = new_elector.position
 
@@ -41,11 +46,6 @@ class Polls:
             if direction:
                 directions_data[direction][Polls.NB_CANDIDATES] += 1
 
-    def calc_distance(point1, point2):
-        x1, y1 = point1
-        x2, y2 = point2
-        return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
-
     def get_default_directions_data():
         directions = {Polls.NE, Polls.NW, Polls.SE, Polls.SW, Polls.CENTER}
         directions_data = dict()
@@ -61,6 +61,31 @@ class Polls:
             Polls.ELECTORS: [],  # For std deviation
             Polls.NB_CANDIDATES: 0,
         }
+
+    def in_center(position):
+        x, y = position
+        if abs(x) < 0.3 and abs(y) < 0.3:
+            return Polls.CENTER
+        return None
+
+    def choose_direction(position):
+        x, y = position
+        if x > 0 and y > 0:
+            return Polls.NE
+        if x > 0 and y < 0:
+            return Polls.SE
+        if x < 0 and y > 0:
+            return Polls.NW
+        if x < 0 and y < 0:
+            return Polls.SW
+
+    # For directions only
+    def set_avg_electors_positions(directions_data):
+        for direction, data in directions_data.items():
+            (x_avg, y_avg), nb_electors = data[Polls.AVG], data[Polls.NB_ELECTORS]
+            x_avg = x_avg / nb_electors if nb_electors else 0
+            y_avg = y_avg / nb_electors if nb_electors else 0
+            directions_data[direction][Polls.AVG] = (x_avg, y_avg)
 
     def set_std_deviation(directions_data, total_nb_electors):
         for direction in directions_data:
@@ -81,33 +106,6 @@ class Polls:
             directions_data[direction][Polls.NB_ELECTORS] /= total_nb_electors
             directions_data[direction][Polls.ELECTORS].clear()
 
-        pass
-
-    def choose_direction(position):
-        x, y = position
-        if x > 0 and y > 0:
-            return Polls.NE
-        if x > 0 and y < 0:
-            return Polls.SE
-        if x < 0 and y > 0:
-            return Polls.NW
-        if x < 0 and y < 0:
-            return Polls.SW
-
-    def in_center(position):
-        x, y = position
-        if abs(x) < 0.3 and abs(y) < 0.3:
-            return Polls.CENTER
-        return None
-
-    # For directions only
-    def set_avg_electors_positions(directions_data):
-        for direction, data in directions_data.items():
-            (x_avg, y_avg), nb_electors = data[Polls.AVG], data[Polls.NB_ELECTORS]
-            x_avg = x_avg / nb_electors if nb_electors else 0
-            y_avg = y_avg / nb_electors if nb_electors else 0
-            directions_data[direction][Polls.AVG] = (x_avg, y_avg)
-
     # Posssible allies is a sublist of candidate whose score is higher than that of a candidate
     # Function return True iff alliance is formed, we dont care with whom
     def alliance_formed(candidate, possible_allies):
@@ -119,6 +117,12 @@ class Polls:
             if dist < 0.15:
                 return True
         return False
+
+    def get_avg_directions_positions(directions_data, chosen_directions):
+        avg_positions = []
+        for direction, _ in chosen_directions:
+            avg_positions.append(directions_data[direction][Polls.AVG])
+        return avg_positions
 
     def choose_directions_by_scores(directions_scores):
         lst = [(direct, score) for direct, score in directions_scores.items()]
@@ -133,12 +137,6 @@ class Polls:
                 chosen.append((direct, score))
                 percentage -= 0.3
         return chosen
-
-    def get_avg_directions_positions(directions_data, chosen_directions):
-        avg_positions = []
-        for direction, _ in chosen_directions:
-            avg_positions.append(directions_data[direction][Polls.AVG])
-        return avg_positions
 
     def get_directions_scores(directions_data, candidate):
         directions_scores = {direct: 0 for direct in directions_data}
@@ -171,32 +169,7 @@ class Polls:
         )
         candidate.move_to_avg(avg_positions, travel_dist)
 
-    def change_ranking_electors(electors, score_winner, voting_rule, approval_gap):
-        for elector in electors:
-            if random() < elector.knowledge:
-                continue
-
-            # Elector changes his vote
-            # Rearrange his rank
-            for i, candidate in enumerate(elector.candidates_ranked):
-                circle_limit = (1 - elector.knowledge) * approval_gap
-
-                if elector.dist_from_one_cand(candidate) > circle_limit:
-                    break
-
-                score_ratio = candidate.scores[voting_rule] / score_winner
-                if random() < score_ratio:
-                    # New candidate to vote for
-                    chosen_candidate = candidate
-                    # Shift candidates on a right
-                    for j in range(i, 0, -1):
-                        elector.candidates_ranked[j] = elector.candidates_ranked[j - 1]
-                    elector.candidates_ranked[0] = chosen_candidate
-                    break
-
-            # Elector changes his vote
-
-    # Returns True iff candidate
+    # Returns True iff candidate gives up
     def give_up(candidate):
         return random() < 1 - candidate.dogmatism
 
@@ -222,3 +195,28 @@ class Polls:
                 continue
             # Else, move based on weighted sum
             Polls.move_in_direction(directions_data, candidate, travel_dist)
+
+    def change_ranking_electors(electors, score_winner, voting_rule, approval_gap):
+        for elector in electors:
+            if random() < elector.knowledge:
+                continue
+
+            # Elector changes his vote
+            # Rearrange his rank
+            for i, candidate in enumerate(elector.candidates_ranked):
+                circle_limit = (1 - elector.knowledge) * approval_gap
+
+                if elector.dist_from_one_cand(candidate) > circle_limit:
+                    break
+
+                score_ratio = candidate.scores[voting_rule] / score_winner
+                if random() < score_ratio:
+                    # New candidate to vote for
+                    chosen_candidate = candidate
+                    # Shift candidates on a right
+                    for j in range(i, 0, -1):
+                        elector.candidates_ranked[j] = elector.candidates_ranked[j - 1]
+                    elector.candidates_ranked[0] = chosen_candidate
+                    break
+
+            # Elector changes his vote

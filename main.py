@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QApplication
 from sys import argv, exit
 
-from graphics.main_window import HomeWindow
+from graphics.home_window import HomeWindow
 
 if __name__ == "__main__":
     app = QApplication(argv)

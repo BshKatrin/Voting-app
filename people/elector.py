@@ -5,8 +5,6 @@ from math import sqrt
 from .person import Person
 from .candidate import Candidate
 
-from electoral_systems import RandomConstants
-
 
 @dataclass(kw_only=True)
 class Elector(Person):
@@ -15,9 +13,7 @@ class Elector(Person):
     # weight > 0 -> no delegation
     weight: int = 1
     knowledge: float = -1.0
-    knowledge_const: InitVar[Tuple[float, float]] = RandomConstants.DEFAULT_VALUES[
-        RandomConstants.KNOWLEDGE
-    ]
+    knowledge_const: InitVar[Tuple[float, float]] = (0.5, 0.3)
 
     def __post_init__(self, knowledge_const):
         mu, sigma = knowledge_const

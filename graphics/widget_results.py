@@ -25,15 +25,15 @@ class WidgetResults(QWidget):
         self.election = Election()
 
         self.setGeometry(0, 0, parent.width(), parent.height())
-        # For destroy_children
+
         self.graph_view = None
         self.charts_view = None
-        # True if nb_polls != 0, False otherwise
+        self.sig_widget_results_destroying.connect(self.destroyChildren)
+
         self.conduct_polls = True if self.election.nb_polls else False
+
         self.initViews()
         self.initUI()
-
-        self.sig_widget_results_destroying.connect(self.destroyChildren)
 
     def initViews(self):
         if self.condorcetChosen():
@@ -65,6 +65,23 @@ class WidgetResults(QWidget):
         intersect = VotingRulesConstants.MULTI_ROUND & self.election.results.keys()
         return bool(intersect), intersect
 
+    def initDirectedGraph(self):
+        self.graph_scene = DirectedGraph(self.getViewSize(), parent=self)
+        self.graph_view = DirectedGraphView(self.graph_scene)
+        self.resizeView(self.graph_view)
+
+    def initChartsView(self):
+        self.charts_view = ChartView()
+        self.resizeView(self.charts_view)
+
+        self.sig_show_chart.connect(self.charts_view.setChartBySig)
+
+    def getViewSize(self):
+        return QSize(self.parent().width() * 0.8, self.parent().height() * 0.8)
+
+    def resizeView(self, view):
+        view.resize(self.getViewSize())
+
     def initUI(self):
         self.layout = QGridLayout()
         self.setLayout(self.layout)
@@ -74,11 +91,10 @@ class WidgetResults(QWidget):
         if self.conduct_polls:
             self.initPollsUI()
 
-        self.initColumns()
-        self.image = MapImage()
-        # self.image.disableMouseEvent()
-        # self.image = MapImage("graphics/temp/map.png")
-        self.image.closed.connect(self.toggleCheckbox)
+        self.initTable()
+
+        self.map_image = MapImage()
+        self.map_image.closed.connect(self.toggleCheckbox)
 
     def initPollsUI(self):
         # Number of polls
@@ -107,7 +123,7 @@ class WidgetResults(QWidget):
         self.start_poll_btn.clicked.connect(partial(self.conductNewPoll))
 
     # Affichage des resultats sous la forme d'un tableau
-    def initColumns(self):
+    def initTable(self):
         start_row = 1 if self.conduct_polls else 0
 
         column_one_header = QLabel()
@@ -133,7 +149,7 @@ class WidgetResults(QWidget):
 
         self.checkbox = QCheckBox("Show quadrant map", parent=self)
         self.checkbox.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        self.checkbox.stateChanged.connect(self.toggleQuadrantMap)
+        self.checkbox.stateChanged.connect(self.toggleMapImage)
         self.layout.addWidget(
             self.checkbox, start_row, 3, Qt.AlignRight | Qt.AlignVCenter
         )
@@ -157,7 +173,7 @@ class WidgetResults(QWidget):
                 show_btn.clicked.connect(lambda: self.showDirectedGraph(True))
                 show_btn.setText("Show graph")
             else:
-                show_btn.clicked.connect(partial(self.onShowChartBtnClick, voting_rule))
+                show_btn.clicked.connect(partial(self.showChart, voting_rule))
                 show_btn.setText("Show chart")
 
             label_voting_rule.setText(VotingRulesConstants.UI[voting_rule])
@@ -202,53 +218,36 @@ class WidgetResults(QWidget):
             self.start_poll_btn.setEnabled(False)
 
         self.election.update_data_poll()
-        self.image.update()
+        self.map_image.update()
         self.sig_poll_conducted.emit()
 
         if self.charts_view:
             self.charts_view.sig_poll_conducted.emit(self.election.poll_voting_rule)
 
-    def _get_view_size(self):
-        return QSize(self.parent().width() * 0.8, self.parent().height() * 0.8)
+    @Slot(int)
+    def toggleMapImage(self, state):
+        if state and (not self.map_image.isVisible()):
+            self.map_image.show()
+        elif (not state) and self.map_image.isVisible():
+            self.map_image.close()
 
-    def _resize_view(self, view):
-        view.resize(self._get_view_size())
+    @Slot()
+    def toggleCheckbox(self):
+        self.checkbox.setChecked(False)
 
-    def initDirectedGraph(self):
-        self.graph_scene = DirectedGraph(self._get_view_size(), parent=self)
-        self.graph_view = DirectedGraphView(self.graph_scene)
-        self._resize_view(self.graph_view)
+    @Slot(str)
+    def showChart(self, voting_rule):
+        self.sig_show_chart.emit(voting_rule)
 
     @Slot(bool)
     def showDirectedGraph(self, weighted=False):
         self.graph_scene.drawGraphics(weighted)
         self.graph_view.show()
 
-    def initChartsView(self):
-        self.charts_view = ChartView()
-        self._resize_view(self.charts_view)
-
-        self.sig_show_chart.connect(self.charts_view.setChartBySig)
-
-    @Slot(str)
-    def onShowChartBtnClick(self, voting_rule):
-        self.sig_show_chart.emit(voting_rule)
-
-    @Slot(int)
-    def toggleQuadrantMap(self, state):
-        if state and (not self.image.isVisible()):
-            self.image.show()
-        elif (not state) and self.image.isVisible():
-            self.image.close()
-
-    @Slot()
-    def toggleCheckbox(self):
-        self.checkbox.setChecked(False)
-
     # Destroy "child widget" whose parent is NOT set
     @Slot()
     def destroyChildren(self):
-        self.image.deleteLater()
+        self.map_image.deleteLater()
         # All Condorcet
         if self.graph_view:
             self.graph_view.deleteLater()

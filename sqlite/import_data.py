@@ -84,20 +84,20 @@ class ImportData:
         candidates_data = cursor.fetchall()
 
         for x, y, first_name, last_name in candidates_data:
-            cls.election.add_candidate(
-                Candidate(position=(x, y), first_name=first_name, last_name=last_name)
+            id = next(cls.election.id_iter)
+            cls.election.add_candidate_import(
+                Candidate(
+                    id=id, position=(x, y), first_name=first_name, last_name=last_name
+                )
             )
 
         cursor.execute("SELECT x, y, weight, knowledge FROM electors")
         electors_data = cursor.fetchall()
 
         for x, y, weight, knowledge in electors_data:
-            cls.election.add_elector(
-                Elector(
-                    position=(x, y),
-                    weight=weight,
-                    knowledge=knowledge,
-                )
+            id = next(cls.election.id_iter)
+            cls.election.add_elector_import(
+                Elector(id=id, position=(x, y), weight=weight, knowledge=knowledge)
             )
         return True, "Data imported"
 
@@ -126,7 +126,8 @@ class ImportData:
         # id : candidate
         candidates_id_assoc = dict()
 
-        for id, x, y, first_name, last_name, dogm, oppos in candidates_data:
+        for x, y, first_name, last_name, dogm, oppos in candidates_data:
+            id = next(cls.election.id_iter)
             new_candidate = Candidate(
                 id=id,
                 position=(x, y),
@@ -135,21 +136,20 @@ class ImportData:
                 dogmatism=dogm,
                 opposition=oppos,
             )
-            cls.election.add_candidate(new_candidate)
+            cls.election.add_candidate_import(new_candidate)
             candidates_id_assoc[id] = new_candidate
 
         cursor.execute("SELECT * FROM electors")
         electors_data = cursor.fetchall()
 
         for id, x, y, weight, knowledge in electors_data:
-            cls.election.add_elector(
-                Elector(
-                    id=id,
-                    position=(x, y),
-                    weight=weight,
-                    knowledge=knowledge,
-                )
+            new_elector = Elector(
+                id=id,
+                position=(x, y),
+                weight=weight,
+                knowledge=knowledge,
             )
+            cls.election.add_elector(new_elector)
         return cls._import_results(connection, existing_tables, candidates_id_assoc)
 
     @classmethod

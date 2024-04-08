@@ -7,13 +7,11 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QSizePolicy,
 )
-from PySide6.QtCore import Qt, Signal, Slot, QPoint
-from electoral_systems import Election, RandomConstants
-from people import Elector, Candidate
+from PySide6.QtCore import Qt, Signal, Slot
 
-from PySide6.QtGui import QPixmap, QPainter
+from .widget_map_utls import QuadrantMap, WidgetCheckbox, WidgetRandomSettings
 
-from .widget_map_utls import QuadrantMap, WidgetCheckbox, WidgetSettings
+from electoral_systems import Election
 
 
 class WidgetMap(QWidget):
@@ -34,32 +32,26 @@ class WidgetMap(QWidget):
         self.sig_widget_map_destroying.connect(self.destroyChildren)
 
     def initUI(self):
-        # Set layouts
-        # Main layout
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        # Top buttons layout
-        layout_btns = QHBoxLayout()
-
-        # Bottom buttons layout
-        layout_input = QGridLayout()
-
-        # Navigation button
-        self.choose_voting_rules_btn = QPushButton("Choose voting rules", parent=self)
-
-        self.choose_voting_rules_btn.clicked.connect(self.showWidgetCheckbox)
-
-        self.start_election_btn = QPushButton("Start election", parent=self)
-
-        if not self.election.nb_polls:
-            self.start_election_btn.setEnabled(False)
-
-        self.start_election_btn.clicked.connect(self.onStartElectionClick)
-
-        # Quadrant map
+        self.initNavigation()
         self.quadrant_map = QuadrantMap(0.8, parent=self)
+        self.initInputFields()
+
+        # Navigation buttons
+        self.layout.addLayout(self.layout_btns)
+
+        # Map
+        self.layout.addWidget(self.quadrant_map, 0, Qt.AlignHCenter)
+
+        # Bottom buttons (input fields)
+        self.layout.addLayout(self.layout_input)
+
+    def initNavigation(self):
+        # Top buttons layout
+        self.layout_btns = QHBoxLayout()
 
         # Voting rules checkbox
         self.voting_rules_checkbox = WidgetCheckbox(parent=None)
@@ -67,9 +59,22 @@ class WidgetMap(QWidget):
             self.toggleElectionBtnState
         )
 
-        self.widget_settings = WidgetSettings(
-            self.parent().size(), self.quadrant_map.size()
-        )
+        self.choose_voting_rules_btn = QPushButton("Choose voting rules", parent=self)
+        self.choose_voting_rules_btn.clicked.connect(self.showWidgetCheckbox)
+
+        self.start_election_btn = QPushButton("Start election", parent=self)
+        if not self.election.nb_polls:
+            self.start_election_btn.setEnabled(False)
+        self.start_election_btn.clicked.connect(self.onStartElectionClick)
+
+        self.layout_btns.addWidget(self.choose_voting_rules_btn)
+        self.layout_btns.addWidget(self.start_election_btn)
+
+    def initInputFields(self):
+        # Bottom buttons layout
+        self.layout_input = QGridLayout()
+
+        self.widget_settings = WidgetRandomSettings(self.parent().size())
 
         # User input for random data
         self.candidates_text_box = QLineEdit(parent=self)
@@ -85,7 +90,6 @@ class WidgetMap(QWidget):
             QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         )
 
-        # MAJ 06.03.24
         # Button to configure data generation
         self.random_settings_btn = QPushButton(
             "Random generation settings", parent=self
@@ -95,81 +99,54 @@ class WidgetMap(QWidget):
             QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         )
 
-        # Add to layout
-        # Top
-        self.layout.addLayout(layout_btns)
-        layout_btns.addWidget(self.choose_voting_rules_btn)
-        layout_btns.addWidget(self.start_election_btn)
+        self.layout_input.addWidget(self.candidates_text_box, 0, 0)
+        self.layout_input.addWidget(self.electors_text_box, 1, 0)
+        self.layout_input.addWidget(self.random_settings_btn, 0, 1)
+        self.layout_input.addWidget(self.btn_gen_random, 1, 1)
 
-        # Map
-        self.layout.addWidget(self.quadrant_map, 0, Qt.AlignHCenter)
-
-        # Bottom
-        self.layout.addLayout(layout_input)
-        layout_input.addWidget(self.candidates_text_box, 0, 0)
-        layout_input.addWidget(self.electors_text_box, 1, 0)
-        layout_input.addWidget(self.random_settings_btn, 0, 1)
-        layout_input.addWidget(self.btn_gen_random, 1, 1)
-
-    def _get_int_text_box(self, text_box):
+    def getIntInputField(self, text_box):
         text = text_box.text()
         return int(text) if text.isdigit() else 0
 
     @Slot()
     def generateData(self):
-        nb_candidates = self._get_int_text_box(self.candidates_text_box)
-        nb_electors = self._get_int_text_box(self.electors_text_box)
+        nb_candidates = self.getIntInputField(self.candidates_text_box)
+        nb_electors = self.getIntInputField(self.electors_text_box)
 
         for _ in range(nb_candidates):
             # Normalized
             generated_position = self.quadrant_map.generatePosition()
-            dogmat_const = self.election.generation_constants[RandomConstants.DOGMATISM]
-            oppos_const = self.election.generation_constants[RandomConstants.OPPOSITION]
-            new_candidate = Candidate(
-                position=generated_position,
-                dogmatism_const=dogmat_const,
-                opposition=oppos_const,
-            )
-            self.election.add_candidate(new_candidate)
+            self.election.add_candidate(generated_position)
 
         for _ in range(nb_electors):
             # Normalized
             generated_position = self.quadrant_map.generatePosition()
-            # Knowledge generation
-            knowledge_const = self.election.generation_constants[
-                RandomConstants.KNOWLEDGE
-            ]
-            # knowledge = Elector.generate_knowledge(mu, sigma)
-            self.election.add_elector(
-                Elector(position=generated_position, knowledge_const=knowledge_const)
-            )
+            self.election.add_elector(generated_position)
 
         self.quadrant_map.update()
-
         self.cleanTextBoxes()
 
     @Slot()
-    def showWidgetCheckbox(self):
-        self.voting_rules_checkbox.showCustom()
-
-    @Slot()
-    def cleanTextBoxes(self):
-        self.candidates_text_box.clear()
-        self.electors_text_box.clear()
-
-    @Slot()
     def onStartElectionClick(self):
-        constantsSet = self.voting_rules_checkbox.getConstantsSet()
+        constantsSet = self.voting_rules_checkbox.getChosenVotingRules()
         self.sig_start_election.emit(list(constantsSet))
 
     @Slot()
     def toggleElectionBtnState(self, enable):
         self.start_election_btn.setEnabled(enable)
 
-    # MAJ 06.03.24
+    @Slot()
+    def showWidgetCheckbox(self):
+        self.voting_rules_checkbox.showCustom()
+
     @Slot()
     def showWidgetRandomSettings(self):
         self.widget_settings.show()
+
+    @Slot()
+    def cleanTextBoxes(self):
+        self.candidates_text_box.clear()
+        self.electors_text_box.clear()
 
     @Slot()
     def destroyChildren(self):

@@ -93,6 +93,12 @@ class ExportData:
             cls._condorcet_insert(connection, chosen_condorcet)
 
     @classmethod
+    def _get_set_check(cls, voting_rules_set):
+        if len(voting_rules_set) == 1:
+            return f"= '{str(tuple(voting_rules_set)[0])}'"
+        return f"IN {str(tuple(voting_rules_set))}"
+
+    @classmethod
     def _one_round_create_table(cls, connection, chosen_one_round):
         cursor = connection.cursor()
 
@@ -102,13 +108,12 @@ class ExportData:
         table_scores = f"""
             CREATE TABLE results_one_round (
                 candidate_id INTEGER,
-                voting_rule TEXT CHECK(voting_rule IN {str(tuple(chosen_one_round))}),
+                voting_rule TEXT CHECK(voting_rule {ExportData._get_set_check(chosen_one_round)}),
                 score REAL,
 
                 FOREIGN KEY(candidate_id) REFERENCES candidates(id)
             )
             """
-
         cursor.execute(table_scores)
         connection.commit()
 
@@ -137,7 +142,7 @@ class ExportData:
         table_scores = f"""
             CREATE TABLE results_multi_round (
                 candidate_id INTEGER,
-                voting_rule TEXT CHECK(voting_rule IN {str(tuple(chosen_multi_round))}),
+                voting_rule TEXT CHECK(voting_rule {ExportData._get_set_check(chosen_multi_round)}),
                 round INTEGER CHECK(round >= 0),
                 score REAL NOT NULL,
 
@@ -183,11 +188,11 @@ class ExportData:
             )
             """
         cursor.execute(table_duels)
-        connection.commit()
 
+        connection.commit()
         table_scores = f"""CREATE TABLE results_condorcet (
                 candidate_id INTEGER,
-                voting_rule TEXT CHECK(voting_rule IN {str(tuple(chosen_condorcet))}),
+                voting_rule TEXT CHECK(voting_rule {ExportData._get_set_check(chosen_condorcet)}),
                 score REAL NOT NULL,
 
                 FOREIGN KEY(candidate_id) REFERENCES candidates(id)

@@ -1,29 +1,25 @@
 from PySide6.QtWidgets import (
     QWidget,
     QScrollArea,
-    QLabel,
-    QSlider,
-    QGridLayout,
     QVBoxLayout,
 )
-from PySide6.QtCore import Qt
 
+from PySide6.QtCore import Qt
 from .graph_settings import GraphSettings
 
 from electoral_systems import Election
 from electoral_systems import RandomConstants
 
 
-class WidgetSettings(QWidget):
+class WidgetRandomSettings(QWidget):
 
-    def __init__(self, window_size, quadrant_map_size, parent=None):
+    def __init__(self, main_window_size, parent=None):
         super().__init__(parent)
 
         self.election = Election()
 
-        side_size = 0.6 * min(window_size.width(), window_size.height())
-        # Suffit car quadrant map est carre
-        self.quadrant_map_size = quadrant_map_size.width()
+        side_size = 0.6 * min(main_window_size.width(), main_window_size.height())
+
         self.setWindowTitle("Random generation settings")
         # configuration taille du window
         self.setFixedSize(side_size, side_size)
@@ -43,8 +39,8 @@ class WidgetSettings(QWidget):
         scroll_widget.setLayout(layout)
         for type, title in RandomConstants.UI.items():
             graph_type = RandomConstants.GRAPH_TYPE[type]
-            graph = GraphSettings(self, title, type, graph_type, self.quadrant_map_size)
+            graph = GraphSettings(self, title, type, graph_type)
 
-            layout.addWidget(graph)
+            layout.addWidget(graph, 0, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         scrollArea.setWidget(scroll_widget)

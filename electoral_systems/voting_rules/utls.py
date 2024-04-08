@@ -1,4 +1,4 @@
-from itertools import combinations
+from itertools import combinations, permutations
 from .tie import Tie
 
 
@@ -14,7 +14,7 @@ class Utls:
         lst = [(candidate, candidate.scores[voting_rule]) for candidate in candidates]
 
         if not scores_asc:
-            ranking = [c for (c, _) in sorted(lst, key=lambda e: e[1], reverse=True)]
+            ranking = [c for (c, _) in sorted(lst, key=lambda e: (-e[1], e[0]))]
         else:
             ranking = [c for (c, _) in sorted(lst, key=lambda e: (e[1], e[0]))]
 
@@ -36,25 +36,26 @@ class Utls:
         return candidates_sorted[0].scores[voting_rule][round] > len_electors / 2
 
     def set_duels_scores(electors, candidates):
-        pairs = {comb: 0 for comb in combinations(candidates, 2)}
-        nb_electors = 0
-        for elector in electors:
-            nb_electors += 1
-            pairs_elector = {
-                comb: 0 for comb in combinations(elector.candidates_ranked, 2)
-            }
-            for fst, snd in pairs_elector:
-                if (fst, snd) in pairs:
-                    pairs[(fst, snd)] += elector.weight
-                elif (snd, fst) in pairs:
-                    pairs[(snd, fst)] -= elector.weight
+        duels = {perm: 0 for perm in permutations(candidates, 2)}
 
-        duels = dict()
-        for pair, score in pairs.items():
-            if score < 0:
-                duels[pair[::-1]] = nb_electors + score
-            elif score > 0:
-                duels[pair] = nb_electors - score
+        for elector in electors:
+            pairs = combinations(elector.candidates_ranked, 2)
+            # combinations est inclus dans permutations -> pas de KeyError
+            for fst, snd in pairs:
+                if (fst, snd) in duels:
+                    duels[(fst, snd)] += elector.weight
+                elif (snd, fst) in duels:
+                    duels[(snd, fst)] += elector.weight
+        duels_simple = Utls._simplify_duels(duels)
+        return duels_simple
+
+    def _simplify_duels(duels):
+        duels_simplified = dict()
+        for c1, c2 in duels:
+            if (c1, c2) in duels_simplified or (c2, c1) in duels_simplified:
+                continue
+            if duels[(c1, c2)] >= duels[(c2, c1)]:
+                duels_simplified[(c1, c2)] = duels[(c1, c2)]
             else:
-                duels[pair] = 0
-        return duels
+                duels_simplified[(c2, c1)] = duels[(c2, c1)]
+        return duels_simplified

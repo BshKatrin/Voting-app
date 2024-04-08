@@ -1,38 +1,29 @@
-from functools import partial
-from typing import Dict
+import sqlite3
 
-from PySide6.QtCore import Qt, Slot, QObject, Signal
+from PySide6.QtCore import Qt, Slot, QObject, Signal, QTimer
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
     QMainWindow,
     QPushButton,
     QVBoxLayout,
     QWidget,
-    QSpinBox,
-    QLabel,
-    QCheckBox,
-    QGridLayout,
-    QComboBox,
     QFileDialog,
+    QMessageBox,
 )
 
+from .home_window_utls import SettingsWidget
 from .widget_map import WidgetMap
 from .widget_results import WidgetResults
 
-from electoral_systems import Election, VotingRulesConstants
+from electoral_systems import Election
 
 from sqlite import ImportData, ExportData
-import sqlite3
 
 
 class HomeWindow(QMainWindow):
-    # Signal to indicate that data import (resp. export) was succesful
+    # Signal to indicate that data import was succesful
     # Bool indicated if with or without results
     sig_data_imported = Signal(bool)
-    sig_data_exported = Signal(bool)
-
-    # Signal to indicate that widgetmap if ON (resp. OFF)
-    sig_widget_map_on = Signal(bool)
 
     def __init__(self, app):
         super().__init__()
@@ -41,21 +32,17 @@ class HomeWindow(QMainWindow):
         self.election = Election()
 
         self.setScreenGeometry()
-
         self.setWindowTitle("Voting app")
-
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+
         # Main widget, layout
         self.main_widget = QWidget(parent=self)
         self.layout = QVBoxLayout()
-
         self.main_widget.setLayout(self.layout)
         self.layout.setSpacing(5)
         self.layout.setContentsMargins(10, 10, 10, 10)
         self.setCentralWidget(self.main_widget)
 
-        # Widgets
-        self.voteSelectionWidget = None
         self.widgetResults = None
         self.widgetMap = None
 
@@ -63,6 +50,7 @@ class HomeWindow(QMainWindow):
 
         self.createActions()
         self.createMenus()
+
         self.initUIHome()
 
     # Set main_window size
@@ -75,59 +63,6 @@ class HomeWindow(QMainWindow):
         # Determine main_window one side size
         side_size = min(screen_size.height(), screen_size.width()) * 0.9
         self.setGeometry(center_x - side_size / 2, 0, side_size, side_size)
-
-    # With results : MainWindow, WidgetsResults only
-    # No results : MainWindow, WidgetMap only
-    @Slot(bool)
-    def importData(self, with_results):
-        db_file_name = QFileDialog.getOpenFileName(
-            self, "Choose database", "", "SQLite databases : (*.db)"
-        )
-
-        # Do nothing if no file was chosen
-        if not db_file_name[0]:
-            return
-
-        connection = sqlite3.connect(db_file_name[0])
-
-        success, msg = ImportData.import_people(connection, with_results)
-
-        connection.close()
-
-        if success:
-            self.sig_data_imported.emit(with_results)
-        else:
-            # Add a pop up in that case with return msg
-            print(msg)
-
-    @Slot(bool)
-    def exportData(self, with_results):
-        db_file_name = QFileDialog.getSaveFileName(
-            self, "Save database", "", "SQLite databases : (*.db)"
-        )
-
-        # Do nothing if no file was chosen
-        if not db_file_name[0]:
-            return
-
-        connection = sqlite3.connect(db_file_name[0])
-        ExportData.create_database_people(connection)
-
-        if with_results:
-            ExportData.create_database_results(connection)
-
-        connection.close()
-        self.sig_data_exported.emit(with_results)
-
-    @Slot()
-    def switchWidgetImport(self, with_results):
-        self.cleanWindow()
-        if not with_results:
-            self.initUIMap()
-            return
-
-        self.election.start_election(imported=True)
-        self.initUIResults()
 
     def createActions(self):
         # Import
@@ -157,14 +92,75 @@ class HomeWindow(QMainWindow):
         export_menu.addAction(self.export_with_results)
         export_menu.addAction(self.export_no_results)
 
+    @Slot(str)
+    def showPopupMsg(self, msg):
+        popup = QMessageBox(parent=self.main_widget)
+        popup.setIcon(QMessageBox.Icon.Warning)
+        popup.setText(msg)
+        popup.addButton(QMessageBox.StandardButton.Close)
+        # auto-close of a popup after 2 sec
+        timer_close = QTimer()
+        timer_close.singleShot(2000, popup, popup.close)
+        popup.exec()
+
+    # With results : MainWindow, WidgetsResults only
+    # No results : MainWindow, WidgetMap only
+    @Slot(bool)
+    def importData(self, with_results):
+        db_file_name = QFileDialog.getOpenFileName(
+            self, "Choose database", "", "SQLite databases : (*.db)"
+        )
+
+        # Do nothing if no file was chosen
+        if not db_file_name[0]:
+            return
+
+        connection = sqlite3.connect(db_file_name[0])
+
+        success, msg = ImportData.import_people(connection, with_results)
+
+        connection.close()
+
+        if success:
+            self.sig_data_imported.emit(with_results)
+        else:
+            self.showPopupMsg(msg)
+
+    @Slot(bool)
+    def exportData(self, with_results):
+        db_file_name = QFileDialog.getSaveFileName(
+            self, "Save database", "", "SQLite databases : (*.db)"
+        )
+
+        # Do nothing if no file was chosen
+        if not db_file_name[0]:
+            return
+
+        connection = sqlite3.connect(db_file_name[0])
+        ExportData.create_database_people(connection)
+
+        if with_results:
+            ExportData.create_database_results(connection)
+
+        connection.close()
+
     def toggleIEOptions(self, type, with_results_status, no_results_status):
-        match type:
-            case ImportData.IMPORT:
-                self.import_with_results.setEnabled(with_results_status)
-                self.import_no_results.setEnabled(no_results_status)
-            case ExportData.EXPORT:
-                self.export_with_results.setEnabled(with_results_status)
-                self.export_no_results.setEnabled(no_results_status)
+        if type == ImportData.IMPORT:
+            self.import_with_results.setEnabled(with_results_status)
+            self.import_no_results.setEnabled(no_results_status)
+        if type == ExportData.EXPORT:
+            self.export_with_results.setEnabled(with_results_status)
+            self.export_no_results.setEnabled(no_results_status)
+
+    @Slot()
+    def switchWidgetImport(self, with_results):
+        self.cleanWindow()
+        if not with_results:
+            self.initUIMap()
+            return
+
+        self.election.start_election(imported=True)
+        self.initUIResults()
 
     def initNavigation(self):
         self.button_home = QPushButton("Home", parent=self)
@@ -184,11 +180,12 @@ class HomeWindow(QMainWindow):
 
         settings_btn = QPushButton("Settings", parent=self.main_widget)
         settings_btn.setFixedSize(self.width() * 0.3, 30)
-        settings_btn.clicked.connect(self.initSettings)
+        settings_btn.clicked.connect(self.initUISettings)
 
         quit_btn = QPushButton("Quit", parent=self.main_widget)
         quit_btn.setFixedSize(self.width() * 0.3, 30)
         quit_btn.clicked.connect(self.quit_app)
+
         # Toggle import, export
         self.toggleIEOptions(ExportData.EXPORT, False, False)
         self.toggleIEOptions(ImportData.IMPORT, True, True)
@@ -213,99 +210,19 @@ class HomeWindow(QMainWindow):
         )
 
     @Slot()
-    def initSettings(self):
+    def initUISettings(self):
         self.cleanWindow()
-        # Widget for settings
-        settings_widget = QWidget(self.main_widget)
-        # settings_widget.setStyleSheet("background-color : white")
-        settings_layout = QGridLayout()
-        settings_layout.setSpacing(40)
-        settings_widget.setLayout(settings_layout)
+        settings_widget = SettingsWidget(self)
         self.layout.addWidget(
             settings_widget,
             alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter,
         )
-
-        # Number of polls
-        polls_label = QLabel(parent=settings_widget)
-        polls_label.setText("Number of polls to conduct")
-        nb_polls_btn = QSpinBox(parent=settings_widget)
-
-        # Limits
-        nb_polls_btn.setMinimum(0)
-        nb_polls_btn.setMaximum(10)
-        nb_polls_btn.setValue(self.election.nb_polls)
-        nb_polls_btn.valueChanged.connect(self.setNumberPolls)
-
-        # Choose poll voting rule
-        self.polls_dropdown = QComboBox(settings_widget)
-
-        self.reverse_assoc = dict()
-        for voting_rule in VotingRulesConstants.ONE_ROUND:
-            self.reverse_assoc[VotingRulesConstants.UI[voting_rule]] = voting_rule
-
-        self.polls_dropdown.addItems(self.reverse_assoc.keys())
-        self.polls_dropdown.setCurrentText(
-            VotingRulesConstants.UI[self.election.poll_voting_rule]
-        )
-        self.polls_dropdown.currentTextChanged.connect(self.setPollVotingRule)
-
-        # Activate liquid democracy checkbox
-        liquid_democracy_label = QLabel(parent=settings_widget)
-        liquid_democracy_label.setText("Activate liquid democracy")
-        liquid_democracy_checkbox = QCheckBox(parent=settings_widget)
-        liquid_democracy_checkbox.setChecked(self.election.liquid_democracy_activated)
-        liquid_democracy_checkbox.stateChanged.connect(self.toggleLiquidDemocracy)
-
-        # Activate tie-breaker by duels
-        tie_breaker_label = QLabel(parent=settings_widget)
-        tie_breaker_label.setText("Activate tie-breaker by duels")
-        tie_breaker_checkbox = QCheckBox(parent=settings_widget)
-        tie_breaker_checkbox.setChecked(self.election.tie_breaker_activated)
-        tie_breaker_checkbox.stateChanged.connect(self.toggleTieBreaker)
-
-        # Save button, go back on main window
-        save_button = QPushButton("Save", parent=settings_widget)
-        save_button.clicked.connect(self.saveSettings)
-        save_button.setFixedHeight(30)
-
-        # Add to grid layout (rows = 4 x cols = 3)
-        # Polls
-        settings_layout.addWidget(polls_label, 0, 0, 1, 2)
-        settings_layout.addWidget(nb_polls_btn, 0, 2, 1, 1)
-        settings_layout.addWidget(self.polls_dropdown, 1, 1, 1, 2)
-        # Liquid democracy
-        settings_layout.addWidget(liquid_democracy_label, 2, 0, 1, 2)
-        settings_layout.addWidget(
-            liquid_democracy_checkbox, 2, 2, 1, 1, alignment=Qt.AlignmentFlag.AlignRight
-        )
-        # Save button
-        settings_layout.addWidget(tie_breaker_label, 3, 0, 1, 2)
-        settings_layout.addWidget(tie_breaker_checkbox, 3, 2, 1, 1)
-        settings_layout.addWidget(save_button, 4, 0, 1, 3)
-
-    @Slot(str)
-    def setPollVotingRule(self, text):
-        const = self.reverse_assoc[text]
-        self.election.poll_voting_rule = const
+        settings_widget.sig_saved.connect(self.saveSettings)
 
     @Slot()
     def saveSettings(self):
         self.cleanWindow()
         self.initUIHome()
-
-    @Slot(int)
-    def setNumberPolls(self, nb_polls):
-        self.election.nb_polls = nb_polls
-        self.polls_dropdown.setEnabled(bool(nb_polls))
-
-    @Slot(int)
-    def toggleLiquidDemocracy(self, state):
-        self.election.liquid_democracy_activated = bool(state)
-
-    @Slot(int)
-    def toggleTieBreaker(self, state):
-        self.election.tie_breaker_activated = bool(state)
 
     @Slot()
     def initUIMap(self):
@@ -333,28 +250,20 @@ class HomeWindow(QMainWindow):
 
     @Slot(list)
     def startElection(self, constantsList):
-        # self.election.start_election -> WidgetMap
-
         # Delete widget with map
         self.widget_map.sig_widget_map_destroying.emit()
         self.widget_map.deleteLater()
+
         self.election.start_election(chosen_voting_rules=constantsList)
 
         # Initialize Results page (winners, results, graphs)
-
         self.initUIResults()
-
-    # delete all widgets from main_layout
-    @Slot()
-    def cleanWindow(self):
-        for i in reversed(range(self.layout.count())):
-            widgetToRemove = self.layout.itemAt(i).widget()
-            widgetToRemove.deleteLater()
 
     @Slot()
     def backHomeWindow(self):
         self.cleanWindow()
         self.initUIHome()
+
         self.election.delete_all_data()
         self.election.set_default_settings()
 
@@ -362,9 +271,15 @@ class HomeWindow(QMainWindow):
             self.widgetResults.sig_widget_results_destroying.emit()
             self.widgetResults.deleteLater()
 
-    def closeEvent(self, event):
-        self.quit_app()
+    @Slot()
+    def cleanWindow(self):
+        for i in reversed(range(self.layout.count())):
+            widgetToRemove = self.layout.itemAt(i).widget()
+            widgetToRemove.deleteLater()
 
     @Slot()
     def quit_app(self):
         self.app.quit()
+
+    def closeEvent(self, event):
+        self.quit_app()

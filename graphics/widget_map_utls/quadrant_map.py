@@ -1,16 +1,10 @@
-from itertools import product
-from math import sqrt
-from functools import partial
-
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QSizePolicy
-from PySide6.QtGui import QPainter, QPen, QColor, QFont, QTransform
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit
+from PySide6.QtGui import QPainter, QPen, QColor, QFont, QTransform, QColor
 from PySide6.QtCore import Qt, QPointF, QPoint
 
 from numpy import clip
 from numpy.random import normal
 from electoral_systems import Election, RandomConstants
-
-from people import Elector, Candidate
 
 
 class QuadrantMap(QWidget):
@@ -18,7 +12,7 @@ class QuadrantMap(QWidget):
         super().__init__(parent)
 
         self.election = Election()
-        self.final_painting = False
+        self.draw_delegations = False
 
         side_size = min(parent.width(), parent.height())
         self.setFixedSize(size_proportion * side_size, size_proportion * side_size)
@@ -36,17 +30,18 @@ class QuadrantMap(QWidget):
 
     def initUI(self):
         self.layout = QVBoxLayout(self)
-        # Set background color : white
-        self.setAutoFillBackground(True)
-        p = self.palette()
-        p.setColor(self.backgroundRole(), Qt.white)
-        self.setPalette(p)
-        # Pour gérer les textbox de création de candidats
-        self.grid_step = 20  # pas de création de la grille
+        self.setPallete()
+
+        self.grid_step = 20
         self.text_box_active = False
 
-    ### fonction sans argument crée tout ce qui doit être sessiné et est mit à jour lors d'un appel à update
-    # appelle les fonctions de création graphique du graph
+    # Set background color : white
+    def setPallete(self):
+        self.setAutoFillBackground(True)
+        pallete = self.palette()
+        pallete.setColor(self.backgroundRole(), QColor(255, 255, 255))
+        self.setPalette(pallete)
+
     def paintEvent(self, event):
         painter = QPainter(self)
         self.drawGrid(painter)
@@ -55,15 +50,15 @@ class QuadrantMap(QWidget):
 
         painter.setTransform(self.transform)
 
-        if self.final_painting:
-            self.drawPointsDelegation(painter)
+        if self.draw_delegations:
+            self.drawElectorsDelegation(painter)
         else:
             self.drawPoints(painter)
 
-    ### fonction sans argument de création de la grille du graph de dimensions fixées dans la fonction
+    # Draw grid
     def drawGrid(self, painter):
-        pen = QPen(QColor(220, 220, 220))  #   couleur de la grille gris clair
-        # tout les dessins appelant QPainter donc tout ce qui est déssiné ensuite utilisera le pinceau défini
+        # Couleur de la grille gris clair
+        pen = QPen(QColor(220, 220, 220))
         painter.setPen(pen)
         # nb_lines = nb_rows = nb_cols
         nb_lines = self.width() // self.grid_step
@@ -78,18 +73,14 @@ class QuadrantMap(QWidget):
                 0, row * self.grid_step, self.width(), row * self.grid_step
             )
 
-        # for x in range(0, self.width(), step):  #   lignes verticales
-        #     painter.drawLine(x, 0, x, self.height())  #   appelle de fonction de dessin
-        # for y in range(0, self.height(), step):  #   lignes horozontales
-        #     painter.drawLine(0, y, self.width(), y)
-
-    ### fonction sans argument de création des axes du graph
+    # Draw axes X, Y
     def drawAxes(self, painter):
+        # Black color
         pen = QPen(QColor(0, 0, 0))
-        pen.setWidth(2)  #   taille du pinceau
-        step = 20
+        pen.setWidth(2)
+
         # Width = height, donc suffisant
-        central_line = self.width() // step / 2
+        central_line = self.width() // self.grid_step / 2
         painter.setPen(pen)
         # Axe x
         painter.drawLine(
@@ -106,30 +97,35 @@ class QuadrantMap(QWidget):
             self.height(),
         )
 
-    ### fonction sans argument qui donne des noms aux graphs
+    # Draw text labels on endpoints
     def drawAxisLabels(self, painter):
+        # Black color
         pen = QPen(QColor(0, 0, 0))
         painter.setPen(pen)
-        font = QFont()  #   QFont permet de définir les propriétés de la police
+        # QFont permet de définir les propriétés de la police
+        font = QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
-        painter.setFont(font)  #  applique les propriétés du QFont au pinceau
+        # applique les propriétés du QFont au pinceau
+        painter.setFont(font)
 
         painter.drawText(self.width() - 40, self.height() / 2 + 30, "Right")
         painter.drawText(self.width() / 2 - 85, 20, "Autoritarian")
         painter.drawText(self.width() / 150, self.height() / 2 + 30, "Left")
         painter.drawText(self.width() / 2 - 60, self.height() - 10, "Liberal")
 
-    def _drawElectors(self, painter):
-
-        #   dessin des points des élécteurs
+    # Dessin des points des élécteurs (sans poids)
+    def drawElectors(self, painter):
+        # Standard blut color
         pen = QPen(QColor(0, 0, 255))
         pen.setWidth(4)
         painter.setPen(pen)
         for elector in self.election.electors:
             painter.drawPoint(self.scaleCoordinates(elector.position))
 
-    def _drawCandidates(self, painter):
+    # Dessin des points candidats
+    def drawCandidates(self, painter):
+        # Standard red color
         pen = QPen(QColor(255, 0, 0))
         pen.setWidth(4)
         painter.setPen(pen)
@@ -145,17 +141,17 @@ class QuadrantMap(QWidget):
             point_mapped = self.transform.map(point_scaled)
             # To prevent text inverse
             painter.setWorldMatrixEnabled(False)
-            point_text = self.getTextPosition(point_mapped, shift_point=QPointF(5, 15))
+            point_text = self.getTextPosition(point_mapped)
             painter.drawText(point_mapped + point_text, f"{fst_name} {lst_name}")
             painter.setWorldMatrixEnabled(True)
 
     ### fonction sans argument qui dessines les points de candidates et electors dans le graph
     def drawPoints(self, painter):
         #   dessin des points des élécteurs
-        self._drawElectors(painter)
-        self._drawCandidates(painter)
+        self.drawElectors(painter)
+        self.drawCandidates(painter)
 
-    def drawPointsDelegation(self, painter):
+    def drawElectorsDelegation(self, painter):
         #   dessin des points des élécteurs
         pen = QPen(QColor(128, 128, 128))
         pen.setWidth(4)
@@ -177,13 +173,11 @@ class QuadrantMap(QWidget):
                 painter.drawPoint(scaled_point)
                 # To prevent text inverse
                 painter.setWorldMatrixEnabled(False)
-                point_text = self.getTextPosition(
-                    point_mapped, shift_point=QPointF(5, 15)
-                )
+                point_text = self.getTextPosition(point_mapped)
                 painter.drawText(point_mapped + point_text, f"{elector.weight}")
                 painter.setWorldMatrixEnabled(True)
 
-        self._drawCandidates(painter)
+        self.drawCandidates(painter)
 
     def scaleCoordinates(self, position):
         x, y = position
@@ -198,15 +192,8 @@ class QuadrantMap(QWidget):
         point_inv = inverted_transform.map(event.position())
         normalized_pos = self.normalizeCoordinates(point_inv)
         if event.button() == Qt.LeftButton:  #   cas du clique gauche
-            knowledge_const = self.election.generation_constants[
-                RandomConstants.KNOWLEDGE
-            ]
-            self.election.add_elector(
-                Elector(position=normalized_pos, knowledge_const=knowledge_const)
-            )
-
-            # self.electors_map_data.append(point_inv)
-            self.update()  #   actualise l'état graphique du tableau (les points et leurs positions)
+            self.election.add_elector(normalized_pos)
+            self.update()
 
         # cas du clique droit
         if event.button() == Qt.RightButton and not self.text_box_active:
@@ -228,68 +215,21 @@ class QuadrantMap(QWidget):
     def storeName(self, normalized_pos):
         # récupère le texte dans une variable
         full_name = self.text_box.text().split(" ", 1)
-
+        # Prohibit the creation of candidates with only first name
         if len(full_name) == 1:
-            first_name = full_name[0]
-            last_name = " "
-            if not first_name:
-                self.text_box_active = False
-                self.text_box.deleteLater()  #   supprime la zone de texte
-                return
-        else:
-            first_name, last_name = tuple(full_name)
+            return
+        first_name, last_name = tuple(full_name)
 
-        # self.candidates_map_data.append((first_name, last_name, point_inv))
-        dogma_const = self.election.generation_constants[RandomConstants.DOGMATISM]
-        oppos_const = self.election.generation_constants[RandomConstants.OPPOSITION]
-        self.election.add_candidate(
-            Candidate(
-                first_name=first_name,
-                last_name=last_name,
-                position=normalized_pos,
-                dogmatism_const=dogma_const,
-                opposition_const=oppos_const,
-            )
-        )
+        self.election.add_candidate(normalized_pos, first_name, last_name)
         self.update()
         self.text_box_active = False
         self.text_box.deleteLater()  #   supprime la zone de texte
 
-    # Generate x or y based on an already scaled mu & sigma
-    def _generate_coordinate(self, mu, sigma, limit):
-        # Generate while not in border
-        coordinate = normal(mu, sigma)
-        max_iterations = 5
-        while abs(coordinate) > limit and max_iterations:
-            coordinate = normal(mu, sigma)
-            max_iterations -= 1
-
-        # If value is still out of border, otherwise eternal loop
-        coordinate = clip(coordinate, -1, 1)
-        return coordinate
-
-    # Generate (x, y) normalized
-    def generatePosition(self):
-
-        constants = self.election.generation_constants
-        economical_constants = constants[RandomConstants.ECONOMICAL]
-        social_constants = constants[RandomConstants.SOCIAL]
-        coef_dir = constants[RandomConstants.ORIENTATION]
-        # Spread factor on a map for sigma
-
-        mu, sigma = economical_constants[0], economical_constants[1]
-        x = self._generate_coordinate(mu, sigma, limit=1)
-
-        mu, sigma = coef_dir * x + social_constants[0], social_constants[1]
-        y = self._generate_coordinate(mu, sigma, limit=1)
-
-        return (x, y)
-
     # point : QPoitntF of a point to which text is associated
     # Function returns QPointF where text should be drawn so it is visible
     # point IS mapped (meaning it is computer coordinate)
-    def getTextPosition(self, point, shift_point):
-        point_text = shift_point
+    def getTextPosition(self, point):
+        point_text = QPoint(5, 15)
         shift = point + point_text
 
         # Over the map on X & Y
@@ -314,3 +254,34 @@ class QuadrantMap(QWidget):
             point_textbox = QPoint(point_textbox.x(), point_textbox.y() - height)
 
         return point_textbox
+
+        # Generate x or y based on an already scaled mu & sigma
+
+    def generateCoordinate(self, mu, sigma, limit):
+        # Generate while not in border
+        coordinate = normal(mu, sigma)
+        max_iterations = 5
+        while abs(coordinate) > limit and max_iterations:
+            coordinate = normal(mu, sigma)
+            max_iterations -= 1
+
+        # If value is still out of border, otherwise eternal loop
+        coordinate = clip(coordinate, -1, 1)
+        return coordinate
+
+    # Generate (x, y) normalized
+    def generatePosition(self):
+
+        constants = self.election.generation_constants
+        economical_constants = constants[RandomConstants.ECONOMICAL]
+        social_constants = constants[RandomConstants.SOCIAL]
+        coef_dir = constants[RandomConstants.ORIENTATION]
+        # Spread factor on a map for sigma
+
+        mu, sigma = economical_constants[0], economical_constants[1]
+        x = self.generateCoordinate(mu, sigma, limit=1)
+
+        mu, sigma = coef_dir * x + social_constants[0], social_constants[1]
+        y = self.generateCoordinate(mu, sigma, limit=1)
+
+        return (x, y)
