@@ -7,11 +7,16 @@ from numpy import clip
 class Person:
     id: int = field(compare=False)
     position: tuple[float, float] = field(compare=False)
+    """Chaque coordonées de position est bornée entre -1 et 1"""
 
     # Generate parameters based on Gauss normal distribution
     # Confine generated parameter between lower and upper limits
     @staticmethod
-    def generate_parameter(mu, sigma, lower_limit, upper_limit):
+    def generate_parameter(mu: float, sigma: float, lower_limit: float, upper_limit: float) -> float:
+        """
+        Générer un paramètre selon la loi normale avec mu et sigma borné entre lower_limit et upper_limit
+        """
+
         max_iteration = 10
         param = normal(mu, sigma)
         while param < lower_limit or param > upper_limit and max_iteration:
@@ -21,9 +26,6 @@ class Person:
         # If value is still out of border, otherwise eternal loop
         param = clip(param, lower_limit, upper_limit)
         return param
-
-    def get_position(self):
-        return self.position
 
     def __str__(self):
         x, y = self.position

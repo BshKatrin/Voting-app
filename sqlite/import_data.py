@@ -1,4 +1,4 @@
-from electoral_systems import Election, VotingRulesConstants
+from electoral_systems import Election
 from people import Candidate, Elector
 
 
@@ -57,8 +57,7 @@ class ImportData:
     def import_people(cls, connection, with_results):
         if with_results:
             return cls.import_people_with_results(connection)
-        else:
-            return cls.import_people_no_results(connection)
+        return cls.import_people_no_results(connection)
 
     # Return (True, msg) if saved, (False, msg) if not
     @classmethod
@@ -112,7 +111,6 @@ class ImportData:
         if missing:
             return False, f"Tables {missing_tables} are not found"
 
-        # Check columns
         # Check columns
         missing = cls._check_columns_people(connection)
         if missing:
@@ -195,10 +193,7 @@ class ImportData:
                 return False, f"Database does not correspond"
             cls._import_multi_round(connection, assoc)
 
-        if (
-            "results_condorcet" in existing_tables
-            and "condorcet_duels" in existing_tables
-        ):
+        if ("results_condorcet" in existing_tables and "condorcet_duels" in existing_tables):
             missing = cls._check_columns(
                 connection,
                 {
@@ -238,9 +233,7 @@ class ImportData:
         cursor = connection.cursor()
 
         # Init lists bases on length
-        cursor.execute(
-            "SELECT max(round), voting_rule FROM results_multi_round GROUP BY voting_rule"
-        )
+        cursor.execute("SELECT max(round), voting_rule FROM results_multi_round GROUP BY voting_rule")
 
         nb_rounds = cursor.fetchall()
         for rounds, voting_rule in nb_rounds:

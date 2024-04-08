@@ -1,4 +1,5 @@
 import sqlite3
+from os import remove
 
 from PySide6.QtCore import Qt, Slot, QObject, Signal, QTimer
 from PySide6.QtGui import QAction
@@ -114,16 +115,16 @@ class HomeWindow(QMainWindow):
         # Do nothing if no file was chosen
         if not db_file_name[0]:
             return
+        # Check if there is suffix .db
+        if db_file_name[0].split(".")[-1] != ".db":
+            db_file_name[0] += ".db"
 
         connection = sqlite3.connect(db_file_name[0])
 
         success, msg = ImportData.import_people(connection, with_results)
 
         connection.close()
-
-        if success:
-            self.sig_data_imported.emit(with_results)
-        else:
+        if not success:
             self.showPopupMsg(msg)
 
     @Slot(bool)
@@ -137,11 +138,19 @@ class HomeWindow(QMainWindow):
             return
 
         connection = sqlite3.connect(db_file_name[0])
-        ExportData.create_database_people(connection)
+        success, msg = ExportData.create_database_people(connection)
 
-        if with_results:
-            ExportData.create_database_results(connection)
-
+        if not success:
+            self.showPopupMsg(msg)
+            remove(db_file_name[0])
+            
+        if success and with_results:
+            success, msg = ExportData.create_database_results(connection)
+            
+            if not success:
+                self.showPopupMsg(msg)
+                remove(db_file_name[0])
+                
         connection.close()
 
     def toggleIEOptions(self, type, with_results_status, no_results_status):

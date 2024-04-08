@@ -9,8 +9,6 @@ from .candidate import Candidate
 @dataclass(kw_only=True)
 class Elector(Person):
     candidates_ranked: List[Candidate] = field(default_factory=list, repr=False)
-    # weight = 0 -> delegation done
-    # weight > 0 -> no delegation
     weight: int = 1
     knowledge: float = -1.0
     knowledge_const: InitVar[Tuple[float, float]] = (0.5, 0.3)
@@ -39,7 +37,7 @@ class Elector(Person):
 
     def dist_from_one_cand(self, candidate):
         x, y = self.position
-        x_c, y_c = candidate.get_position()
+        x_c, y_c = candidate.position
         return sqrt((x_c - x) ** 2 + (y_c - y) ** 2)
 
     # Calculate ranking from given position (x,y)

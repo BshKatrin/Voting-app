@@ -1,3 +1,5 @@
+from sqlite3 import IntegrityError
+
 from electoral_systems import Election, VotingRulesConstants
 
 
@@ -44,8 +46,11 @@ class ExportData:
             (e.id, e.position[0], e.position[1], e.weight, e.knowledge)
             for e in cls.election.electors
         ]
+        try:
+            cursor.executemany(query, data)
+        except IntegrityError:
+            return False, "Data does not corresponds to constraints"
 
-        cursor.executemany(query, data)
         connection.commit()
 
         # for candidate in candidates:
@@ -66,32 +71,48 @@ class ExportData:
             )
             for c in cls.election.candidates
         ]
-        cursor.executemany(query, data)
+        try:
+            cursor.executemany(query, data)
+        except IntegrityError:
+            return False, "Data does not corresponds to constraints"
+        
         connection.commit()
+
+        return True, "Date exported"
 
     @classmethod
     def create_database_results(cls, connection):
         # DB for one round voting rules
         chosen_one_round = cls.election.results.keys() & VotingRulesConstants.ONE_ROUND
+        status = True
+
         if chosen_one_round:
             cls._one_round_create_table(connection, chosen_one_round)
-            cls._one_round_insert(connection, chosen_one_round)
-
+            status = cls._one_round_insert(connection, chosen_one_round)
+        if not status:
+            return False, "Results of voting rules (1 round) do not correspond to constraints"
+        
         # DB for multi round voting rules
         chosen_multi_round = (
             cls.election.results.keys() & VotingRulesConstants.MULTI_ROUND
         )
         if chosen_multi_round:
             cls._multi_round_create_table(connection, chosen_multi_round)
-            cls._multi_round_insert(connection, chosen_multi_round)
-
+            status = cls._multi_round_insert(connection, chosen_multi_round)
+        if not status:
+            return False, "Results of voting rules (multi round) do not correspond to constraints"
+        
         # DB for condorcet voting_rules
         chosen_condorcet = cls.election.results.keys() & VotingRulesConstants.CONDORCET
 
         if chosen_condorcet:
             cls._condorcet_create_table(connection, chosen_condorcet)
-            cls._condorcet_insert(connection, chosen_condorcet)
+            status = cls._condorcet_insert(connection, chosen_condorcet)
+        if not status:
+            return False, "Results of voting rules (Condorcet) do not correspond to constraints"
 
+        return True, "Data exported"
+    
     @classmethod
     def _get_set_check(cls, voting_rules_set):
         if len(voting_rules_set) == 1:
@@ -129,9 +150,14 @@ class ExportData:
             for c in cls.election.candidates
         ]
 
-        cursor.executemany(query, tuples)
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
+        
         connection.commit()
-
+        return True
+    
     @classmethod
     def _multi_round_create_table(cls, connection, chosen_multi_round):
         cursor = connection.cursor()
@@ -165,9 +191,12 @@ class ExportData:
             for c in cls.election.candidates
             for round in range(len(c.scores[voting_rule]))
         ]
-
-        cursor.executemany(query, tuples)
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
         connection.commit()
+        return True
 
     @classmethod
     def _condorcet_create_table(cls, connection, chosen_condorcet):
@@ -213,8 +242,10 @@ class ExportData:
             (pair[0].id, pair[1].id, score)
             for pair, score in cls.election.duels_scores.items()
         ]
-
-        cursor.executemany(query, tuples)
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
         connection.commit()
 
         # Scores (like in one round)
@@ -226,6 +257,9 @@ class ExportData:
             for voting_rule in chosen_condorcet
             for c in cls.election.candidates
         ]
-
-        cursor.executemany(query, tuples)
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
         connection.commit()
+        return True
