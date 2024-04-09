@@ -1,50 +1,4 @@
-"""Un module définissant une classe `HomeWindow`.
-
-Ce module fournit une classe `HomeWindow` qui représente une fenêtre principale d'une application.
-
-Attributs Principaux:
-    Widgets:
-        - main_widget (PySide6.QtWidgets.QWidget): un widget central
-        - widget_results (PySide6.QtWidgets.QWidget): un widget qui représente une page avec des résultats d'une élection
-        - widget_map (PySide6.QtWidgets.QWidget): un widget qui représente une page avec une carte politique
-
-    Données d'une élection:
-        - election (electoral_systems.election.Election) : une instance de la classe `Election` pour partager les données entre les widgets.
-
-Methodes:
-    - setScreenGeometry: Une méthode qui fixe la taille de `HomeWindow` et le place au millieu d'écran.
-    - createActions: Une méthode qui définit des PySide6.QtGui.QAction liées au menu.
-    - createMenus: Une méthode qui définit le menu avec toute la fonctionnalité.
-    - toggleIEOptions: Une méthode qui active ou désactive la fonctionnalité du menu.
-    - initNavigation: Une méthode qui initialise les buttons de la navigation entre les widgets.
-    - initUIHome: Une méthode nettoie la fenêtre principale et initialise la page d'accueil.
-
-
-Slots:
-    - showPopupMsg: Un slot qui crée un popup avec le message correpondant.
-    - importData: Un slot qui importe les données d'une élection avec/sans résultats (avec SQLite).
-    - exportData: Un slot qui exporte les données d'une élection avec/sans résultats (avec SQLite).
-    - switchWidgetImport: Un slot qui permet de passer sur la page avec la carte politique ou sur la page des résultats d'une élection.
-    - initUISettings: Un slot qui nettoie la fenêtre principale et initialise un widget avec des réglages.
-    - saveSettings: Un slot qui sauvegarde les réglages, nettoie la fenêtre principale et initialise la page d'accueil.
-    - initUIMap: Un slot qui nettoie la fenêtre principale, initialise la navigation et la page avec la carte politique,
-        désactive l'import et l'export avec des résultats.
-    - initUIResults: Un slot nettoie la fenêtre principale, initialise la navigation et la page avec des résultats,
-        désactive l'import avec et sans des résultats.
-    - startElection: Un slot qui est activé uniquement à partir de la page avec la carte politique.
-        Il supprime le widget avec la carte politique, lance les calculs des résultats d'une élection, initialise la page avec des résultats.
-    - backHomeWindow: Un slot qui néttoie la fenêtre principale, initialise la page d'accueil, supprime toutes les données d'une élection,
-        remis les réglages d'une élection aux réglages par défaut.
-    - cleanWindow: Un slot qui supprime toutes les widgets placés sur la fenêtre principale.
-    - quitApp: Un slot qui ferme l'application.
-
-Events:
-    - closeEvent: un événement redéfini pour que l'application ferme si la fenêtre principale est fermé.
-
-Signals:
-    sig_data_imported (PySide6.QtCore.QSignal): un signal qui indique les données d'une élections ont été importées avec ou les résultats
-"""
-
+from electoral_systems import Election
 from os import remove
 import sqlite3
 from typing import List
@@ -68,12 +22,11 @@ from .widget_results import WidgetResults
 
 from sqlite import ImportData, ExportData
 
-from electoral_systems import Election
-
 
 class HomeWindow(QMainWindow):
     """Un widget qui représente une fenêtre principale d'une application."""
     sig_data_imported = Signal(bool)
+    """Un signal qui indique les données d'une élections ont été importées avec ou sans des résultats"""
 
     def __init__(self, app: QApplication):
         """Initialisation du titre, de la taille, du widget central, du layout, du menu. Initialisation de la page d'accueil
@@ -396,5 +349,5 @@ class HomeWindow(QMainWindow):
         self.app.quit()
 
     def closeEvent(self, event: QCloseEvent) -> None:
-        """Fermer une application lorsque une fenêtre principale est fermée."""
+        """Redéfinition d'un `closeEvent`. Fermer une application lorsque une fenêtre principale est fermée."""
         self.quitApp()

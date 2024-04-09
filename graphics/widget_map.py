@@ -1,46 +1,3 @@
-"""Un module définissant une classe `WidgetMap`.
-
-Ce module fournit une classe `WidgetMap` qui représente un widget pour une carte politique,
-la génération des données et le choix des règles de vote
-
-Attributs:
-    Widgets:
-        - voting_rules_checkbox (graphics.widget_map_utls.widget_checkbox.WidgetCheckbox): un widget avec des checkboxes
-            correspondant aus règles du vote.
-        - choose_voting_rules_btn (PySide6.QtWidgets.QPushButton): un button pour afficher un widget avec des checkboxes.
-        - start_election_btn (PySide6.QtWidgets.QPushButton): un button pour commencer une élection.
-        - quadrant_map (graphics.widget_map_utls.quadrant_map.QuadrantMap): un widget qui déssine une carte politique.
-        - widget_settings (graphics.widget_map_utls.widget_random_settings.WidgetRandomSettings) : un widget avec des réglages 
-            des paramètres pour une génération des données.
-        - candidates_text_box: un champ de saisie du nombre des candidats à générer aléatoirement.
-        - electors_text_box: un champ de saisie du nombre des électeurs à générer aléatoirement.
-        - btn_gen_random: un button pour confirmer les nombres entrés dans les champs de saisie.
-        - random_settings_btn: un button pour ouvrir un widget avec des réglages de la génération des données.
-
-    Données d'une élection:
-        - election (electoral_systems.election.Election) : une instance de la classe `Election` pour partager les données entre les widgets.
-
-Methodes:
-    - initUI: Une méthode qui initialise une interface complet d'un widget.
-    - initNavigation: Une méthode qui initialise une partie d'interface avec des buttons.
-        qui permettent d'afficher un widget avec des checkboxes et lancer une élection.
-    - initInputFields: Une méthode qui initialise une partie d'interface consacré à la génération des données.
-    - getIntInputField: Une méthode permettant de recevoir un entier du champ de saisie.
-
-Slots:
-    - generateData: Un slot qui génére des candidats et des électeurs aléatoirement.
-    - onStartElectionClick: Un slot qui émet le signal `sig_start_election` lorsque le button de lancer une élection a été cliqué.
-    - toggleElectionBtnState: Un slot qui active ou désactive le button pour lancer une élection.
-    - showWidgetCheckbox: Un slot qui permet d'afficher un widgets avec des checkboxes.
-    - showWidgetRandomSettings: Un slot qui permet d'afficher un widget avec des réglages de la génération des données.
-    - cleanTextBoxes: Un slot qui nettoie les contenus des champs de saisie.
-    - destroyChildren: Un slot qui détruit des 'widgets-enfants' dont parent a été remis à `None`.
-
-
-Signals:
-    - sig_start_election (PySide6.QtCore.QSignal): Un signal émis avec une liste des règles du vote choisis à l'aide des checkboxes.
-"""
-
 from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtWidgets import (
     QWidget,
@@ -58,7 +15,10 @@ from electoral_systems import Election
 
 
 class WidgetMap(QWidget):
+    """Une classe qui représente un widget avec une carte politique, la génération des données et choix des règles de vote"""
+
     sig_start_election = Signal(list)
+    """Un signal émis avec une liste des règles du vote choisis à l'aide des checkboxes."""
 
     def __init__(self, parent: QWidget):
         """Initialisation de la taille et d'une interface d'un widget.

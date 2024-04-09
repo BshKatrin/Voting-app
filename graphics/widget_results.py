@@ -1,49 +1,3 @@
-"""Un module définissant une classe `WidgetResults`.
-
-Ce module fournit une classe `WidgetResults` qui représente un widget avec des résultats d'une élection,
-permet de voir les graphs et de lancer des sondages.
-
-Attributs:
-    Widgets:
-        - graph_view (graphics.widget_results_utls.directed_graphs.directed_graph_view): Un view permettant d'afficher des graphes 
-            orientés des résultats des règles du vote Condorcet-cohérentes.
-        - charts_view (graphics.widget_results_utls.charts.chart_view): Un view permettant d'afficher des diagrammes à bandes
-            des résultats des règles du vote à 1 et plusieurs tours.
-        - conduct_polls (bool): Une indication si les sondages seront effectuées ou pas.
-
-    Données d'une élection:
-        - election (electoral_systems.election.Election) : une instance de la classe `Election` pour partager les données entre les widgets.
-
-Methodes:
-    - initViews: Initialiser des views nécessaires.
-    - oneRoundChosen: Vérifier si des règles du vote à 1 tour ont été choisies.
-    - condorcetChosen: Vérifier si des règles du vote Condorcet-cohérentes ont été choisies.
-    - multiRoundChosen: Vérifier si des règles du vote à plusieurs tours ont été choisies.
-    - initDirectedGraph: Initialiser des graphes orientés pour afficher des résultats des règles du vote Condorcet-cohérentes.
-    - initChartsView: Initialiser des diagrammes à bandes pour afficher des résultats des règles du vote à 1 et plusieurs tours.
-    - getViewSize: Calculer la taille des views.
-    - resizeView: Changer la taille des views.
-    - initUI: Initialiser une interface complète.
-    - initPollsUI: Initialiser une partie d'interface correspondante aux sondages.
-    - initTable: Initialiser une partie d'interface correpondante au tableau des résultats.
-
-Slots:
-    - setResultsLabel: Un slot permettant de changer le contenu des labels d'un tableau des résultats.
-    - conductNewPoll: Un slot permettant d'effectuer une nouvelle sondage.
-    - toggleMapImage: Un slot permettant d'afficher ou de cacher la carte politique.
-    - toggleCheckbox: Un slot permettant de décocher le checkbox si la carte politique a été cachée.
-    - showChart: Un slot permettant d'afficher un diagramme à bandes.
-    - showDirectedGraph: Un slot permettant d'affciher un graphe.
-    - destroyChildren: Un slot permettant de détruire des *widget-enfants* dont le parent a été remis à `None`.
-
-
-Signals:
-    - sig_show_chart (PySide6.QtCore.QSignal): Un signal émis lorsqu'il faut de changer un diagramme à bandes
-        avec un view des diagrammes visible.
-    - sig_poll_conducted (PySide6.QtCore.QSignal): Un signal émis lorsqu'une nouvelle sondange a été effectuée.
-"""
-
-
 from functools import partial
 from typing import Set, Union, Optional
 
@@ -64,8 +18,14 @@ from electoral_systems import Election, VotingRulesConstants
 
 
 class WidgetResults(QWidget):
+    """Une classe qui représente un widget avec des résultats d'une élection,
+    permet de voir les graphs et de lancer des sondages."""
+
     sig_show_chart = Signal(str)
+    """Un signal émis lorsqu'il faut de changer un diagramme à bandes avec un view des diagrammes visible."""
+
     sig_poll_conducted = Signal()
+    """Un signal émis lorsqu'une nouvelle sondange a été effectuée."""
 
     def __init__(self, parent: QWidget):
         """Initialiser la taille, des views nécessaires et une interface complète.
@@ -94,17 +54,17 @@ class WidgetResults(QWidget):
         if self.condorcetChosen():
             self.initDirectedGraph()
 
-        self.oneRoundBool, self.oneRoundSet = self.oneRoundChosen()
-        self.multiRoundBool, multiRoundSet = self.multiRoundChosen()
+        self.one_round_bool, self.one_round_set = self.oneRoundChosen()
+        self.multi_round_bool, multi_round_set = self.multiRoundChosen()
 
-        if self.oneRoundBool or self.multiRoundBool:
+        if self.one_round_bool or self.multi_round_bool:
             self.initChartsView()
 
-        if self.oneRoundBool:
-            self.charts_view.initOneRoundChart(self.oneRoundSet)
+        if self.one_round_bool:
+            self.charts_view.initOneRoundChart(self.one_round_set)
 
-        if self.multiRoundBool:
-            self.charts_view.initMultiRoundChart(multiRoundSet)
+        if self.multi_round_bool:
+            self.charts_view.initMultiRoundChart(multi_round_set)
 
     # Returns True iff veto, plurality(1 round), veto, borda or approval was chosen
     def oneRoundChosen(self) -> tuple[bool, Set[str]]:
@@ -124,8 +84,8 @@ class WidgetResults(QWidget):
         Returns:
             bool: True si au moins 1 règle du vote Condorcet-cohérente a été choisie.
         """
-        setCondorcet = VotingRulesConstants.CONDORCET
-        return bool(setCondorcet & self.election.results.keys())
+        set_condorcet = VotingRulesConstants.CONDORCET
+        return bool(set_condorcet & self.election.results.keys())
 
     def multiRoundChosen(self) -> tuple[bool, Set[str]]:
         """Trouver des règles du vote à 1 tour choisies.
@@ -202,7 +162,7 @@ class WidgetResults(QWidget):
         self.layout.addWidget(self.start_poll_btn, 0, 1, 1, 3)
 
         # Désactiver le button si aucune règle du vote à 1 tour a été choisie
-        if not self.oneRoundBool:
+        if not self.one_round_bool:
             self.start_poll_btn.setEnabled(False)
             return
 
@@ -235,11 +195,11 @@ class WidgetResults(QWidget):
         )
         column_three_header.setStyleSheet("font-weight: bold")
 
-        self.checkbox = QCheckBox("Show quadrant map", parent=self)
-        self.checkbox.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        self.checkbox.stateChanged.connect(self.toggleMapImage)
+        self.checkbox_map = QCheckBox("Show quadrant map", parent=self)
+        self.checkbox_map.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.checkbox_map.stateChanged.connect(self.toggleMapImage)
         self.layout.addWidget(
-            self.checkbox, start_row, 3, Qt.AlignRight | Qt.AlignVCenter
+            self.checkbox_map, start_row, 3, Qt.AlignRight | Qt.AlignVCenter
         )
 
         for row, voting_rule in enumerate(self.election.results, start=start_row + 1):
@@ -327,7 +287,7 @@ class WidgetResults(QWidget):
 
     @Slot(int)
     def toggleMapImage(self, state: int) -> None:
-        """Afficher ou cacher la carte politique lorsque un checkbox est coché ou décoché."""
+        """Afficher ou cacher la carte politique lorsqu'un `checkbox_map` est coché ou décoché."""
 
         if state and (not self.map_image.isVisible()):
             self.map_image.show()
@@ -336,8 +296,8 @@ class WidgetResults(QWidget):
 
     @Slot()
     def toggleCheckbox(self) -> None:
-        """Désactiver un checkbox si la carte politique a été fermée."""
-        self.checkbox.setChecked(False)
+        """Désactiver un `checkbox_map` si la carte politique a été fermée."""
+        self.checkbox_map.setChecked(False)
 
     @Slot(str)
     def showChart(self, voting_rule: str) -> None:
