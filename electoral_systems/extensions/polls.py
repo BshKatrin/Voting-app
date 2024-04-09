@@ -50,7 +50,8 @@ class Polls:
         directions = {Polls.NE, Polls.NW, Polls.SE, Polls.SW, Polls.CENTER}
         directions_data = dict()
         for direction in directions:
-            directions_data[direction] = Polls._get_default_direction_data(direction)
+            directions_data[direction] = Polls._get_default_direction_data(
+                direction)
         return directions_data
 
     def _get_default_direction_data(direction):
@@ -82,7 +83,8 @@ class Polls:
     # For directions only
     def set_avg_electors_positions(directions_data):
         for direction, data in directions_data.items():
-            (x_avg, y_avg), nb_electors = data[Polls.AVG], data[Polls.NB_ELECTORS]
+            (x_avg,
+             y_avg), nb_electors = data[Polls.AVG], data[Polls.NB_ELECTORS]
             x_avg = x_avg / nb_electors if nb_electors else 0
             y_avg = y_avg / nb_electors if nb_electors else 0
             directions_data[direction][Polls.AVG] = (x_avg, y_avg)
@@ -160,9 +162,11 @@ class Polls:
 
     def move_in_direction(directions_data, candidate, travel_dist):
         # Init direction scores (weighted sum)
-        directions_scores = Polls.get_directions_scores(directions_data, candidate)
+        directions_scores = Polls.get_directions_scores(
+            directions_data, candidate)
         # Choose direction(s) with minimals scores
-        chosen_directions = Polls.choose_directions_by_scores(directions_scores)
+        chosen_directions = Polls.choose_directions_by_scores(
+            directions_scores)
         # Move candidate to one (or several) avg positions of chosen directions
         avg_positions = Polls.get_avg_directions_positions(
             directions_data, chosen_directions
@@ -183,10 +187,15 @@ class Polls:
             # Check if candidate moves at all
             # If dogmacy is high -> low change to move
             # Dogmacy is low -> high change to move
-            if Polls.give_up(candidate):
+
+            # Candidate is very dogmatic he prefers not to change his position
+            if random() < candidate.dogmatism:
+                continue
+
+            # Gives up only if
+            if Polls.give_up(candidate) and Polls.alliance_formed(candidate, ranking[:i]):
                 # Alliance? Only if not opposed
-                if Polls.alliance_formed(candidate, ranking[:i]):
-                    candidates.remove(candidate)
+                candidates.remove(candidate)
                 continue
             # If no alliance, move in a winner direction
             # Based on opposition. Opposition is high -> low chance. Opposition is low -> high chance

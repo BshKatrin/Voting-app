@@ -98,14 +98,16 @@ class SettingsWidget(QWidget):
         self.liquid_democracy_checkbox.setChecked(
             self.election.liquid_democracy_activated
         )
-        self.liquid_democracy_checkbox.stateChanged.connect(self.toggleLiquidDemocracy)
+        self.liquid_democracy_checkbox.stateChanged.connect(
+            self.toggleLiquidDemocracy)
 
     def initUITieBreaker(self):
         # Activate tie-breaker by duels
         self.tie_breaker_label = QLabel(parent=self)
         self.tie_breaker_label.setText("Activate tie-breaker by duels")
         self.tie_breaker_checkbox = QCheckBox(parent=self)
-        self.tie_breaker_checkbox.setChecked(self.election.tie_breaker_activated)
+        self.tie_breaker_checkbox.setChecked(
+            self.election.tie_breaker_activated)
         self.tie_breaker_checkbox.stateChanged.connect(self.toggleTieBreaker)
 
     @Slot(str)

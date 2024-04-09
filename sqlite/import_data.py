@@ -22,7 +22,8 @@ class ImportData:
     def _check_columns(cls, connection, tables_cols):
         cursor = connection.cursor()
         for table, columns in tables_cols.items():
-            cursor.execute(f"SELECT name, type FROM pragma_table_info('{table}')")
+            cursor.execute(
+                f"SELECT name, type FROM pragma_table_info('{table}')")
             existing_columns = {(row[0], row[1]) for row in cursor.fetchall()}
             missing_columns = columns - (columns & existing_columns)
             if missing_columns:
@@ -85,7 +86,8 @@ class ImportData:
             id = next(cls.election.id_iter)
             cls.election.add_candidate_import(
                 Candidate(
-                    id=id, position=(x, y), first_name=first_name, last_name=last_name
+                    id=id, position=(
+                        x, y), first_name=first_name, last_name=last_name
                 )
             )
 
@@ -95,7 +97,8 @@ class ImportData:
         for x, y, weight, knowledge in electors_data:
             id = next(cls.election.id_iter)
             cls.election.add_elector_import(
-                Elector(id=id, position=(x, y), weight=weight, knowledge=knowledge)
+                Elector(id=id, position=(x, y),
+                        weight=weight, knowledge=knowledge)
             )
         return True, "Data imported"
 
@@ -233,7 +236,8 @@ class ImportData:
         cursor = connection.cursor()
 
         # Init lists bases on length
-        cursor.execute("SELECT max(round), voting_rule FROM results_multi_round GROUP BY voting_rule")
+        cursor.execute(
+            "SELECT max(round), voting_rule FROM results_multi_round GROUP BY voting_rule")
 
         nb_rounds = cursor.fetchall()
         for rounds, voting_rule in nb_rounds:

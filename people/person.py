@@ -1,20 +1,41 @@
+"""Un module définissant une class `Person`.
+
+Ce module fournit un dataclass `Person` avec un identifiant `id` unique et une `position`.
+La classe `Person` encapsule les attributs communs des électeurs et des candidats.
+
+Attributs :
+    - id (int): Un identifiant d'une personne qui doit être unique.
+    - position (tuple[float, float]): La position de la personne sur la carte politique.
+
+Methodes :
+    - generate_parameter: Une méthode statique qui permet de générer un paramètre.
+"""
 from dataclasses import dataclass, field
 from numpy.random import normal
 from numpy import clip
 
 
-@dataclass(kw_only=True, eq=True)
+@dataclass(kw_only=True)
 class Person:
+    """Une classe Person avec son identifiant `id` et sa position sur la carte politique `position`"""
     id: int = field(compare=False)
     position: tuple[float, float] = field(compare=False)
-    """Chaque coordonées de position est bornée entre -1 et 1"""
+    """Chaque coordonée de la position est bornée entre -1 et 1"""
 
     # Generate parameters based on Gauss normal distribution
     # Confine generated parameter between lower and upper limits
     @staticmethod
     def generate_parameter(mu: float, sigma: float, lower_limit: float, upper_limit: float) -> float:
-        """
-        Générer un paramètre selon la loi normale avec mu et sigma borné entre lower_limit et upper_limit
+        """Générer un paramètre basé sur la distribution normale et confiné entre des limites données.
+
+        Args:
+            mu (float): La moyenne de la distribution normale.
+            sigma (float): L'écart type de la distribution normale. Un réel strictement positive.
+            lower_limit (float): La limite inférieure pour le paramètre. 
+            upper_limit (float): La limite supérieur pour la paramètre.
+
+        Returns:
+            float: Le paramètre généré.
         """
 
         max_iteration = 10

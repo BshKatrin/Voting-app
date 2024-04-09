@@ -183,9 +183,12 @@ class WidgetResults(QWidget):
             )
             self.setResultsLabel(label_winner, label_satisfaction, voting_rule)
 
-            self.layout.addWidget(label_voting_rule, row, 0, alignment=Qt.AlignHCenter)
-            self.layout.addWidget(label_winner, row, 1, alignment=Qt.AlignHCenter)
-            self.layout.addWidget(label_satisfaction, row, 2, alignment=Qt.AlignHCenter)
+            self.layout.addWidget(label_voting_rule, row,
+                                  0, alignment=Qt.AlignHCenter)
+            self.layout.addWidget(label_winner, row, 1,
+                                  alignment=Qt.AlignHCenter)
+            self.layout.addWidget(label_satisfaction, row,
+                                  2, alignment=Qt.AlignHCenter)
 
             self.layout.addWidget(show_btn, row, 3, alignment=Qt.AlignHCenter)
 
@@ -219,7 +222,8 @@ class WidgetResults(QWidget):
         self.sig_poll_conducted.emit()
 
         if self.charts_view:
-            self.charts_view.sig_poll_conducted.emit(self.election.poll_voting_rule)
+            self.charts_view.sig_poll_conducted.emit(
+                self.election.poll_voting_rule)
 
     @Slot(int)
     def toggleMapImage(self, state):
