@@ -1,20 +1,3 @@
-"""Un module définissant une classe qui représente un électeur.
-
-Ce module fournit un dataclass `Elector` qui hérite de la classe `Person`.
-
-Attributs :
-    - candidates_ranking (List[Candidate]): Une liste des candidats placés par l'ordre décroissant.
-    - weight (int): Un poids d'un électeur (nécessaire pour une démocratie liquide).
-    - knowledge (float): Un taux des connaissances d'un élécteur (nécessaire pour une démocratie liquide et les sondages).
-    - knowledge_const (tuple[float, float]): Des paramètres pour générer `knowledge` selon une loi normale.
-
-Methodes :
-    - dist_from_one_cand: Une méthode permettant de calculer la distance euclidienne entre un électeur et un candidat.
-    - dist_from_cand: Une méthode permettant de calculer une liste des distances entre un électeur et des candidats.
-    - pos_to_rank: Une méthode permettant de classer des candidats par leur éloignement d'un électeur sur la carte politique.
-    - rank_candidates: Une méthode permettant de remplir `candidates_ranked`.
-"""
-
 from dataclasses import dataclass, field, InitVar
 from typing import List, Tuple
 from math import sqrt

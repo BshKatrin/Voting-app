@@ -1,24 +1,3 @@
-"""Un module définissant une class `Candidate`.
-
-Ce module fournit un dataclass `Candidate` qui hérite de la classe `Person`.
-
-Attributs :
-    - first_name (str): Un prénom d'un candidat. Réquis.
-    - last_name (str): Un nom d'un candidat. Réquis.
-    - dogmatism (float): Le taux de dogmatism d'un candidat. Nécessaire pour les sondages.
-    - opposition (float): Le taux d'opposition d'un candidat aux autres candidats. Nécessaire pour les sondages.
-    - dogmatism_const (tuple[float, float]): Des paramètres pour générer `dogmatism` selon une loi normale.
-    - opposition_const (tuple[float, float]): Des paramètres pour générer `opposition` selon une loi normale.
-    - scores (Dict[str, Union[int, float, List[int]]]): Un dictionnaire des scores dans chaque règle du vote utilisée dans une élection.
-
-Methodes :
-    - init_score: Une méthode permettant d'initialiser le score (une case dans `scores`) dans une règle de vote.
-    - add_score: Une méthode permettant d'ajouter le score dans une règle du vote à 1 tour ou Condorcet-cohérente.
-    - add_score_round: Une méthode permettant d'ajouter le score dans une règle du vote à plusieurs tours.
-    - move_to_avg: Une méthode permettant un candidat de changer sa position pour se rapprocher de la moyenne des positions données.
-    - move_to_point: Une méthode permettant un candidat de changer sa position pour se rapprocher d'une position donnée.
-"""
-
 from copy import deepcopy
 from dataclasses import dataclass, field, InitVar
 from typing import Dict, Union, List, Tuple, Optional

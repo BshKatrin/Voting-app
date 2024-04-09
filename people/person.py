@@ -1,15 +1,3 @@
-"""Un module définissant une class `Person`.
-
-Ce module fournit un dataclass `Person` avec un identifiant `id` unique et une `position`.
-La classe `Person` encapsule les attributs communs des électeurs et des candidats.
-
-Attributs :
-    - id (int): Un identifiant d'une personne qui doit être unique.
-    - position (tuple[float, float]): La position de la personne sur la carte politique.
-
-Methodes :
-    - generate_parameter: Une méthode statique qui permet de générer un paramètre.
-"""
 from dataclasses import dataclass, field
 from numpy.random import normal
 from numpy import clip
