@@ -45,11 +45,12 @@ Signals:
     sig_data_imported (PySide6.QtCore.QSignal): un signal qui indique les données d'une élections ont été importées avec ou les résultats
 """
 
-from typing import List
-import sqlite3
 from os import remove
+import sqlite3
+from typing import List
 
-from PySide6.QtCore import Qt, Slot, QObject, Signal, QTimer
+
+from PySide6.QtCore import Qt, Slot, Signal, QTimer
 from PySide6.QtGui import QAction, QCloseEvent
 from PySide6.QtWidgets import (
     QMainWindow,
@@ -335,7 +336,7 @@ class HomeWindow(QMainWindow):
         self.toggleIEOptions(ExportData.EXPORT, False, True)
         self.toggleIEOptions(ImportData.IMPORT, False, True)
 
-        self.widget_map = WidgetMap(parent=self)
+        self.widget_map = WidgetMap(parent=self.main_widget)
         self.widget_map.sig_start_election.connect(self.startElection)
         self.layout.addWidget(self.widget_map)
 
@@ -348,7 +349,7 @@ class HomeWindow(QMainWindow):
         self.toggleIEOptions(ExportData.EXPORT, True, True)
         self.toggleIEOptions(ImportData.IMPORT, False, False)
 
-        self.widget_results = WidgetResults(self.main_widget)
+        self.widget_results = WidgetResults(parent=self.main_widget)
         self.layout.addWidget(self.widget_results, alignment=Qt.AlignTop)
 
     @ Slot(list)
@@ -359,8 +360,6 @@ class HomeWindow(QMainWindow):
         Args:
             chosen_voting_rules (List[str]): Une listed des constantes correspondant aux règles du vote choisies pour une élection.
         """
-        self.widget_map.sig_widget_map_destroying.emit()
-        self.widget_map.deleteLater()
 
         self.election.start_election(chosen_voting_rules=chosen_voting_rules)
 
