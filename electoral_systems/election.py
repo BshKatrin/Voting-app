@@ -1,4 +1,4 @@
-from typing import Set, Optional, List, Dict, Union
+from typing import Set, Optional, List, Union
 from math import sqrt
 from random import random
 
@@ -267,12 +267,12 @@ class Election(metaclass=Singleton):
             elector.rank_candidates(self.candidates)
 
     def calc_results(self, imported: Optional[bool] = False) -> None:
-        """Calculer des résultats d'une élection, i.e. Calculer les duels entre les candidats et des classements des candidats
-        dans chaque règle du vote choisie.
+        """Calculer des résultats d'une élection, i.e. Calculer les duels entre les candidats, attribuer des scores aux candidats, 
+        et calculer des classements des candidats dans chaque règle du vote choisie.
 
         Args:
-            imported (bool): True si les données one été importés. Si oui, ne pas calculer des duels et des classements des candidats
-            dans chaque règle du vote choisie. Ils sont importés.
+            imported (bool): True si les données one été importés. Si oui, ne pas calculer des duels et des scores des candidats
+            dans chaque règle du vote choisie. Ils sont importés. Cepedant, un calcul des classement est effectué.
         """
 
         if imported:
@@ -325,8 +325,12 @@ class Election(metaclass=Singleton):
         )
         return percentage
 
-    # For import only
-    def set_results(self):
+    def set_results(self) -> None:
+        """Calculer un classement des candidats selon leurs scores (les scores sont déjà attribués à chaque candidat).
+        Utilisée lors de l'importation des données. MAJ d'un dictionnaire `results`. La fonction fait rien s'il n'existe pas 
+        au moins un électeur et un candidat.
+        """
+
         if not self._has_electors_candidates():
             return
         # Assuming every candidate has the same voting_rules
@@ -355,7 +359,22 @@ class Election(metaclass=Singleton):
 
             self.results[voting_rule] = result
 
-    def start_election(self, imported=False, chosen_voting_rules=None):
+    def start_election(self, imported: Optional[bool] = False, chosen_voting_rules: List[str] = None) -> None:
+        """Commencer une élection. Faire toutes les calculs nécessaires
+            - Chaque électeur définit son classement des candidats
+            - MAJ de la position moyenne des électeurs
+            - Calculer le taux d'une satisfaction
+            - Si les sondages sont activées, MAJ des données pour chaque direction de la carte politique
+            - Si la démocratie liquide est activée, faire les délégations.
+            - Initialiser un dictionnaire `results` avec des règles du vote choisies.
+            - Calculer des résultats.
+
+        Args:
+            imported (Optional[bool]): True si les données ont été importées, sinon False.
+                Cf. calc_results() <electoral_systems.election.calc_results>
+            chosen_voting_rules (Set[str]): Une liste des constantes des règles du vote choisies.
+        """
+
         self._define_ranking()
         self.set_avg_electors_position()
         self._calc_proportion_satisfaction()
@@ -372,13 +391,16 @@ class Election(metaclass=Singleton):
 
         self.calc_results(imported)
 
-    def _make_delegations(self):
+    def _make_delegations(self) -> None:
+        """Pour une démocratie liquide. Pour chaque électeur décide s'il fera une délégation de son vote.
+        Si oui, MAJ des données de son délégataire et de lui-même."""
+
         for elector in self.electors:
             proba = 1 - elector.knowledge
-            # No delegations
+            # Pas de délégation
             if random() > proba:
                 continue
-            # Make delegation
+            # Faire une délégation
             possible_delegees = choose_possible_delegees(
                 self.electors, elector
             )
@@ -388,11 +410,16 @@ class Election(metaclass=Singleton):
             delegee.weight += elector.weight
             elector.weight = 0
 
-    def conduct_poll(self):
+    def conduct_poll(self) -> None:
+        """Faire une nouvelle sondage. Tout d'abord les candidats changent ses positions. Les électeurs 
+        redéfinissent leur classement des candidats. Après les électeurs changent son classement.
+        Cf. polls <electoral_systems.extensions.polls> pour les détails."""
+
         voting_rule = self.poll_voting_rule
         winner = self.choose_winner(voting_rule)
         ranking = self.results[voting_rule]
 
+        # Des candidats changent leurs positions politiques
         change_position_candidates(
             self.candidates,
             winner,
@@ -401,9 +428,10 @@ class Election(metaclass=Singleton):
             self.generation_constants[RandomConstants.TRAVEL_DIST],
         )
 
-        # Electors rank newly positioned candidates
+        # Des électeurs changent leur classement
         self._define_ranking()
 
+        # Des électeurs s'adaptent en changeant leur classement intelligemment
         score_winner = winner.scores[voting_rule]
         change_ranking_electors(
             self.electors,
@@ -411,13 +439,11 @@ class Election(metaclass=Singleton):
             voting_rule,
             VotingRulesConstants.APPROVAL_GAP_COEF,
         )
-        # Recalculate results
+        # Recalculer des résultats
         self.calc_results()
 
-    # def _clean_direction_data(self):
-    #     self.directions_data.clear()
-
-    def delete_all_data(self):
+    def delete_all_data(self) -> None:
+        """Supprimer toutes les données d'une élection. Recommencer des itérateurs-générateurs des noms, prénoms, IDs."""
         self.electors.clear()
         self.candidates.clear()
         self.results.clear()
