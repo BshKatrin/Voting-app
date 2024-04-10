@@ -6,7 +6,7 @@ from .person import Person
 from .candidate import Candidate
 
 
-@dataclass(kw_only=True, eq=False)
+@dataclass(kw_only=True, eq=True)
 class Elector(Person):
     """Une classe permettant de représenter un électeur dans une élection."""
     candidates_ranked: List[Candidate] = field(

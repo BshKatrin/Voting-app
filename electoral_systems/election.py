@@ -4,9 +4,18 @@ from random import random
 from .utls import Singleton, NameIterator, IdIterator
 
 from .election_constants import RandomConstants, VotingRulesConstants
-from .extensions import Polls, LiquidDemocracy
+from .extensions.polls import (
+    add_elector_data,
+    add_candidate_data,
+    get_default_directions_data,
+    set_avg_electors_positions,
+    set_std_deviation,
+    change_position_candidates,
+    change_ranking_electors,
+)
+from .extensions.liquid_democracy import choose_delegee, choose_possible_delegees
 
-from .voting_rules.utls import Utls
+from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_by_round
 
 from people import Candidate, Elector
 
@@ -44,7 +53,7 @@ class Election(metaclass=Singleton):
             self.generation_constants[type] = default_value
 
         # For polls
-        self.directions_data = Polls.get_default_directions_data()
+        self.directions_data = get_default_directions_data()
 
     def _init_results_keys(self, set_keys):
         for key in set_keys:
@@ -63,7 +72,7 @@ class Election(metaclass=Singleton):
     # For import only
     def add_elector_import(self, new_elector):
         if self.nb_polls:
-            Polls.add_elector_data(self.directions_data, new_elector)
+            add_elector_data(self.directions_data, new_elector)
         self.electors.append(new_elector)
 
     def add_elector(self, position):
@@ -74,7 +83,7 @@ class Election(metaclass=Singleton):
         x, y = new_elector.position
 
         if self.nb_polls:
-            Polls.add_elector_data(self.directions_data, new_elector)
+            add_elector_data(self.directions_data, new_elector)
 
         # All electors average
         x_avg, y_avg = self.average_position_electors
@@ -86,7 +95,7 @@ class Election(metaclass=Singleton):
     def add_candidate_import(self, new_candidate):
         self.candidates.append(new_candidate)
         if self.nb_polls:
-            Polls.add_candidate_data(self.directions_data, new_candidate)
+            add_candidate_data(self.directions_data, new_candidate)
 
     def add_candidate(self, position, first_name="", last_name=""):
         dogmat_const = self.generation_constants[RandomConstants.DOGMATISM]
@@ -104,7 +113,7 @@ class Election(metaclass=Singleton):
             opposition_const=oppos_const,
         )
         if self.nb_polls:
-            Polls.add_candidate_data(self.directions_data, new_candidate)
+            add_candidate_data(self.directions_data, new_candidate)
 
         self.candidates.append(new_candidate)
 
@@ -161,7 +170,7 @@ class Election(metaclass=Singleton):
             self.set_results()
             return
 
-        self.duels_scores = Utls.set_duels_scores(self.electors, self.candidates)
+        self.duels_scores = set_duels_scores(self.electors, self.candidates)
 
         for voting_rule in self.results:
             self.apply_voting_rule(voting_rule)
@@ -204,13 +213,13 @@ class Election(metaclass=Singleton):
         keys = candidate.scores.keys()
         for voting_rule in keys:
             if voting_rule in VotingRulesConstants.ONE_ROUND:
-                result = Utls.sort_cand_by_value(self.candidates, voting_rule)
+                result = sort_cand_by_value(self.candidates, voting_rule)
 
             if voting_rule in VotingRulesConstants.MULTI_ROUND:
                 self.results[voting_rule] = [None] * len(candidate.scores[voting_rule])
                 # prettier-ignore
                 for round in range(len(candidate.scores[voting_rule])):
-                    result = Utls.sort_cand_by_round(
+                    result = sort_cand_by_round(
                         self.candidates, voting_rule, round
                     )
 
@@ -221,7 +230,7 @@ class Election(metaclass=Singleton):
                     else False
                 )
 
-                result = Utls.sort_cand_by_value(self.candidates, voting_rule, sort_asc)
+                result = sort_cand_by_value(self.candidates, voting_rule, sort_asc)
 
             self.results[voting_rule] = result
 
@@ -232,9 +241,9 @@ class Election(metaclass=Singleton):
 
         # Set data for polls
         if self.nb_polls:
-            Polls.set_avg_electors_positions(self.directions_data)
-            Polls.set_std_deviation(self.directions_data, len(self.electors))
-
+            set_avg_electors_positions(self.directions_data)
+            set_std_deviation(self.directions_data, len(self.electors))
+        print("Start election", self.liquid_democracy_activated)
         if self.liquid_democracy_activated:
             self._make_delegations()
         if chosen_voting_rules:
@@ -249,10 +258,10 @@ class Election(metaclass=Singleton):
             if random() > proba:
                 continue
             # Make delegation
-            possible_delegees = LiquidDemocracy.choose_possible_delegees(
+            possible_delegees = choose_possible_delegees(
                 self.electors, elector
             )
-            delegee = LiquidDemocracy.choose_delegee(possible_delegees)
+            delegee = choose_delegee(possible_delegees)
             if delegee is None:
                 continue
             delegee.weight += elector.weight
@@ -263,7 +272,7 @@ class Election(metaclass=Singleton):
         winner = self.choose_winner(voting_rule)
         ranking = self.results[voting_rule]
 
-        Polls.change_position_candidates(
+        change_position_candidates(
             self.candidates,
             winner,
             ranking,
@@ -275,7 +284,7 @@ class Election(metaclass=Singleton):
         self._define_ranking()
 
         score_winner = winner.scores[voting_rule]
-        Polls.change_ranking_electors(
+        change_ranking_electors(
             self.electors,
             score_winner,
             voting_rule,

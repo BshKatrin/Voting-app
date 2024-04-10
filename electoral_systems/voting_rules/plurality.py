@@ -1,61 +1,62 @@
-from copy import deepcopy
+"""Ce module fournit des fonctions nécessaires pour des règles du vote du type Pluralité"""
 
+from typing import List, Optional
 from .constants import PLURALITY_SIMPLE, PLURALITY_2_ROUNDS
 
-from .utls import Utls
+from .utls import duels_type, init_scores, sort_cand_by_value, apply_voting_rule_rounds
+
+from people import Candidate, Elector
 
 
-def apply_plurality_simple(electors, candidates, duels=None):
-    Utls.init_scores(candidates, PLURALITY_SIMPLE, 0)
+def apply_plurality_simple(electors: List[Elector], candidates: List[Candidate],
+                           duels: Optional[duels_type] = None) -> List[Candidate]:
+    """Appliquer une règle du vote *Pluralité à 1 tour*. Possible d'appliquer cette règle du vote s'il existe au moins 2 candidats.
+    Principe d'une règle du vote *Pluralité à 1 tour*: 
+        - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
+        - Chaque candidat classé premier un point est attribué à son score. Les scores des autres candidats ne changent pas.
+
+
+    Args:
+        electors (List[people.elector.Elector]): Une liste de tous les électeurs participant dans une élection.
+            Leur liste `candidates_ranked` doit être remplie.
+        candidates (List[people.candidate.Candidate]): Une liste de tous les candidats qui participent dans une élection.
+        duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
+        que le candidat-gagnant a battu le candidat-perdant. Default = `None`.
+    Returns:
+        List[people.candidate.Candidate]:  Une liste des candidats triés dans l'ordre décroissant selon leurs scores dans
+            la règle du vote *Pluralité à 1 tour*
+    """
+    init_scores(candidates, PLURALITY_SIMPLE, 0)
     for elector in electors:
-        elector.candidates_ranked[0].add_score(PLURALITY_SIMPLE, elector.weight)
-    return Utls.sort_cand_by_value(candidates, PLURALITY_SIMPLE, duels)
+        elector.candidates_ranked[0].add_score(
+            PLURALITY_SIMPLE, elector.weight)
+    return sort_cand_by_value(candidates, PLURALITY_SIMPLE, duels)
 
 
-# avant appel a la fonction : verifier qu'il existe AU MOINS 3 candidats
-def apply_plurality_rounds(electors, candidates, duels=None):
-    Utls.init_scores(candidates, PLURALITY_2_ROUNDS, [0], True)
-
-    candidates_round_one = plurality_one_set_score(electors, candidates, duels)
-    len_electors = len(electors)
-    if Utls.has_majority(candidates_round_one, len_electors, PLURALITY_2_ROUNDS, 0):
-        return [candidates_round_one]
-
-    # Add new slot to every candidate
-    for candidate in candidates:
-        candidate.scores[PLURALITY_2_ROUNDS].extend([0])
-
-    candidates_round_two = candidates_round_one[:2]
-    duels_round_two = None
-    if duels:
-        Utls.set_duels_scores(electors, candidates_round_two)
-
-    candidates_round_two = plurality_two_set_score(
-        electors, candidates_round_two, duels_round_two
-    )
-    return [candidates_round_one, candidates_round_two]
+def apply_plurality_rounds(electors: List[Elector], candidates: List[Candidate],
+                           duels: Optional[duels_type] = None) -> List[List[Candidate]]:
+    """Appliquer une règle du vote *Pluralité à 2 tours*. Possible d'appliquer cette règle du vote s'il existe au moins 3 candidats.
+      Principe d'une règle du vote *Pluralité à 2 tours*: 
+        - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
+        - Tour 1 : Chaque candidat classé premier reçoit un point, tandis que les scores des autres candidats restent inchangés.
+        - Tour 2: Ce tour commence si aucun candidat n'obtient la majorité absolue des votes au premier tour.
+        Dans ce cas, les deux candidats ayant les scores les plus élevés passent au deuxième tour, tandis que les autres sont éliminés.
+        Les électeurs classent alors ces deux candidats selon leurs préférences, en ordre décroissant.
+        Comme au premier tour, le candidat classé premier reçoit 1 point, et le deuxième 0 point.
 
 
-def plurality_one_set_score(electors, candidates, duels):
-    for elector in electors:
-        # Ajouter +1 uniquement au premier candidat
-        elector.candidates_ranked[0].add_score_round(
-            PLURALITY_2_ROUNDS, elector.weight, 0
-        )
-    return Utls.sort_cand_by_round(candidates, PLURALITY_2_ROUNDS, 0, duels)
-
-
-def plurality_two_set_score(electors, candidates, duels):
-    for elector in electors:
-        chosen_candidate = choose_next_candidate(elector, *candidates)
-        chosen_candidate.add_score_round(PLURALITY_2_ROUNDS, elector.weight, 1)
-    return Utls.sort_cand_by_round(candidates, PLURALITY_2_ROUNDS, 1, duels)
-
-
-def choose_next_candidate(elector, cand1, cand2):
-    index = 0
-    current_candidate = elector.candidates_ranked[index]
-    while current_candidate != cand1 and current_candidate != cand2:
-        index += 1
-        current_candidate = elector.candidates_ranked[index]
-    return current_candidate
+    Args:
+        electors (List[people.elector.Elector]): Une liste de tous les électeurs participant dans une élection.
+            Leur liste `candidates_ranked` doit être remplie.
+        candidates (List[people.candidate.Candidate]): Une liste de tous les candidats qui participent dans une élection.
+        duels (Optional[Utls.duels_type]): Un dictionnaire des duels entre les candidats. Nécessaire uniquement s'il faut appliquer 
+            un tie-break selon les duels. Default = `None`.
+    Returns:
+        List[people.candidate.Candidate]: Une liste des listes (classement dans l'ordre décroissant) des candidats par tour. La longueur de la liste correpond
+        au nombre des tours effectués.
+    """
+    max_rounds = 2
+    elimination_index = 2  # i.e. on ne considère que 2 premiers candidats dans le 2ème tour
+    res = apply_voting_rule_rounds(
+        electors, candidates, duels, PLURALITY_2_ROUNDS, max_rounds, elimination_index)
+    return res
