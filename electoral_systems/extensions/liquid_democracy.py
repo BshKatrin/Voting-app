@@ -24,7 +24,7 @@ def choose_delegee(electors: List[Elector]) -> Elector:
     Args:
         electors (List[Elector]) -> Une liste des électeurs qui peuvent être les délégataires.
     Returns:
-        people.elector.Elector: un délégateur choisi.
+        people.elector.Elector: un délégataire choisi.
     """
     if len(electors) == 0:
         return None

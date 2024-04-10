@@ -1,22 +1,27 @@
+from typing import Dict, Union, Set, Callable
+
 from .voting_rules import *
 from .voting_rules.constants import *
 
 
 class VotingRulesConstants:
-    PLURALITY_SIMPLE = PLURALITY_SIMPLE
-    PLURALITY_2_ROUNDS = PLURALITY_2_ROUNDS
-    VETO = VETO
-    BORDA = BORDA
-    CONDORCET_SIMPLE = CONDORCET_SIMPLE
-    CONDORCET_COPELAND = CONDORCET_COPELAND
-    CONDORCET_SIMPSON = CONDORCET_SIMPSON
-    EXHAUSTIVE_BALLOT = EXHAUSTIVE_BALLOT
-    APPROVAL = APPROVAL
+    """Une classe qui regroupent les constantes utilisées par rapport aux règles du vote."""
 
-    APPROVAL_GAP_COEF = 0.3  # Approval constant
+    # Des règles du vote. Cf. le module electoral_systems.voting_rules.constants
+    PLURALITY_SIMPLE: str = PLURALITY_SIMPLE
+    PLURALITY_2_ROUNDS: str = PLURALITY_2_ROUNDS
+    VETO: str = VETO
+    BORDA: str = BORDA
+    CONDORCET_SIMPLE: str = CONDORCET_SIMPLE
+    CONDORCET_COPELAND: str = CONDORCET_COPELAND
+    CONDORCET_SIMPSON: str = CONDORCET_SIMPSON
+    EXHAUSTIVE_BALLOT: str = EXHAUSTIVE_BALLOT
+    APPROVAL: str = APPROVAL
 
-    # functions association
-    VOTING_RULES_FUNC = {
+    APPROVAL_GAP_COEF: float = 0.3  # Constante pour approbaton
+
+    # Associer des fonctions avec des constantes
+    VOTING_RULES_FUNC: Dict[str, Callable] = {
         PLURALITY_SIMPLE: plurality.apply_plurality_simple,
         PLURALITY_2_ROUNDS: plurality.apply_plurality_rounds,
         VETO: veto.apply_veto,
@@ -28,8 +33,8 @@ class VotingRulesConstants:
         APPROVAL: approval.apply_approval,
     }
 
-    # UI constants (QT)
-    UI = {
+    # UI constantes (QT)
+    UI: Dict[str, str] = {
         PLURALITY_SIMPLE: "Plurality (1 round)",
         PLURALITY_2_ROUNDS: "Plurality (2 rounds)",
         VETO: "Veto",
@@ -41,28 +46,31 @@ class VotingRulesConstants:
         APPROVAL: "Approval",
     }
 
-    # Separation for various checks
-    ONE_ROUND = {PLURALITY_SIMPLE, VETO, BORDA, APPROVAL}
-    MULTI_ROUND = {PLURALITY_2_ROUNDS, EXHAUSTIVE_BALLOT}
-    CONDORCET = {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}
+    # Séparation pour vérification après
+    ONE_ROUND: Set[str] = {PLURALITY_SIMPLE, VETO, BORDA, APPROVAL}
+    MULTI_ROUND: Set[str] = {PLURALITY_2_ROUNDS, EXHAUSTIVE_BALLOT}
+    CONDORCET: Set[str] = {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}
 
 
 class RandomConstants:
+    """Une classe qui regroupent les constantes utilisées par rapport à la génération des données."""
+
     # Random generating constants
-    ECONOMICAL = "ECON"
-    SOCIAL = "SOC"
-    ORIENTATION = "ORIENT"
-    KNOWLEDGE = "KNW"
-    DOGMATISM = "DGC"
-    OPPOSITION = "OPP"
-    TRAVEL_DIST = "TD"  # In percentage, between 1 and
+    ECONOMICAL: str = "ECON"
+    SOCIAL: str = "SOC"
+    ORIENTATION: str = "ORIENT"
+    KNOWLEDGE: str = "KNW"
+    DOGMATISM: str = "DGC"
+    OPPOSITION: str = "OPP"
+    TRAVEL_DIST: str = "TD"  # Proportion. Entre 0 et 1
 
-    LINEAR = 0
-    GAUSS = 1
-    SLIDER = 2
+    # Types des graphes
+    LINEAR: int = 0
+    GAUSS: int = 1
+    SLIDER: int = 2
 
-    # UI constants (QT)
-    UI = {
+    # UI constantes (QT)
+    UI: Dict[str, str] = {
         ECONOMICAL: "Economical (left-right)",
         SOCIAL: "Social (liberal-autoritarian)",
         ORIENTATION: "Orientation",
@@ -72,8 +80,8 @@ class RandomConstants:
         TRAVEL_DIST: "Candidate's travel distance",
     }
 
-    # Graph type for each category
-    GRAPH_TYPE = {
+    # Associer les types des graphes aux constantes
+    GRAPH_TYPE: Dict[str, int] = {
         ECONOMICAL: GAUSS,
         SOCIAL: GAUSS,
         ORIENTATION: LINEAR,
@@ -83,18 +91,19 @@ class RandomConstants:
         TRAVEL_DIST: SLIDER,
     }
 
-    # Change later
-    VALUES_MIN_MAX = {
-        ECONOMICAL: (-85, 85),  # Div by 100
-        SOCIAL: (-85, 85),  # Div by 100
-        ORIENTATION: (-1, 1),  # NO div by 100
-        KNOWLEDGE: (10, 90),  # Div by 100
-        DOGMATISM: (10, 90),  # Div by 100
-        OPPOSITION: (10, 90),  # Div by 100
-        TRAVEL_DIST: (1, 100),  # Div by 100
+    # Les valeurs min et max pour des sliders (QT). Div par 100 car les sliders de QT acceptent uniquement des entiers.
+    VALUES_MIN_MAX: Dict[str, tuple[int, int]] = {
+        ECONOMICAL: (-85, 85),  # Div par 100
+        SOCIAL: (-85, 85),  # Div par 100
+        ORIENTATION: (-1, 1),  # PAS div par 100
+        KNOWLEDGE: (10, 90),  # Div par 100
+        DOGMATISM: (10, 90),  # Div par 100
+        OPPOSITION: (10, 90),  # Div par 100
+        TRAVEL_DIST: (1, 100),  # Div par 100
     }
 
-    DEFAULT_VALUES = {
+    # Les valeurs par défaut
+    DEFAULT_VALUES: Dict[str, Union[tuple[float, float], float, int]] = {
         ECONOMICAL: (0.0, 0.5),
         SOCIAL: (0.0, 0.5),
         ORIENTATION: 1,

@@ -1,16 +1,16 @@
-from sys import argv, exit
+# from sys import argv, exit
 
-from PySide6.QtWidgets import QApplication
-from graphics.home_window import HomeWindow
+# from PySide6.QtWidgets import QApplication
+# from graphics.home_window import HomeWindow
 
-if __name__ == "__main__":
-    app = QApplication(argv)
-    app.setStyle("Fusion")
+# if __name__ == "__main__":
+#     app = QApplication(argv)
+#     app.setStyle("Fusion")
 
-    window = HomeWindow(app)
+#     window = HomeWindow(app)
 
-    window.show()
-    exit(app.exec())
+#     window.show()
+#     exit(app.exec())
 
 
 # from people import Elector, Candidate
@@ -33,8 +33,15 @@ if __name__ == "__main__":
 #         elect.append(Elector(id=i, position=(random(), random()), candidates_ranked=[c0, c1, c2, c3]))
 #     elect.append(Elector(id=2, position=(random(), random()), candidates_ranked=[c0, c1, c3, c2]))
 #     elect.append(Elector(id=3, position=(random(), random()), candidates_ranked=[c1, c0, c3, c2]))
-    
+
 #     res = apply_plurality_rounds(elect, cand, None)
 #     print(res)
 #     for c in cand:
 #         print(c, c.scores[PLURALITY_2_ROUNDS])
+
+from people import Candidate
+
+if __name__ == "__main__":
+    c1 = Candidate(id=0, position=(0.1, 0.1), first_name="a", last_name="a")
+    c2 = Candidate(id=1, position=(0.5, 0.5), first_name="a", last_name="a")
+    print(c1 == c2)

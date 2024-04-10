@@ -12,7 +12,7 @@ class Candidate(Person):
     first_name: str = field(default="", hash=True, compare=True)
     last_name: str = field(default="", hash=True, compare=True)
 
-    dogmatism: float = field(default=-1.0, compare=False)
+    dogmatism: float = field(default=-1.0, hash=True, compare=False)
     """Sondages : Plus le taux de dogmatisme est élevé, plus le candidat est sûr de sa position politique
     et il est peu probable qu'il décide de changer sa position politique, et inversement,
     moins le taux de dogmatisme est élevé, plus il est probable qu'un candidat décide de changer sa position politique
@@ -20,7 +20,7 @@ class Candidate(Person):
     Si le taux de dogmatisme n'est pas donné lors de l'initialisation, il est généré selon une loi normale 
     à l'aide de `dogmatism_const`.
     """
-    opposition: float = field(default=-1.0, compare=False)
+    opposition: float = field(default=-1.0, hash=True, compare=False)
     """Sondages : Plus le taux d'opposition est élevé, moins il est probable que le candidat décide
     de changer sa position politique en s'approchant le gagnant d'une élection, et inversement, 
     moins le taux d'opposition est élevé, plus il est probable que le candidat décide de s'approcher 

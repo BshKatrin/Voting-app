@@ -4,7 +4,7 @@ De plus, il permet de factoriser des algorithmes pour des règles du vote à plu
 from itertools import combinations, permutations
 from typing import Dict, List, Union, Optional
 
-from .tie import Tie
+from .tie import resolve_ties
 from people import Candidate, Elector
 
 duels_type = Dict[tuple[Candidate, Candidate], int]
@@ -54,7 +54,7 @@ def sort_cand_by_value(candidates: List[Candidate], voting_rule: str,
         ranking = [c for (c, _) in sorted(lst, key=lambda e: (e[1], e[0]))]
 
     if duels:
-        Tie.resolve_ties(ranking, voting_rule, duels)
+        resolve_ties(ranking, voting_rule, duels)
     return ranking
 
 
@@ -80,7 +80,7 @@ def sort_cand_by_round(candidates: List[Candidate], voting_rule: str,
     ranking = [c for (c, _) in sorted(
         lst, key=lambda e: e[1][round], reverse=True)]
     if duels:
-        Tie.resolve_ties(ranking, voting_rule, duels)
+        resolve_ties(ranking, voting_rule, duels)
     return ranking
 
 
