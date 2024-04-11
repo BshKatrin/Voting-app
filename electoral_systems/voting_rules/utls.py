@@ -52,7 +52,6 @@ def sort_cand_by_value(candidates: List[Candidate], voting_rule: str,
         ranking = [c for (c, _) in sorted(lst, key=lambda e: (-e[1], e[0]))]
     else:
         ranking = [c for (c, _) in sorted(lst, key=lambda e: (e[1], e[0]))]
-
     if duels:
         resolve_ties(ranking, voting_rule, duels)
     return ranking

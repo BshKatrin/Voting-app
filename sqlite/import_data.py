@@ -1,7 +1,7 @@
 from sqlite3 import Connection
 from typing import Set, Dict
 
-from electoral_systems import Election
+from electoral_systems import Election, VotingRulesConstants
 from people import Candidate, Elector
 
 
@@ -146,7 +146,8 @@ class ImportData:
 
         cursor.execute("SELECT x, y, first_name, last_name FROM candidates")
         candidates_data = cursor.fetchall()
-
+        max_fst_name = "A"
+        max_lst_name = "A"
         for x, y, first_name, last_name in candidates_data:
             id = next(cls.election.id_iter)
             cls.election.add_candidate_import(
@@ -170,7 +171,8 @@ class ImportData:
     @classmethod
     def import_people_with_results(cls, connection: Connection) -> tuple[bool, str]:
         """Importer des données (candidats, électeurs, résultats) dans une élection à partir de la base des données.
-        Une fonction fait les vérifications nécessaires des tableaux et des colonnes.
+        Une fonction fait les vérifications nécessaires des tableaux et des colonnes. Importer les configurations d'une élection
+        si le tableau nécessaire est présent.
         Supprime toutes les données existantes d'une élection.
 
         Args:
@@ -227,6 +229,9 @@ class ImportData:
                 knowledge=knowledge,
             )
             cls.election.add_elector_import(new_elector)
+
+        table_missing, _ = cls._check_tables({"settings"}, existing_tables)
+        cls._import_config(connection, table_missing)
         return cls._import_results(connection, existing_tables, candidates_id_assoc)
 
     @classmethod
@@ -335,7 +340,7 @@ class ImportData:
 
         for candidate_id, voting_rule, score in data:
             candidate = assoc[candidate_id]
-            candidate.scores[voting_rule] = score
+            candidate.scores[voting_rule] = int(score)
 
     @classmethod
     def _import_multi_round(cls, connection: Connection, assoc: Dict[int, int]) -> None:
@@ -369,7 +374,7 @@ class ImportData:
         data = cursor.fetchall()
         for candidate_id, voting_rule, round, score in data:
             candidate = assoc[candidate_id]
-            candidate.scores[voting_rule][round] = score
+            candidate.scores[voting_rule][round] = int(score)
 
     @classmethod
     def _import_condorcet(cls, connection: Connection, assoc: Dict[int, int]) -> None:
@@ -397,7 +402,7 @@ class ImportData:
         for winner_id, loser_id, score in data:
             winner = assoc[winner_id]
             loser = assoc[loser_id]
-            cls.election.duels_scores[(winner, loser)] = score
+            cls.election.duels_scores[(winner, loser)] = int(score)
 
         # Scores
         cursor.execute("SELECT * FROM results_condorcet")
@@ -405,4 +410,38 @@ class ImportData:
 
         for candidate_id, voting_rule, score in data:
             candidate = assoc[candidate_id]
-            candidate.scores[voting_rule] = score
+            if voting_rule == VotingRulesConstants.CONDORCET:
+                candidate.scores[voting_rule] = score
+            else:
+                candidate.scores[voting_rule] = int(score)
+
+    @classmethod
+    def _import_config(cls, connection: Connection, table_missing: bool) -> None:
+        """Importer les configurations d'une élection, i.e. si 
+            - la résolution des égalités a été faite par les duels
+            - la démocratie liquide a été activée. 
+        Si le tableau `settings` n'est pas présent dans une base des données, désactiver la démocratie liquide et 
+        la résolution des égalités par duels.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            table_missing (bool): True si le tableau `settings` n'est pas présent dans une base des données, False sinon.
+        """
+
+        cls.election.liquid_democracy_activated = False
+        cls.election.tie_breaker_activated = False
+
+        if table_missing:
+            return
+
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT * FROM settings")
+        data = cursor.fetchall()
+
+        for parameter, set_value in data:
+            match parameter:
+                case "liquid_democracy_activated":
+                    cls.election.liquid_democracy_activated = bool(set_value)
+                case "tie_breaker_activated":
+                    cls.election.tie_breaker_activated = bool(set_value)

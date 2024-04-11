@@ -25,15 +25,18 @@ from sqlite import ImportData, ExportData
 
 class HomeWindow(QMainWindow):
     """Un widget qui représente une fenêtre principale d'une application."""
+
     sig_data_imported = Signal(bool)
     """Un signal qui indique les données d'une élections ont été importées avec ou sans des résultats"""
 
     def __init__(self, app: QApplication):
-        """Initialisation du titre, de la taille, du widget central, du layout, du menu. Initialisation de la page d'accueil
+        """Initialiser une instance  d'une élection (pour le partage des données).
+        Initialiser le titre, la taille, le widget central, le menu et UI (la page d'accueil).
 
         Args:
             app (PySide6.QtWidgets.QApplication): une application
         """
+
         super().__init__()
 
         self.app = app
@@ -63,6 +66,7 @@ class HomeWindow(QMainWindow):
 
     def setScreenGeometry(self) -> None:
         """Fixer la taille de la fenêtre principale et la placer au millieu d'écran."""
+
         # Trouver le centre
         x = self.app.primaryScreen().availableGeometry().x()
         screen_size = self.app.primaryScreen().availableSize()
@@ -72,7 +76,8 @@ class HomeWindow(QMainWindow):
         self.setGeometry(center_x - side_size / 2, 0, side_size, side_size)
 
     def createActions(self) -> None:
-        """Définir la fonctionnalité du menu"""
+        """Initialiser la fonctionnalité du menu."""
+
         # Import
         self.import_with_results = QAction("Import with results", self)
         self.import_no_results = QAction("Import without results", self)
@@ -92,7 +97,8 @@ class HomeWindow(QMainWindow):
             lambda: self.exportData(False))
 
     def createMenus(self) -> None:
-        """Définir le menu, placer les sous-menus et les options possibles"""
+        """Initialiser le menu, placer les sous-menus et les options possibles."""
+
         menu_bar = self.menuBar()
         menu_bar.setNativeMenuBar(False)
         file_menu = menu_bar.addMenu("File")
@@ -107,12 +113,13 @@ class HomeWindow(QMainWindow):
 
     @ Slot(str)
     def showPopupMsg(self, msg: str) -> None:
-        """Définir un popup avec une alerte et le message correspondant.
+        """Initialiser un popup avec une alerte et le message correspondant.
         Un popup ferme automatiquement au bout de 2 seconds.
 
         Args:
-            msg (str): un message à afficher
+            msg (str): un message à afficher.
         """
+
         popup = QMessageBox(parent=self.main_widget)
         popup.setIcon(QMessageBox.Icon.Warning)
         popup.setText(msg)
@@ -125,12 +132,13 @@ class HomeWindow(QMainWindow):
     @ Slot(bool)
     def importData(self, with_results: bool) -> None:
         """Importer les données avec ou sans les résultats. 
-        Si l'erreur est arrivée, faire apparaître un popup avec le message
+        Si l'erreur est survenue, faire apparaître un popup avec le messaged d'erreur.
 
         Args:
             with_results (bool): Si False, importer uniquement les données des électeurs et des candidats.
             Sinon, importer de plus les résultats d'une élection.
         """
+
         db_file_path, _ = QFileDialog.getOpenFileName(
             self, "Choose database", "", "SQLite databases : (*.db)"
         )
@@ -350,4 +358,6 @@ class HomeWindow(QMainWindow):
 
     def closeEvent(self, event: QCloseEvent) -> None:
         """Redéfinition d'un `closeEvent`. Fermer une application lorsque une fenêtre principale est fermée."""
+
         self.quitApp()
+        event.accept()

@@ -90,7 +90,7 @@ class Election(metaclass=Singleton):
         x2, y2 = point2
         return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
-    def _has_electors_candidates(self) -> bool:
+    def has_electors_candidates(self) -> bool:
         """Vérifier qu'il existe au moins un électeur et un candidat dans une élection.
 
         Returns:
@@ -198,7 +198,7 @@ class Election(metaclass=Singleton):
             voting_rule (str): Une constante correspondante à une règle du vote.
         """
 
-        if not self._has_electors_candidates():
+        if not self.has_electors_candidates():
             return
 
         result = []
@@ -233,7 +233,6 @@ class Election(metaclass=Singleton):
             Union[Candidate, None]: Un candidat-gagnant. Peut retourner `None` dans un condorcet simple ou
                 si le classement associé à `voting_rule` est vide.
         """
-
         if voting_rule not in self.results:
             self.apply_voting_rule(voting_rule)
 
@@ -281,7 +280,6 @@ class Election(metaclass=Singleton):
             return
 
         self.duels_scores = set_duels_scores(self.electors, self.candidates)
-
         for voting_rule in self.results:
             self.apply_voting_rule(voting_rule)
 
@@ -331,22 +329,26 @@ class Election(metaclass=Singleton):
         au moins un électeur et un candidat.
         """
 
-        if not self._has_electors_candidates():
+        if not self.has_electors_candidates():
             return
         # Assuming every candidate has the same voting_rules
         candidate = self.candidates[0]
         keys = candidate.scores.keys()
+
+        duels = self.duels_scores if self.tie_breaker_activated else None
         for voting_rule in keys:
             if voting_rule in VotingRulesConstants.ONE_ROUND:
-                result = sort_cand_by_value(self.candidates, voting_rule)
+                result = sort_cand_by_value(self.candidates, voting_rule, duels=duels)
+                self.results[voting_rule] = result
 
             if voting_rule in VotingRulesConstants.MULTI_ROUND:
                 self.results[voting_rule] = [None] * len(candidate.scores[voting_rule])
-                # prettier-ignore
+
                 for round in range(len(candidate.scores[voting_rule])):
                     result = sort_cand_by_round(
-                        self.candidates, voting_rule, round
+                        self.candidates, voting_rule, round, duels=duels
                     )
+                    self.results[voting_rule][round] = result
 
             if voting_rule in VotingRulesConstants.CONDORCET:
                 sort_asc = (
@@ -354,10 +356,8 @@ class Election(metaclass=Singleton):
                     if voting_rule == VotingRulesConstants.CONDORCET_SIMPSON
                     else False
                 )
-
-                result = sort_cand_by_value(self.candidates, voting_rule, sort_asc)
-
-            self.results[voting_rule] = result
+                result = sort_cand_by_value(self.candidates, voting_rule, duels=None, scores_asc=sort_asc)
+                self.results[voting_rule] = result
 
     def start_election(self, imported: Optional[bool] = False, chosen_voting_rules: List[str] = None) -> None:
         """Commencer une élection. Faire toutes les calculs nécessaires
@@ -383,7 +383,6 @@ class Election(metaclass=Singleton):
         if self.nb_polls:
             set_avg_electors_positions(self.directions_data)
             set_std_deviation(self.directions_data, len(self.electors))
-        print("Start election", self.liquid_democracy_activated)
         if self.liquid_democracy_activated:
             self._make_delegations()
         if chosen_voting_rules:

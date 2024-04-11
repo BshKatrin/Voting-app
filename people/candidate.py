@@ -8,9 +8,13 @@ from .person import Person
 
 @dataclass(kw_only=True, unsafe_hash=True, eq=True, order=True)
 class Candidate(Person):
-    """Une classe permettant de représenter un candidat dans une élection."""
+    """Une classe permettant de représenter un candidat dans une élection. Une couple (first_name, last_name) doit être unique."""
+
     first_name: str = field(default="", hash=True, compare=True)
+    """Un prénom d'un candidat."""
+
     last_name: str = field(default="", hash=True, compare=True)
+    """Un nom d'un candidat."""
 
     dogmatism: float = field(default=-1.0, hash=True, compare=False)
     """Sondages : Plus le taux de dogmatisme est élevé, plus le candidat est sûr de sa position politique
@@ -20,6 +24,7 @@ class Candidate(Person):
     Si le taux de dogmatisme n'est pas donné lors de l'initialisation, il est généré selon une loi normale 
     à l'aide de `dogmatism_const`.
     """
+
     opposition: float = field(default=-1.0, hash=True, compare=False)
     """Sondages : Plus le taux d'opposition est élevé, moins il est probable que le candidat décide
     de changer sa position politique en s'approchant le gagnant d'une élection, et inversement, 
@@ -28,12 +33,15 @@ class Candidate(Person):
     Si le taux d'opposition n'est pas donné lors de l'initialisation, il est généré selon une loi normale 
     à l'aide de `opposition_const`.
     """
+
     dogmatism_const: InitVar[Tuple[float, float]] = field(
         default=(0.5, 0.3), compare=False)
     """Des paramètres (moyenne, écart-type) pour générer le taux de dogmatism."""
+
     opposition_const: InitVar[Tuple[float, float]] = field(
         default=(0.5, 0.3), compare=False)
     """Des paramètres (moyenne, écart-type) pour générer le taux d' opposition."""
+
     # int -> 1 round, float -> Copeland, List -> N rounds
     scores: Dict[str, Union[int, float, List[int]]] = field(
         default_factory=dict, hash=False, compare=False
@@ -56,7 +64,6 @@ class Candidate(Person):
             self.opposition = Person.generate_parameter(
                 mu=mu, sigma=sigma, lower_limit=0, upper_limit=1
             )
-        print(self.first_name, self.dogmatism)
 
     def __str__(self):
         x, y = self.position

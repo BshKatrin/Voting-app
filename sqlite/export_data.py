@@ -142,6 +142,7 @@ class ExportData:
         if not status:
             return False, "Results of voting rules (Condorcet) do not correspond to constraints"
 
+        cls._export_config(connection)
         return True, "Data exported"
 
     @classmethod
@@ -355,3 +356,36 @@ class ExportData:
             return False
         connection.commit()
         return True
+
+    @classmethod
+    def _export_config(cls, connection: Connection) -> None:
+        """Exporter les configurations d'une élection, i.e. si 
+            - la résolution des égalités a été activée.
+            - la démocratie liquide a été activée. 
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+        """
+
+        cursor = connection.cursor()
+
+        cursor.execute("DROP TABLE IF EXISTS settings")
+        connection.commit()
+
+        table_config = f"""
+            CREATE TABLE settings (
+                parameter TEXT,
+                set_value INTEGER NOT NULL,
+
+                PRIMARY KEY(parameter)
+            )
+            """
+        cursor.execute(table_config)
+        connection.commit()
+
+        settings_assoc = [
+            ("liquid_democracy_activated", 1 if cls.election.liquid_democracy_activated else 0),
+            ("tie_breaker_activated",  1 if cls.election.tie_breaker_activated else 0),
+        ]
+        cursor.executemany("INSERT INTO settings VALUES (?, ?)", settings_assoc)
+        connection.commit()

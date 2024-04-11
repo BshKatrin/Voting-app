@@ -6,14 +6,16 @@ from PySide6.QtWidgets import (
     QGraphicsSimpleTextItem,
     QGraphicsPolygonItem,
 )
-from PySide6.QtGui import QPen, QColor, QPolygonF
+from PySide6.QtGui import QPen, QColor, QPolygonF, QPainterPath
 from PySide6.QtCore import Qt, QPointF
 
 
-# To connect nodes
 class Edge(QGraphicsPathItem):
-    def __init__(self, painter_path, start_point, end_point):
-        super().__init__(painter_path, None)
+    """Une classe qui représente une arête d'un graphe orienté."""
+
+    def __init__(self, painter_path: QPainterPath, start_point: QPointF, end_point: QPointF):
+        """Initialiser une arête noire et une tête d'une flèche. Une arête va de `start_point` à `end_point`."""
+        super().__init__(painter_path, None)  # Scene will take ownership
 
         self.setPen(QPen(Qt.black, 2))
         self.start_point = start_point
@@ -22,7 +24,9 @@ class Edge(QGraphicsPathItem):
 
         self.initArrowHead()
 
-    def initArrowHead(self):
+    def initArrowHead(self) -> None:
+        """Initialiser une tête d'une flèche noire."""
+
         # Calculate arrowHead
         arrowHeadPolygon = self.calculateArrowHead(self.start_point, self.end_point)
 
@@ -32,7 +36,13 @@ class Edge(QGraphicsPathItem):
         # Put arrows on top
         arrowHead.setZValue(2)
 
-    def setWeight(self, weight):
+    def setWeight(self, weight: int) -> None:
+        """Mettre le poids `weight` au milleu d'une arête.
+
+        Args:
+            weight (int): Le poids d'une arête.
+        """
+
         middle = (self.start_point + self.end_point) / 2
         textOffset = QPointF(0, 0)
 
@@ -40,7 +50,17 @@ class Edge(QGraphicsPathItem):
         self.text.setText(str(weight))
         self.text.setPos(middle + textOffset)
 
-    def calculateArrowHead(self, start_pos, end_pos):
+    def calculateArrowHead(self, start_pos: QPointF, end_pos: QPointF) -> QPolygonF:
+        """Calculer les coordonnées d'une tête d'une flèche.
+
+        Args:
+            start_pos (PySide6.QtCore.QPointF): Un point de début.
+            end_pos (PySide6.QtCore.QPointF): Un point de l'arrivé.
+
+        Returns:
+            PySide6.QtGui.QPolygonF: Une figure d'une flèche.
+        """
+
         arrowSize = 20
         # Calculate angle, -y since y-axe is inversed
         angle = atan2(

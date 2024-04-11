@@ -1,8 +1,8 @@
 from math import sin, cos, pi, sqrt, atan2
 
-from PySide6.QtWidgets import QGraphicsScene
+from PySide6.QtWidgets import QGraphicsScene, QWidget
 from PySide6.QtGui import QPainterPath, QColor
-from PySide6.QtCore import QPointF
+from PySide6.QtCore import QPointF, QSize
 
 from .node import Node
 from .edge import Edge
@@ -11,29 +11,49 @@ from electoral_systems import Election
 
 
 class DirectedGraph(QGraphicsScene):
-    def __init__(self, view_size, parent=None):
+    """Une scène sur laquelle un graphe orienté sera dessiné."""
+
+    def __init__(self, view_size: QSize, voting_rule: str, parent: QWidget):
+        """Initialiser une instance  d'une élection (pour le partage des données). Fixer la taille.
+        Définir le couleur de l'arrière plan. Initialiser un `PySide6.QtGui.QPainterPath` pour les arêtes. 
+
+        Args:
+            view_size (PySide6.QtCore.QSize): La taille d'un view associé.
+            voting_rule (str): Une constante d'une règle du vote dont les résultats une scène dessinera.
+            parent (PySide6.QtWidgets.QWidget): Le parent d'une scène.
+        """
 
         super().__init__(parent)
         self.election = Election()
-        self.id_position = dict()  # dict will be filled on initNodes
+
+        # Un dict sera rempli dans initNodes
+        self.id_position = dict()
 
         self.view_size = view_size
+        self.voting_rule = voting_rule
+        self.path = QPainterPath()
 
-        self.initUI()
+        # Couleur gris-claire
+        self.setBackgroundBrush(QColor(238, 238, 238))
         self.calculateCircle()
 
-    def initUI(self):
-        self.path = QPainterPath()
-        self.setBackgroundBrush(QColor(238, 238, 238))
+    def drawGraphics(self, weighted: bool) -> None:
+        """Initialiser et placer des noeuds et des arêtes d'un graphe orienté.
 
-    def drawGraphics(self, weighted):
+        Args:
+            weighted (bool): True s'il faut représenter des poids. Sinon, False.
+        """
+
         self.initNodes()
         self.initEdges(weighted)
 
-        # draw nodes, fill dict
+    def initNodes(self) -> None:
+        """Initialiser et placer des noeuds. Remplir un dictionnaire `id_position` qui associe un ID d'un candidat
+        et noeud d'un candidat."""
 
-    def initNodes(self):
-        # Dict such as key : id of a candidate, value : it's associated node
+        # Dict key : ID d'un candidat, value : son noeud associé
+        winner = self.election.choose_winner(self.voting_rule)
+
         for i in range(len(self.election.candidates)):
             x = self.center.x() + self.radius * cos(self.angle * i)
             y = self.center.y() + self.radius * sin(self.angle * i)
@@ -41,12 +61,21 @@ class DirectedGraph(QGraphicsScene):
             candidate = self.election.candidates[i]
             node = Node(x, y, f"{candidate.first_name} {candidate.last_name}")
 
+            if candidate == winner:
+                node.highlight()
+
             self.id_position[candidate.id] = node
             self.addItem(node)
 
     # draw edges between nodes
-    def initEdges(self, weighted):
-        # Dict of id of candidates who were already placed with corresponding node position
+    def initEdges(self, weighted: bool) -> None:
+        """Initialiser et placer des arêtes d'un graphe.
+
+        Args:
+            weighted (bool): True s'il faut représenter des poids. Sinon, False.
+        """
+
+        # Les duels des candidats déjà remplis
         for (winner, loser), weight in self.election.duels_scores.items():
 
             winner_node = self.id_position[winner.id]
@@ -70,8 +99,9 @@ class DirectedGraph(QGraphicsScene):
 
             self.addItem(edge)
 
-    # math to place candidates in a circle
-    def calculateCircle(self):
+    def calculateCircle(self) -> None:
+        """Calculer une cercle sur la bordure de laquelle les noeuds vont être placés."""
+
         self.center = QPointF(self.view_size.width() / 2, self.view_size.height() / 2)
         # Radius = 70% of window size
         self.radius = min(self.center.x() * 0.7, self.center.y() * 0.7)
@@ -79,8 +109,17 @@ class DirectedGraph(QGraphicsScene):
         nb_candidates = len(self.election.candidates)
         self.angle = 0 if nb_candidates == 0 else 2 * pi / nb_candidates
 
-    # Calculate norm of a vector
-    def calculateNorm(self, point1, point2):
+    def calculateNorm(self, point1: QPointF, point2: QPointF) -> float:
+        """Calculer la norme d'un vecteur point1 -> point2.
+
+        Args:
+            point1 (PySide6.QtCore.QPointF): point de départ d'un vecteur.
+            point2 (PySide6.QtCore.QPointF): point d'arrivée d'un vecteur.
+
+        Returns:
+            float: La norme d'un vecteur.
+        """
+
         x1, y1 = point1.x(), point1.y()
         x2, y2 = point2.x(), point2.y()
         return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
