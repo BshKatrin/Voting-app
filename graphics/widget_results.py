@@ -19,7 +19,7 @@ from electoral_systems import Election, VotingRulesConstants
 
 class WidgetResults(QWidget):
     """Une classe qui représente un widget avec des résultats d'une élection,
-    permet de voir les graphs et de lancer des sondages."""
+    permet de voir des graphes et des diagrammes et de lancer des sondages."""
 
     sig_show_chart = Signal(str)
     """Un signal émis lorsqu'il faut de changer un diagramme à bandes avec un view des diagrammes visible."""

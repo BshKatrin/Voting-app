@@ -1,10 +1,11 @@
 """Un module fournit la fonctionnalité pour résoudre des égalités en fonction des duels entre les candidats."""
 
 from itertools import combinations
-from typing import List
+from typing import List, Dict
 
-from utls import duels_type
 from people import Candidate
+
+duels_type = Dict[tuple[Candidate, Candidate], int]
 
 
 def get_ties(ranking: List[Candidate], voting_rule: str) -> List[List[int]]:
@@ -18,6 +19,7 @@ def get_ties(ranking: List[Candidate], voting_rule: str) -> List[List[int]]:
         List[List[int)]]: Une liste dont chaque élément est une liste des indices des candidats dans `ranking`
         qui ont le même score.
     """
+
     ties = []
     sublist = []
     prev_candidate = None

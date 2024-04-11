@@ -15,10 +15,10 @@ from electoral_systems import Election
 
 
 class WidgetMap(QWidget):
-    """Une classe qui représente un widget avec une carte politique, la génération des données et choix des règles de vote"""
+    """Une classe qui représente un widget avec une carte politique, la génération des données et le choix des règles du vote."""
 
     sig_start_election = Signal(list)
-    """Un signal émis avec une liste des règles du vote choisis à l'aide des checkboxes."""
+    """Un signal émis avec une liste des constantes associées aux règles du vote choisies à l'aide des checkboxes."""
 
     def __init__(self, parent: QWidget):
         """Initialisation de la taille et d'une interface d'un widget.
