@@ -38,4 +38,4 @@ def apply_approval(electors: List[Elector], candidates: List[Candidate],
             else:
                 break
 
-    return sort_cand_by_value(candidates, APPROVAL, duels)
+    return sort_cand_by_value(candidates, APPROVAL, len(electors), duels)

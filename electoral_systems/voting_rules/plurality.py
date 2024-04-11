@@ -30,11 +30,10 @@ def apply_plurality_simple(electors: List[Elector], candidates: List[Candidate],
     for elector in electors:
         elector.candidates_ranked[0].add_score(
             PLURALITY_SIMPLE, elector.weight)
-    return sort_cand_by_value(candidates, PLURALITY_SIMPLE, duels)
+    return sort_cand_by_value(candidates, PLURALITY_SIMPLE, len(electors), duels)
 
 
-def apply_plurality_rounds(electors: List[Elector], candidates: List[Candidate],
-                           duels: Optional[duels_type] = None) -> List[List[Candidate]]:
+def apply_plurality_rounds(electors: List[Elector], candidates: List[Candidate]) -> List[List[Candidate]]:
     """Appliquer une règle du vote *Pluralité à 2 tours*. Possible d'appliquer cette règle du vote s'il existe au moins 3 candidats.
       Principe d'une règle du vote *Pluralité à 2 tours*: 
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
@@ -49,14 +48,14 @@ def apply_plurality_rounds(electors: List[Elector], candidates: List[Candidate],
         electors (List[people.elector.Elector]): Une liste de tous les électeurs participant dans une élection.
             Leur liste `candidates_ranked` doit être remplie.
         candidates (List[people.candidate.Candidate]): Une liste de tous les candidats qui participent dans une élection.
-        duels (Optional[Utls.duels_type]): Un dictionnaire des duels entre les candidats. Nécessaire uniquement s'il faut appliquer 
-            un tie-break selon les duels. Default = `None`.
+
     Returns:
         List[people.candidate.Candidate]: Une liste des listes (classement dans l'ordre décroissant) des candidats par tour. La longueur de la liste correpond
         au nombre des tours effectués.
     """
+
     max_rounds = 2
     elimination_index = 2  # i.e. on ne considère que 2 premiers candidats dans le 2ème tour
     res = apply_voting_rule_rounds(
-        electors, candidates, duels, PLURALITY_2_ROUNDS, max_rounds, elimination_index)
+        electors, candidates, PLURALITY_2_ROUNDS, max_rounds, elimination_index)
     return res

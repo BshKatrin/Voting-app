@@ -7,47 +7,85 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
 from electoral_systems.voting_rules import plurality
+from electoral_systems.voting_rules.constants import PLURALITY_SIMPLE, PLURALITY_2_ROUNDS
+from electoral_systems.utls import IdIterator
+from electoral_systems.voting_rules.utls import set_duels_scores
 from people.elector import Elector
 from people.candidate import Candidate
 
 
 class TestPlurality(unittest.TestCase):
 
+    def setUp(self):
+        self.id_iter = IdIterator(0)
+
+        # Position n'affecte pas des résultats dans ce cas (self.candidates sera définie manuellement)
+        self.c0 = Candidate(id=next(self.id_iter), position=(0, 0), first_name="A", last_name="A")
+        self.c1 = Candidate(id=next(self.id_iter), position=(0, 0), first_name="B", last_name="B")
+        self.c2 = Candidate(id=next(self.id_iter), position=(0, 0), first_name="C", last_name="C")
+        self.c3 = Candidate(id=next(self.id_iter), position=(0, 0), first_name="D", last_name="D")
+
+        self.candidates = [self.c3, self.c2, self.c1, self.c0]
+
     def test_plurality_simple(self):
-        c0 = Candidate(first_name="A", last_name="B", position=(0.6, 0.5))
-        c1 = Candidate(first_name="C", last_name="D", position=(-0.6, -0.5))
-        c2 = Candidate(first_name="E", last_name="F", position=(0, 0))
+        # Position n'affecte pas des résultats dans ce cas (candidates_ranked est définie manuellement)
+        e0 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c2, self.c1, self.c0, self.c3])
+        e1 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c2, self.c1, self.c0, self.c3])
+        e2 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c0, self.c1, self.c3, self.c2])
+        e3 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c3, self.c0, self.c1, self.c2])
 
-        candidates = [c0, c1, c2]
+        electors = [e0, e1, e2, e3]
 
-        e0 = Elector(candidates=candidates, position=(0.1, 0.1))  # vote pour c3
-        e1 = Elector(candidates=candidates, position=(0.5, 0.5))  # vote pour c1
-        e2 = Elector(candidates=candidates, position=(0.7, 0.8))  # vote pour c1
-        e3 = Elector(candidates=candidates, position=(-0.5, -0.5))  # vote pour c2
-        e4 = Elector(candidates=candidates, position=(1, 1))  # vote pour c1
-
-        electors = [e0, e1, e2, e3, e4]
+        # Vérification d'un classement (égalités résolues par ordre alphabétique)
+        ranking = [self.c2, self.c0, self.c3, self.c1]
         self.assertEqual(
-            plurality.apply_plurality_simple(electors, candidates), [c0, c1, c2]
+            plurality.apply_plurality_simple(electors, self.candidates), ranking
         )
+
+        # Vérification des scores
+        self.assertEqual(self.c0.scores[PLURALITY_SIMPLE], 1)
+        self.assertEqual(self.c1.scores[PLURALITY_SIMPLE], 0)
+        self.assertEqual(self.c2.scores[PLURALITY_SIMPLE], 2)
+        self.assertEqual(self.c3.scores[PLURALITY_SIMPLE], 1)
+
+    def test_plurality_simple_tie_breaker(self):
+        # Position n'affecte pas des résultats dans ce cas (candidates_ranked est définie manuellement)
+        e0 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c2, self.c1, self.c3, self.c0])
+        e1 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c2, self.c1, self.c3, self.c0])
+        e2 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c0, self.c1, self.c3, self.c2])
+        e3 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c3, self.c0, self.c1, self.c2])
+
+        electors = [e0, e1, e2, e3]
+
+        duels = set_duels_scores(electors, self.candidates)
+
+        # Vérification d'un classement (égalités résolues par ordre alphabétique)
+        self.assertEqual(
+            plurality.apply_plurality_simple(electors, self.candidates, duels), [self.c2, self.c3, self.c0, self.c1]
+        )
+
+        # Vérification des scores
+        self.assertEqual(self.c0.scores[PLURALITY_SIMPLE], 1)
+        self.assertEqual(self.c1.scores[PLURALITY_SIMPLE], 0)
+        self.assertEqual(self.c2.scores[PLURALITY_SIMPLE], 2)
+        self.assertEqual(self.c3.scores[PLURALITY_SIMPLE], 1)
 
     def test_plurality_rounds(self):
-        c0 = Candidate(first_name="A", last_name="B", position=(0.6, 0.5))
-        c1 = Candidate(first_name="C", last_name="D", position=(-0.6, -0.5))
-        c2 = Candidate(first_name="E", last_name="F", position=(0, 0))
+        # Position n'affecte pas des résultats dans ce cas (candidates_ranked est définie manuellement)
+        e0 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c2, self.c1, self.c0, self.c3])
+        e1 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c2, self.c1, self.c0, self.c3])
+        e2 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c0, self.c1, self.c3, self.c2])
+        e3 = Elector(id=next(self.id_iter), position=(0, 0), candidates_ranked=[self.c3, self.c0, self.c1, self.c2])
 
-        candidates = [c0, c1, c2]
-
-        e0 = Elector(candidates=candidates, position=(0.1, 0.1))  # vote pour c3
-        e1 = Elector(candidates=candidates, position=(0.5, 0.5))  # vote pour c1
-        e2 = Elector(candidates=candidates, position=(0.7, 0.8))  # vote pour c1
-        e3 = Elector(candidates=candidates, position=(-0.5, -0.5))  # vote pour c2
-        e4 = Elector(candidates=candidates, position=(1, 1))  # vote pour c1
-
-        electors = [e0, e1, e2, e3, e4]
-
+        electors = [e0, e1, e2, e3]
+        # Vérification d'un classement (égalités résolues par ordre alphabétique)
         self.assertEqual(
-            plurality.apply_plurality_rounds(electors, candidates),
-            ([c0, c1, c2], [c0, c1]),
+            plurality.apply_plurality_rounds(electors, self.candidates), [
+                [self.c2, self.c0, self.c3, self.c1], [self.c0, self.c2]]
         )
-        # c2 se fait eliminer et son votant vote pour c0
+
+        # Vérification des scores
+        self.assertEqual(self.c0.scores[PLURALITY_2_ROUNDS], [1, 2])
+        self.assertEqual(self.c1.scores[PLURALITY_2_ROUNDS], [0, 0])
+        self.assertEqual(self.c2.scores[PLURALITY_2_ROUNDS], [2, 2])
+        self.assertEqual(self.c3.scores[PLURALITY_2_ROUNDS], [1, 0])

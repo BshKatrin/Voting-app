@@ -6,8 +6,7 @@ from .utls import duels_type, apply_voting_rule_rounds
 from people import Candidate, Elector
 
 
-def apply_exhaustive_ballot(electors: List[Elector], candidates: List[Candidate],
-                            duels: Optional[duels_type] = None) -> List[List[Candidate]]:
+def apply_exhaustive_ballot(electors: List[Elector], candidates: List[Candidate]) -> List[List[Candidate]]:
     """Appliquer une règle du vote *Éliminations successives*. Possible d'appliquer cette règle du vote s'il existe au moins 3 candidats.
     Notons N: le nombre des candidats. Au plus il peut exister N-1 tours ou moins s'il existe un candidat qui a reçu la majorité
     absolue des votes.
@@ -21,12 +20,12 @@ def apply_exhaustive_ballot(electors: List[Elector], candidates: List[Candidate]
         electors (List[people.elector.Elector]): Une liste de tous les électeurs participant dans une élection.
             Leur liste `candidates_ranked` doit être remplie.
         candidates (List[people.candidate.Candidate]): Une liste de tous les candidats qui participent dans une élection.
-        duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
-        que le candidat-gagnant a battu le candidat-perdant. Default = `None`.
+
     Returns:
         List[people.candidate.Candidate]: Une liste des listes (classement dans l'ordre décroissant) des candidats par tour.
         La longueur de la liste correpond au nombre des tours effectués.
     """
+
     max_rounds = len(candidates) - 1
     elimination_index = -1  # i.e. éliminer tout le monde sauf le dernier
-    return apply_voting_rule_rounds(electors, candidates, duels, EXHAUSTIVE_BALLOT, max_rounds, elimination_index)
+    return apply_voting_rule_rounds(electors, candidates, EXHAUSTIVE_BALLOT, max_rounds, elimination_index)

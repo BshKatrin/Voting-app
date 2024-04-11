@@ -1,0 +1,1189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>tzb.sqlite.import_data API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tzb.sqlite.import_data</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from sqlite3 import Connection
+from typing import Set, Dict
+
+from electoral_systems import Election, VotingRulesConstants
+from people import Candidate, Elector
+
+
+class ImportData:
+    &#34;&#34;&#34;Une classe qui fournit la fonctionnalité nécessaires pour une importation des données d&#39;une élection.
+    SQLite3 est utilisé.&#34;&#34;&#34;
+
+    election = Election()
+    IMPORT = &#34;I&#34;
+
+    # Check that table corresponds
+    @classmethod
+    def _check_tables(cls, tables_to_check: Set[str], existing_tables: Set[str]) -&gt; tuple[bool, Set[str]]:
+        &#34;&#34;&#34;Vérifier que les tableaux dans `tables_to_check` sont présents dans une base des données qui
+        contient `existing_tables`.
+
+        Args:
+            tables_to_check (Set[str]): Des noms tableaux dont l&#39;existance il faut vérifier
+            existing_tables (Set[str]): Des noms des tableaux qui existe dans une base des données.
+        &#34;&#34;&#34;
+
+        missing_tables = tables_to_check - (tables_to_check &amp; existing_tables)
+        return (bool(missing_tables), missing_tables)
+
+    @classmethod
+    def _get_existing_tables(cls, connection: Connection) -&gt; Set[str]:
+        &#34;&#34;&#34;Retourner des noms des tableaux qui existent dans une base des données.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+
+        Returns:
+            Set[str]: Un ensemble des noms des tableaux.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        cursor.execute(&#34;SELECT name FROM sqlite_master WHERE type = &#39;table&#39;&#34;)
+        return {row[0] for row in cursor.fetchall()}
+
+    @classmethod
+    def _check_columns(cls, connection: Connection, tables_cols: Dict[str, tuple[str, str]]) -&gt; bool:
+        &#34;&#34;&#34;Vérifier le noms des colonnes et leurs affinités de type.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            tables_cols (Dict[str, tuple[str, str]]): Un dictionnnaire dont les clés sont des noms des tableaux qui existent
+            dans une base des données. Des valeurs sont des noms des colonnes et leurs affinités de type qu&#39;il faut vérifier.
+
+        Returns:
+            bool: True si dans chaque tableau il existe bien des colonnes données avec la bonne affinité de type. Sinon, False.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        for table, columns in tables_cols.items():
+            cursor.execute(
+                f&#34;SELECT name, type FROM pragma_table_info(&#39;{table}&#39;)&#34;)
+            existing_columns = {(row[0], row[1]) for row in cursor.fetchall()}
+            missing_columns = columns - (columns &amp; existing_columns)
+            if missing_columns:
+                return True
+        return False
+
+    @classmethod
+    def _check_columns_people(cls, connection: Connection) -&gt; bool:
+        &#34;&#34;&#34;Vérifier des colonnes et leurs affinités de type pour des tableaux des candidats et des électeurs.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+
+        Returns:
+            bool: True si pour chaque tableau il existe bien des colonnes avec la bonne affinité de type.
+        &#34;&#34;&#34;
+
+        return cls._check_columns(
+            connection,
+            {
+                &#34;candidates&#34;: {
+                    (&#34;id&#34;, &#34;INTEGER&#34;),
+                    (&#34;x&#34;, &#34;REAL&#34;),
+                    (&#34;y&#34;, &#34;REAL&#34;),
+                    (&#34;first_name&#34;, &#34;TEXT&#34;),
+                    (&#34;last_name&#34;, &#34;TEXT&#34;),
+                    (&#34;dogmatism&#34;, &#34;REAL&#34;),
+                    (&#34;opposition&#34;, &#34;REAL&#34;),
+                },
+                &#34;electors&#34;: {
+                    (&#34;id&#34;, &#34;INTEGER&#34;),
+                    (&#34;x&#34;, &#34;REAL&#34;),
+                    (&#34;y&#34;, &#34;REAL&#34;),
+                    (&#34;weight&#34;, &#34;INTEGER&#34;),
+                    (&#34;knowledge&#34;, &#34;REAL&#34;),
+                },
+            },
+        )
+
+    @classmethod
+    def import_people(cls, connection: Connection, with_results: bool) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Importer des données dans une élection à partir de la base des données. Une fonction fait les vérifications
+        nécessaires des tableaux et des colonnes.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            with_results (bool): True s&#39;il faut importer avec des résultats. False, s&#39;il faut importer sans des résultats.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        if with_results:
+            return cls.import_people_with_results(connection)
+        return cls.import_people_no_results(connection)
+
+    @classmethod
+    def import_people_no_results(cls, connection: Connection) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Importer des données (candidats, électeurs uniquement) dans une élection à partir de la base des données.
+        Une fonction fait les vérifications nécessaires des tableaux et des colonnes.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        existing_tables = cls._get_existing_tables(connection)
+        # Check tables
+        missing, missing_tables = cls._check_tables(
+            {&#34;candidates&#34;, &#34;electors&#34;}, existing_tables
+        )
+        if missing:
+            return False, f&#34;Tables {missing_tables} are not found&#34;
+
+        # Check columns
+        missing = cls._check_columns_people(connection)
+
+        if missing:
+            return False, f&#34;Database does not correspond&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;SELECT x, y, first_name, last_name FROM candidates&#34;)
+        candidates_data = cursor.fetchall()
+        max_fst_name = &#34;A&#34;
+        max_lst_name = &#34;A&#34;
+        for x, y, first_name, last_name in candidates_data:
+            id = next(cls.election.id_iter)
+            cls.election.add_candidate_import(
+                Candidate(
+                    id=id, position=(
+                        x, y), first_name=first_name, last_name=last_name
+                )
+            )
+
+        cursor.execute(&#34;SELECT x, y, weight, knowledge FROM electors&#34;)
+        electors_data = cursor.fetchall()
+
+        for x, y, weight, knowledge in electors_data:
+            id = next(cls.election.id_iter)
+            cls.election.add_elector_import(
+                Elector(id=id, position=(x, y),
+                        weight=weight, knowledge=knowledge)
+            )
+        return True, &#34;Data imported&#34;
+
+    @classmethod
+    def import_people_with_results(cls, connection: Connection) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Importer des données (candidats, électeurs, résultats) dans une élection à partir de la base des données.
+        Une fonction fait les vérifications nécessaires des tableaux et des colonnes. Importer les configurations d&#39;une élection
+        si le tableau nécessaire est présent.
+        Supprime toutes les données existantes d&#39;une élection.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cls.election.delete_all_data()
+        cls.election.nb_polls = 0
+        # Check tables
+        existing_tables = cls._get_existing_tables(connection)
+        missing, missing_tables = cls._check_tables(
+            {&#34;candidates&#34;, &#34;electors&#34;}, existing_tables
+        )
+        if missing:
+            return False, f&#34;Tables {missing_tables} are not found&#34;
+
+        # Check columns
+        missing = cls._check_columns_people(connection)
+        if missing:
+            return False, f&#34;Database does not correspond&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;SELECT * FROM candidates&#34;)
+        candidates_data = cursor.fetchall()
+
+        # id : candidate
+        candidates_id_assoc = dict()
+
+        for id, x, y, first_name, last_name, dogm, oppos in candidates_data:
+            new_candidate = Candidate(
+                id=next(cls.election.id_iter),
+                position=(x, y),
+                first_name=first_name,
+                last_name=last_name,
+                dogmatism=dogm,
+                opposition=oppos,
+            )
+            cls.election.add_candidate_import(new_candidate)
+            candidates_id_assoc[id] = new_candidate
+
+        cursor.execute(&#34;SELECT * FROM electors&#34;)
+        electors_data = cursor.fetchall()
+
+        for id, x, y, weight, knowledge in electors_data:
+            new_elector = Elector(
+                id=id,
+                position=(x, y),
+                weight=weight,
+                knowledge=knowledge,
+            )
+            cls.election.add_elector_import(new_elector)
+
+        table_missing, _ = cls._check_tables({&#34;settings&#34;}, existing_tables)
+        cls._import_config(connection, table_missing)
+        return cls._import_results(connection, existing_tables, candidates_id_assoc)
+
+    @classmethod
+    def _import_results(cls, connection: Connection, existing_tables: Set[str], assoc: Dict[int, Candidate]) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Importer des résultats de chaque règle du vote présente dans une base des données dans une élection.
+        Une fonction fait les vérifications nécessaires des tableaux et des colonnes.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            existing_tables (Set[str]): Un ensemble des noms des tableaux qui existent dans une base des données.
+            assoc: Dict[int, people.candidate.Candidate]: Un dictionnaire qui associe à chaque ID d&#39;un candidat
+            (ID dans une base des données) un candidat dans une élection. Nécessaire à cause de la possiblité de divergences
+            des ces IDs.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        _, missing_tables = cls._check_tables(
+            {&#34;results_one_round&#34;, &#34;results_multi_round&#34;, &#34;results_condorcet&#34;},
+            existing_tables,
+        )
+
+        if len(missing_tables) == 3:
+            return False, &#34;No tables related to scores found&#34;
+
+        if &#34;results_one_round&#34; in existing_tables:
+            # Check columns
+            missing = cls._check_columns(
+                connection,
+                {
+                    &#34;results_one_round&#34;: {
+                        (&#34;candidate_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;voting_rule&#34;, &#34;TEXT&#34;),
+                        (&#34;score&#34;, &#34;REAL&#34;),
+                    },
+                },
+            )
+            if missing:
+                return False, f&#34;Database does not correspond&#34;
+
+            cls._import_one_round(connection, assoc)
+
+        if &#34;results_multi_round&#34; in existing_tables:
+            missing = cls._check_columns(
+                connection,
+                {
+                    &#34;results_multi_round&#34;: {
+                        (&#34;candidate_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;voting_rule&#34;, &#34;TEXT&#34;),
+                        (&#34;round&#34;, &#34;INTEGER&#34;),
+                        (&#34;score&#34;, &#34;REAL&#34;),
+                    },
+                },
+            )
+            if missing:
+                return False, f&#34;Database does not correspond&#34;
+            cls._import_multi_round(connection, assoc)
+
+        if (&#34;results_condorcet&#34; in existing_tables and &#34;condorcet_duels&#34; in existing_tables):
+            missing = cls._check_columns(
+                connection,
+                {
+                    &#34;results_condorcet&#34;: {
+                        (&#34;candidate_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;voting_rule&#34;, &#34;TEXT&#34;),
+                        (&#34;score&#34;, &#34;REAL&#34;),
+                    },
+                    &#34;condorcet_duels&#34;: {
+                        (&#34;winner_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;loser_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;score&#34;, &#34;REAL&#34;),
+                    },
+                },
+            )
+            if missing:
+                return False, f&#34;Database does not correspond&#34;
+
+            cls._import_condorcet(connection, assoc)
+
+        return True, &#34;Data imported&#34;
+
+    @classmethod
+    def _import_one_round(cls, connection: Connection, assoc: Dict[int, Candidate]) -&gt; None:
+        &#34;&#34;&#34;Importer des résultats des règles du vote à un tour dans une élection. Une fonction fait les vérifications
+        nécessaires des tableaux et des colonnes. Une fonction remplie uniquement des scores des candidats, elle 
+        ne remplit pas un classement (un attribut `results` dans une `election`).
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            assoc: Dict[int, people.candidate.Candidate]: Un dictionnaire qui associe à chaque ID d&#39;un candidat
+            (ID dans une base des données) un candidat dans une élection. Nécessaire à cause de la possiblité de divergences
+            des ces IDs.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        query = &#34;SELECT * FROM results_one_round&#34;
+        cursor.execute(query)
+        data = cursor.fetchall()
+
+        for candidate_id, voting_rule, score in data:
+            candidate = assoc[candidate_id]
+            candidate.scores[voting_rule] = int(score)
+
+    @classmethod
+    def _import_multi_round(cls, connection: Connection, assoc: Dict[int, int]) -&gt; None:
+        &#34;&#34;&#34;Importer des résultats des règles du vote à plusieurs tour dans une élection. Une fonction fait les vérifications
+        nécessaires des tableaux et des colonnes. Une fonction remplie uniquement des scores des candidats, elle 
+        ne remplit pas un classement (un attribut `results` dans une `election`).
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            assoc: Dict[int, people.candidate.Candidate]: Un dictionnaire qui associe à chaque ID d&#39;un candidat
+            (ID dans une base des données) un candidat dans une élection. Nécessaire à cause de la possiblité de divergences
+            des ces IDs.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        # Init lists bases on length
+        cursor.execute(
+            &#34;SELECT max(round), voting_rule FROM results_multi_round GROUP BY voting_rule&#34;)
+
+        nb_rounds = cursor.fetchall()
+        for rounds, voting_rule in nb_rounds:
+            for candidate in assoc.values():
+                candidate.scores[voting_rule] = [0] * (rounds + 1)
+
+        cursor.execute(&#34;SELECT * FROM results_multi_round&#34;)
+        data = cursor.fetchall()
+        for candidate_id, voting_rule, round, score in data:
+            candidate = assoc[candidate_id]
+            candidate.scores[voting_rule][round] = int(score)
+
+    @classmethod
+    def _import_condorcet(cls, connection: Connection, assoc: Dict[int, int]) -&gt; None:
+        &#34;&#34;&#34;Importer des résultats des règles du vote Condorcet-cohérentes dans une élection. Une fonction fait les vérifications
+        nécessaires des tableaux et des colonnes. Une fonction remplie des scores des candidats, elle 
+        ne remplit pas un classement (un attribut `results` dans une `election`). De plus, la fonction remplie des résultats des duels
+        entre les candidats (un attribut `duels_scores` dans `election`).
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            assoc: Dict[int, people.candidate.Candidate]: Un dictionnaire qui associe à chaque ID d&#39;un candidat
+            (ID dans une base des données) un candidat dans une élection. Nécessaire à cause de la possiblité de divergences
+            des ces IDs.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        # Duels
+        cursor.execute(&#34;SELECT * FROM condorcet_duels&#34;)
+        data = cursor.fetchall()
+
+        for winner_id, loser_id, score in data:
+            winner = assoc[winner_id]
+            loser = assoc[loser_id]
+            cls.election.duels_scores[(winner, loser)] = int(score)
+
+        # Scores
+        cursor.execute(&#34;SELECT * FROM results_condorcet&#34;)
+        data = cursor.fetchall()
+
+        for candidate_id, voting_rule, score in data:
+            candidate = assoc[candidate_id]
+            if voting_rule == VotingRulesConstants.CONDORCET:
+                candidate.scores[voting_rule] = score
+            else:
+                candidate.scores[voting_rule] = int(score)
+
+    @classmethod
+    def _import_config(cls, connection: Connection, table_missing: bool) -&gt; None:
+        &#34;&#34;&#34;Importer les configurations d&#39;une élection, i.e. si 
+            - la résolution des égalités a été faite par les duels
+            - la démocratie liquide a été activée. 
+        Si le tableau `settings` n&#39;est pas présent dans une base des données, désactiver la démocratie liquide et 
+        la résolution des égalités par duels.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            table_missing (bool): True si le tableau `settings` n&#39;est pas présent dans une base des données, False sinon.
+        &#34;&#34;&#34;
+
+        cls.election.liquid_democracy_activated = False
+        cls.election.tie_breaker_activated = False
+
+        if table_missing:
+            return
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;SELECT * FROM settings&#34;)
+        data = cursor.fetchall()
+
+        for parameter, set_value in data:
+            match parameter:
+                case &#34;liquid_democracy_activated&#34;:
+                    cls.election.liquid_democracy_activated = bool(set_value)
+                case &#34;tie_breaker_activated&#34;:
+                    cls.election.tie_breaker_activated = bool(set_value)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tzb.sqlite.import_data.ImportData"><code class="flex name class">
+<span>class <span class="ident">ImportData</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Une classe qui fournit la fonctionnalité nécessaires pour une importation des données d'une élection.
+SQLite3 est utilisé.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ImportData:
+    &#34;&#34;&#34;Une classe qui fournit la fonctionnalité nécessaires pour une importation des données d&#39;une élection.
+    SQLite3 est utilisé.&#34;&#34;&#34;
+
+    election = Election()
+    IMPORT = &#34;I&#34;
+
+    # Check that table corresponds
+    @classmethod
+    def _check_tables(cls, tables_to_check: Set[str], existing_tables: Set[str]) -&gt; tuple[bool, Set[str]]:
+        &#34;&#34;&#34;Vérifier que les tableaux dans `tables_to_check` sont présents dans une base des données qui
+        contient `existing_tables`.
+
+        Args:
+            tables_to_check (Set[str]): Des noms tableaux dont l&#39;existance il faut vérifier
+            existing_tables (Set[str]): Des noms des tableaux qui existe dans une base des données.
+        &#34;&#34;&#34;
+
+        missing_tables = tables_to_check - (tables_to_check &amp; existing_tables)
+        return (bool(missing_tables), missing_tables)
+
+    @classmethod
+    def _get_existing_tables(cls, connection: Connection) -&gt; Set[str]:
+        &#34;&#34;&#34;Retourner des noms des tableaux qui existent dans une base des données.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+
+        Returns:
+            Set[str]: Un ensemble des noms des tableaux.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        cursor.execute(&#34;SELECT name FROM sqlite_master WHERE type = &#39;table&#39;&#34;)
+        return {row[0] for row in cursor.fetchall()}
+
+    @classmethod
+    def _check_columns(cls, connection: Connection, tables_cols: Dict[str, tuple[str, str]]) -&gt; bool:
+        &#34;&#34;&#34;Vérifier le noms des colonnes et leurs affinités de type.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            tables_cols (Dict[str, tuple[str, str]]): Un dictionnnaire dont les clés sont des noms des tableaux qui existent
+            dans une base des données. Des valeurs sont des noms des colonnes et leurs affinités de type qu&#39;il faut vérifier.
+
+        Returns:
+            bool: True si dans chaque tableau il existe bien des colonnes données avec la bonne affinité de type. Sinon, False.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        for table, columns in tables_cols.items():
+            cursor.execute(
+                f&#34;SELECT name, type FROM pragma_table_info(&#39;{table}&#39;)&#34;)
+            existing_columns = {(row[0], row[1]) for row in cursor.fetchall()}
+            missing_columns = columns - (columns &amp; existing_columns)
+            if missing_columns:
+                return True
+        return False
+
+    @classmethod
+    def _check_columns_people(cls, connection: Connection) -&gt; bool:
+        &#34;&#34;&#34;Vérifier des colonnes et leurs affinités de type pour des tableaux des candidats et des électeurs.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+
+        Returns:
+            bool: True si pour chaque tableau il existe bien des colonnes avec la bonne affinité de type.
+        &#34;&#34;&#34;
+
+        return cls._check_columns(
+            connection,
+            {
+                &#34;candidates&#34;: {
+                    (&#34;id&#34;, &#34;INTEGER&#34;),
+                    (&#34;x&#34;, &#34;REAL&#34;),
+                    (&#34;y&#34;, &#34;REAL&#34;),
+                    (&#34;first_name&#34;, &#34;TEXT&#34;),
+                    (&#34;last_name&#34;, &#34;TEXT&#34;),
+                    (&#34;dogmatism&#34;, &#34;REAL&#34;),
+                    (&#34;opposition&#34;, &#34;REAL&#34;),
+                },
+                &#34;electors&#34;: {
+                    (&#34;id&#34;, &#34;INTEGER&#34;),
+                    (&#34;x&#34;, &#34;REAL&#34;),
+                    (&#34;y&#34;, &#34;REAL&#34;),
+                    (&#34;weight&#34;, &#34;INTEGER&#34;),
+                    (&#34;knowledge&#34;, &#34;REAL&#34;),
+                },
+            },
+        )
+
+    @classmethod
+    def import_people(cls, connection: Connection, with_results: bool) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Importer des données dans une élection à partir de la base des données. Une fonction fait les vérifications
+        nécessaires des tableaux et des colonnes.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            with_results (bool): True s&#39;il faut importer avec des résultats. False, s&#39;il faut importer sans des résultats.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        if with_results:
+            return cls.import_people_with_results(connection)
+        return cls.import_people_no_results(connection)
+
+    @classmethod
+    def import_people_no_results(cls, connection: Connection) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Importer des données (candidats, électeurs uniquement) dans une élection à partir de la base des données.
+        Une fonction fait les vérifications nécessaires des tableaux et des colonnes.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        existing_tables = cls._get_existing_tables(connection)
+        # Check tables
+        missing, missing_tables = cls._check_tables(
+            {&#34;candidates&#34;, &#34;electors&#34;}, existing_tables
+        )
+        if missing:
+            return False, f&#34;Tables {missing_tables} are not found&#34;
+
+        # Check columns
+        missing = cls._check_columns_people(connection)
+
+        if missing:
+            return False, f&#34;Database does not correspond&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;SELECT x, y, first_name, last_name FROM candidates&#34;)
+        candidates_data = cursor.fetchall()
+        max_fst_name = &#34;A&#34;
+        max_lst_name = &#34;A&#34;
+        for x, y, first_name, last_name in candidates_data:
+            id = next(cls.election.id_iter)
+            cls.election.add_candidate_import(
+                Candidate(
+                    id=id, position=(
+                        x, y), first_name=first_name, last_name=last_name
+                )
+            )
+
+        cursor.execute(&#34;SELECT x, y, weight, knowledge FROM electors&#34;)
+        electors_data = cursor.fetchall()
+
+        for x, y, weight, knowledge in electors_data:
+            id = next(cls.election.id_iter)
+            cls.election.add_elector_import(
+                Elector(id=id, position=(x, y),
+                        weight=weight, knowledge=knowledge)
+            )
+        return True, &#34;Data imported&#34;
+
+    @classmethod
+    def import_people_with_results(cls, connection: Connection) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Importer des données (candidats, électeurs, résultats) dans une élection à partir de la base des données.
+        Une fonction fait les vérifications nécessaires des tableaux et des colonnes. Importer les configurations d&#39;une élection
+        si le tableau nécessaire est présent.
+        Supprime toutes les données existantes d&#39;une élection.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cls.election.delete_all_data()
+        cls.election.nb_polls = 0
+        # Check tables
+        existing_tables = cls._get_existing_tables(connection)
+        missing, missing_tables = cls._check_tables(
+            {&#34;candidates&#34;, &#34;electors&#34;}, existing_tables
+        )
+        if missing:
+            return False, f&#34;Tables {missing_tables} are not found&#34;
+
+        # Check columns
+        missing = cls._check_columns_people(connection)
+        if missing:
+            return False, f&#34;Database does not correspond&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;SELECT * FROM candidates&#34;)
+        candidates_data = cursor.fetchall()
+
+        # id : candidate
+        candidates_id_assoc = dict()
+
+        for id, x, y, first_name, last_name, dogm, oppos in candidates_data:
+            new_candidate = Candidate(
+                id=next(cls.election.id_iter),
+                position=(x, y),
+                first_name=first_name,
+                last_name=last_name,
+                dogmatism=dogm,
+                opposition=oppos,
+            )
+            cls.election.add_candidate_import(new_candidate)
+            candidates_id_assoc[id] = new_candidate
+
+        cursor.execute(&#34;SELECT * FROM electors&#34;)
+        electors_data = cursor.fetchall()
+
+        for id, x, y, weight, knowledge in electors_data:
+            new_elector = Elector(
+                id=id,
+                position=(x, y),
+                weight=weight,
+                knowledge=knowledge,
+            )
+            cls.election.add_elector_import(new_elector)
+
+        table_missing, _ = cls._check_tables({&#34;settings&#34;}, existing_tables)
+        cls._import_config(connection, table_missing)
+        return cls._import_results(connection, existing_tables, candidates_id_assoc)
+
+    @classmethod
+    def _import_results(cls, connection: Connection, existing_tables: Set[str], assoc: Dict[int, Candidate]) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Importer des résultats de chaque règle du vote présente dans une base des données dans une élection.
+        Une fonction fait les vérifications nécessaires des tableaux et des colonnes.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            existing_tables (Set[str]): Un ensemble des noms des tableaux qui existent dans une base des données.
+            assoc: Dict[int, people.candidate.Candidate]: Un dictionnaire qui associe à chaque ID d&#39;un candidat
+            (ID dans une base des données) un candidat dans une élection. Nécessaire à cause de la possiblité de divergences
+            des ces IDs.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        _, missing_tables = cls._check_tables(
+            {&#34;results_one_round&#34;, &#34;results_multi_round&#34;, &#34;results_condorcet&#34;},
+            existing_tables,
+        )
+
+        if len(missing_tables) == 3:
+            return False, &#34;No tables related to scores found&#34;
+
+        if &#34;results_one_round&#34; in existing_tables:
+            # Check columns
+            missing = cls._check_columns(
+                connection,
+                {
+                    &#34;results_one_round&#34;: {
+                        (&#34;candidate_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;voting_rule&#34;, &#34;TEXT&#34;),
+                        (&#34;score&#34;, &#34;REAL&#34;),
+                    },
+                },
+            )
+            if missing:
+                return False, f&#34;Database does not correspond&#34;
+
+            cls._import_one_round(connection, assoc)
+
+        if &#34;results_multi_round&#34; in existing_tables:
+            missing = cls._check_columns(
+                connection,
+                {
+                    &#34;results_multi_round&#34;: {
+                        (&#34;candidate_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;voting_rule&#34;, &#34;TEXT&#34;),
+                        (&#34;round&#34;, &#34;INTEGER&#34;),
+                        (&#34;score&#34;, &#34;REAL&#34;),
+                    },
+                },
+            )
+            if missing:
+                return False, f&#34;Database does not correspond&#34;
+            cls._import_multi_round(connection, assoc)
+
+        if (&#34;results_condorcet&#34; in existing_tables and &#34;condorcet_duels&#34; in existing_tables):
+            missing = cls._check_columns(
+                connection,
+                {
+                    &#34;results_condorcet&#34;: {
+                        (&#34;candidate_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;voting_rule&#34;, &#34;TEXT&#34;),
+                        (&#34;score&#34;, &#34;REAL&#34;),
+                    },
+                    &#34;condorcet_duels&#34;: {
+                        (&#34;winner_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;loser_id&#34;, &#34;INTEGER&#34;),
+                        (&#34;score&#34;, &#34;REAL&#34;),
+                    },
+                },
+            )
+            if missing:
+                return False, f&#34;Database does not correspond&#34;
+
+            cls._import_condorcet(connection, assoc)
+
+        return True, &#34;Data imported&#34;
+
+    @classmethod
+    def _import_one_round(cls, connection: Connection, assoc: Dict[int, Candidate]) -&gt; None:
+        &#34;&#34;&#34;Importer des résultats des règles du vote à un tour dans une élection. Une fonction fait les vérifications
+        nécessaires des tableaux et des colonnes. Une fonction remplie uniquement des scores des candidats, elle 
+        ne remplit pas un classement (un attribut `results` dans une `election`).
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            assoc: Dict[int, people.candidate.Candidate]: Un dictionnaire qui associe à chaque ID d&#39;un candidat
+            (ID dans une base des données) un candidat dans une élection. Nécessaire à cause de la possiblité de divergences
+            des ces IDs.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        query = &#34;SELECT * FROM results_one_round&#34;
+        cursor.execute(query)
+        data = cursor.fetchall()
+
+        for candidate_id, voting_rule, score in data:
+            candidate = assoc[candidate_id]
+            candidate.scores[voting_rule] = int(score)
+
+    @classmethod
+    def _import_multi_round(cls, connection: Connection, assoc: Dict[int, int]) -&gt; None:
+        &#34;&#34;&#34;Importer des résultats des règles du vote à plusieurs tour dans une élection. Une fonction fait les vérifications
+        nécessaires des tableaux et des colonnes. Une fonction remplie uniquement des scores des candidats, elle 
+        ne remplit pas un classement (un attribut `results` dans une `election`).
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            assoc: Dict[int, people.candidate.Candidate]: Un dictionnaire qui associe à chaque ID d&#39;un candidat
+            (ID dans une base des données) un candidat dans une élection. Nécessaire à cause de la possiblité de divergences
+            des ces IDs.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        # Init lists bases on length
+        cursor.execute(
+            &#34;SELECT max(round), voting_rule FROM results_multi_round GROUP BY voting_rule&#34;)
+
+        nb_rounds = cursor.fetchall()
+        for rounds, voting_rule in nb_rounds:
+            for candidate in assoc.values():
+                candidate.scores[voting_rule] = [0] * (rounds + 1)
+
+        cursor.execute(&#34;SELECT * FROM results_multi_round&#34;)
+        data = cursor.fetchall()
+        for candidate_id, voting_rule, round, score in data:
+            candidate = assoc[candidate_id]
+            candidate.scores[voting_rule][round] = int(score)
+
+    @classmethod
+    def _import_condorcet(cls, connection: Connection, assoc: Dict[int, int]) -&gt; None:
+        &#34;&#34;&#34;Importer des résultats des règles du vote Condorcet-cohérentes dans une élection. Une fonction fait les vérifications
+        nécessaires des tableaux et des colonnes. Une fonction remplie des scores des candidats, elle 
+        ne remplit pas un classement (un attribut `results` dans une `election`). De plus, la fonction remplie des résultats des duels
+        entre les candidats (un attribut `duels_scores` dans `election`).
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            assoc: Dict[int, people.candidate.Candidate]: Un dictionnaire qui associe à chaque ID d&#39;un candidat
+            (ID dans une base des données) un candidat dans une élection. Nécessaire à cause de la possiblité de divergences
+            des ces IDs.
+
+        Returns:    
+            tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        # Duels
+        cursor.execute(&#34;SELECT * FROM condorcet_duels&#34;)
+        data = cursor.fetchall()
+
+        for winner_id, loser_id, score in data:
+            winner = assoc[winner_id]
+            loser = assoc[loser_id]
+            cls.election.duels_scores[(winner, loser)] = int(score)
+
+        # Scores
+        cursor.execute(&#34;SELECT * FROM results_condorcet&#34;)
+        data = cursor.fetchall()
+
+        for candidate_id, voting_rule, score in data:
+            candidate = assoc[candidate_id]
+            if voting_rule == VotingRulesConstants.CONDORCET:
+                candidate.scores[voting_rule] = score
+            else:
+                candidate.scores[voting_rule] = int(score)
+
+    @classmethod
+    def _import_config(cls, connection: Connection, table_missing: bool) -&gt; None:
+        &#34;&#34;&#34;Importer les configurations d&#39;une élection, i.e. si 
+            - la résolution des égalités a été faite par les duels
+            - la démocratie liquide a été activée. 
+        Si le tableau `settings` n&#39;est pas présent dans une base des données, désactiver la démocratie liquide et 
+        la résolution des égalités par duels.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            table_missing (bool): True si le tableau `settings` n&#39;est pas présent dans une base des données, False sinon.
+        &#34;&#34;&#34;
+
+        cls.election.liquid_democracy_activated = False
+        cls.election.tie_breaker_activated = False
+
+        if table_missing:
+            return
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;SELECT * FROM settings&#34;)
+        data = cursor.fetchall()
+
+        for parameter, set_value in data:
+            match parameter:
+                case &#34;liquid_democracy_activated&#34;:
+                    cls.election.liquid_democracy_activated = bool(set_value)
+                case &#34;tie_breaker_activated&#34;:
+                    cls.election.tie_breaker_activated = bool(set_value)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="tzb.sqlite.import_data.ImportData.IMPORT"><code class="name">var <span class="ident">IMPORT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="tzb.sqlite.import_data.ImportData.election"><code class="name">var <span class="ident">election</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="tzb.sqlite.import_data.ImportData.import_people"><code class="name flex">
+<span>def <span class="ident">import_people</span></span>(<span>connection: sqlite3.Connection, with_results: bool) ‑> tuple[bool, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Importer des données dans une élection à partir de la base des données. Une fonction fait les vérifications
+nécessaires des tableaux et des colonnes.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
+<dd>Une connection SQLite.</dd>
+<dt><strong><code>with_results</code></strong> :&ensp;<code>bool</code></dt>
+<dd>True s'il faut importer avec des résultats. False, s'il faut importer sans des résultats.</dd>
+</dl>
+<p>Returns:
+<br>
+tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l'erreur est survenue.
+Une chaîne de caractères avec le message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def import_people(cls, connection: Connection, with_results: bool) -&gt; tuple[bool, str]:
+    &#34;&#34;&#34;Importer des données dans une élection à partir de la base des données. Une fonction fait les vérifications
+    nécessaires des tableaux et des colonnes.
+
+    Args:
+        connection (sqlite3.Connection): Une connection SQLite.
+        with_results (bool): True s&#39;il faut importer avec des résultats. False, s&#39;il faut importer sans des résultats.
+
+    Returns:    
+        tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+        Une chaîne de caractères avec le message.
+    &#34;&#34;&#34;
+
+    if with_results:
+        return cls.import_people_with_results(connection)
+    return cls.import_people_no_results(connection)</code></pre>
+</details>
+</dd>
+<dt id="tzb.sqlite.import_data.ImportData.import_people_no_results"><code class="name flex">
+<span>def <span class="ident">import_people_no_results</span></span>(<span>connection: sqlite3.Connection) ‑> tuple[bool, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Importer des données (candidats, électeurs uniquement) dans une élection à partir de la base des données.
+Une fonction fait les vérifications nécessaires des tableaux et des colonnes.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
+<dd>Une connection SQLite.</dd>
+</dl>
+<p>Returns:
+<br>
+tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l'erreur est survenue.
+Une chaîne de caractères avec le message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def import_people_no_results(cls, connection: Connection) -&gt; tuple[bool, str]:
+    &#34;&#34;&#34;Importer des données (candidats, électeurs uniquement) dans une élection à partir de la base des données.
+    Une fonction fait les vérifications nécessaires des tableaux et des colonnes.
+
+    Args:
+        connection (sqlite3.Connection): Une connection SQLite.
+
+    Returns:    
+        tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+        Une chaîne de caractères avec le message.
+    &#34;&#34;&#34;
+
+    existing_tables = cls._get_existing_tables(connection)
+    # Check tables
+    missing, missing_tables = cls._check_tables(
+        {&#34;candidates&#34;, &#34;electors&#34;}, existing_tables
+    )
+    if missing:
+        return False, f&#34;Tables {missing_tables} are not found&#34;
+
+    # Check columns
+    missing = cls._check_columns_people(connection)
+
+    if missing:
+        return False, f&#34;Database does not correspond&#34;
+
+    cursor = connection.cursor()
+
+    cursor.execute(&#34;SELECT x, y, first_name, last_name FROM candidates&#34;)
+    candidates_data = cursor.fetchall()
+    max_fst_name = &#34;A&#34;
+    max_lst_name = &#34;A&#34;
+    for x, y, first_name, last_name in candidates_data:
+        id = next(cls.election.id_iter)
+        cls.election.add_candidate_import(
+            Candidate(
+                id=id, position=(
+                    x, y), first_name=first_name, last_name=last_name
+            )
+        )
+
+    cursor.execute(&#34;SELECT x, y, weight, knowledge FROM electors&#34;)
+    electors_data = cursor.fetchall()
+
+    for x, y, weight, knowledge in electors_data:
+        id = next(cls.election.id_iter)
+        cls.election.add_elector_import(
+            Elector(id=id, position=(x, y),
+                    weight=weight, knowledge=knowledge)
+        )
+    return True, &#34;Data imported&#34;</code></pre>
+</details>
+</dd>
+<dt id="tzb.sqlite.import_data.ImportData.import_people_with_results"><code class="name flex">
+<span>def <span class="ident">import_people_with_results</span></span>(<span>connection: sqlite3.Connection) ‑> tuple[bool, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Importer des données (candidats, électeurs, résultats) dans une élection à partir de la base des données.
+Une fonction fait les vérifications nécessaires des tableaux et des colonnes. Importer les configurations d'une élection
+si le tableau nécessaire est présent.
+Supprime toutes les données existantes d'une élection.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
+<dd>Une connection SQLite.</dd>
+</dl>
+<p>Returns:
+<br>
+tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l'erreur est survenue.
+Une chaîne de caractères avec le message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def import_people_with_results(cls, connection: Connection) -&gt; tuple[bool, str]:
+    &#34;&#34;&#34;Importer des données (candidats, électeurs, résultats) dans une élection à partir de la base des données.
+    Une fonction fait les vérifications nécessaires des tableaux et des colonnes. Importer les configurations d&#39;une élection
+    si le tableau nécessaire est présent.
+    Supprime toutes les données existantes d&#39;une élection.
+
+    Args:
+        connection (sqlite3.Connection): Une connection SQLite.
+
+    Returns:    
+        tuple[bool, str]: Un booléen True si les données ont été importées avec succès, False si l&#39;erreur est survenue.
+        Une chaîne de caractères avec le message.
+    &#34;&#34;&#34;
+
+    cls.election.delete_all_data()
+    cls.election.nb_polls = 0
+    # Check tables
+    existing_tables = cls._get_existing_tables(connection)
+    missing, missing_tables = cls._check_tables(
+        {&#34;candidates&#34;, &#34;electors&#34;}, existing_tables
+    )
+    if missing:
+        return False, f&#34;Tables {missing_tables} are not found&#34;
+
+    # Check columns
+    missing = cls._check_columns_people(connection)
+    if missing:
+        return False, f&#34;Database does not correspond&#34;
+
+    cursor = connection.cursor()
+
+    cursor.execute(&#34;SELECT * FROM candidates&#34;)
+    candidates_data = cursor.fetchall()
+
+    # id : candidate
+    candidates_id_assoc = dict()
+
+    for id, x, y, first_name, last_name, dogm, oppos in candidates_data:
+        new_candidate = Candidate(
+            id=next(cls.election.id_iter),
+            position=(x, y),
+            first_name=first_name,
+            last_name=last_name,
+            dogmatism=dogm,
+            opposition=oppos,
+        )
+        cls.election.add_candidate_import(new_candidate)
+        candidates_id_assoc[id] = new_candidate
+
+    cursor.execute(&#34;SELECT * FROM electors&#34;)
+    electors_data = cursor.fetchall()
+
+    for id, x, y, weight, knowledge in electors_data:
+        new_elector = Elector(
+            id=id,
+            position=(x, y),
+            weight=weight,
+            knowledge=knowledge,
+        )
+        cls.election.add_elector_import(new_elector)
+
+    table_missing, _ = cls._check_tables({&#34;settings&#34;}, existing_tables)
+    cls._import_config(connection, table_missing)
+    return cls._import_results(connection, existing_tables, candidates_id_assoc)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tzb.sqlite" href="index.html">tzb.sqlite</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tzb.sqlite.import_data.ImportData" href="#tzb.sqlite.import_data.ImportData">ImportData</a></code></h4>
+<ul class="">
+<li><code><a title="tzb.sqlite.import_data.ImportData.IMPORT" href="#tzb.sqlite.import_data.ImportData.IMPORT">IMPORT</a></code></li>
+<li><code><a title="tzb.sqlite.import_data.ImportData.election" href="#tzb.sqlite.import_data.ImportData.election">election</a></code></li>
+<li><code><a title="tzb.sqlite.import_data.ImportData.import_people" href="#tzb.sqlite.import_data.ImportData.import_people">import_people</a></code></li>
+<li><code><a title="tzb.sqlite.import_data.ImportData.import_people_no_results" href="#tzb.sqlite.import_data.ImportData.import_people_no_results">import_people_no_results</a></code></li>
+<li><code><a title="tzb.sqlite.import_data.ImportData.import_people_with_results" href="#tzb.sqlite.import_data.ImportData.import_people_with_results">import_people_with_results</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

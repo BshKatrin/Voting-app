@@ -1,0 +1,1366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>tzb.graphics.home_window API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tzb.graphics.home_window</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from electoral_systems import Election
+from os import remove
+import sqlite3
+from typing import List
+
+
+from PySide6.QtCore import Qt, Slot, Signal, QTimer
+from PySide6.QtGui import QAction, QCloseEvent
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+    QFileDialog,
+    QMessageBox,
+    QApplication
+)
+
+from .home_window_utls import SettingsWidget
+from .widget_map import WidgetMap
+from .widget_results import WidgetResults
+
+from sqlite import ImportData, ExportData
+
+
+class HomeWindow(QMainWindow):
+    &#34;&#34;&#34;Un widget qui représente une fenêtre principale d&#39;une application.&#34;&#34;&#34;
+
+    sig_data_imported = Signal(bool)
+    &#34;&#34;&#34;Un signal qui indique les données d&#39;une élections ont été importées avec ou sans des résultats&#34;&#34;&#34;
+
+    def __init__(self, app: QApplication):
+        &#34;&#34;&#34;Initialiser une instance  d&#39;une élection (pour le partage des données).
+        Initialiser le titre, la taille, le widget central, le menu et UI (la page d&#39;accueil).
+
+        Args:
+            app (PySide6.QtWidgets.QApplication): une application
+        &#34;&#34;&#34;
+
+        super().__init__()
+
+        self.app = app
+        self.election = Election()
+
+        self.setScreenGeometry()
+        self.setWindowTitle(&#34;Voting app&#34;)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+
+        # Main widget, layout
+        self.main_widget = QWidget(parent=self)
+        self.layout = QVBoxLayout()
+        self.main_widget.setLayout(self.layout)
+        self.layout.setSpacing(5)
+        self.layout.setContentsMargins(10, 10, 10, 10)
+        self.setCentralWidget(self.main_widget)
+
+        self.widget_results = None
+        self.widget_map = None
+
+        self.sig_data_imported.connect(self.switchWidgetImport)
+
+        self.createActions()
+        self.createMenus()
+
+        self.initUIHome()
+
+    def setScreenGeometry(self) -&gt; None:
+        &#34;&#34;&#34;Fixer la taille de la fenêtre principale et la placer au millieu d&#39;écran.&#34;&#34;&#34;
+
+        # Trouver le centre
+        x = self.app.primaryScreen().availableGeometry().x()
+        screen_size = self.app.primaryScreen().availableSize()
+        center_x = screen_size.width() / 2 + x
+
+        side_size = min(screen_size.height(), screen_size.width()) * 0.9
+        self.setGeometry(center_x - side_size / 2, 0, side_size, side_size)
+
+    def createActions(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser la fonctionnalité du menu.&#34;&#34;&#34;
+
+        # Import
+        self.import_with_results = QAction(&#34;Import with results&#34;, self)
+        self.import_no_results = QAction(&#34;Import without results&#34;, self)
+
+        self.import_with_results.triggered.connect(
+            lambda: self.importData(True))
+        self.import_no_results.triggered.connect(
+            lambda: self.importData(False))
+
+        # Export
+        self.export_with_results = QAction(&#34;Export with results&#34;, self)
+        self.export_no_results = QAction(&#34;Export without results&#34;, self)
+
+        self.export_with_results.triggered.connect(
+            lambda: self.exportData(True))
+        self.export_no_results.triggered.connect(
+            lambda: self.exportData(False))
+
+    def createMenus(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser le menu, placer les sous-menus et les options possibles.&#34;&#34;&#34;
+
+        menu_bar = self.menuBar()
+        menu_bar.setNativeMenuBar(False)
+        file_menu = menu_bar.addMenu(&#34;File&#34;)
+
+        import_menu = file_menu.addMenu(&#34;Import&#34;)
+        import_menu.addAction(self.import_with_results)
+        import_menu.addAction(self.import_no_results)
+
+        export_menu = file_menu.addMenu(&#34;Export&#34;)
+        export_menu.addAction(self.export_with_results)
+        export_menu.addAction(self.export_no_results)
+
+    @ Slot(str)
+    def showPopupMsg(self, msg: str) -&gt; None:
+        &#34;&#34;&#34;Initialiser un popup avec une alerte et le message correspondant.
+        Un popup ferme automatiquement au bout de 2 seconds.
+
+        Args:
+            msg (str): un message à afficher.
+        &#34;&#34;&#34;
+
+        popup = QMessageBox(parent=self.main_widget)
+        popup.setIcon(QMessageBox.Icon.Warning)
+        popup.setText(msg)
+        popup.addButton(QMessageBox.StandardButton.Close)
+        # Fermer un popup automatiquement après 2 sec
+        timer_close = QTimer()
+        timer_close.singleShot(2000, popup, popup.close)
+        popup.exec()
+
+    @ Slot(bool)
+    def importData(self, with_results: bool) -&gt; None:
+        &#34;&#34;&#34;Importer les données avec ou sans les résultats. 
+        Si l&#39;erreur est survenue, faire apparaître un popup avec le messaged d&#39;erreur.
+
+        Args:
+            with_results (bool): Si False, importer uniquement les données des électeurs et des candidats.
+            Sinon, importer de plus les résultats d&#39;une élection.
+        &#34;&#34;&#34;
+
+        db_file_path, _ = QFileDialog.getOpenFileName(
+            self, &#34;Choose database&#34;, &#34;&#34;, &#34;SQLite databases : (*.db)&#34;
+        )
+
+        # Do nothing if no file was chosen
+        if not db_file_path:
+            return
+
+        connection = sqlite3.connect(db_file_path)
+
+        success, msg = ImportData.import_people(connection, with_results)
+        connection.close()
+        if not success:
+            self.showPopupMsg(msg)
+        else:
+            self.sig_data_imported.emit(with_results)
+
+    @ Slot(bool)
+    def exportData(self, with_results: bool) -&gt; None:
+        &#34;&#34;&#34;Exporter les données avec ou sans les résultats. 
+        Si l&#39;erreur est arrivée, faire apparaître un popup avec le message
+
+        Args:
+            with_results (bool): Si False, exporter uniquement les données des électeurs et des candidats.
+            Sinon, exporter de plus les résultats d&#39;une élection.
+        &#34;&#34;&#34;
+        db_file_path, _ = QFileDialog.getSaveFileName(
+            self, &#34;Save database&#34;, &#34;&#34;, &#34;SQLite databases : (*.db)&#34;
+        )
+
+        # Do nothing if no file was chosen
+        if not db_file_path:
+            return
+
+        connection = sqlite3.connect(db_file_path)
+        success, msg = ExportData.create_database_people(connection)
+
+        if not success:
+            self.showPopupMsg(msg)
+            remove(db_file_path)
+
+        if success and with_results:
+            success, msg = ExportData.create_database_results(connection)
+
+            if not success:
+                self.showPopupMsg(msg)
+                remove(db_file_path)
+
+        connection.close()
+
+    def toggleIEOptions(self, type: str, with_results_status: bool, no_results_status: bool) -&gt; None:
+        &#34;&#34;&#34;Activer ou désactiver les options dans le menu par rapport à l&#39;import et l&#39;export.
+
+        Args:
+            type (str): Une indication de l&#39;export ou de l&#39;import.
+            with_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export avec les résultats.
+            no_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export sans les résultats.
+        &#34;&#34;&#34;
+        if type == ImportData.IMPORT:
+            self.import_with_results.setEnabled(with_results_status)
+            self.import_no_results.setEnabled(no_results_status)
+        if type == ExportData.EXPORT:
+            self.export_with_results.setEnabled(with_results_status)
+            self.export_no_results.setEnabled(no_results_status)
+
+    @ Slot(bool)
+    def switchWidgetImport(self, with_results: bool) -&gt; None:
+        &#34;&#34;&#34;Changer le widget affiché si les données ont été importées. Si les résultats ont été importés, afficher 
+        initialiser la page avec des résultats. Sinon, afficher la page avec la carte politique.
+
+        Args:
+            with_results (bool): Une indication si les résultats ont été importées.
+        &#34;&#34;&#34;
+        self.cleanWindow()
+        if not with_results:
+            self.initUIMap()
+            return
+
+        self.election.start_election(imported=True)
+        self.initUIResults()
+
+    def initNavigation(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser la navigation pour revenir sur la page d&#39;accueil à partir des autres widgets.&#34;&#34;&#34;
+        self.button_home = QPushButton(&#34;Home&#34;, parent=self)
+        self.button_home.clicked.connect(self.backHomeWindow)
+        self.layout.addWidget(self.button_home)
+
+    def initUIHome(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser la page d&#39;accueil.&#34;&#34;&#34;
+        widget_btns = QWidget(parent=self.main_widget)
+
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(30)
+        widget_btns.setLayout(layout)
+
+        self.start = QPushButton(&#34;Start&#34;, parent=self.main_widget)
+        self.start.setFixedSize(self.width() * 0.3, 30)
+        self.start.clicked.connect(self.initUIMap)
+
+        settings_btn = QPushButton(&#34;Settings&#34;, parent=self.main_widget)
+        settings_btn.setFixedSize(self.width() * 0.3, 30)
+        settings_btn.clicked.connect(self.initUISettings)
+
+        quit_btn = QPushButton(&#34;Quit&#34;, parent=self.main_widget)
+        quit_btn.setFixedSize(self.width() * 0.3, 30)
+        quit_btn.clicked.connect(self.quitApp)
+
+        # Toggle import, export
+        self.toggleIEOptions(ExportData.EXPORT, False, False)
+        self.toggleIEOptions(ImportData.IMPORT, True, True)
+
+        layout.addWidget(
+            self.start,
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+        layout.addWidget(
+            settings_btn,
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+
+        layout.addWidget(
+            quit_btn,
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+
+        self.layout.addWidget(
+            widget_btns,
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+
+    @ Slot()
+    def initUISettings(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser le widget avec les réglages pour une élection.&#34;&#34;&#34;
+        self.cleanWindow()
+        settings_widget = SettingsWidget(self)
+        self.layout.addWidget(
+            settings_widget,
+            alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+        settings_widget.sig_saved.connect(self.saveSettings)
+
+    @ Slot()
+    def saveSettings(self) -&gt; None:
+        &#34;&#34;&#34;Supprimer le widget des réglages et revenir sur la page d&#39;accueil.&#34;&#34;&#34;
+        self.cleanWindow()
+        self.initUIHome()
+
+    @ Slot()
+    def initUIMap(self) -&gt; None:
+        &#34;&#34;&#34;Nettoyer la fenêtre principale, initialiser la navigation et le widget correspondant à la carte politique.&#34;&#34;&#34;
+        self.cleanWindow()
+
+        self.initNavigation()
+
+        self.toggleIEOptions(ExportData.EXPORT, False, True)
+        self.toggleIEOptions(ImportData.IMPORT, False, True)
+
+        self.widget_map = WidgetMap(parent=self.main_widget)
+        self.widget_map.sig_start_election.connect(self.startElection)
+        self.layout.addWidget(self.widget_map)
+
+    @ Slot()
+    def initUIResults(self) -&gt; None:
+        &#34;&#34;&#34;Nettoyer la fenêtre principale, initialiser la navigation et le widget avec des résultats d&#39;une élection.&#34;&#34;&#34;
+        self.cleanWindow()
+
+        self.initNavigation()
+        self.toggleIEOptions(ExportData.EXPORT, True, True)
+        self.toggleIEOptions(ImportData.IMPORT, False, False)
+
+        self.widget_results = WidgetResults(parent=self.main_widget)
+        self.layout.addWidget(self.widget_results, alignment=Qt.AlignTop)
+
+    @ Slot(list)
+    def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
+        &#34;&#34;&#34;Supprimer un widget correpospondant à la carte politique, calculer des résultats d&#39;une élection, 
+        initialiser le widget avec des résultats.
+
+        Args:
+            chosen_voting_rules (List[str]): Une listed des constantes correspondant aux règles du vote choisies pour une élection.
+        &#34;&#34;&#34;
+
+        self.election.start_election(chosen_voting_rules=chosen_voting_rules)
+
+        # Initialize Results page (winners, results, graphs)
+        self.initUIResults()
+
+    @ Slot()
+    def backHomeWindow(self) -&gt; None:
+        &#34;&#34;&#34;Nettoyer la fenêtre principale, initialiser la page d&#39;accueil,
+        supprimer les données d&#39;une élection et remettre les règlages par défaut.&#34;&#34;&#34;
+        self.cleanWindow()
+        self.initUIHome()
+
+        self.election.delete_all_data()
+        self.election.set_default_settings()
+
+    @ Slot()
+    def cleanWindow(self) -&gt; None:
+        &#34;&#34;&#34;Supprimer tous les widgets placés sur la fenêtre principale.&#34;&#34;&#34;
+        for i in reversed(range(self.layout.count())):
+            widget_to_remove = self.layout.itemAt(i).widget()
+
+            if widget_to_remove == self.widget_map:
+                self.widget_map.destroyChildren()
+
+            if widget_to_remove == self.widget_results:
+                self.widget_results.destroyChildren()
+
+            widget_to_remove.deleteLater()
+
+    @ Slot()
+    def quitApp(self) -&gt; None:
+        &#34;&#34;&#34;Fermer l&#39;application.&#34;&#34;&#34;
+        self.app.quit()
+
+    def closeEvent(self, event: QCloseEvent) -&gt; None:
+        &#34;&#34;&#34;Redéfinition d&#39;un `closeEvent`. Fermer une application lorsque une fenêtre principale est fermée.&#34;&#34;&#34;
+
+        self.quitApp()
+        event.accept()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tzb.graphics.home_window.HomeWindow"><code class="flex name class">
+<span>class <span class="ident">HomeWindow</span></span>
+<span>(</span><span>app: PySide6.QtWidgets.QApplication)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Un widget qui représente une fenêtre principale d'une application.</p>
+<p>Initialiser une instance
+d'une élection (pour le partage des données).
+Initialiser le titre, la taille, le widget central, le menu et UI (la page d'accueil).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>app</code></strong> :&ensp;<code>PySide6.QtWidgets.QApplication</code></dt>
+<dd>une application</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HomeWindow(QMainWindow):
+    &#34;&#34;&#34;Un widget qui représente une fenêtre principale d&#39;une application.&#34;&#34;&#34;
+
+    sig_data_imported = Signal(bool)
+    &#34;&#34;&#34;Un signal qui indique les données d&#39;une élections ont été importées avec ou sans des résultats&#34;&#34;&#34;
+
+    def __init__(self, app: QApplication):
+        &#34;&#34;&#34;Initialiser une instance  d&#39;une élection (pour le partage des données).
+        Initialiser le titre, la taille, le widget central, le menu et UI (la page d&#39;accueil).
+
+        Args:
+            app (PySide6.QtWidgets.QApplication): une application
+        &#34;&#34;&#34;
+
+        super().__init__()
+
+        self.app = app
+        self.election = Election()
+
+        self.setScreenGeometry()
+        self.setWindowTitle(&#34;Voting app&#34;)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+
+        # Main widget, layout
+        self.main_widget = QWidget(parent=self)
+        self.layout = QVBoxLayout()
+        self.main_widget.setLayout(self.layout)
+        self.layout.setSpacing(5)
+        self.layout.setContentsMargins(10, 10, 10, 10)
+        self.setCentralWidget(self.main_widget)
+
+        self.widget_results = None
+        self.widget_map = None
+
+        self.sig_data_imported.connect(self.switchWidgetImport)
+
+        self.createActions()
+        self.createMenus()
+
+        self.initUIHome()
+
+    def setScreenGeometry(self) -&gt; None:
+        &#34;&#34;&#34;Fixer la taille de la fenêtre principale et la placer au millieu d&#39;écran.&#34;&#34;&#34;
+
+        # Trouver le centre
+        x = self.app.primaryScreen().availableGeometry().x()
+        screen_size = self.app.primaryScreen().availableSize()
+        center_x = screen_size.width() / 2 + x
+
+        side_size = min(screen_size.height(), screen_size.width()) * 0.9
+        self.setGeometry(center_x - side_size / 2, 0, side_size, side_size)
+
+    def createActions(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser la fonctionnalité du menu.&#34;&#34;&#34;
+
+        # Import
+        self.import_with_results = QAction(&#34;Import with results&#34;, self)
+        self.import_no_results = QAction(&#34;Import without results&#34;, self)
+
+        self.import_with_results.triggered.connect(
+            lambda: self.importData(True))
+        self.import_no_results.triggered.connect(
+            lambda: self.importData(False))
+
+        # Export
+        self.export_with_results = QAction(&#34;Export with results&#34;, self)
+        self.export_no_results = QAction(&#34;Export without results&#34;, self)
+
+        self.export_with_results.triggered.connect(
+            lambda: self.exportData(True))
+        self.export_no_results.triggered.connect(
+            lambda: self.exportData(False))
+
+    def createMenus(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser le menu, placer les sous-menus et les options possibles.&#34;&#34;&#34;
+
+        menu_bar = self.menuBar()
+        menu_bar.setNativeMenuBar(False)
+        file_menu = menu_bar.addMenu(&#34;File&#34;)
+
+        import_menu = file_menu.addMenu(&#34;Import&#34;)
+        import_menu.addAction(self.import_with_results)
+        import_menu.addAction(self.import_no_results)
+
+        export_menu = file_menu.addMenu(&#34;Export&#34;)
+        export_menu.addAction(self.export_with_results)
+        export_menu.addAction(self.export_no_results)
+
+    @ Slot(str)
+    def showPopupMsg(self, msg: str) -&gt; None:
+        &#34;&#34;&#34;Initialiser un popup avec une alerte et le message correspondant.
+        Un popup ferme automatiquement au bout de 2 seconds.
+
+        Args:
+            msg (str): un message à afficher.
+        &#34;&#34;&#34;
+
+        popup = QMessageBox(parent=self.main_widget)
+        popup.setIcon(QMessageBox.Icon.Warning)
+        popup.setText(msg)
+        popup.addButton(QMessageBox.StandardButton.Close)
+        # Fermer un popup automatiquement après 2 sec
+        timer_close = QTimer()
+        timer_close.singleShot(2000, popup, popup.close)
+        popup.exec()
+
+    @ Slot(bool)
+    def importData(self, with_results: bool) -&gt; None:
+        &#34;&#34;&#34;Importer les données avec ou sans les résultats. 
+        Si l&#39;erreur est survenue, faire apparaître un popup avec le messaged d&#39;erreur.
+
+        Args:
+            with_results (bool): Si False, importer uniquement les données des électeurs et des candidats.
+            Sinon, importer de plus les résultats d&#39;une élection.
+        &#34;&#34;&#34;
+
+        db_file_path, _ = QFileDialog.getOpenFileName(
+            self, &#34;Choose database&#34;, &#34;&#34;, &#34;SQLite databases : (*.db)&#34;
+        )
+
+        # Do nothing if no file was chosen
+        if not db_file_path:
+            return
+
+        connection = sqlite3.connect(db_file_path)
+
+        success, msg = ImportData.import_people(connection, with_results)
+        connection.close()
+        if not success:
+            self.showPopupMsg(msg)
+        else:
+            self.sig_data_imported.emit(with_results)
+
+    @ Slot(bool)
+    def exportData(self, with_results: bool) -&gt; None:
+        &#34;&#34;&#34;Exporter les données avec ou sans les résultats. 
+        Si l&#39;erreur est arrivée, faire apparaître un popup avec le message
+
+        Args:
+            with_results (bool): Si False, exporter uniquement les données des électeurs et des candidats.
+            Sinon, exporter de plus les résultats d&#39;une élection.
+        &#34;&#34;&#34;
+        db_file_path, _ = QFileDialog.getSaveFileName(
+            self, &#34;Save database&#34;, &#34;&#34;, &#34;SQLite databases : (*.db)&#34;
+        )
+
+        # Do nothing if no file was chosen
+        if not db_file_path:
+            return
+
+        connection = sqlite3.connect(db_file_path)
+        success, msg = ExportData.create_database_people(connection)
+
+        if not success:
+            self.showPopupMsg(msg)
+            remove(db_file_path)
+
+        if success and with_results:
+            success, msg = ExportData.create_database_results(connection)
+
+            if not success:
+                self.showPopupMsg(msg)
+                remove(db_file_path)
+
+        connection.close()
+
+    def toggleIEOptions(self, type: str, with_results_status: bool, no_results_status: bool) -&gt; None:
+        &#34;&#34;&#34;Activer ou désactiver les options dans le menu par rapport à l&#39;import et l&#39;export.
+
+        Args:
+            type (str): Une indication de l&#39;export ou de l&#39;import.
+            with_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export avec les résultats.
+            no_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export sans les résultats.
+        &#34;&#34;&#34;
+        if type == ImportData.IMPORT:
+            self.import_with_results.setEnabled(with_results_status)
+            self.import_no_results.setEnabled(no_results_status)
+        if type == ExportData.EXPORT:
+            self.export_with_results.setEnabled(with_results_status)
+            self.export_no_results.setEnabled(no_results_status)
+
+    @ Slot(bool)
+    def switchWidgetImport(self, with_results: bool) -&gt; None:
+        &#34;&#34;&#34;Changer le widget affiché si les données ont été importées. Si les résultats ont été importés, afficher 
+        initialiser la page avec des résultats. Sinon, afficher la page avec la carte politique.
+
+        Args:
+            with_results (bool): Une indication si les résultats ont été importées.
+        &#34;&#34;&#34;
+        self.cleanWindow()
+        if not with_results:
+            self.initUIMap()
+            return
+
+        self.election.start_election(imported=True)
+        self.initUIResults()
+
+    def initNavigation(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser la navigation pour revenir sur la page d&#39;accueil à partir des autres widgets.&#34;&#34;&#34;
+        self.button_home = QPushButton(&#34;Home&#34;, parent=self)
+        self.button_home.clicked.connect(self.backHomeWindow)
+        self.layout.addWidget(self.button_home)
+
+    def initUIHome(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser la page d&#39;accueil.&#34;&#34;&#34;
+        widget_btns = QWidget(parent=self.main_widget)
+
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(30)
+        widget_btns.setLayout(layout)
+
+        self.start = QPushButton(&#34;Start&#34;, parent=self.main_widget)
+        self.start.setFixedSize(self.width() * 0.3, 30)
+        self.start.clicked.connect(self.initUIMap)
+
+        settings_btn = QPushButton(&#34;Settings&#34;, parent=self.main_widget)
+        settings_btn.setFixedSize(self.width() * 0.3, 30)
+        settings_btn.clicked.connect(self.initUISettings)
+
+        quit_btn = QPushButton(&#34;Quit&#34;, parent=self.main_widget)
+        quit_btn.setFixedSize(self.width() * 0.3, 30)
+        quit_btn.clicked.connect(self.quitApp)
+
+        # Toggle import, export
+        self.toggleIEOptions(ExportData.EXPORT, False, False)
+        self.toggleIEOptions(ImportData.IMPORT, True, True)
+
+        layout.addWidget(
+            self.start,
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+        layout.addWidget(
+            settings_btn,
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+
+        layout.addWidget(
+            quit_btn,
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+
+        self.layout.addWidget(
+            widget_btns,
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+
+    @ Slot()
+    def initUISettings(self) -&gt; None:
+        &#34;&#34;&#34;Initialiser le widget avec les réglages pour une élection.&#34;&#34;&#34;
+        self.cleanWindow()
+        settings_widget = SettingsWidget(self)
+        self.layout.addWidget(
+            settings_widget,
+            alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter,
+        )
+        settings_widget.sig_saved.connect(self.saveSettings)
+
+    @ Slot()
+    def saveSettings(self) -&gt; None:
+        &#34;&#34;&#34;Supprimer le widget des réglages et revenir sur la page d&#39;accueil.&#34;&#34;&#34;
+        self.cleanWindow()
+        self.initUIHome()
+
+    @ Slot()
+    def initUIMap(self) -&gt; None:
+        &#34;&#34;&#34;Nettoyer la fenêtre principale, initialiser la navigation et le widget correspondant à la carte politique.&#34;&#34;&#34;
+        self.cleanWindow()
+
+        self.initNavigation()
+
+        self.toggleIEOptions(ExportData.EXPORT, False, True)
+        self.toggleIEOptions(ImportData.IMPORT, False, True)
+
+        self.widget_map = WidgetMap(parent=self.main_widget)
+        self.widget_map.sig_start_election.connect(self.startElection)
+        self.layout.addWidget(self.widget_map)
+
+    @ Slot()
+    def initUIResults(self) -&gt; None:
+        &#34;&#34;&#34;Nettoyer la fenêtre principale, initialiser la navigation et le widget avec des résultats d&#39;une élection.&#34;&#34;&#34;
+        self.cleanWindow()
+
+        self.initNavigation()
+        self.toggleIEOptions(ExportData.EXPORT, True, True)
+        self.toggleIEOptions(ImportData.IMPORT, False, False)
+
+        self.widget_results = WidgetResults(parent=self.main_widget)
+        self.layout.addWidget(self.widget_results, alignment=Qt.AlignTop)
+
+    @ Slot(list)
+    def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
+        &#34;&#34;&#34;Supprimer un widget correpospondant à la carte politique, calculer des résultats d&#39;une élection, 
+        initialiser le widget avec des résultats.
+
+        Args:
+            chosen_voting_rules (List[str]): Une listed des constantes correspondant aux règles du vote choisies pour une élection.
+        &#34;&#34;&#34;
+
+        self.election.start_election(chosen_voting_rules=chosen_voting_rules)
+
+        # Initialize Results page (winners, results, graphs)
+        self.initUIResults()
+
+    @ Slot()
+    def backHomeWindow(self) -&gt; None:
+        &#34;&#34;&#34;Nettoyer la fenêtre principale, initialiser la page d&#39;accueil,
+        supprimer les données d&#39;une élection et remettre les règlages par défaut.&#34;&#34;&#34;
+        self.cleanWindow()
+        self.initUIHome()
+
+        self.election.delete_all_data()
+        self.election.set_default_settings()
+
+    @ Slot()
+    def cleanWindow(self) -&gt; None:
+        &#34;&#34;&#34;Supprimer tous les widgets placés sur la fenêtre principale.&#34;&#34;&#34;
+        for i in reversed(range(self.layout.count())):
+            widget_to_remove = self.layout.itemAt(i).widget()
+
+            if widget_to_remove == self.widget_map:
+                self.widget_map.destroyChildren()
+
+            if widget_to_remove == self.widget_results:
+                self.widget_results.destroyChildren()
+
+            widget_to_remove.deleteLater()
+
+    @ Slot()
+    def quitApp(self) -&gt; None:
+        &#34;&#34;&#34;Fermer l&#39;application.&#34;&#34;&#34;
+        self.app.quit()
+
+    def closeEvent(self, event: QCloseEvent) -&gt; None:
+        &#34;&#34;&#34;Redéfinition d&#39;un `closeEvent`. Fermer une application lorsque une fenêtre principale est fermée.&#34;&#34;&#34;
+
+        self.quitApp()
+        event.accept()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PySide6.QtWidgets.QMainWindow</li>
+<li>PySide6.QtWidgets.QWidget</li>
+<li>PySide6.QtCore.QObject</li>
+<li>PySide6.QtGui.QPaintDevice</li>
+<li>Shiboken.Object</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="tzb.graphics.home_window.HomeWindow.staticMetaObject"><code class="name">var <span class="ident">staticMetaObject</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="tzb.graphics.home_window.HomeWindow.backHomeWindow"><code class="name flex">
+<span>def <span class="ident">backHomeWindow</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Nettoyer la fenêtre principale, initialiser la page d'accueil,
+supprimer les données d'une élection et remettre les règlages par défaut.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def backHomeWindow(self) -&gt; None:
+    &#34;&#34;&#34;Nettoyer la fenêtre principale, initialiser la page d&#39;accueil,
+    supprimer les données d&#39;une élection et remettre les règlages par défaut.&#34;&#34;&#34;
+    self.cleanWindow()
+    self.initUIHome()
+
+    self.election.delete_all_data()
+    self.election.set_default_settings()</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.cleanWindow"><code class="name flex">
+<span>def <span class="ident">cleanWindow</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Supprimer tous les widgets placés sur la fenêtre principale.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def cleanWindow(self) -&gt; None:
+    &#34;&#34;&#34;Supprimer tous les widgets placés sur la fenêtre principale.&#34;&#34;&#34;
+    for i in reversed(range(self.layout.count())):
+        widget_to_remove = self.layout.itemAt(i).widget()
+
+        if widget_to_remove == self.widget_map:
+            self.widget_map.destroyChildren()
+
+        if widget_to_remove == self.widget_results:
+            self.widget_results.destroyChildren()
+
+        widget_to_remove.deleteLater()</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.closeEvent"><code class="name flex">
+<span>def <span class="ident">closeEvent</span></span>(<span>self, event: PySide6.QtGui.QCloseEvent) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Redéfinition d'un <code>closeEvent</code>. Fermer une application lorsque une fenêtre principale est fermée.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def closeEvent(self, event: QCloseEvent) -&gt; None:
+    &#34;&#34;&#34;Redéfinition d&#39;un `closeEvent`. Fermer une application lorsque une fenêtre principale est fermée.&#34;&#34;&#34;
+
+    self.quitApp()
+    event.accept()</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.createActions"><code class="name flex">
+<span>def <span class="ident">createActions</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialiser la fonctionnalité du menu.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def createActions(self) -&gt; None:
+    &#34;&#34;&#34;Initialiser la fonctionnalité du menu.&#34;&#34;&#34;
+
+    # Import
+    self.import_with_results = QAction(&#34;Import with results&#34;, self)
+    self.import_no_results = QAction(&#34;Import without results&#34;, self)
+
+    self.import_with_results.triggered.connect(
+        lambda: self.importData(True))
+    self.import_no_results.triggered.connect(
+        lambda: self.importData(False))
+
+    # Export
+    self.export_with_results = QAction(&#34;Export with results&#34;, self)
+    self.export_no_results = QAction(&#34;Export without results&#34;, self)
+
+    self.export_with_results.triggered.connect(
+        lambda: self.exportData(True))
+    self.export_no_results.triggered.connect(
+        lambda: self.exportData(False))</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.createMenus"><code class="name flex">
+<span>def <span class="ident">createMenus</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialiser le menu, placer les sous-menus et les options possibles.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def createMenus(self) -&gt; None:
+    &#34;&#34;&#34;Initialiser le menu, placer les sous-menus et les options possibles.&#34;&#34;&#34;
+
+    menu_bar = self.menuBar()
+    menu_bar.setNativeMenuBar(False)
+    file_menu = menu_bar.addMenu(&#34;File&#34;)
+
+    import_menu = file_menu.addMenu(&#34;Import&#34;)
+    import_menu.addAction(self.import_with_results)
+    import_menu.addAction(self.import_no_results)
+
+    export_menu = file_menu.addMenu(&#34;Export&#34;)
+    export_menu.addAction(self.export_with_results)
+    export_menu.addAction(self.export_no_results)</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.exportData"><code class="name flex">
+<span>def <span class="ident">exportData</span></span>(<span>self, with_results: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Exporter les données avec ou sans les résultats.
+Si l'erreur est arrivée, faire apparaître un popup avec le message</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>with_results</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Si False, exporter uniquement les données des électeurs et des candidats.</dd>
+</dl>
+<p>Sinon, exporter de plus les résultats d'une élection.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot(bool)
+def exportData(self, with_results: bool) -&gt; None:
+    &#34;&#34;&#34;Exporter les données avec ou sans les résultats. 
+    Si l&#39;erreur est arrivée, faire apparaître un popup avec le message
+
+    Args:
+        with_results (bool): Si False, exporter uniquement les données des électeurs et des candidats.
+        Sinon, exporter de plus les résultats d&#39;une élection.
+    &#34;&#34;&#34;
+    db_file_path, _ = QFileDialog.getSaveFileName(
+        self, &#34;Save database&#34;, &#34;&#34;, &#34;SQLite databases : (*.db)&#34;
+    )
+
+    # Do nothing if no file was chosen
+    if not db_file_path:
+        return
+
+    connection = sqlite3.connect(db_file_path)
+    success, msg = ExportData.create_database_people(connection)
+
+    if not success:
+        self.showPopupMsg(msg)
+        remove(db_file_path)
+
+    if success and with_results:
+        success, msg = ExportData.create_database_results(connection)
+
+        if not success:
+            self.showPopupMsg(msg)
+            remove(db_file_path)
+
+    connection.close()</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.importData"><code class="name flex">
+<span>def <span class="ident">importData</span></span>(<span>self, with_results: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Importer les données avec ou sans les résultats.
+Si l'erreur est survenue, faire apparaître un popup avec le messaged d'erreur.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>with_results</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Si False, importer uniquement les données des électeurs et des candidats.</dd>
+</dl>
+<p>Sinon, importer de plus les résultats d'une élection.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot(bool)
+def importData(self, with_results: bool) -&gt; None:
+    &#34;&#34;&#34;Importer les données avec ou sans les résultats. 
+    Si l&#39;erreur est survenue, faire apparaître un popup avec le messaged d&#39;erreur.
+
+    Args:
+        with_results (bool): Si False, importer uniquement les données des électeurs et des candidats.
+        Sinon, importer de plus les résultats d&#39;une élection.
+    &#34;&#34;&#34;
+
+    db_file_path, _ = QFileDialog.getOpenFileName(
+        self, &#34;Choose database&#34;, &#34;&#34;, &#34;SQLite databases : (*.db)&#34;
+    )
+
+    # Do nothing if no file was chosen
+    if not db_file_path:
+        return
+
+    connection = sqlite3.connect(db_file_path)
+
+    success, msg = ImportData.import_people(connection, with_results)
+    connection.close()
+    if not success:
+        self.showPopupMsg(msg)
+    else:
+        self.sig_data_imported.emit(with_results)</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.initNavigation"><code class="name flex">
+<span>def <span class="ident">initNavigation</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialiser la navigation pour revenir sur la page d'accueil à partir des autres widgets.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initNavigation(self) -&gt; None:
+    &#34;&#34;&#34;Initialiser la navigation pour revenir sur la page d&#39;accueil à partir des autres widgets.&#34;&#34;&#34;
+    self.button_home = QPushButton(&#34;Home&#34;, parent=self)
+    self.button_home.clicked.connect(self.backHomeWindow)
+    self.layout.addWidget(self.button_home)</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.initUIHome"><code class="name flex">
+<span>def <span class="ident">initUIHome</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialiser la page d'accueil.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initUIHome(self) -&gt; None:
+    &#34;&#34;&#34;Initialiser la page d&#39;accueil.&#34;&#34;&#34;
+    widget_btns = QWidget(parent=self.main_widget)
+
+    layout = QVBoxLayout()
+    layout.setContentsMargins(0, 0, 0, 0)
+    layout.setSpacing(30)
+    widget_btns.setLayout(layout)
+
+    self.start = QPushButton(&#34;Start&#34;, parent=self.main_widget)
+    self.start.setFixedSize(self.width() * 0.3, 30)
+    self.start.clicked.connect(self.initUIMap)
+
+    settings_btn = QPushButton(&#34;Settings&#34;, parent=self.main_widget)
+    settings_btn.setFixedSize(self.width() * 0.3, 30)
+    settings_btn.clicked.connect(self.initUISettings)
+
+    quit_btn = QPushButton(&#34;Quit&#34;, parent=self.main_widget)
+    quit_btn.setFixedSize(self.width() * 0.3, 30)
+    quit_btn.clicked.connect(self.quitApp)
+
+    # Toggle import, export
+    self.toggleIEOptions(ExportData.EXPORT, False, False)
+    self.toggleIEOptions(ImportData.IMPORT, True, True)
+
+    layout.addWidget(
+        self.start,
+        alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+    )
+    layout.addWidget(
+        settings_btn,
+        alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+    )
+
+    layout.addWidget(
+        quit_btn,
+        alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+    )
+
+    self.layout.addWidget(
+        widget_btns,
+        alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter,
+    )</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.initUIMap"><code class="name flex">
+<span>def <span class="ident">initUIMap</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Nettoyer la fenêtre principale, initialiser la navigation et le widget correspondant à la carte politique.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def initUIMap(self) -&gt; None:
+    &#34;&#34;&#34;Nettoyer la fenêtre principale, initialiser la navigation et le widget correspondant à la carte politique.&#34;&#34;&#34;
+    self.cleanWindow()
+
+    self.initNavigation()
+
+    self.toggleIEOptions(ExportData.EXPORT, False, True)
+    self.toggleIEOptions(ImportData.IMPORT, False, True)
+
+    self.widget_map = WidgetMap(parent=self.main_widget)
+    self.widget_map.sig_start_election.connect(self.startElection)
+    self.layout.addWidget(self.widget_map)</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.initUIResults"><code class="name flex">
+<span>def <span class="ident">initUIResults</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Nettoyer la fenêtre principale, initialiser la navigation et le widget avec des résultats d'une élection.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def initUIResults(self) -&gt; None:
+    &#34;&#34;&#34;Nettoyer la fenêtre principale, initialiser la navigation et le widget avec des résultats d&#39;une élection.&#34;&#34;&#34;
+    self.cleanWindow()
+
+    self.initNavigation()
+    self.toggleIEOptions(ExportData.EXPORT, True, True)
+    self.toggleIEOptions(ImportData.IMPORT, False, False)
+
+    self.widget_results = WidgetResults(parent=self.main_widget)
+    self.layout.addWidget(self.widget_results, alignment=Qt.AlignTop)</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.initUISettings"><code class="name flex">
+<span>def <span class="ident">initUISettings</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialiser le widget avec les réglages pour une élection.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def initUISettings(self) -&gt; None:
+    &#34;&#34;&#34;Initialiser le widget avec les réglages pour une élection.&#34;&#34;&#34;
+    self.cleanWindow()
+    settings_widget = SettingsWidget(self)
+    self.layout.addWidget(
+        settings_widget,
+        alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter,
+    )
+    settings_widget.sig_saved.connect(self.saveSettings)</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.quitApp"><code class="name flex">
+<span>def <span class="ident">quitApp</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fermer l'application.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def quitApp(self) -&gt; None:
+    &#34;&#34;&#34;Fermer l&#39;application.&#34;&#34;&#34;
+    self.app.quit()</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.saveSettings"><code class="name flex">
+<span>def <span class="ident">saveSettings</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Supprimer le widget des réglages et revenir sur la page d'accueil.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def saveSettings(self) -&gt; None:
+    &#34;&#34;&#34;Supprimer le widget des réglages et revenir sur la page d&#39;accueil.&#34;&#34;&#34;
+    self.cleanWindow()
+    self.initUIHome()</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.setScreenGeometry"><code class="name flex">
+<span>def <span class="ident">setScreenGeometry</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fixer la taille de la fenêtre principale et la placer au millieu d'écran.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setScreenGeometry(self) -&gt; None:
+    &#34;&#34;&#34;Fixer la taille de la fenêtre principale et la placer au millieu d&#39;écran.&#34;&#34;&#34;
+
+    # Trouver le centre
+    x = self.app.primaryScreen().availableGeometry().x()
+    screen_size = self.app.primaryScreen().availableSize()
+    center_x = screen_size.width() / 2 + x
+
+    side_size = min(screen_size.height(), screen_size.width()) * 0.9
+    self.setGeometry(center_x - side_size / 2, 0, side_size, side_size)</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.showPopupMsg"><code class="name flex">
+<span>def <span class="ident">showPopupMsg</span></span>(<span>self, msg: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialiser un popup avec une alerte et le message correspondant.
+Un popup ferme automatiquement au bout de 2 seconds.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>msg</code></strong> :&ensp;<code>str</code></dt>
+<dd>un message à afficher.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot(str)
+def showPopupMsg(self, msg: str) -&gt; None:
+    &#34;&#34;&#34;Initialiser un popup avec une alerte et le message correspondant.
+    Un popup ferme automatiquement au bout de 2 seconds.
+
+    Args:
+        msg (str): un message à afficher.
+    &#34;&#34;&#34;
+
+    popup = QMessageBox(parent=self.main_widget)
+    popup.setIcon(QMessageBox.Icon.Warning)
+    popup.setText(msg)
+    popup.addButton(QMessageBox.StandardButton.Close)
+    # Fermer un popup automatiquement après 2 sec
+    timer_close = QTimer()
+    timer_close.singleShot(2000, popup, popup.close)
+    popup.exec()</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.sig_data_imported"><code class="name flex">
+<span>def <span class="ident">sig_data_imported</span></span>(<span>...)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.startElection"><code class="name flex">
+<span>def <span class="ident">startElection</span></span>(<span>self, chosen_voting_rules: List[str]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Supprimer un widget correpospondant à la carte politique, calculer des résultats d'une élection,
+initialiser le widget avec des résultats.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>chosen_voting_rules</code></strong> :&ensp;<code>List[str]</code></dt>
+<dd>Une listed des constantes correspondant aux règles du vote choisies pour une élection.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot(list)
+def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
+    &#34;&#34;&#34;Supprimer un widget correpospondant à la carte politique, calculer des résultats d&#39;une élection, 
+    initialiser le widget avec des résultats.
+
+    Args:
+        chosen_voting_rules (List[str]): Une listed des constantes correspondant aux règles du vote choisies pour une élection.
+    &#34;&#34;&#34;
+
+    self.election.start_election(chosen_voting_rules=chosen_voting_rules)
+
+    # Initialize Results page (winners, results, graphs)
+    self.initUIResults()</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.switchWidgetImport"><code class="name flex">
+<span>def <span class="ident">switchWidgetImport</span></span>(<span>self, with_results: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Changer le widget affiché si les données ont été importées. Si les résultats ont été importés, afficher
+initialiser la page avec des résultats. Sinon, afficher la page avec la carte politique.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>with_results</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Une indication si les résultats ont été importées.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot(bool)
+def switchWidgetImport(self, with_results: bool) -&gt; None:
+    &#34;&#34;&#34;Changer le widget affiché si les données ont été importées. Si les résultats ont été importés, afficher 
+    initialiser la page avec des résultats. Sinon, afficher la page avec la carte politique.
+
+    Args:
+        with_results (bool): Une indication si les résultats ont été importées.
+    &#34;&#34;&#34;
+    self.cleanWindow()
+    if not with_results:
+        self.initUIMap()
+        return
+
+    self.election.start_election(imported=True)
+    self.initUIResults()</code></pre>
+</details>
+</dd>
+<dt id="tzb.graphics.home_window.HomeWindow.toggleIEOptions"><code class="name flex">
+<span>def <span class="ident">toggleIEOptions</span></span>(<span>self, type: str, with_results_status: bool, no_results_status: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Activer ou désactiver les options dans le menu par rapport à l'import et l'export.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une indication de l'export ou de l'import.</dd>
+<dt><strong><code>with_results_status</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Une indication s'il faut activer ou désactiver une option d'import/export avec les résultats.</dd>
+<dt><strong><code>no_results_status</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Une indication s'il faut activer ou désactiver une option d'import/export sans les résultats.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def toggleIEOptions(self, type: str, with_results_status: bool, no_results_status: bool) -&gt; None:
+    &#34;&#34;&#34;Activer ou désactiver les options dans le menu par rapport à l&#39;import et l&#39;export.
+
+    Args:
+        type (str): Une indication de l&#39;export ou de l&#39;import.
+        with_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export avec les résultats.
+        no_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export sans les résultats.
+    &#34;&#34;&#34;
+    if type == ImportData.IMPORT:
+        self.import_with_results.setEnabled(with_results_status)
+        self.import_no_results.setEnabled(no_results_status)
+    if type == ExportData.EXPORT:
+        self.export_with_results.setEnabled(with_results_status)
+        self.export_no_results.setEnabled(no_results_status)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tzb.graphics" href="index.html">tzb.graphics</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tzb.graphics.home_window.HomeWindow" href="#tzb.graphics.home_window.HomeWindow">HomeWindow</a></code></h4>
+<ul class="two-column">
+<li><code><a title="tzb.graphics.home_window.HomeWindow.backHomeWindow" href="#tzb.graphics.home_window.HomeWindow.backHomeWindow">backHomeWindow</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.cleanWindow" href="#tzb.graphics.home_window.HomeWindow.cleanWindow">cleanWindow</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.closeEvent" href="#tzb.graphics.home_window.HomeWindow.closeEvent">closeEvent</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.createActions" href="#tzb.graphics.home_window.HomeWindow.createActions">createActions</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.createMenus" href="#tzb.graphics.home_window.HomeWindow.createMenus">createMenus</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.exportData" href="#tzb.graphics.home_window.HomeWindow.exportData">exportData</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.importData" href="#tzb.graphics.home_window.HomeWindow.importData">importData</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.initNavigation" href="#tzb.graphics.home_window.HomeWindow.initNavigation">initNavigation</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.initUIHome" href="#tzb.graphics.home_window.HomeWindow.initUIHome">initUIHome</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.initUIMap" href="#tzb.graphics.home_window.HomeWindow.initUIMap">initUIMap</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.initUIResults" href="#tzb.graphics.home_window.HomeWindow.initUIResults">initUIResults</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.initUISettings" href="#tzb.graphics.home_window.HomeWindow.initUISettings">initUISettings</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.quitApp" href="#tzb.graphics.home_window.HomeWindow.quitApp">quitApp</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.saveSettings" href="#tzb.graphics.home_window.HomeWindow.saveSettings">saveSettings</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.setScreenGeometry" href="#tzb.graphics.home_window.HomeWindow.setScreenGeometry">setScreenGeometry</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.showPopupMsg" href="#tzb.graphics.home_window.HomeWindow.showPopupMsg">showPopupMsg</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.sig_data_imported" href="#tzb.graphics.home_window.HomeWindow.sig_data_imported">sig_data_imported</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.startElection" href="#tzb.graphics.home_window.HomeWindow.startElection">startElection</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.staticMetaObject" href="#tzb.graphics.home_window.HomeWindow.staticMetaObject">staticMetaObject</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.switchWidgetImport" href="#tzb.graphics.home_window.HomeWindow.switchWidgetImport">switchWidgetImport</a></code></li>
+<li><code><a title="tzb.graphics.home_window.HomeWindow.toggleIEOptions" href="#tzb.graphics.home_window.HomeWindow.toggleIEOptions">toggleIEOptions</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

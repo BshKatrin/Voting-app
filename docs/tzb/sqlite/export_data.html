@@ -1,0 +1,1059 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>tzb.sqlite.export_data API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tzb.sqlite.export_data</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from sqlite3 import IntegrityError, Connection
+from typing import Set
+
+from electoral_systems import Election, VotingRulesConstants
+
+
+class ExportData:
+    &#34;&#34;&#34;Une classe qui fournit la fonctionnalité nécessaires pour une exportation des données d&#39;une élection.
+    SQLite3 est utilisé.&#34;&#34;&#34;
+
+    election = Election()
+    EXPORT = &#34;E&#34;
+
+    @classmethod
+    def create_database_people(cls, connection: Connection) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Créer des tableaux des électeurs et des candidats d&#39;une élection et exporter les données.
+
+        Args:
+            connection (sqlite3.Connection): une connection SQLite.
+
+        Returns:
+            tuple[bool, str]: Un booléen True si les données ont été exportées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        cursor.executescript(
+            &#34;DROP TABLE IF EXISTS electors; DROP TABLE IF EXISTS candidates&#34;
+        )
+        connection.commit()
+
+        tables = &#34;&#34;&#34;CREATE TABLE electors (
+            id INTEGER PRIMARY KEY,
+            x REAL CHECK(x &lt;= 1 AND x &gt;= -1),
+            y REAL CHECK(y &lt;= 1 AND y &gt;= -1),
+            weight INTEGER CHECK(weight &gt;= 0),
+            knowledge REAL CHECK(knowledge &lt;= 1 AND knowledge &gt;= 0)
+        );
+        CREATE TABLE candidates (
+            id INTEGER PRIMARY KEY,
+            x REAL CHECK(x &lt;= 1 AND x &gt;= -1),
+            y REAL CHECK(y &lt;= 1 AND y &gt;= -1),
+            first_name TEXT NOT NULL,
+            last_name TEXT NOT NULL,
+            dogmatism REAL CHECK(dogmatism &lt;= 1 AND dogmatism &gt;= 0),
+            opposition REAL CHECK(opposition &lt;= 1 AND opposition &gt;= 0)
+        );
+        &#34;&#34;&#34;
+
+        cursor.executescript(tables)
+        connection.commit()
+
+        query = &#34;&#34;&#34;
+            INSERT INTO electors(id, x, y, weight, knowledge)
+            VALUES (?, ?, ?, ?, ?)
+            &#34;&#34;&#34;
+
+        data = [
+            (e.id, e.position[0], e.position[1], e.weight, e.knowledge)
+            for e in cls.election.electors
+        ]
+        try:
+            cursor.executemany(query, data)
+        except IntegrityError:
+            return False, &#34;Data does not corresponds to constraints&#34;
+
+        connection.commit()
+
+        # for candidate in candidates:
+        query = &#34;&#34;&#34;
+            INSERT INTO candidates(id, x, y, first_name, last_name, dogmatism, opposition)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            &#34;&#34;&#34;
+
+        data = [
+            (
+                c.id,
+                c.position[0],
+                c.position[1],
+                c.first_name,
+                c.last_name,
+                c.dogmatism,
+                c.opposition,
+            )
+            for c in cls.election.candidates
+        ]
+        try:
+            cursor.executemany(query, data)
+        except IntegrityError:
+            return False, &#34;Data does not corresponds to constraints&#34;
+
+        connection.commit()
+
+        return True, &#34;Date exported&#34;
+
+    @classmethod
+    def create_database_results(cls, connection: Connection) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Créer des tableaux des résultats d&#39;une élection et exporter les données.
+        Au plus il peut exister 4 tableaux:
+            - Un tableau pour des règles du vote à un tour
+            - Un tableau pour des règles du vote à plusieurs tours
+            - Deux tableaux pour des règles du vote Condorcet-cohérentes. Un tableau pour des scores des candidats, un tableau pour
+            des scores dans les duels.
+        Chaque tableau est créé uniquement si nécessaire, e.g. si aucune règle du vote à un tour n&#39;étais pas utilisée lors d&#39;une élection,
+        il ne sera pas crée.
+
+        Args:
+            connection (sqlite3.Connection): une connection SQLite.
+
+        Returns:
+            tuple[bool, str]: Un booléen True si les données ont été exportées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        # DB for one round voting rules
+        chosen_one_round = cls.election.results.keys() &amp; VotingRulesConstants.ONE_ROUND
+        status = True
+
+        if chosen_one_round:
+            cls._one_round_create_table(connection, chosen_one_round)
+            status = cls._one_round_insert(connection, chosen_one_round)
+        if not status:
+            return False, &#34;Results of voting rules (1 round) do not correspond to constraints&#34;
+
+        # DB for multi round voting rules
+        chosen_multi_round = (
+            cls.election.results.keys() &amp; VotingRulesConstants.MULTI_ROUND
+        )
+        if chosen_multi_round:
+            cls._multi_round_create_table(connection, chosen_multi_round)
+            status = cls._multi_round_insert(connection, chosen_multi_round)
+        if not status:
+            return False, &#34;Results of voting rules (multi round) do not correspond to constraints&#34;
+
+        # DB for condorcet voting_rules
+        chosen_condorcet = cls.election.results.keys() &amp; VotingRulesConstants.CONDORCET
+
+        if chosen_condorcet:
+            cls._condorcet_create_table(connection, chosen_condorcet)
+            status = cls._condorcet_insert(connection, chosen_condorcet)
+        if not status:
+            return False, &#34;Results of voting rules (Condorcet) do not correspond to constraints&#34;
+
+        cls._export_config(connection)
+        return True, &#34;Data exported&#34;
+
+    @classmethod
+    def _get_set_check(cls, voting_rules_set: Set[str]) -&gt; str:
+        &#34;&#34;&#34;Retourner une chaîne de caractères d&#39;une contrainte d&#39;intégrité sur une règle du vote.
+
+        Args:
+            voting_rules_set(Set[str]): Un ensemble des constantes associées aux règles du vote.
+        Returns:
+            str: Une constrainte d&#39;intégrité utilisé dand &#39;CHECK(...)&#39;
+        &#34;&#34;&#34;
+        if len(voting_rules_set) == 1:
+            return f&#34;= &#39;{str(tuple(voting_rules_set)[0])}&#39;&#34;
+        return f&#34;IN {str(tuple(voting_rules_set))}&#34;
+
+    @classmethod
+    def _one_round_create_table(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; None:
+        &#34;&#34;&#34;Créer un tableau pour des résultats des règle du vote à un tour.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            chosen_one_round (Set[str]): Un ensemble des règles du vote à un tour utilisées dans une élection.
+                Nécessaire pour une contrainte d&#39;intégrité.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;DROP TABLE IF EXISTS results_one_round&#34;)
+        connection.commit()
+
+        table_scores = f&#34;&#34;&#34;
+            CREATE TABLE results_one_round (
+                candidate_id INTEGER,
+                voting_rule TEXT CHECK(voting_rule {ExportData._get_set_check(chosen_one_round)}),
+                score REAL,
+
+                FOREIGN KEY(candidate_id) REFERENCES candidates(id)
+            )
+            &#34;&#34;&#34;
+        cursor.execute(table_scores)
+        connection.commit()
+
+    @classmethod
+    def _one_round_insert(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; bool:
+        &#34;&#34;&#34;Remplir le tableau pour des résultats des règle du vote à un tour.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            chosen_one_round (Set[str]): Un ensemble des règles du vote à un tour utilisées dans une élection.
+
+        Returns:
+            bool: True si les données ont été insérées, False si l&#39;erreur est survenue.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        query = &#34;&#34;&#34;INSERT INTO results_one_round(candidate_id, voting_rule, score)
+        VALUES(?, ?, ?)&#34;&#34;&#34;
+
+        tuples = [
+            (c.id, voting_rule, c.scores[voting_rule])
+            for voting_rule in chosen_one_round
+            for c in cls.election.candidates
+        ]
+
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
+
+        connection.commit()
+        return True
+
+    @classmethod
+    def _multi_round_create_table(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; None:
+        &#34;&#34;&#34;Créer un tableau pour des résultats des règle du vote à plusiers tours
+
+        Args:
+            connection(sqlite3.Connection): Une connection SQLite.
+            chosen_multi_round(Set[str]): Un ensemble des règles du vote à plusieurs tours utilisées dans une élection.
+                Nécessaire pour une contrainte d&#39;intégrité.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;DROP TABLE IF EXISTS results_multi_round&#34;)
+        connection.commit()
+
+        table_scores = f&#34;&#34;&#34;
+            CREATE TABLE results_multi_round (
+                candidate_id INTEGER,
+                voting_rule TEXT CHECK(voting_rule {ExportData._get_set_check(chosen_multi_round)}),
+                round INTEGER CHECK(round &gt;= 0),
+                score REAL NOT NULL,
+
+                FOREIGN KEY(candidate_id) REFERENCES candidates(id)
+            )
+            &#34;&#34;&#34;
+        cursor.execute(table_scores)
+        connection.commit()
+
+    @classmethod
+    def _multi_round_insert(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; bool:
+        &#34;&#34;&#34;Remplir le tableau pour des résultats des règle du vote à plusieurs tours.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            chosen_multi_round (Set[str]): Un ensemble des règles du vote à plusieurs tours utilisées dans une élection.
+
+        Returns:
+            bool: True si les données ont été insérées, False si l&#39;erreur est survenue.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        query = &#34;&#34;&#34;INSERT INTO results_multi_round(candidate_id, voting_rule, round, score)
+        VALUES(?, ?, ?, ?)
+        &#34;&#34;&#34;
+
+        tuples = [
+            (c.id, voting_rule, round, c.scores[voting_rule][round])
+            for voting_rule in chosen_multi_round
+            for c in cls.election.candidates
+            for round in range(len(c.scores[voting_rule]))
+        ]
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
+        connection.commit()
+        return True
+
+    @classmethod
+    def _condorcet_create_table(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; None:
+        &#34;&#34;&#34;Créer un tableau pour des résultats des règles du vote Condorcet-cohérentes et des duels entre les candidats.
+
+        Args:
+            connection(sqlite3.Connection): Une connection SQLite.
+            chosen_condorcet (Set[str]): Un ensemble des règles du vote Condorcet-cohérentes utilisées dans une élection.
+                Nécessaire pour une contrainte d&#39;intégrité.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        cursor.executescript(
+            &#34;DROP TABLE IF EXISTS condorcet_duels;DROP TABLE IF EXISTS results_condorcet&#34;
+        )
+        connection.commit()
+
+        table_duels = f&#34;&#34;&#34;
+            CREATE TABLE condorcet_duels (
+                winner_id INTEGER NOT NULL,
+                loser_id INTEGER NOT NULL,
+                score REAL NOT NULL,
+
+                FOREIGN KEY(winner_id) REFERENCES candidates(id),
+                FOREIGN KEY(loser_id) REFERENCES candidates(id)
+            )
+            &#34;&#34;&#34;
+        cursor.execute(table_duels)
+
+        connection.commit()
+        table_scores = f&#34;&#34;&#34;CREATE TABLE results_condorcet (
+                candidate_id INTEGER,
+                voting_rule TEXT CHECK(voting_rule {ExportData._get_set_check(chosen_condorcet)}),
+                score REAL NOT NULL,
+
+                FOREIGN KEY(candidate_id) REFERENCES candidates(id)
+            )
+            &#34;&#34;&#34;
+
+        cursor.execute(table_scores)
+        connection.commit()
+
+    @classmethod
+    def _condorcet_insert(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; bool:
+        &#34;&#34;&#34;Remplir le tableau pour des scores des règles du vote Condorcet-cohérentes et des duels.
+
+        Args:
+            connection (sqlite3.Connection). Une connection SQLite.
+            chosen_condorcet (Set[str]): Un ensemble des règles du vote Condorcet-cohérentes utilisées dans une élection.
+
+        Returns:
+            bool: True si les données ont été insérées, False si l&#39;erreur est survenue.
+        &#34;&#34;&#34;
+
+        # Duels
+        cursor = connection.cursor()
+        query = &#34;&#34;&#34;INSERT INTO condorcet_duels(winner_id, loser_id, score)
+        VALUES(?, ?, ?)&#34;&#34;&#34;
+
+        tuples = [
+            (pair[0].id, pair[1].id, score)
+            for pair, score in cls.election.duels_scores.items()
+        ]
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
+        connection.commit()
+
+        # Scores (comme à un tour)
+        query = &#34;&#34;&#34;INSERT INTO results_condorcet(candidate_id, voting_rule, score)
+        VALUES(?, ?, ?)&#34;&#34;&#34;
+
+        tuples = [
+            (c.id, voting_rule, c.scores[voting_rule])
+            for voting_rule in chosen_condorcet
+            for c in cls.election.candidates
+        ]
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
+        connection.commit()
+        return True
+
+    @classmethod
+    def _export_config(cls, connection: Connection) -&gt; None:
+        &#34;&#34;&#34;Exporter les configurations d&#39;une élection, i.e. si 
+            - la résolution des égalités a été activée.
+            - la démocratie liquide a été activée. 
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;DROP TABLE IF EXISTS settings&#34;)
+        connection.commit()
+
+        table_config = f&#34;&#34;&#34;
+            CREATE TABLE settings (
+                parameter TEXT,
+                set_value INTEGER NOT NULL,
+
+                PRIMARY KEY(parameter)
+            )
+            &#34;&#34;&#34;
+        cursor.execute(table_config)
+        connection.commit()
+
+        settings_assoc = [
+            (&#34;liquid_democracy_activated&#34;, 1 if cls.election.liquid_democracy_activated else 0),
+            (&#34;tie_breaker_activated&#34;,  1 if cls.election.tie_breaker_activated else 0),
+        ]
+        cursor.executemany(&#34;INSERT INTO settings VALUES (?, ?)&#34;, settings_assoc)
+        connection.commit()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tzb.sqlite.export_data.ExportData"><code class="flex name class">
+<span>class <span class="ident">ExportData</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Une classe qui fournit la fonctionnalité nécessaires pour une exportation des données d'une élection.
+SQLite3 est utilisé.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ExportData:
+    &#34;&#34;&#34;Une classe qui fournit la fonctionnalité nécessaires pour une exportation des données d&#39;une élection.
+    SQLite3 est utilisé.&#34;&#34;&#34;
+
+    election = Election()
+    EXPORT = &#34;E&#34;
+
+    @classmethod
+    def create_database_people(cls, connection: Connection) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Créer des tableaux des électeurs et des candidats d&#39;une élection et exporter les données.
+
+        Args:
+            connection (sqlite3.Connection): une connection SQLite.
+
+        Returns:
+            tuple[bool, str]: Un booléen True si les données ont été exportées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        cursor.executescript(
+            &#34;DROP TABLE IF EXISTS electors; DROP TABLE IF EXISTS candidates&#34;
+        )
+        connection.commit()
+
+        tables = &#34;&#34;&#34;CREATE TABLE electors (
+            id INTEGER PRIMARY KEY,
+            x REAL CHECK(x &lt;= 1 AND x &gt;= -1),
+            y REAL CHECK(y &lt;= 1 AND y &gt;= -1),
+            weight INTEGER CHECK(weight &gt;= 0),
+            knowledge REAL CHECK(knowledge &lt;= 1 AND knowledge &gt;= 0)
+        );
+        CREATE TABLE candidates (
+            id INTEGER PRIMARY KEY,
+            x REAL CHECK(x &lt;= 1 AND x &gt;= -1),
+            y REAL CHECK(y &lt;= 1 AND y &gt;= -1),
+            first_name TEXT NOT NULL,
+            last_name TEXT NOT NULL,
+            dogmatism REAL CHECK(dogmatism &lt;= 1 AND dogmatism &gt;= 0),
+            opposition REAL CHECK(opposition &lt;= 1 AND opposition &gt;= 0)
+        );
+        &#34;&#34;&#34;
+
+        cursor.executescript(tables)
+        connection.commit()
+
+        query = &#34;&#34;&#34;
+            INSERT INTO electors(id, x, y, weight, knowledge)
+            VALUES (?, ?, ?, ?, ?)
+            &#34;&#34;&#34;
+
+        data = [
+            (e.id, e.position[0], e.position[1], e.weight, e.knowledge)
+            for e in cls.election.electors
+        ]
+        try:
+            cursor.executemany(query, data)
+        except IntegrityError:
+            return False, &#34;Data does not corresponds to constraints&#34;
+
+        connection.commit()
+
+        # for candidate in candidates:
+        query = &#34;&#34;&#34;
+            INSERT INTO candidates(id, x, y, first_name, last_name, dogmatism, opposition)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            &#34;&#34;&#34;
+
+        data = [
+            (
+                c.id,
+                c.position[0],
+                c.position[1],
+                c.first_name,
+                c.last_name,
+                c.dogmatism,
+                c.opposition,
+            )
+            for c in cls.election.candidates
+        ]
+        try:
+            cursor.executemany(query, data)
+        except IntegrityError:
+            return False, &#34;Data does not corresponds to constraints&#34;
+
+        connection.commit()
+
+        return True, &#34;Date exported&#34;
+
+    @classmethod
+    def create_database_results(cls, connection: Connection) -&gt; tuple[bool, str]:
+        &#34;&#34;&#34;Créer des tableaux des résultats d&#39;une élection et exporter les données.
+        Au plus il peut exister 4 tableaux:
+            - Un tableau pour des règles du vote à un tour
+            - Un tableau pour des règles du vote à plusieurs tours
+            - Deux tableaux pour des règles du vote Condorcet-cohérentes. Un tableau pour des scores des candidats, un tableau pour
+            des scores dans les duels.
+        Chaque tableau est créé uniquement si nécessaire, e.g. si aucune règle du vote à un tour n&#39;étais pas utilisée lors d&#39;une élection,
+        il ne sera pas crée.
+
+        Args:
+            connection (sqlite3.Connection): une connection SQLite.
+
+        Returns:
+            tuple[bool, str]: Un booléen True si les données ont été exportées avec succès, False si l&#39;erreur est survenue.
+            Une chaîne de caractères avec le message.
+        &#34;&#34;&#34;
+
+        # DB for one round voting rules
+        chosen_one_round = cls.election.results.keys() &amp; VotingRulesConstants.ONE_ROUND
+        status = True
+
+        if chosen_one_round:
+            cls._one_round_create_table(connection, chosen_one_round)
+            status = cls._one_round_insert(connection, chosen_one_round)
+        if not status:
+            return False, &#34;Results of voting rules (1 round) do not correspond to constraints&#34;
+
+        # DB for multi round voting rules
+        chosen_multi_round = (
+            cls.election.results.keys() &amp; VotingRulesConstants.MULTI_ROUND
+        )
+        if chosen_multi_round:
+            cls._multi_round_create_table(connection, chosen_multi_round)
+            status = cls._multi_round_insert(connection, chosen_multi_round)
+        if not status:
+            return False, &#34;Results of voting rules (multi round) do not correspond to constraints&#34;
+
+        # DB for condorcet voting_rules
+        chosen_condorcet = cls.election.results.keys() &amp; VotingRulesConstants.CONDORCET
+
+        if chosen_condorcet:
+            cls._condorcet_create_table(connection, chosen_condorcet)
+            status = cls._condorcet_insert(connection, chosen_condorcet)
+        if not status:
+            return False, &#34;Results of voting rules (Condorcet) do not correspond to constraints&#34;
+
+        cls._export_config(connection)
+        return True, &#34;Data exported&#34;
+
+    @classmethod
+    def _get_set_check(cls, voting_rules_set: Set[str]) -&gt; str:
+        &#34;&#34;&#34;Retourner une chaîne de caractères d&#39;une contrainte d&#39;intégrité sur une règle du vote.
+
+        Args:
+            voting_rules_set(Set[str]): Un ensemble des constantes associées aux règles du vote.
+        Returns:
+            str: Une constrainte d&#39;intégrité utilisé dand &#39;CHECK(...)&#39;
+        &#34;&#34;&#34;
+        if len(voting_rules_set) == 1:
+            return f&#34;= &#39;{str(tuple(voting_rules_set)[0])}&#39;&#34;
+        return f&#34;IN {str(tuple(voting_rules_set))}&#34;
+
+    @classmethod
+    def _one_round_create_table(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; None:
+        &#34;&#34;&#34;Créer un tableau pour des résultats des règle du vote à un tour.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            chosen_one_round (Set[str]): Un ensemble des règles du vote à un tour utilisées dans une élection.
+                Nécessaire pour une contrainte d&#39;intégrité.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;DROP TABLE IF EXISTS results_one_round&#34;)
+        connection.commit()
+
+        table_scores = f&#34;&#34;&#34;
+            CREATE TABLE results_one_round (
+                candidate_id INTEGER,
+                voting_rule TEXT CHECK(voting_rule {ExportData._get_set_check(chosen_one_round)}),
+                score REAL,
+
+                FOREIGN KEY(candidate_id) REFERENCES candidates(id)
+            )
+            &#34;&#34;&#34;
+        cursor.execute(table_scores)
+        connection.commit()
+
+    @classmethod
+    def _one_round_insert(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; bool:
+        &#34;&#34;&#34;Remplir le tableau pour des résultats des règle du vote à un tour.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            chosen_one_round (Set[str]): Un ensemble des règles du vote à un tour utilisées dans une élection.
+
+        Returns:
+            bool: True si les données ont été insérées, False si l&#39;erreur est survenue.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        query = &#34;&#34;&#34;INSERT INTO results_one_round(candidate_id, voting_rule, score)
+        VALUES(?, ?, ?)&#34;&#34;&#34;
+
+        tuples = [
+            (c.id, voting_rule, c.scores[voting_rule])
+            for voting_rule in chosen_one_round
+            for c in cls.election.candidates
+        ]
+
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
+
+        connection.commit()
+        return True
+
+    @classmethod
+    def _multi_round_create_table(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; None:
+        &#34;&#34;&#34;Créer un tableau pour des résultats des règle du vote à plusiers tours
+
+        Args:
+            connection(sqlite3.Connection): Une connection SQLite.
+            chosen_multi_round(Set[str]): Un ensemble des règles du vote à plusieurs tours utilisées dans une élection.
+                Nécessaire pour une contrainte d&#39;intégrité.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;DROP TABLE IF EXISTS results_multi_round&#34;)
+        connection.commit()
+
+        table_scores = f&#34;&#34;&#34;
+            CREATE TABLE results_multi_round (
+                candidate_id INTEGER,
+                voting_rule TEXT CHECK(voting_rule {ExportData._get_set_check(chosen_multi_round)}),
+                round INTEGER CHECK(round &gt;= 0),
+                score REAL NOT NULL,
+
+                FOREIGN KEY(candidate_id) REFERENCES candidates(id)
+            )
+            &#34;&#34;&#34;
+        cursor.execute(table_scores)
+        connection.commit()
+
+    @classmethod
+    def _multi_round_insert(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; bool:
+        &#34;&#34;&#34;Remplir le tableau pour des résultats des règle du vote à plusieurs tours.
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+            chosen_multi_round (Set[str]): Un ensemble des règles du vote à plusieurs tours utilisées dans une élection.
+
+        Returns:
+            bool: True si les données ont été insérées, False si l&#39;erreur est survenue.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        query = &#34;&#34;&#34;INSERT INTO results_multi_round(candidate_id, voting_rule, round, score)
+        VALUES(?, ?, ?, ?)
+        &#34;&#34;&#34;
+
+        tuples = [
+            (c.id, voting_rule, round, c.scores[voting_rule][round])
+            for voting_rule in chosen_multi_round
+            for c in cls.election.candidates
+            for round in range(len(c.scores[voting_rule]))
+        ]
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
+        connection.commit()
+        return True
+
+    @classmethod
+    def _condorcet_create_table(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; None:
+        &#34;&#34;&#34;Créer un tableau pour des résultats des règles du vote Condorcet-cohérentes et des duels entre les candidats.
+
+        Args:
+            connection(sqlite3.Connection): Une connection SQLite.
+            chosen_condorcet (Set[str]): Un ensemble des règles du vote Condorcet-cohérentes utilisées dans une élection.
+                Nécessaire pour une contrainte d&#39;intégrité.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+        cursor.executescript(
+            &#34;DROP TABLE IF EXISTS condorcet_duels;DROP TABLE IF EXISTS results_condorcet&#34;
+        )
+        connection.commit()
+
+        table_duels = f&#34;&#34;&#34;
+            CREATE TABLE condorcet_duels (
+                winner_id INTEGER NOT NULL,
+                loser_id INTEGER NOT NULL,
+                score REAL NOT NULL,
+
+                FOREIGN KEY(winner_id) REFERENCES candidates(id),
+                FOREIGN KEY(loser_id) REFERENCES candidates(id)
+            )
+            &#34;&#34;&#34;
+        cursor.execute(table_duels)
+
+        connection.commit()
+        table_scores = f&#34;&#34;&#34;CREATE TABLE results_condorcet (
+                candidate_id INTEGER,
+                voting_rule TEXT CHECK(voting_rule {ExportData._get_set_check(chosen_condorcet)}),
+                score REAL NOT NULL,
+
+                FOREIGN KEY(candidate_id) REFERENCES candidates(id)
+            )
+            &#34;&#34;&#34;
+
+        cursor.execute(table_scores)
+        connection.commit()
+
+    @classmethod
+    def _condorcet_insert(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; bool:
+        &#34;&#34;&#34;Remplir le tableau pour des scores des règles du vote Condorcet-cohérentes et des duels.
+
+        Args:
+            connection (sqlite3.Connection). Une connection SQLite.
+            chosen_condorcet (Set[str]): Un ensemble des règles du vote Condorcet-cohérentes utilisées dans une élection.
+
+        Returns:
+            bool: True si les données ont été insérées, False si l&#39;erreur est survenue.
+        &#34;&#34;&#34;
+
+        # Duels
+        cursor = connection.cursor()
+        query = &#34;&#34;&#34;INSERT INTO condorcet_duels(winner_id, loser_id, score)
+        VALUES(?, ?, ?)&#34;&#34;&#34;
+
+        tuples = [
+            (pair[0].id, pair[1].id, score)
+            for pair, score in cls.election.duels_scores.items()
+        ]
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
+        connection.commit()
+
+        # Scores (comme à un tour)
+        query = &#34;&#34;&#34;INSERT INTO results_condorcet(candidate_id, voting_rule, score)
+        VALUES(?, ?, ?)&#34;&#34;&#34;
+
+        tuples = [
+            (c.id, voting_rule, c.scores[voting_rule])
+            for voting_rule in chosen_condorcet
+            for c in cls.election.candidates
+        ]
+        try:
+            cursor.executemany(query, tuples)
+        except IntegrityError:
+            return False
+        connection.commit()
+        return True
+
+    @classmethod
+    def _export_config(cls, connection: Connection) -&gt; None:
+        &#34;&#34;&#34;Exporter les configurations d&#39;une élection, i.e. si 
+            - la résolution des égalités a été activée.
+            - la démocratie liquide a été activée. 
+
+        Args:
+            connection (sqlite3.Connection): Une connection SQLite.
+        &#34;&#34;&#34;
+
+        cursor = connection.cursor()
+
+        cursor.execute(&#34;DROP TABLE IF EXISTS settings&#34;)
+        connection.commit()
+
+        table_config = f&#34;&#34;&#34;
+            CREATE TABLE settings (
+                parameter TEXT,
+                set_value INTEGER NOT NULL,
+
+                PRIMARY KEY(parameter)
+            )
+            &#34;&#34;&#34;
+        cursor.execute(table_config)
+        connection.commit()
+
+        settings_assoc = [
+            (&#34;liquid_democracy_activated&#34;, 1 if cls.election.liquid_democracy_activated else 0),
+            (&#34;tie_breaker_activated&#34;,  1 if cls.election.tie_breaker_activated else 0),
+        ]
+        cursor.executemany(&#34;INSERT INTO settings VALUES (?, ?)&#34;, settings_assoc)
+        connection.commit()</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="tzb.sqlite.export_data.ExportData.EXPORT"><code class="name">var <span class="ident">EXPORT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="tzb.sqlite.export_data.ExportData.election"><code class="name">var <span class="ident">election</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="tzb.sqlite.export_data.ExportData.create_database_people"><code class="name flex">
+<span>def <span class="ident">create_database_people</span></span>(<span>connection: sqlite3.Connection) ‑> tuple[bool, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Créer des tableaux des électeurs et des candidats d'une élection et exporter les données.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
+<dd>une connection SQLite.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[bool, str]</code></dt>
+<dd>Un booléen True si les données ont été exportées avec succès, False si l'erreur est survenue.</dd>
+</dl>
+<p>Une chaîne de caractères avec le message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create_database_people(cls, connection: Connection) -&gt; tuple[bool, str]:
+    &#34;&#34;&#34;Créer des tableaux des électeurs et des candidats d&#39;une élection et exporter les données.
+
+    Args:
+        connection (sqlite3.Connection): une connection SQLite.
+
+    Returns:
+        tuple[bool, str]: Un booléen True si les données ont été exportées avec succès, False si l&#39;erreur est survenue.
+        Une chaîne de caractères avec le message.
+    &#34;&#34;&#34;
+
+    cursor = connection.cursor()
+
+    cursor.executescript(
+        &#34;DROP TABLE IF EXISTS electors; DROP TABLE IF EXISTS candidates&#34;
+    )
+    connection.commit()
+
+    tables = &#34;&#34;&#34;CREATE TABLE electors (
+        id INTEGER PRIMARY KEY,
+        x REAL CHECK(x &lt;= 1 AND x &gt;= -1),
+        y REAL CHECK(y &lt;= 1 AND y &gt;= -1),
+        weight INTEGER CHECK(weight &gt;= 0),
+        knowledge REAL CHECK(knowledge &lt;= 1 AND knowledge &gt;= 0)
+    );
+    CREATE TABLE candidates (
+        id INTEGER PRIMARY KEY,
+        x REAL CHECK(x &lt;= 1 AND x &gt;= -1),
+        y REAL CHECK(y &lt;= 1 AND y &gt;= -1),
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        dogmatism REAL CHECK(dogmatism &lt;= 1 AND dogmatism &gt;= 0),
+        opposition REAL CHECK(opposition &lt;= 1 AND opposition &gt;= 0)
+    );
+    &#34;&#34;&#34;
+
+    cursor.executescript(tables)
+    connection.commit()
+
+    query = &#34;&#34;&#34;
+        INSERT INTO electors(id, x, y, weight, knowledge)
+        VALUES (?, ?, ?, ?, ?)
+        &#34;&#34;&#34;
+
+    data = [
+        (e.id, e.position[0], e.position[1], e.weight, e.knowledge)
+        for e in cls.election.electors
+    ]
+    try:
+        cursor.executemany(query, data)
+    except IntegrityError:
+        return False, &#34;Data does not corresponds to constraints&#34;
+
+    connection.commit()
+
+    # for candidate in candidates:
+    query = &#34;&#34;&#34;
+        INSERT INTO candidates(id, x, y, first_name, last_name, dogmatism, opposition)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        &#34;&#34;&#34;
+
+    data = [
+        (
+            c.id,
+            c.position[0],
+            c.position[1],
+            c.first_name,
+            c.last_name,
+            c.dogmatism,
+            c.opposition,
+        )
+        for c in cls.election.candidates
+    ]
+    try:
+        cursor.executemany(query, data)
+    except IntegrityError:
+        return False, &#34;Data does not corresponds to constraints&#34;
+
+    connection.commit()
+
+    return True, &#34;Date exported&#34;</code></pre>
+</details>
+</dd>
+<dt id="tzb.sqlite.export_data.ExportData.create_database_results"><code class="name flex">
+<span>def <span class="ident">create_database_results</span></span>(<span>connection: sqlite3.Connection) ‑> tuple[bool, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Créer des tableaux des résultats d'une élection et exporter les données.
+Au plus il peut exister 4 tableaux:
+- Un tableau pour des règles du vote à un tour
+- Un tableau pour des règles du vote à plusieurs tours
+- Deux tableaux pour des règles du vote Condorcet-cohérentes. Un tableau pour des scores des candidats, un tableau pour
+des scores dans les duels.
+Chaque tableau est créé uniquement si nécessaire, e.g. si aucune règle du vote à un tour n'étais pas utilisée lors d'une élection,
+il ne sera pas crée.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
+<dd>une connection SQLite.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[bool, str]</code></dt>
+<dd>Un booléen True si les données ont été exportées avec succès, False si l'erreur est survenue.</dd>
+</dl>
+<p>Une chaîne de caractères avec le message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def create_database_results(cls, connection: Connection) -&gt; tuple[bool, str]:
+    &#34;&#34;&#34;Créer des tableaux des résultats d&#39;une élection et exporter les données.
+    Au plus il peut exister 4 tableaux:
+        - Un tableau pour des règles du vote à un tour
+        - Un tableau pour des règles du vote à plusieurs tours
+        - Deux tableaux pour des règles du vote Condorcet-cohérentes. Un tableau pour des scores des candidats, un tableau pour
+        des scores dans les duels.
+    Chaque tableau est créé uniquement si nécessaire, e.g. si aucune règle du vote à un tour n&#39;étais pas utilisée lors d&#39;une élection,
+    il ne sera pas crée.
+
+    Args:
+        connection (sqlite3.Connection): une connection SQLite.
+
+    Returns:
+        tuple[bool, str]: Un booléen True si les données ont été exportées avec succès, False si l&#39;erreur est survenue.
+        Une chaîne de caractères avec le message.
+    &#34;&#34;&#34;
+
+    # DB for one round voting rules
+    chosen_one_round = cls.election.results.keys() &amp; VotingRulesConstants.ONE_ROUND
+    status = True
+
+    if chosen_one_round:
+        cls._one_round_create_table(connection, chosen_one_round)
+        status = cls._one_round_insert(connection, chosen_one_round)
+    if not status:
+        return False, &#34;Results of voting rules (1 round) do not correspond to constraints&#34;
+
+    # DB for multi round voting rules
+    chosen_multi_round = (
+        cls.election.results.keys() &amp; VotingRulesConstants.MULTI_ROUND
+    )
+    if chosen_multi_round:
+        cls._multi_round_create_table(connection, chosen_multi_round)
+        status = cls._multi_round_insert(connection, chosen_multi_round)
+    if not status:
+        return False, &#34;Results of voting rules (multi round) do not correspond to constraints&#34;
+
+    # DB for condorcet voting_rules
+    chosen_condorcet = cls.election.results.keys() &amp; VotingRulesConstants.CONDORCET
+
+    if chosen_condorcet:
+        cls._condorcet_create_table(connection, chosen_condorcet)
+        status = cls._condorcet_insert(connection, chosen_condorcet)
+    if not status:
+        return False, &#34;Results of voting rules (Condorcet) do not correspond to constraints&#34;
+
+    cls._export_config(connection)
+    return True, &#34;Data exported&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tzb.sqlite" href="index.html">tzb.sqlite</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tzb.sqlite.export_data.ExportData" href="#tzb.sqlite.export_data.ExportData">ExportData</a></code></h4>
+<ul class="">
+<li><code><a title="tzb.sqlite.export_data.ExportData.EXPORT" href="#tzb.sqlite.export_data.ExportData.EXPORT">EXPORT</a></code></li>
+<li><code><a title="tzb.sqlite.export_data.ExportData.create_database_people" href="#tzb.sqlite.export_data.ExportData.create_database_people">create_database_people</a></code></li>
+<li><code><a title="tzb.sqlite.export_data.ExportData.create_database_results" href="#tzb.sqlite.export_data.ExportData.create_database_results">create_database_results</a></code></li>
+<li><code><a title="tzb.sqlite.export_data.ExportData.election" href="#tzb.sqlite.export_data.ExportData.election">election</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

@@ -26,7 +26,7 @@ def apply_condorcet_simple(electors: List[Elector], candidates: List[Candidate],
     init_scores(candidates, CONDORCET_SIMPLE, 0)
     for winner, _ in duels:
         winner.add_score(CONDORCET_SIMPLE, 1)
-    return sort_cand_by_value(candidates, CONDORCET_SIMPLE)
+    return sort_cand_by_value(candidates, CONDORCET_SIMPLE, nb_electors=len(electors), duels=None)
 
 
 def apply_condorcet_copeland(electors: List[Elector], candidates: List[Candidate], duels: duels_type) -> List[Candidate]:
@@ -46,6 +46,7 @@ def apply_condorcet_copeland(electors: List[Elector], candidates: List[Candidate
         List[people.candidate.Candidate]:  Une liste des candidats triés dans l'ordre décroissant selon leurs scores dans
             la règle du vote *Copeland*.
     """
+
     nb_electors = len(electors)  # Pour déterminer s'il existe une égalité
     init_scores(candidates, CONDORCET_COPELAND, 0)
     for (winner, loser), score in duels.items():
@@ -55,7 +56,7 @@ def apply_condorcet_copeland(electors: List[Elector], candidates: List[Candidate
             continue
         winner.add_score(CONDORCET_COPELAND, 1)
 
-    return sort_cand_by_value(candidates, CONDORCET_COPELAND)
+    return sort_cand_by_value(candidates, CONDORCET_COPELAND, nb_electors=len(electors), duels=None)
 
 
 def apply_condorcet_simpson(electors: List[Elector], candidates: List[Candidate], duels: duels_type) -> List[Candidate]:
@@ -82,4 +83,4 @@ def apply_condorcet_simpson(electors: List[Elector], candidates: List[Candidate]
         loser.init_score(CONDORCET_SIMPSON, max(current_score, score))
         current_score = loser.scores[CONDORCET_SIMPSON]
 
-    return sort_cand_by_value(candidates, CONDORCET_SIMPSON, scores_asc=True)
+    return sort_cand_by_value(candidates, CONDORCET_SIMPSON, nb_electors=len(electors), duels=None, scores_asc=True)

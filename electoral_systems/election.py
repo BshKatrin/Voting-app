@@ -207,19 +207,23 @@ class Election(metaclass=Singleton):
         if voting_rule in VotingRulesConstants.CONDORCET:
             result = func(self.electors, self.candidates, self.duels_scores)
 
-        elif voting_rule == VotingRulesConstants.APPROVAL:
-            result = func(
-                self.electors,
-                self.candidates,
-                VotingRulesConstants.APPROVAL_GAP_COEF,
-                self.duels_scores if self.tie_breaker_activated else None,
-            )
-        else:
-            result = func(
-                self.electors,
-                self.candidates,
-                self.duels_scores if self.tie_breaker_activated else None,
-            )
+        if voting_rule in VotingRulesConstants.ONE_ROUND:
+            if voting_rule == VotingRulesConstants.APPROVAL:
+                result = func(
+                    self.electors,
+                    self.candidates,
+                    VotingRulesConstants.APPROVAL_GAP_COEF,
+                    self.duels_scores if self.tie_breaker_activated else None,
+                )
+            else:
+                result = func(
+                    self.electors,
+                    self.candidates,
+                    self.duels_scores if self.tie_breaker_activated else None,
+                )
+
+        if voting_rule in VotingRulesConstants.MULTI_ROUND:
+            result = func(self.electors, self.candidates)
 
         self.results[voting_rule] = result
 
@@ -271,7 +275,7 @@ class Election(metaclass=Singleton):
 
         Args:
             imported (bool): True si les données one été importés. Si oui, ne pas calculer des duels et des scores des candidats
-            dans chaque règle du vote choisie. Ils sont importés. Cepedant, un calcul des classement est effectué.
+                dans chaque règle du vote choisie. Ils sont importés. Cepedant, un calcul des classement est effectué.
         """
 
         if imported:
@@ -338,16 +342,14 @@ class Election(metaclass=Singleton):
         duels = self.duels_scores if self.tie_breaker_activated else None
         for voting_rule in keys:
             if voting_rule in VotingRulesConstants.ONE_ROUND:
-                result = sort_cand_by_value(self.candidates, voting_rule, duels=duels)
+                result = sort_cand_by_value(self.candidates, voting_rule, nb_electors=len(self.electors), duels=duels)
                 self.results[voting_rule] = result
 
             if voting_rule in VotingRulesConstants.MULTI_ROUND:
                 self.results[voting_rule] = [None] * len(candidate.scores[voting_rule])
 
                 for round in range(len(candidate.scores[voting_rule])):
-                    result = sort_cand_by_round(
-                        self.candidates, voting_rule, round, duels=duels
-                    )
+                    result = sort_cand_by_round(self.candidates, voting_rule, round)
                     self.results[voting_rule][round] = result
 
             if voting_rule in VotingRulesConstants.CONDORCET:
@@ -356,22 +358,24 @@ class Election(metaclass=Singleton):
                     if voting_rule == VotingRulesConstants.CONDORCET_SIMPSON
                     else False
                 )
-                result = sort_cand_by_value(self.candidates, voting_rule, duels=None, scores_asc=sort_asc)
+                result = sort_cand_by_value(self.candidates, voting_rule, nb_electors=len(
+                    self.electors), duels=None, scores_asc=sort_asc)
                 self.results[voting_rule] = result
 
     def start_election(self, imported: Optional[bool] = False, chosen_voting_rules: List[str] = None) -> None:
-        """Commencer une élection. Faire toutes les calculs nécessaires
-            - Chaque électeur définit son classement des candidats
-            - MAJ de la position moyenne des électeurs
-            - Calculer le taux d'une satisfaction
-            - Si les sondages sont activées, MAJ des données pour chaque direction de la carte politique
-            - Si la démocratie liquide est activée, faire les délégations.
-            - Initialiser un dictionnaire `results` avec des règles du vote choisies.
-            - Calculer des résultats.
+        """Commencer une élection. Faire toutes les calculs nécessaires:
+
+        - Chaque électeur définit son classement des candidats
+        - MAJ de la position moyenne des électeurs
+        - Calculer le taux d'une satisfaction
+        - Si les sondages sont activées, MAJ des données pour chaque direction de la carte politique
+        - Si la démocratie liquide est activée, faire les délégations.
+        - Initialiser un dictionnaire `results` avec des règles du vote choisies.
+        - Calculer des résultats.
 
         Args:
             imported (Optional[bool]): True si les données ont été importées, sinon False.
-                Cf. calc_results() <electoral_systems.election.calc_results>
+                Cf. `calc_results() <electoral_systems.election.Election.calc_results>`
             chosen_voting_rules (Set[str]): Une liste des constantes des règles du vote choisies.
         """
 

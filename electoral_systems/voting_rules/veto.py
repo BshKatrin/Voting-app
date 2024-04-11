@@ -31,4 +31,4 @@ def apply_veto(electors: List[Elector], candidates: List[Candidate], duels: Opti
         # Ajouter rien au dernier candidat
         # i += 1
         # elector.candidates_ranked[i].add_score(VETO, 0)
-    return sort_cand_by_value(candidates, VETO, duels)
+    return sort_cand_by_value(candidates, VETO, len(electors), duels)

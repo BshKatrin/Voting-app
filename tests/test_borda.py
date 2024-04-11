@@ -7,23 +7,39 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
 from electoral_systems.voting_rules import borda
-from people.elector import Elector
-from people.candidate import Candidate
+from electoral_systems.voting_rules.constants import BORDA
+from electoral_systems.voting_rules.utls import set_duels_scores
+from electoral_systems.utls import IdIterator
+from people.elector import Elector, Candidate
 
 
 class TestBorda(unittest.TestCase):
     def test_borda(self):
-        c0 = Candidate(first_name="A", last_name="B")
-        c1 = Candidate(first_name="C", last_name="D")
-        c2 = Candidate(first_name="E", last_name="F")
-        c3 = Candidate(first_name="G", last_name="H")
-        candidates = [c0, c1, c2, c3]
+        id_iter = IdIterator(0)
+        p = (0, 0)
+        # Position n'affecte pas des résultats dans ce cas (candidates_ranked sera définie manuellement)
+        c0 = Candidate(id=next(id_iter), position=p, first_name="A", last_name="A")
+        c1 = Candidate(id=next(id_iter), position=p, first_name="B", last_name="B")
+        c2 = Candidate(id=next(id_iter), position=p, first_name="C", last_name="C")
+        c3 = Candidate(id=next(id_iter), position=p, first_name="D", last_name="D")
 
-        e0 = Elector(candidates=candidates, candidates_ranked=[c0, c1, c2, c3])
-        e1 = Elector(candidates=candidates, candidates_ranked=[c0, c1, c3, c2])
-        e2 = Elector(candidates=candidates, candidates_ranked=[c3, c2, c1, c0])
-        e3 = Elector(candidates=candidates, candidates_ranked=[c2, c0, c1, c3])
-        e4 = Elector(candidates=candidates, candidates_ranked=[c2, c0, c3, c1])
-        electors = [e0, e1, e2, e3, e4]
+        candidates = [c2, c1, c0, c3]
+        electors = []
 
-        self.assertEqual(borda.apply_borda(electors, candidates), [c0, c2, c1, c3])
+        for _ in range(2):
+            new_elector = Elector(id=next(id_iter), position=p, candidates_ranked=[c2, c1, c0, c3])
+            electors.append(new_elector)
+        electors.append(Elector(id=next(id_iter), position=p, candidates_ranked=[c0, c1, c3, c2]))
+        electors.append(Elector(id=next(id_iter), position=p, candidates_ranked=[c3, c0, c1, c2]))
+
+        # Vérification d'un classement (égalités résolues par ordre alphabétique)
+        self.assertEqual(borda.apply_borda(electors, candidates), [c0, c1, c2, c3])
+
+        self.assertEqual(c0.scores[BORDA], 7)
+        self.assertEqual(c1.scores[BORDA], 7)
+        self.assertEqual(c2.scores[BORDA], 6)
+        self.assertEqual(c3.scores[BORDA], 4)
+
+        # Égalité par rapport aux duels, le classement ne doit pas changer
+        duels = set_duels_scores(electors, candidates)
+        self.assertEqual(borda.apply_borda(electors, candidates, duels), [c0, c1, c2, c3])

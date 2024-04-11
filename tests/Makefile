@@ -1,4 +1,4 @@
-all : uni_condorcet uni_plurality  uni_approval uni_borda  uni_exhaustive  uni_veto 
+all : uni_condorcet uni_plurality  uni_approval uni_borda  uni_exhaustive  uni_veto uni_ranking
 
 uni_condorcet : 
 	python3 -m unittest test_condorcet.py
@@ -17,3 +17,6 @@ uni_exhaustive :
 
 uni_veto :
 	python3 -m unittest test_veto.py
+
+uni_ranking:
+	python3 -m unittest test_ranking.py

@@ -32,4 +32,4 @@ def apply_borda(electors: List[Elector], candidates: List[Candidate], duels: due
             elector.candidates_ranked[i].add_score(
                 BORDA, (max_score - i) * elector.weight
             )
-    return sort_cand_by_value(candidates, BORDA, duels)
+    return sort_cand_by_value(candidates, BORDA, len(electors), duels)
