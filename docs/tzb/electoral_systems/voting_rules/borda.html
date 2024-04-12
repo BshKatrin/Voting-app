@@ -35,8 +35,8 @@ from people import Candidate, Elector
 
 
 def apply_borda(electors: List[Elector], candidates: List[Candidate], duels: duels_type = None) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une règle du vote *Borda*.  Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Borda*:  
+    &#34;&#34;&#34;Appliquer une règle de vote *Borda*.  Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Borda*:  
         - chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Chaque candidat reçoit un score en fonction de sa position dans le classement.
         Notons $N$ le nombre des candidats. Pour chaque classement, le candidat classé premier reçoit N-1 points,
@@ -50,7 +50,7 @@ def apply_borda(electors: List[Elector], candidates: List[Candidate], duels: due
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
         que le candidat-gagnant a battu le candidat-perdant. Default = `None`.
     Returns:
-        List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans la règle du vote *Borda*.
+        List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans la règle de vote *Borda*.
     &#34;&#34;&#34;
     nb_candidates = len(candidates)
     max_score = len(candidates) - 1
@@ -74,9 +74,9 @@ def apply_borda(electors: List[Elector], candidates: List[Candidate], duels: due
 <span>def <span class="ident">apply_borda</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int] = None) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Appliquer une règle du vote <em>Borda</em>.
-Possible d'appliquer cette règle du vote s'il existe au moins 2 candidats.
-Principe d'une règle du vote <em>Borda</em>:<br>
+<div class="desc"><p>Appliquer une règle de vote <em>Borda</em>.
+Possible d'appliquer cette règle de vote s'il existe au moins 2 candidats.
+Principe d'une règle de vote <em>Borda</em>:<br>
 - chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
 - Chaque candidat reçoit un score en fonction de sa position dans le classement.
 Notons $N$ le nombre des candidats. Pour chaque classement, le candidat classé premier reçoit N-1 points,
@@ -97,15 +97,15 @@ Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>List[people.candidate.Candidate]</code></dt>
-<dd>Une liste des candidats triés dans l'ordre décroissant selon leurs dans la règle du vote <em>Borda</em>.</dd>
+<dd>Une liste des candidats triés dans l'ordre décroissant selon leurs dans la règle de vote <em>Borda</em>.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def apply_borda(electors: List[Elector], candidates: List[Candidate], duels: duels_type = None) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une règle du vote *Borda*.  Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Borda*:  
+    &#34;&#34;&#34;Appliquer une règle de vote *Borda*.  Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Borda*:  
         - chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Chaque candidat reçoit un score en fonction de sa position dans le classement.
         Notons $N$ le nombre des candidats. Pour chaque classement, le candidat classé premier reçoit N-1 points,
@@ -119,7 +119,7 @@ Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
         que le candidat-gagnant a battu le candidat-perdant. Default = `None`.
     Returns:
-        List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans la règle du vote *Borda*.
+        List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans la règle de vote *Borda*.
     &#34;&#34;&#34;
     nb_candidates = len(candidates)
     max_score = len(candidates) - 1
