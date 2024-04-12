@@ -43,11 +43,11 @@ duels_type = Dict[tuple[Candidate, Candidate], int]
 
 def init_scores(candidates: List[Candidate], voting_rule: str,
                 new_score: Union[int, float, List[int]], list_type: Optional[bool] = False) -&gt; None:
-    &#34;&#34;&#34;Initialiser les scores avec `new_score`de tous les candidats `candidates` dans une règle du vote `voting_rule`.
+    &#34;&#34;&#34;Initialiser les scores avec `new_score`de tous les candidats `candidates` dans une règle de vote `voting_rule`.
 
     Args:
         candidates (List[people.candidate.Candidate]): Une liste des candidats dont les scores il faut initialiser.
-        voting_rule (str): Une constante associée à une règle du vote.
+        voting_rule (str): Une constante associée à une règle de vote.
         new_score (Union[int, float, List[int]): Un nouveau score. Peut être une liste, dans ce cas l&#39;initialisation passera
         par `deepcopy`.
         list_type (Optional[bool]): Un booléan pour indiquer si le type de `new_score` est une liste et s&#39;il faut passer par `deepcopy`.
@@ -59,14 +59,14 @@ def init_scores(candidates: List[Candidate], voting_rule: str,
 
 def sort_cand_by_value(candidates: List[Candidate], voting_rule: str,
                        duels: duels_type = None, scores_asc: bool = False) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans une règle du vote `voting_rule`. Utiliser uniquement 
+    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans une règle de vote `voting_rule`. Utiliser uniquement 
     pour les règles du vote à 1 tour ou Condorcet-cohérentes.
     S&#39;il existe une égalité des scores trier par l&#39;ordre alphabétique des leurs prénoms et noms.
     Si `duels` n&#39;est pas `None`, résoudre une égalité avec les duels.
 
     Args:
         candidates (List[people.candidate.Candidate]): Une liste des candidats qu&#39;il faut trier.
-        voting_rule (str): Une constante associée à une règle du vote.
+        voting_rule (str): Une constante associée à une règle de vote.
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
         que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
         Default = `None`.
@@ -90,15 +90,15 @@ def sort_cand_by_value(candidates: List[Candidate], voting_rule: str,
 
 def sort_cand_by_round(candidates: List[Candidate], voting_rule: str,
                        round: int, duels: Optional[duels_type] = None) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans le tour `round` dans une règle du vote `voting_rule`. Utiliser uniquement 
+    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans le tour `round` dans une règle de vote `voting_rule`. Utiliser uniquement 
     pour les règles du vote à plusieurs tours.
     S&#39;il existe une égalité des scores trier par l&#39;ordre alphabétique des leurs prénoms et noms.
     Si `duels` n&#39;est pas `None`, résoudre une égalité avec les duels.
 
     Args:
         candidates (List[people.candidate.Candidate]): Une liste des candidats qu&#39;il faut trier.
-        voting_rule (str): Une constante associée à une règle du vote.
-        round (int): Un tour d&#39;une règle du vote (commence à partir de 0)
+        voting_rule (str): Une constante associée à une règle de vote.
+        round (int): Un tour d&#39;une règle de vote (commence à partir de 0)
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
         que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
         Default = `None`.
@@ -115,14 +115,14 @@ def sort_cand_by_round(candidates: List[Candidate], voting_rule: str,
 
 
 def _has_majority(candidates_sorted: List[Candidate], nb_electors: int, voting_rule: str, round: int) -&gt; bool:
-    &#34;&#34;&#34;Vérifier si le candidat classé premier a la majorité absolue des votes dans une règle du vote `voting_rule`
+    &#34;&#34;&#34;Vérifier si le candidat classé premier a la majorité absolue des votes dans une règle de vote `voting_rule`
     dans le tour `round`. Utiliser uniquement pour des règles du vote à plusieurs tours.
 
     Args:
         candidates_sorted (List[people.candidate.Candidate]): Une liste des candidats triée.
         nb_electors (int): Un nombre des électeurs qui participent dans une élection.
-        voting_rule (str): Une constante associée à une règle du vote.
-        round (int): Un tour d&#39;une règle du vote  (commence à partir de 0).
+        voting_rule (str): Une constante associée à une règle de vote.
+        round (int): Un tour d&#39;une règle de vote  (commence à partir de 0).
 
     Returns:
         List[people.candidate.Candidate]: True si le premier candidat a la majorité des votes, sinon False.
@@ -189,8 +189,8 @@ def apply_voting_rule_rounds(electors: List[Elector], candidates: List[Candidate
         candidates (List[people.candidate.Candidate]): Une liste des candidats participant dans une élection.
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
             que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
-        voting_rule (str): Une constante associée à une règle du vote.
-        max_rounds (int): Le nombre des tours maximale qui peut exister dans une règle du vote.
+        voting_rule (str): Une constante associée à une règle de vote.
+        max_rounds (int): Le nombre des tours maximale qui peut exister dans une règle de vote.
         elimination_index (int): Une indice pour couper les candidats (utilisé pour couper la liste).
 
     Returns:
@@ -226,7 +226,7 @@ def apply_voting_rule_rounds(electors: List[Elector], candidates: List[Candidate
 
 def _set_score_round(electors: List[Elector], remaining_candidates: List[Candidate],
                      duels: duels_type, voting_rule: str, round: int) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Ajouter le score pour chaque candidat qui encore participe dans une élection. Utiliser pour une règle du vote
+    &#34;&#34;&#34;Ajouter le score pour chaque candidat qui encore participe dans une élection. Utiliser pour une règle de vote
     à plusieurs tours.
 
     Args:
@@ -234,7 +234,7 @@ def _set_score_round(electors: List[Elector], remaining_candidates: List[Candida
         remaining_candidates (List[people.candidate.Candidate]): Une liste des candidats qui encore participent dans une élection.
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
         que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
-        voting_rule (str): Une constante associée à une règle du vote.
+        voting_rule (str): Une constante associée à une règle de vote.
         rount (int): Un tour pour lequell il faut ajouter le score.
 
     Returns:
@@ -258,7 +258,7 @@ def _set_score_round(electors: List[Elector], remaining_candidates: List[Candida
 def _choose_next_cand(elector: Elector, remaining_candidates: List[Candidate]) -&gt; Candidate:
     &#34;&#34;&#34;Choisir un candidat qui encore participe dans une élection selon les préférences d&#39;un électeur.
     On choisit le premier candidat préféré d&#39;un électeur parmi les candidats dans `remaining_candidates`.
-    Utiliser pour une règle du vote à plusieurs tours.
+    Utiliser pour une règle de vote à plusieurs tours.
 
     Args:
         elector (people.elector.Elector): Un électeur pour qui il faudra choisir un candidat restant.
@@ -302,9 +302,9 @@ def _choose_next_cand(elector: Elector, remaining_candidates: List[Candidate]) -
 <dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
 que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s'il faut résoudre les égalités avec les duels.</dd>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une constante associée à une règle du vote.</dd>
+<dd>Une constante associée à une règle de vote.</dd>
 <dt><strong><code>max_rounds</code></strong> :&ensp;<code>int</code></dt>
-<dd>Le nombre des tours maximale qui peut exister dans une règle du vote.</dd>
+<dd>Le nombre des tours maximale qui peut exister dans une règle de vote.</dd>
 <dt><strong><code>elimination_index</code></strong> :&ensp;<code>int</code></dt>
 <dd>Une indice pour couper les candidats (utilisé pour couper la liste).</dd>
 </dl>
@@ -328,8 +328,8 @@ La longueur de la liste correpond au nombre des tours effectués (peut être inf
         candidates (List[people.candidate.Candidate]): Une liste des candidats participant dans une élection.
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
             que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
-        voting_rule (str): Une constante associée à une règle du vote.
-        max_rounds (int): Le nombre des tours maximale qui peut exister dans une règle du vote.
+        voting_rule (str): Une constante associée à une règle de vote.
+        max_rounds (int): Le nombre des tours maximale qui peut exister dans une règle de vote.
         elimination_index (int): Une indice pour couper les candidats (utilisé pour couper la liste).
 
     Returns:
@@ -367,13 +367,13 @@ La longueur de la liste correpond au nombre des tours effectués (peut être inf
 <span>def <span class="ident">init_scores</span></span>(<span>candidates: List[people.candidate.Candidate], voting_rule: str, new_score: Union[int, float, List[int]], list_type: Optional[bool] = False) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialiser les scores avec <code>new_score</code>de tous les candidats <code>candidates</code> dans une règle du vote <code>voting_rule</code>.</p>
+<div class="desc"><p>Initialiser les scores avec <code>new_score</code>de tous les candidats <code>candidates</code> dans une règle de vote <code>voting_rule</code>.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats dont les scores il faut initialiser.</dd>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une constante associée à une règle du vote.</dd>
+<dd>Une constante associée à une règle de vote.</dd>
 <dt><strong><code>new_score</code></strong> :&ensp;<code>Union[int, float, List[int]</code></dt>
 <dd>Un nouveau score. Peut être une liste, dans ce cas l'initialisation passera</dd>
 <dt>par <code>deepcopy</code>.</dt>
@@ -386,11 +386,11 @@ La longueur de la liste correpond au nombre des tours effectués (peut être inf
 </summary>
 <pre><code class="python">def init_scores(candidates: List[Candidate], voting_rule: str,
                 new_score: Union[int, float, List[int]], list_type: Optional[bool] = False) -&gt; None:
-    &#34;&#34;&#34;Initialiser les scores avec `new_score`de tous les candidats `candidates` dans une règle du vote `voting_rule`.
+    &#34;&#34;&#34;Initialiser les scores avec `new_score`de tous les candidats `candidates` dans une règle de vote `voting_rule`.
 
     Args:
         candidates (List[people.candidate.Candidate]): Une liste des candidats dont les scores il faut initialiser.
-        voting_rule (str): Une constante associée à une règle du vote.
+        voting_rule (str): Une constante associée à une règle de vote.
         new_score (Union[int, float, List[int]): Un nouveau score. Peut être une liste, dans ce cas l&#39;initialisation passera
         par `deepcopy`.
         list_type (Optional[bool]): Un booléan pour indiquer si le type de `new_score` est une liste et s&#39;il faut passer par `deepcopy`.
@@ -454,7 +454,7 @@ Cf. _simplify_duels() <electoral_systems.voting_rules.utls._simplify_duels></p><
 <span>def <span class="ident">sort_cand_by_round</span></span>(<span>candidates: List[people.candidate.Candidate], voting_rule: str, round: int, duels: Optional[Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]] = None) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trier les candidats <code>candidates</code> selon leurs score dans le tour <code>round</code> dans une règle du vote <code>voting_rule</code>. Utiliser uniquement
+<div class="desc"><p>Trier les candidats <code>candidates</code> selon leurs score dans le tour <code>round</code> dans une règle de vote <code>voting_rule</code>. Utiliser uniquement
 pour les règles du vote à plusieurs tours.
 S'il existe une égalité des scores trier par l'ordre alphabétique des leurs prénoms et noms.
 Si <code>duels</code> n'est pas <code>None</code>, résoudre une égalité avec les duels.</p>
@@ -463,9 +463,9 @@ Si <code>duels</code> n'est pas <code>None</code>, résoudre une égalité avec 
 <dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats qu'il faut trier.</dd>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une constante associée à une règle du vote.</dd>
+<dd>Une constante associée à une règle de vote.</dd>
 <dt><strong><code>round</code></strong> :&ensp;<code>int</code></dt>
-<dd>Un tour d'une règle du vote (commence à partir de 0)</dd>
+<dd>Un tour d'une règle de vote (commence à partir de 0)</dd>
 <dt><strong><code>duels</code></strong> :&ensp;<code>Utls.duels_type</code></dt>
 <dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois</dd>
 </dl>
@@ -482,15 +482,15 @@ Default = <code>None</code>.</p>
 </summary>
 <pre><code class="python">def sort_cand_by_round(candidates: List[Candidate], voting_rule: str,
                        round: int, duels: Optional[duels_type] = None) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans le tour `round` dans une règle du vote `voting_rule`. Utiliser uniquement 
+    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans le tour `round` dans une règle de vote `voting_rule`. Utiliser uniquement 
     pour les règles du vote à plusieurs tours.
     S&#39;il existe une égalité des scores trier par l&#39;ordre alphabétique des leurs prénoms et noms.
     Si `duels` n&#39;est pas `None`, résoudre une égalité avec les duels.
 
     Args:
         candidates (List[people.candidate.Candidate]): Une liste des candidats qu&#39;il faut trier.
-        voting_rule (str): Une constante associée à une règle du vote.
-        round (int): Un tour d&#39;une règle du vote (commence à partir de 0)
+        voting_rule (str): Une constante associée à une règle de vote.
+        round (int): Un tour d&#39;une règle de vote (commence à partir de 0)
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
         que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
         Default = `None`.
@@ -510,7 +510,7 @@ Default = <code>None</code>.</p>
 <span>def <span class="ident">sort_cand_by_value</span></span>(<span>candidates: List[people.candidate.Candidate], voting_rule: str, duels: Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int] = None, scores_asc: bool = False) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Trier les candidats <code>candidates</code> selon leurs score dans une règle du vote <code>voting_rule</code>. Utiliser uniquement
+<div class="desc"><p>Trier les candidats <code>candidates</code> selon leurs score dans une règle de vote <code>voting_rule</code>. Utiliser uniquement
 pour les règles du vote à 1 tour ou Condorcet-cohérentes.
 S'il existe une égalité des scores trier par l'ordre alphabétique des leurs prénoms et noms.
 Si <code>duels</code> n'est pas <code>None</code>, résoudre une égalité avec les duels.</p>
@@ -519,7 +519,7 @@ Si <code>duels</code> n'est pas <code>None</code>, résoudre une égalité avec 
 <dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats qu'il faut trier.</dd>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une constante associée à une règle du vote.</dd>
+<dd>Une constante associée à une règle de vote.</dd>
 <dt><strong><code>duels</code></strong> :&ensp;<code>Utls.duels_type</code></dt>
 <dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois</dd>
 <dt>que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s'il faut résoudre les égalités avec les duels.</dt>
@@ -538,14 +538,14 @@ Si <code>duels</code> n'est pas <code>None</code>, résoudre une égalité avec 
 </summary>
 <pre><code class="python">def sort_cand_by_value(candidates: List[Candidate], voting_rule: str,
                        duels: duels_type = None, scores_asc: bool = False) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans une règle du vote `voting_rule`. Utiliser uniquement 
+    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans une règle de vote `voting_rule`. Utiliser uniquement 
     pour les règles du vote à 1 tour ou Condorcet-cohérentes.
     S&#39;il existe une égalité des scores trier par l&#39;ordre alphabétique des leurs prénoms et noms.
     Si `duels` n&#39;est pas `None`, résoudre une égalité avec les duels.
 
     Args:
         candidates (List[people.candidate.Candidate]): Une liste des candidats qu&#39;il faut trier.
-        voting_rule (str): Une constante associée à une règle du vote.
+        voting_rule (str): Une constante associée à une règle de vote.
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
         que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
         Default = `None`.
