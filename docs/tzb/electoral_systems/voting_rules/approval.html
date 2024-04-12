@@ -36,8 +36,8 @@ from people import Candidate, Elector
 
 def apply_approval(electors: List[Elector], candidates: List[Candidate],
                    gap: float, duels: Optional[duels_type] = None) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une règle du vote *Approbation*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Approbation*:  
+    &#34;&#34;&#34;Appliquer une règle de vote *Approbation*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Approbation*:  
         - chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Chaque candidat reçoit un score en fonction de sa position dans le classement et en fonction d&#39;un rayon d&#39;une cercle 
         d&#39;approbation. Le candidat classé premier reçoit un point à son score. Les autres candidats
@@ -53,7 +53,7 @@ def apply_approval(electors: List[Elector], candidates: List[Candidate],
         que le candidat-gagnant a battu le candidat-perdant. Default = `None`.
     Returns:
         List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans
-            la règle du vote *Approbation*.
+            la règle de vote *Approbation*.
     &#34;&#34;&#34;
     init_scores(candidates, APPROVAL, 0)
     for elector in electors:
@@ -80,8 +80,8 @@ def apply_approval(electors: List[Elector], candidates: List[Candidate],
 <span>def <span class="ident">apply_approval</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], gap: float, duels: Optional[Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]] = None) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Appliquer une règle du vote <em>Approbation</em>. Possible d'appliquer cette règle du vote s'il existe au moins 2 candidats.
-Principe d'une règle du vote <em>Approbation</em>:<br>
+<div class="desc"><p>Appliquer une règle de vote <em>Approbation</em>. Possible d'appliquer cette règle de vote s'il existe au moins 2 candidats.
+Principe d'une règle de vote <em>Approbation</em>:<br>
 - chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
 - Chaque candidat reçoit un score en fonction de sa position dans le classement et en fonction d'un rayon d'une cercle
 d'approbation. Le candidat classé premier reçoit un point à son score. Les autres candidats
@@ -103,7 +103,7 @@ Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
 <dl>
 <dt><code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats triés dans l'ordre décroissant selon leurs dans
-la règle du vote <em>Approbation</em>.</dd>
+la règle de vote <em>Approbation</em>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -111,8 +111,8 @@ la règle du vote <em>Approbation</em>.</dd>
 </summary>
 <pre><code class="python">def apply_approval(electors: List[Elector], candidates: List[Candidate],
                    gap: float, duels: Optional[duels_type] = None) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une règle du vote *Approbation*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Approbation*:  
+    &#34;&#34;&#34;Appliquer une règle de vote *Approbation*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Approbation*:  
         - chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Chaque candidat reçoit un score en fonction de sa position dans le classement et en fonction d&#39;un rayon d&#39;une cercle 
         d&#39;approbation. Le candidat classé premier reçoit un point à son score. Les autres candidats
@@ -128,7 +128,7 @@ la règle du vote <em>Approbation</em>.</dd>
         que le candidat-gagnant a battu le candidat-perdant. Default = `None`.
     Returns:
         List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans
-            la règle du vote *Approbation*.
+            la règle de vote *Approbation*.
     &#34;&#34;&#34;
     init_scores(candidates, APPROVAL, 0)
     for elector in electors:
