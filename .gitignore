@@ -3,4 +3,5 @@ __pycache__/
 graphics/temp/map.png
 !graphics/temp.gitkeep
 *.db
-*.sh
+doc_gen.py
+docs/
