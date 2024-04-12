@@ -27,7 +27,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class NameIterator:
-    &#34;&#34;&#34;Un itérateur pour générer les prénoms et des noms des candidats.
+    &#34;&#34;&#34;Un itérateur pour générer les prénoms et les noms des candidats.
     Les chaînes de caractères sont générées de A à Z, après de AA à AZ, de BA à BZ etc.&#34;&#34;&#34;
 
     def __init__(self):
@@ -44,7 +44,7 @@
         return name
 
     def increment(self):
-        &#34;&#34;&#34;Incrémenter une lettre suivante à générer. &#34;&#34;&#34;
+        &#34;&#34;&#34;Incrémente une lettre suivante à générer. &#34;&#34;&#34;
         for i in range(len(self.current_ascii) - 1, -1, -1):
             if self.current_ascii[i] == self.nb_letters:
                 # No places left
@@ -58,7 +58,7 @@
                 break
 
     def restart(self):
-        &#34;&#34;&#34;Recommencer une génération, i.e. la chaînes de caractères suivante sera &#39;A&#39;&#34;&#34;&#34;
+        &#34;&#34;&#34;Recommence une génération, i.e. la chaînes de caractères suivante sera &#39;A&#39;&#34;&#34;&#34;
         self.current_ascii = [0]</code></pre>
 </details>
 </section>
@@ -75,14 +75,14 @@
 <span>class <span class="ident">NameIterator</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Un itérateur pour générer les prénoms et des noms des candidats.
+<div class="desc"><p>Un itérateur pour générer les prénoms et les noms des candidats.
 Les chaînes de caractères sont générées de A à Z, après de AA à AZ, de BA à BZ etc.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class NameIterator:
-    &#34;&#34;&#34;Un itérateur pour générer les prénoms et des noms des candidats.
+    &#34;&#34;&#34;Un itérateur pour générer les prénoms et les noms des candidats.
     Les chaînes de caractères sont générées de A à Z, après de AA à AZ, de BA à BZ etc.&#34;&#34;&#34;
 
     def __init__(self):
@@ -99,7 +99,7 @@ Les chaînes de caractères sont générées de A à Z, après de AA à AZ, de B
         return name
 
     def increment(self):
-        &#34;&#34;&#34;Incrémenter une lettre suivante à générer. &#34;&#34;&#34;
+        &#34;&#34;&#34;Incrémente une lettre suivante à générer. &#34;&#34;&#34;
         for i in range(len(self.current_ascii) - 1, -1, -1):
             if self.current_ascii[i] == self.nb_letters:
                 # No places left
@@ -113,7 +113,7 @@ Les chaînes de caractères sont générées de A à Z, après de AA à AZ, de B
                 break
 
     def restart(self):
-        &#34;&#34;&#34;Recommencer une génération, i.e. la chaînes de caractères suivante sera &#39;A&#39;&#34;&#34;&#34;
+        &#34;&#34;&#34;Recommence une génération, i.e. la chaînes de caractères suivante sera &#39;A&#39;&#34;&#34;&#34;
         self.current_ascii = [0]</code></pre>
 </details>
 <h3>Methods</h3>
@@ -122,13 +122,13 @@ Les chaînes de caractères sont générées de A à Z, après de AA à AZ, de B
 <span>def <span class="ident">increment</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Incrémenter une lettre suivante à générer.</p></div>
+<div class="desc"><p>Incrémente une lettre suivante à générer.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def increment(self):
-    &#34;&#34;&#34;Incrémenter une lettre suivante à générer. &#34;&#34;&#34;
+    &#34;&#34;&#34;Incrémente une lettre suivante à générer. &#34;&#34;&#34;
     for i in range(len(self.current_ascii) - 1, -1, -1):
         if self.current_ascii[i] == self.nb_letters:
             # No places left
@@ -146,13 +146,13 @@ Les chaînes de caractères sont générées de A à Z, après de AA à AZ, de B
 <span>def <span class="ident">restart</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Recommencer une génération, i.e. la chaînes de caractères suivante sera 'A'</p></div>
+<div class="desc"><p>Recommence une génération, i.e. la chaînes de caractères suivante sera 'A'</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def restart(self):
-    &#34;&#34;&#34;Recommencer une génération, i.e. la chaînes de caractères suivante sera &#39;A&#39;&#34;&#34;&#34;
+    &#34;&#34;&#34;Recommence une génération, i.e. la chaînes de caractères suivante sera &#39;A&#39;&#34;&#34;&#34;
     self.current_ascii = [0]</code></pre>
 </details>
 </dd>
