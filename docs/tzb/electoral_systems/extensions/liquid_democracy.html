@@ -37,18 +37,18 @@ from people import Elector
 
 
 DELEGATION_GAP_COEF = 0.1
-&#34;&#34;&#34;Une constante qui définit un rayon maximale d&#39;une cercle pour choisir les délégataires.
+&#34;&#34;&#34;Une constante qui définit un rayon maximale d&#39;un cercle pour choisir les délégataires.
     Les délégataires doivent être assez proches par une position politique.
 &#34;&#34;&#34;
 
 
 def choose_delegee(electors: List[Elector]) -&gt; Elector:
-    &#34;&#34;&#34;Choisir un électeur-délégataire parmi les électeurs de façon suivante:
-        - Calculer le taux de connaissances total des électeurs
-        - Choisir un électeur de manière aléatoire selon leur taux de connaissances.
+    &#34;&#34;&#34;Choisit un électeur-délégataire parmi les électeurs de façon suivante:
+        - Calcule le taux de connaissances total des électeurs
+        - Choisit un électeur de manière aléatoire selon leur taux de connaissances.
         Plus le taux de connaisances d&#39;un électeur est élevé, plus il est probable qu&#39;il soit choisi
-        comme un délégataire, et inversement, moins son taux de connaissances est élevé, moins il est probable
-        qu&#39;il soit choisi comme un délégataire.
+        comme délégataire, et inversement, moins son taux de connaissances est élevé, moins il est probable
+        qu&#39;il soit choisi comme délégataire.
 
     Args:
         electors (List[Elector]) -&gt; Une liste des électeurs qui peuvent être les délégataires.
@@ -76,12 +76,12 @@ def choose_delegee(electors: List[Elector]) -&gt; Elector:
 
 
 def choose_possible_delegees(electors: List[Elector], delegator: Elector) -&gt; List[Elector]:
-    &#34;&#34;&#34;Choisir parmi `electors` des électeurs-délégataires pour un électeur `delegator` de façon suivante:
-        - Calculer la distance entre un électeur et `delegator`
-        - Si elle est inférieure à `DELEGATION_GAP_COEF`, ajouter cet électeur dans une liste des délégataires. Sinon, continuer.
+    &#34;&#34;&#34;Choisit parmi `electors` des électeurs-délégataires pour un électeur `delegator` de façon suivante:
+        - Calcule la distance entre un électeur et `delegator`
+        - Si elle est inférieure à `DELEGATION_GAP_COEF`, ajoute cet électeur dans une liste des délégataires. Sinon, continuer.
 
     Args:
-        electors (List[Elector]): tous les électeurs participant dans une élection
+        electors (List[Elector]): tous les électeurs participant à une élection
         delagator (Elector): un électeur qui veut déléger
 
     Returns:
@@ -107,8 +107,8 @@ def choose_possible_delegees(electors: List[Elector], delegator: Elector) -&gt; 
 <dl>
 <dt id="tzb.electoral_systems.extensions.liquid_democracy.DELEGATION_GAP_COEF"><code class="name">var <span class="ident">DELEGATION_GAP_COEF</span></code></dt>
 <dd>
-<div class="desc"><p>Une constante qui définit un rayon maximale d'une cercle pour choisir les délégataires.
-Les délégataires doivent être assez proches par une position politique.</p></div>
+<div class="desc"><p>Une constante qui définit un rayon maximale d'un cercle pour choisir les délégataires.
+Les délégataires doivent être assez proches par rapport à leur position politique.</p></div>
 </dd>
 </dl>
 </section>
@@ -119,12 +119,12 @@ Les délégataires doivent être assez proches par une position politique.</p></
 <span>def <span class="ident">choose_delegee</span></span>(<span>electors: List[people.elector.Elector]) ‑> people.elector.Elector</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Choisir un électeur-délégataire parmi les électeurs de façon suivante:
-- Calculer le taux de connaissances total des électeurs
-- Choisir un électeur de manière aléatoire selon leur taux de connaissances.
+<div class="desc"><p>Choisit un électeur-délégataire parmi les électeurs de façon suivante:
+- Calcule le taux de connaissances total des électeurs
+- Choisit un électeur de manière aléatoire selon leur taux de connaissances.
 Plus le taux de connaisances d'un électeur est élevé, plus il est probable qu'il soit choisi
-comme un délégataire, et inversement, moins son taux de connaissances est élevé, moins il est probable
-qu'il soit choisi comme un délégataire.</p>
+comme délégataire, et inversement, moins son taux de connaissances est élevé, moins il est probable
+qu'il soit choisi comme délégataire.</p>
 <h2 id="args">Args</h2>
 <p>electors (List[Elector]) -&gt; Une liste des électeurs qui peuvent être les délégataires.</p>
 <h2 id="returns">Returns</h2>
@@ -137,12 +137,12 @@ qu'il soit choisi comme un délégataire.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def choose_delegee(electors: List[Elector]) -&gt; Elector:
-    &#34;&#34;&#34;Choisir un électeur-délégataire parmi les électeurs de façon suivante:
-        - Calculer le taux de connaissances total des électeurs
-        - Choisir un électeur de manière aléatoire selon leur taux de connaissances.
+    &#34;&#34;&#34;Choisit un électeur-délégataire parmi les électeurs de façon suivante:
+        - Calcule le taux de connaissances total des électeurs
+        - Choisit un électeur de manière aléatoire selon leur taux de connaissances.
         Plus le taux de connaisances d&#39;un électeur est élevé, plus il est probable qu&#39;il soit choisi
-        comme un délégataire, et inversement, moins son taux de connaissances est élevé, moins il est probable
-        qu&#39;il soit choisi comme un délégataire.
+        comme délégataire, et inversement, moins son taux de connaissances est élevé, moins il est probable
+        qu&#39;il soit choisi comme délégataire.
 
     Args:
         electors (List[Elector]) -&gt; Une liste des électeurs qui peuvent être les délégataires.
@@ -173,13 +173,13 @@ qu'il soit choisi comme un délégataire.</p>
 <span>def <span class="ident">choose_possible_delegees</span></span>(<span>electors: List[people.elector.Elector], delegator: people.elector.Elector) ‑> List[people.elector.Elector]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Choisir parmi <code>electors</code> des électeurs-délégataires pour un électeur <code>delegator</code> de façon suivante:
-- Calculer la distance entre un électeur et <code>delegator</code>
-- Si elle est inférieure à <code><a title="tzb.electoral_systems.extensions.liquid_democracy.DELEGATION_GAP_COEF" href="#tzb.electoral_systems.extensions.liquid_democracy.DELEGATION_GAP_COEF">DELEGATION_GAP_COEF</a></code>, ajouter cet électeur dans une liste des délégataires. Sinon, continuer.</p>
+<div class="desc"><p>Choisit parmi <code>electors</code> des électeurs-délégataires pour un électeur <code>delegator</code> de façon suivante:
+- Calcule la distance entre un électeur et <code>delegator</code>
+- Si elle est inférieure à <code><a title="tzb.electoral_systems.extensions.liquid_democracy.DELEGATION_GAP_COEF" href="#tzb.electoral_systems.extensions.liquid_democracy.DELEGATION_GAP_COEF">DELEGATION_GAP_COEF</a></code>, ajoute cet électeur dans une liste des délégataires. Sinon, continuer.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>electors</code></strong> :&ensp;<code>List[Elector]</code></dt>
-<dd>tous les électeurs participant dans une élection</dd>
+<dd>tous les électeurs participant dans à élection</dd>
 <dt><strong><code>delagator</code></strong> :&ensp;<code>Elector</code></dt>
 <dd>un électeur qui veut déléger</dd>
 </dl>
@@ -193,12 +193,12 @@ qu'il soit choisi comme un délégataire.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def choose_possible_delegees(electors: List[Elector], delegator: Elector) -&gt; List[Elector]:
-    &#34;&#34;&#34;Choisir parmi `electors` des électeurs-délégataires pour un électeur `delegator` de façon suivante:
+    &#34;&#34;&#34;Choisit parmi `electors` des électeurs-délégataires pour un électeur `delegator` de façon suivante:
         - Calculer la distance entre un électeur et `delegator`
         - Si elle est inférieure à `DELEGATION_GAP_COEF`, ajouter cet électeur dans une liste des délégataires. Sinon, continuer.
 
     Args:
-        electors (List[Elector]): tous les électeurs participant dans une élection
+        electors (List[Elector]): tous les électeurs participant dans à élection
         delagator (Elector): un électeur qui veut déléger
 
     Returns:
