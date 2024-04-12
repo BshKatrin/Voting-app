@@ -41,8 +41,8 @@ def get_ties(ranking: List[Candidate], voting_rule: str) -&gt; List[List[int]]:
     &#34;&#34;&#34;Trouver toutes les égalités entre les candidats.
 
     Args:
-        ranking (List[Candidate]): Un classement des candidats dans une règle du vote `voting_rule` selon leurs scores.
-        voting_rule (str): Une constante associée à une règle du vote.
+        ranking (List[Candidate]): Un classement des candidats dans une règle de vote `voting_rule` selon leurs scores.
+        voting_rule (str): Une constante associée à une règle de vote.
 
     Returns:
         List[List[int)]]: Une liste dont chaque élément est une liste des indices des candidats dans `ranking`
@@ -75,8 +75,8 @@ def resolve_ties(ranking: List[Candidate], voting_rule: str, duels: duels_type) 
     `ranking` est modifié sur place.
 
     Args:
-        ranking (List[Candidate]): Un classement des candidats dans une règle du vote `voting_rule` selon leurs scores.
-        voting_rule (str): Une constante associée à une règle du vote.
+        ranking (List[Candidate]): Un classement des candidats dans une règle de vote `voting_rule` selon leurs scores.
+        voting_rule (str): Une constante associée à une règle de vote.
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
             que le candidat-gagnant a battu le candidat-perdant. C&#39;est une base pour résoudre des égalités.
     &#34;&#34;&#34;
@@ -106,9 +106,9 @@ def resolve_ties(ranking: List[Candidate], voting_rule: str, duels: duels_type) 
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>ranking</code></strong> :&ensp;<code>List[Candidate]</code></dt>
-<dd>Un classement des candidats dans une règle du vote <code>voting_rule</code> selon leurs scores.</dd>
+<dd>Un classement des candidats dans une règle de vote <code>voting_rule</code> selon leurs scores.</dd>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une constante associée à une règle du vote.</dd>
+<dd>Une constante associée à une règle de vote.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>List[List[int)]]: Une liste dont chaque élément est une liste des indices des candidats dans <code>ranking</code>
@@ -121,8 +121,8 @@ qui ont le même score.</p></div>
     &#34;&#34;&#34;Trouver toutes les égalités entre les candidats.
 
     Args:
-        ranking (List[Candidate]): Un classement des candidats dans une règle du vote `voting_rule` selon leurs scores.
-        voting_rule (str): Une constante associée à une règle du vote.
+        ranking (List[Candidate]): Un classement des candidats dans une règle de vote `voting_rule` selon leurs scores.
+        voting_rule (str): Une constante associée à une règle de vote.
 
     Returns:
         List[List[int)]]: Une liste dont chaque élément est une liste des indices des candidats dans `ranking`
@@ -159,9 +159,9 @@ qui a gagné le duel. S'il existe plusieurs candidats avec le même score, ils s
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>ranking</code></strong> :&ensp;<code>List[Candidate]</code></dt>
-<dd>Un classement des candidats dans une règle du vote <code>voting_rule</code> selon leurs scores.</dd>
+<dd>Un classement des candidats dans une règle de vote <code>voting_rule</code> selon leurs scores.</dd>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une constante associée à une règle du vote.</dd>
+<dd>Une constante associée à une règle de vote.</dd>
 <dt><strong><code>duels</code></strong> :&ensp;<code>Utls.duels_type</code></dt>
 <dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
 que le candidat-gagnant a battu le candidat-perdant. C'est une base pour résoudre des égalités.</dd>
@@ -176,8 +176,8 @@ que le candidat-gagnant a battu le candidat-perdant. C'est une base pour résoud
     `ranking` est modifié sur place.
 
     Args:
-        ranking (List[Candidate]): Un classement des candidats dans une règle du vote `voting_rule` selon leurs scores.
-        voting_rule (str): Une constante associée à une règle du vote.
+        ranking (List[Candidate]): Un classement des candidats dans une règle de vote `voting_rule` selon leurs scores.
+        voting_rule (str): Une constante associée à une règle de vote.
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
             que le candidat-gagnant a battu le candidat-perdant. C&#39;est une base pour résoudre des égalités.
     &#34;&#34;&#34;
