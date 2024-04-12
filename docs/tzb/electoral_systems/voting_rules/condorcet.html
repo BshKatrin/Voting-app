@@ -37,8 +37,8 @@ from people import Candidate, Elector
 
 
 def apply_condorcet_simple(electors: List[Elector], candidates: List[Candidate], duels: duels_type) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une régle du vote *Condorcet*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Condorcet*:
+    &#34;&#34;&#34;Appliquer une régle du vote *Condorcet*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Condorcet*:
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Les duels entre les candidats sont calculés. Dans chaque duel, le gagnant reçoit un point, le perdant reçoit 0 points.
         - Le gagnant du Condorcet est un candidat qui a battu tous les autres candidats dans les duels.
@@ -50,7 +50,7 @@ def apply_condorcet_simple(electors: List[Elector], candidates: List[Candidate],
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) 
             le nombre des fois que le candidat-gagnant a battu le candidat-perdant.
     List[people.candidate.Candidate]:  Une liste des candidats triés dans l&#39;ordre décroissant selon leurs scores dans
-            la règle du vote *Condorcet. Le premier candidat n&#39;est pas forcément le gagnant.
+            la règle de vote *Condorcet. Le premier candidat n&#39;est pas forcément le gagnant.
     &#34;&#34;&#34;
     init_scores(candidates, CONDORCET_SIMPLE, 0)
     for winner, _ in duels:
@@ -59,8 +59,8 @@ def apply_condorcet_simple(electors: List[Elector], candidates: List[Candidate],
 
 
 def apply_condorcet_copeland(electors: List[Elector], candidates: List[Candidate], duels: duels_type) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une régle du vote *Copeland*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Copeland*:
+    &#34;&#34;&#34;Appliquer une régle du vote *Copeland*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Copeland*:
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Les duels entre les candidats sont calculés. Dans chaque duel, le gagnant reçoit un point, le perdant reçoit 0 points.
         Si c&#39;est une égalité, chaque candidat du duel reçoit 0.5 points.
@@ -73,7 +73,7 @@ def apply_condorcet_copeland(electors: List[Elector], candidates: List[Candidate
             le nombre des fois que le candidat-gagnant a battu le candidat-perdant.
     Returns: 
         List[people.candidate.Candidate]:  Une liste des candidats triés dans l&#39;ordre décroissant selon leurs scores dans
-            la règle du vote *Copeland*.
+            la règle de vote *Copeland*.
     &#34;&#34;&#34;
     nb_electors = len(electors)  # Pour déterminer s&#39;il existe une égalité
     init_scores(candidates, CONDORCET_COPELAND, 0)
@@ -88,8 +88,8 @@ def apply_condorcet_copeland(electors: List[Elector], candidates: List[Candidate
 
 
 def apply_condorcet_simpson(electors: List[Elector], candidates: List[Candidate], duels: duels_type) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une régle du vote *Simpson*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Simpson*:
+    &#34;&#34;&#34;Appliquer une régle du vote *Simpson*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Simpson*:
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Les duels entre les candidats sont calculés. Dans chaque duel, le gagnant reçoit 0 points, le perdant reçoit un point.
         - Le gagnant est un candidat avec le minimum défaites.
@@ -103,7 +103,7 @@ def apply_condorcet_simpson(electors: List[Elector], candidates: List[Candidate]
 
     Returns: 
         List[people.candidate.Candidate]:  Une liste des candidats triés dans l&#39;ordre croissant selon leurs scores dans
-            la règle du vote *Simpson*.
+            la règle de vote *Simpson*.
     &#34;&#34;&#34;
     init_scores(candidates, CONDORCET_SIMPSON, 0)
     for (_, loser), score in duels.items():
@@ -125,8 +125,8 @@ def apply_condorcet_simpson(electors: List[Elector], candidates: List[Candidate]
 <span>def <span class="ident">apply_condorcet_copeland</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Appliquer une régle du vote <em>Copeland</em>. Possible d'appliquer cette règle du vote s'il existe au moins 2 candidats.
-Principe d'une règle du vote <em>Copeland</em>:
+<div class="desc"><p>Appliquer une régle du vote <em>Copeland</em>. Possible d'appliquer cette règle de vote s'il existe au moins 2 candidats.
+Principe d'une règle de vote <em>Copeland</em>:
 - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
 - Les duels entre les candidats sont calculés. Dans chaque duel, le gagnant reçoit un point, le perdant reçoit 0 points.
 Si c'est une égalité, chaque candidat du duel reçoit 0.5 points.</p>
@@ -144,14 +144,14 @@ le nombre des fois que le candidat-gagnant a battu le candidat-perdant.</dd>
 <p>Returns:
 List[people.candidate.Candidate]:
 Une liste des candidats triés dans l'ordre décroissant selon leurs scores dans
-la règle du vote <em>Copeland</em>.</p></div>
+la règle de vote <em>Copeland</em>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def apply_condorcet_copeland(electors: List[Elector], candidates: List[Candidate], duels: duels_type) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une régle du vote *Copeland*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Copeland*:
+    &#34;&#34;&#34;Appliquer une régle du vote *Copeland*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Copeland*:
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Les duels entre les candidats sont calculés. Dans chaque duel, le gagnant reçoit un point, le perdant reçoit 0 points.
         Si c&#39;est une égalité, chaque candidat du duel reçoit 0.5 points.
@@ -164,7 +164,7 @@ la règle du vote <em>Copeland</em>.</p></div>
             le nombre des fois que le candidat-gagnant a battu le candidat-perdant.
     Returns: 
         List[people.candidate.Candidate]:  Une liste des candidats triés dans l&#39;ordre décroissant selon leurs scores dans
-            la règle du vote *Copeland*.
+            la règle de vote *Copeland*.
     &#34;&#34;&#34;
     nb_electors = len(electors)  # Pour déterminer s&#39;il existe une égalité
     init_scores(candidates, CONDORCET_COPELAND, 0)
@@ -182,8 +182,8 @@ la règle du vote <em>Copeland</em>.</p></div>
 <span>def <span class="ident">apply_condorcet_simple</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Appliquer une régle du vote <em>Condorcet</em>. Possible d'appliquer cette règle du vote s'il existe au moins 2 candidats.
-Principe d'une règle du vote <em>Condorcet</em>:
+<div class="desc"><p>Appliquer une régle du vote <em>Condorcet</em>. Possible d'appliquer cette règle de vote s'il existe au moins 2 candidats.
+Principe d'une règle de vote <em>Condorcet</em>:
 - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
 - Les duels entre les candidats sont calculés. Dans chaque duel, le gagnant reçoit un point, le perdant reçoit 0 points.
 - Le gagnant du Condorcet est un candidat qui a battu tous les autres candidats dans les duels.</p>
@@ -200,14 +200,14 @@ le nombre des fois que le candidat-gagnant a battu le candidat-perdant.</dd>
 </dl>
 <p>List[people.candidate.Candidate]:
 Une liste des candidats triés dans l'ordre décroissant selon leurs scores dans
-la règle du vote *Condorcet. Le premier candidat n'est pas forcément le gagnant.</p></div>
+la règle de vote *Condorcet. Le premier candidat n'est pas forcément le gagnant.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def apply_condorcet_simple(electors: List[Elector], candidates: List[Candidate], duels: duels_type) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une régle du vote *Condorcet*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Condorcet*:
+    &#34;&#34;&#34;Appliquer une régle du vote *Condorcet*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Condorcet*:
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Les duels entre les candidats sont calculés. Dans chaque duel, le gagnant reçoit un point, le perdant reçoit 0 points.
         - Le gagnant du Condorcet est un candidat qui a battu tous les autres candidats dans les duels.
@@ -219,7 +219,7 @@ la règle du vote *Condorcet. Le premier candidat n'est pas forcément le gagnan
         duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) 
             le nombre des fois que le candidat-gagnant a battu le candidat-perdant.
     List[people.candidate.Candidate]:  Une liste des candidats triés dans l&#39;ordre décroissant selon leurs scores dans
-            la règle du vote *Condorcet. Le premier candidat n&#39;est pas forcément le gagnant.
+            la règle de vote *Condorcet. Le premier candidat n&#39;est pas forcément le gagnant.
     &#34;&#34;&#34;
     init_scores(candidates, CONDORCET_SIMPLE, 0)
     for winner, _ in duels:
@@ -231,8 +231,8 @@ la règle du vote *Condorcet. Le premier candidat n'est pas forcément le gagnan
 <span>def <span class="ident">apply_condorcet_simpson</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Appliquer une régle du vote <em>Simpson</em>. Possible d'appliquer cette règle du vote s'il existe au moins 2 candidats.
-Principe d'une règle du vote <em>Simpson</em>:
+<div class="desc"><p>Appliquer une régle du vote <em>Simpson</em>. Possible d'appliquer cette règle de vote s'il existe au moins 2 candidats.
+Principe d'une règle de vote <em>Simpson</em>:
 - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
 - Les duels entre les candidats sont calculés. Dans chaque duel, le gagnant reçoit 0 points, le perdant reçoit un point.
 - Le gagnant est un candidat avec le minimum défaites.</p>
@@ -250,14 +250,14 @@ le nombre des fois que le candidat-gagnant a battu le candidat-perdant.</dd>
 <p>Returns:
 List[people.candidate.Candidate]:
 Une liste des candidats triés dans l'ordre croissant selon leurs scores dans
-la règle du vote <em>Simpson</em>.</p></div>
+la règle de vote <em>Simpson</em>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def apply_condorcet_simpson(electors: List[Elector], candidates: List[Candidate], duels: duels_type) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une régle du vote *Simpson*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Simpson*:
+    &#34;&#34;&#34;Appliquer une régle du vote *Simpson*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Simpson*:
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - Les duels entre les candidats sont calculés. Dans chaque duel, le gagnant reçoit 0 points, le perdant reçoit un point.
         - Le gagnant est un candidat avec le minimum défaites.
@@ -271,7 +271,7 @@ la règle du vote <em>Simpson</em>.</p></div>
 
     Returns: 
         List[people.candidate.Candidate]:  Une liste des candidats triés dans l&#39;ordre croissant selon leurs scores dans
-            la règle du vote *Simpson*.
+            la règle de vote *Simpson*.
     &#34;&#34;&#34;
     init_scores(candidates, CONDORCET_SIMPSON, 0)
     for (_, loser), score in duels.items():
