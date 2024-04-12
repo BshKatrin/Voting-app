@@ -35,8 +35,8 @@ from people import Candidate, Elector
 
 
 def apply_veto(electors: List[Elector], candidates: List[Candidate], duels: Optional[duels_type] = None) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une règle du vote *Veto*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Veto*: 
+    &#34;&#34;&#34;Appliquer une règle de vote *Veto*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Veto*: 
         - chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - pour chaque candidat, sauf le dernier dans ce classement, un point est attribué à son score.
 
@@ -48,7 +48,7 @@ def apply_veto(electors: List[Elector], candidates: List[Candidate], duels: Opti
         que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
         Default = `None`.
     Returns:
-        List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans la règle du vote *Veto*.
+        List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans la règle de vote *Veto*.
     &#34;&#34;&#34;
     init_scores(candidates, VETO, 0)
     for elector in electors:
@@ -73,8 +73,8 @@ def apply_veto(electors: List[Elector], candidates: List[Candidate], duels: Opti
 <span>def <span class="ident">apply_veto</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Optional[Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]] = None) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Appliquer une règle du vote <em>Veto</em>. Possible d'appliquer cette règle du vote s'il existe au moins 2 candidats.
-Principe d'une règle du vote <em>Veto</em>:
+<div class="desc"><p>Appliquer une règle de vote <em>Veto</em>. Possible d'appliquer cette règle de vote s'il existe au moins 2 candidats.
+Principe d'une règle de vote <em>Veto</em>:
 - chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
 - pour chaque candidat, sauf le dernier dans ce classement, un point est attribué à son score.</p>
 <h2 id="args">Args</h2>
@@ -92,15 +92,15 @@ Default = <code>None</code>.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>List[people.candidate.Candidate]</code></dt>
-<dd>Une liste des candidats triés dans l'ordre décroissant selon leurs dans la règle du vote <em>Veto</em>.</dd>
+<dd>Une liste des candidats triés dans l'ordre décroissant selon leurs dans la règle de vote <em>Veto</em>.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def apply_veto(electors: List[Elector], candidates: List[Candidate], duels: Optional[duels_type] = None) -&gt; List[Candidate]:
-    &#34;&#34;&#34;Appliquer une règle du vote *Veto*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 2 candidats.
-    Principe d&#39;une règle du vote *Veto*: 
+    &#34;&#34;&#34;Appliquer une règle de vote *Veto*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 2 candidats.
+    Principe d&#39;une règle de vote *Veto*: 
         - chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - pour chaque candidat, sauf le dernier dans ce classement, un point est attribué à son score.
 
@@ -112,7 +112,7 @@ Default = <code>None</code>.</p>
         que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
         Default = `None`.
     Returns:
-        List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans la règle du vote *Veto*.
+        List[people.candidate.Candidate]: Une liste des candidats triés dans l&#39;ordre décroissant selon leurs dans la règle de vote *Veto*.
     &#34;&#34;&#34;
     init_scores(candidates, VETO, 0)
     for elector in electors:
