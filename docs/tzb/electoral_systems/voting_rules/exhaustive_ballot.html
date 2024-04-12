@@ -36,10 +36,10 @@ from people import Candidate, Elector
 
 def apply_exhaustive_ballot(electors: List[Elector], candidates: List[Candidate],
                             duels: Optional[duels_type] = None) -&gt; List[List[Candidate]]:
-    &#34;&#34;&#34;Appliquer une règle du vote *Éliminations successives*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 3 candidats.
+    &#34;&#34;&#34;Appliquer une règle de vote *Éliminations successives*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 3 candidats.
     Notons N: le nombre des candidats. Au plus il peut exister N-1 tours ou moins s&#39;il existe un candidat qui a reçu la majorité
     absolue des votes.
-    Principe d&#39;une règle du vote *Éliminations successives*: 
+    Principe d&#39;une règle de vote *Éliminations successives*: 
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - À chaque tour chaque candidat classé premier reçoit un point, tandis que les scores des autres candidats restent inchangés.
         - Après chaque tour le candidat avec le score minimale est eliminé.
@@ -71,10 +71,10 @@ def apply_exhaustive_ballot(electors: List[Elector], candidates: List[Candidate]
 <span>def <span class="ident">apply_exhaustive_ballot</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Optional[Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]] = None) ‑> List[List[people.candidate.Candidate]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Appliquer une règle du vote <em>Éliminations successives</em>. Possible d'appliquer cette règle du vote s'il existe au moins 3 candidats.
+<div class="desc"><p>Appliquer une règle de vote <em>Éliminations successives</em>. Possible d'appliquer cette règle de vote s'il existe au moins 3 candidats.
 Notons N: le nombre des candidats. Au plus il peut exister N-1 tours ou moins s'il existe un candidat qui a reçu la majorité
 absolue des votes.
-Principe d'une règle du vote <em>Éliminations successives</em>:
+Principe d'une règle de vote <em>Éliminations successives</em>:
 - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
 - À chaque tour chaque candidat classé premier reçoit un point, tandis que les scores des autres candidats restent inchangés.
 - Après chaque tour le candidat avec le score minimale est eliminé.</p>
@@ -101,10 +101,10 @@ Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
 </summary>
 <pre><code class="python">def apply_exhaustive_ballot(electors: List[Elector], candidates: List[Candidate],
                             duels: Optional[duels_type] = None) -&gt; List[List[Candidate]]:
-    &#34;&#34;&#34;Appliquer une règle du vote *Éliminations successives*. Possible d&#39;appliquer cette règle du vote s&#39;il existe au moins 3 candidats.
+    &#34;&#34;&#34;Appliquer une règle de vote *Éliminations successives*. Possible d&#39;appliquer cette règle de vote s&#39;il existe au moins 3 candidats.
     Notons N: le nombre des candidats. Au plus il peut exister N-1 tours ou moins s&#39;il existe un candidat qui a reçu la majorité
     absolue des votes.
-    Principe d&#39;une règle du vote *Éliminations successives*: 
+    Principe d&#39;une règle de vote *Éliminations successives*: 
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l&#39;ordre décroissant.
         - À chaque tour chaque candidat classé premier reçoit un point, tandis que les scores des autres candidats restent inchangés.
         - Après chaque tour le candidat avec le score minimale est eliminé.
