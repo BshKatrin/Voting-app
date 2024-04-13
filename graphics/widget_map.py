@@ -15,14 +15,14 @@ from electoral_systems import Election
 
 
 class WidgetMap(QWidget):
-    """Une classe qui représente un widget avec une carte politique, la génération des données et le choix des règles du vote."""
+    """Une classe qui représente un widget avec une carte politique, la génération des données et le choix des règles de vote."""
 
     sig_start_election = Signal(list)
-    """Un signal émis avec une liste des constantes associées aux règles du vote choisies à l'aide des checkboxes."""
+    """Un signal émis avec une liste des constantes associées aux règles de vote choisies à l'aide des checkboxes."""
 
     def __init__(self, parent: QWidget):
-        """Initialiser une instance  d'une élection (pour le partage des données).
-        Initialiser de la taille et d'UI d'un widget.
+        """Initialise une instance  d'élection (pour le partage des données).
+        Initialise de la taille et l'UI du widget.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.
@@ -36,7 +36,7 @@ class WidgetMap(QWidget):
         self.initUI()
 
     def initUI(self) -> None:
-        """Initialisation d'un layout et d'UI (les buttons, les champs de saisie et la carte politique)."""
+        """Initialisation d'un layout et UI (les buttons, les champs de saisie et la carte politique)."""
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -51,8 +51,8 @@ class WidgetMap(QWidget):
         self.initInputFields()
 
     def initNavigation(self) -> None:
-        """Initialiser des buttons qui permettent d'ouvrir un widget avec les checkboxes pour choisir des règles du vote
-        et de lancer une élection."""
+        """Initialise des buttons qui permettent d'ouvrir un widget avec les checkboxes pour choisir des règles de vote
+        et lance une élection."""
 
         # Layout pour le buttons en haut
         layout_btns = QHBoxLayout()
@@ -82,8 +82,8 @@ class WidgetMap(QWidget):
         self.layout.addLayout(layout_btns)
 
     def initInputFields(self) -> None:
-        """Initialiser des champs de saisie du nombre des candidats et des électeurs à générer aléatoirement, 
-        des buttons pour confirmer les nombres saisis et pour ouvrir un widget avec des réglages des paramètres
+        """Initialise les champs de saisie du nombre des candidats et des électeurs à générer aléatoirement, 
+        les buttons pour confirmer les nombres saisis et pour ouvrir un widget avec les réglages des paramètres
         de la génération des données."""
 
         # Layout pour les widgets en bas
@@ -128,7 +128,7 @@ class WidgetMap(QWidget):
         self.layout.addLayout(layout_input)
 
     def getIntInputField(self, text_box: QLineEdit) -> int:
-        """Convertir une chaîne de caractères saisie en un entier.
+        """Convertit une chaîne de caractères saisie en un entier.
 
         Args:
             text_box (PySide6.QtWidgets.QLineEdit): un champ de saisie dont le text il faut convertir en un entier.
@@ -142,8 +142,8 @@ class WidgetMap(QWidget):
 
     @Slot()
     def generateData(self) -> None:
-        """Générer les candidats et les électeurs selon les entiers entrée dans dans les champs de saisie.
-        Redessiner une carte politique et supprimer le text dans les champs de saisie."""
+        """Génére les candidats et les électeurs selon les entiers entrée dans dans les champs de saisie.
+        Redessine la carte politique et supprime le texte dans les champs de saisie."""
 
         nb_candidates = self.getIntInputField(self.candidates_text_box)
         nb_electors = self.getIntInputField(self.electors_text_box)
@@ -163,16 +163,16 @@ class WidgetMap(QWidget):
 
     @Slot()
     def onStartElectionClick(self) -> None:
-        """Appelé lorsque le button `start_election_btn` est cliqué.
-        Émettre un signal `sig_start_election` avec une liste des constantes correpondant
-        règles du vote choisie dans un widget avec des checkboxes."""
+        """Appelée lorsque le button `start_election_btn` est cliqué.
+        Émet un signal `sig_start_election` avec une liste des constantes correpondant aux
+        règles de vote choisies dans le widget avec des checkboxes."""
 
         chosen_voting_rule = self.voting_rules_checkbox.getChosenVotingRules()
         self.sig_start_election.emit(list(chosen_voting_rule))
 
     @Slot()
     def toggleElectionBtnState(self) -> None:
-        """Activer ou désactiver le button `start_election_btn` qui permettent de lancer une élection.
+        """Active ou désactive le button `start_election_btn` qui permet de lancer une élection.
         Le button est activé uniquement s'il existe des électeurs et des candidats et au moins une règle du vote 
         a été choisie.
         """
@@ -182,26 +182,26 @@ class WidgetMap(QWidget):
 
     @Slot()
     def showWidgetCheckbox(self) -> None:
-        """Afficher un widget avec des checkboxes."""
+        """Affiche un widget avec des checkboxes."""
 
         self.voting_rules_checkbox.showCustom()
 
     @Slot()
     def showWidgetRandomSettings(self) -> None:
-        """Afficher un widget avec des réglages des paramètres de la génération des données."""
+        """Affiche un widget avec les réglages des paramètres de la génération des données."""
 
         self.widget_settings.show()
 
     @Slot()
     def cleanTextBoxes(self) -> None:
-        """Supprimer le contenu des champs de saisie du nombre des candidats et des électeurs à générer."""
+        """Supprime le contenu des champs de saisie du nombre des candidats et des électeurs à générer."""
 
         self.candidates_text_box.clear()
         self.electors_text_box.clear()
 
     @Slot()
     def destroyChildren(self) -> None:
-        """Supprimer les widget-enfants d'un widget dont le parent à été remis à `None`."""
+        """Supprime les widget-enfants d'un widget dont le parent à été remis à `None`."""
 
         self.voting_rules_checkbox.deleteLater()
         self.widget_settings.deleteLater()
