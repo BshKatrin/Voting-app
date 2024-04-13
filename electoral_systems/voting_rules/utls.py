@@ -1,5 +1,5 @@
-"""Un module qui fournit des fonctions auxiliaires nécessaires pour appliquer des règles du vote différentes.
-De plus, il permet de factoriser des algorithmes pour des règles du vote à plusieurs tours."""
+"""Un module qui fournit les fonctions auxiliaires nécessaires pour appliquer les différentes règles de vote.
+De plus, il permet de factoriser des algorithmes pour les règles de vote à plusieurs tours."""
 
 from itertools import combinations, permutations
 from typing import Dict, List, Union, Optional
@@ -12,11 +12,11 @@ duels_type = Dict[tuple[Candidate, Candidate], int]
 
 def init_scores(candidates: List[Candidate], voting_rule: str,
                 new_score: Union[int, float, List[int]], list_type: Optional[bool] = False) -> None:
-    """Initialiser les scores avec `new_score`de tous les candidats `candidates` dans une règle du vote `voting_rule`.
+    """Initialise les scores avec `new_score`de tous les candidats `candidates` selon une règle de vote `voting_rule`.
 
     Args:
-        candidates (List[people.candidate.Candidate]): Une liste des candidats dont les scores il faut initialiser.
-        voting_rule (str): Une constante associée à une règle du vote.
+        candidates (List[people.candidate.Candidate]): Une liste des candidats dont il faut initialiser les scores.
+        voting_rule (str): Une constante associée à une règle de vote.
         new_score (Union[int, float, List[int]): Un nouveau score. Peut être une liste, dans ce cas l'initialisation passera
         par `deepcopy`.
         list_type (Optional[bool]): Un booléan pour indiquer si le type de `new_score` est une liste et s'il faut passer par `deepcopy`.
@@ -28,7 +28,7 @@ def init_scores(candidates: List[Candidate], voting_rule: str,
 
 def sort_cand_by_value(candidates: List[Candidate], voting_rule: str, nb_electors: int,
                        duels: duels_type = None, scores_asc: bool = False) -> List[Candidate]:
-    """Trier les candidats `candidates` selon leurs score dans une règle du vote `voting_rule`. Utiliser uniquement 
+    """Trie les candidats `candidates` selon leurs score selon une règle de vote `voting_rule`. Utiliser uniquement 
     pour les règles du vote à 1 tour ou Condorcet-cohérentes.
     S'il existe une égalité des scores trier par l'ordre alphabétique des leurs prénoms et noms.
     Si `duels` n'est pas `None`, résoudre une égalité avec les duels.
@@ -66,8 +66,8 @@ def sort_cand_by_round(candidates: List[Candidate], voting_rule: str, round: int
 
     Args:
         candidates (List[people.candidate.Candidate]): Une liste des candidats qu'il faut trier.
-        voting_rule (str): Une constante associée à une règle du vote.
-        round (int): Un tour d'une règle du vote (commence à partir de 0)
+        voting_rule (str): Une constante associée à une règle de vote.
+        round (int): Un tour d'une règle de vote (commence à partir de 0)
 
     Returns:
         List[people.candidate.Candidate]: Une liste des candidats triée et toutes les égalités résolues.
@@ -79,12 +79,12 @@ def sort_cand_by_round(candidates: List[Candidate], voting_rule: str, round: int
 
 
 def _has_majority(candidates_sorted: List[Candidate], nb_electors: int, voting_rule: str, round: int) -> bool:
-    """Vérifier si le candidat classé premier a la majorité absolue des votes dans une règle du vote `voting_rule`
-    dans le tour `round`. Utiliser uniquement pour des règles du vote à plusieurs tours.
+    """Vérifie si le candidat classé premier a la majorité absolue des votes dans une règle du vote `voting_rule`
+    dans le tour `round`. Utilisée uniquement pour les règles du vote à plusieurs tours.
 
     Args:
         candidates_sorted (List[people.candidate.Candidate]): Une liste des candidats triée.
-        nb_electors (int): Un nombre des électeurs qui participent dans une élection.
+        nb_electors (int): Le nombre d'électeurs qui participent à une élection.
         voting_rule (str): Une constante associée à une règle du vote.
         round (int): Un tour d'une règle du vote  (commence à partir de 0).
 
@@ -95,11 +95,11 @@ def _has_majority(candidates_sorted: List[Candidate], nb_electors: int, voting_r
 
 
 def set_duels_scores(electors: List[Elector], candidates: List[Candidate]) -> duels_type:
-    """Calculer les duels et des scores pour chaque duels. 
+    """Calculee les duels et les scores pour chaque duels. 
 
     Args:
-        electors (List[people.elector.Elector]): Une liste des électeurs participant dans une élection.
-        candidates (List[people.candidate.Candidate]): Une liste des candidats participant dans une élection.
+        electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
+        candidates (List[people.candidate.Candidate]): Une liste des candidats participant à une élection.
     Returns:
         Utls.duels_type: Un dictionnaire dont les clés sont des paires des candidats (gagnant, perdant) et la
         valeur associé le nombre de fois que gagnant a battu perdant. Si (candidat1, candidat2) dans un dictionnaire,
@@ -121,8 +121,8 @@ def set_duels_scores(electors: List[Elector], candidates: List[Candidate]) -> du
 
 
 def _simplify_duels(duels: duels_type) -> duels_type:
-    """Éliminer les redondances d'un dictionnaire des duels, i.e. si candidat1 a battu candidat2 plus de fois,
-    sauvegarder uniqument une clé (candidat1, candidat2) avec la valeur associé. 
+    """Élimine les redondances d'un dictionnaire des duels, i.e. si candidat1 a battu candidat2 plusieurs fois,
+    sauvegarde uniqument une clé (candidat1, candidat2) avec la valeur associé. 
     Cf. set_duels_scores() <electoral_systems.voting_rules.utls.set_duels_scores>
 
     Args:
@@ -146,11 +146,11 @@ def _simplify_duels(duels: duels_type) -> duels_type:
 def apply_voting_rule_rounds(electors: List[Elector], candidates: List[Candidate],
                              voting_rule: str, max_rounds: int, elimination_index: int) -> List[List[Candidate]]:
     """
-    Appliquer une régle du vote à plusieurs tours.
+    Applique une régle de vote à plusieurs tours.
 
     Args:
-        electors (List[people.elector.Elector]): Une liste des électeurs participant dans une élection.
-        candidates (List[people.candidate.Candidate]): Une liste des candidats participant dans une élection.
+        electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
+        candidates (List[people.candidate.Candidate]): Une liste des candidats participant à une élection.
         voting_rule (str): Une constante associée à une règle du vote.
         max_rounds (int): Le nombre des tours maximale qui peut exister dans une règle du vote.
         elimination_index (int): Une indice pour couper les candidats (utilisé pour couper la liste).
@@ -183,12 +183,12 @@ def apply_voting_rule_rounds(electors: List[Elector], candidates: List[Candidate
 
 def _set_score_round(electors: List[Elector], remaining_candidates: List[Candidate],
                      voting_rule: str, round: int) -> List[Candidate]:
-    """Ajouter le score pour chaque candidat qui encore participe dans une élection. Utiliser pour une règle du vote
+    """Ajoute le score pour chaque candidat qui participe encore à une élection. Utilisée pour les règles de vote
     à plusieurs tours.
 
     Args:
-        electors (List[people.elector.Elector]): Une liste des électeurs participant dans une élection.
-        remaining_candidates (List[people.candidate.Candidate]): Une liste des candidats qui encore participent dans une élection.
+        electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
+        remaining_candidates (List[people.candidate.Candidate]): Une liste des candidats qui encore participent à une élection.
         voting_rule (str): Une constante associée à une règle du vote.
         rount (int): Un tour pour lequell il faut ajouter le score.
 
@@ -210,9 +210,9 @@ def _set_score_round(electors: List[Elector], remaining_candidates: List[Candida
 
 
 def _choose_next_cand(elector: Elector, remaining_candidates: List[Candidate]) -> Candidate:
-    """Choisir un candidat qui encore participe dans une élection selon les préférences d'un électeur.
+    """Choisit un candidat qui participe encore à une élection selon les préférences d'un électeur.
     On choisit le premier candidat préféré d'un électeur parmi les candidats dans `remaining_candidates`.
-    Utiliser pour une règle du vote à plusieurs tours.
+    Utilisée pour les règle de vote à plusieurs tours.
 
     Args:
         elector (people.elector.Elector): Un électeur pour qui il faudra choisir un candidat restant.
