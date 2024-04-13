@@ -1,5 +1,5 @@
 class NameIterator:
-    """Un itérateur pour générer les prénoms et des noms des candidats.
+    """Un itérateur pour générer les prénoms et les noms des candidats. 
     Les chaînes de caractères sont générées de A à Z, après de AA à AZ, de BA à BZ etc."""
 
     def __init__(self):
@@ -16,7 +16,7 @@ class NameIterator:
         return name
 
     def increment(self):
-        """Incrémenter une lettre suivante à générer. """
+        """Incrémente une lettre suivante à générer. """
         for i in range(len(self.current_ascii) - 1, -1, -1):
             if self.current_ascii[i] == self.nb_letters:
                 # No places left
@@ -30,5 +30,5 @@ class NameIterator:
                 break
 
     def restart(self):
-        """Recommencer une génération, i.e. la chaînes de caractères suivante sera 'A'"""
+        """Recommence une génération, i.e. la chaînes de caractères suivante sera 'A'"""
         self.current_ascii = [0]
