@@ -13,13 +13,13 @@ class MapImage(QWidget):
     """Un signal émis lorsque le widget est fermé."""
 
     def __init__(self, size, parent: QWidget = None):
-        """Initialiser une instance  d'une élection (pour le partage des données).
-        Initialiser la taille, la carte politique, désactiver l'interaction avec le souris.
+        """Initialise une instance d'élection (pour le partage des données).
+        Initialise la taille, la carte politique, désactive l'interaction avec la souris.
 
         Args:
             size (PySide6.QtCore.QSize): La taille d'un widget.
             parent (PySide6.QtWidgets.QWidget): Un parent d'un widget. Puisque l'idée est d'afficher le checkbox 
-                dans une fenêtre séparée parent est rémis à `None` par défaut.
+                dans une fenêtre séparée parent est remis à `None` par défaut.
         """
 
         super().__init__(parent)
@@ -29,7 +29,7 @@ class MapImage(QWidget):
         self.disableMouseEvent()
 
     def initImage(self) -> None:
-        """Initialiser un layout, la carte politique."""
+        """Initialise la layout, la carte politique."""
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -41,17 +41,17 @@ class MapImage(QWidget):
         self.layout.addWidget(self.quadrant_map, 0, Qt.AlignVCenter | Qt.AlignHCenter)
 
     def update(self) -> None:
-        """Redessiner la carte politique."""
+        """Redessine la carte politique."""
 
         self.quadrant_map.update()
 
     def disableMouseEvent(self) -> None:
-        """Désactiver l'interaction avec le souris."""
+        """Désactive l'interaction avec la souris."""
 
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
 
     def closeEvent(self, event: QCloseEvent):
-        """Redéfinition d'un `closeEvent`. Fermer le widget (mais ne pas le supprimer). Émettre le signal `closed`."""
+        """Redéfinition d'un `closeEvent`. Ferme le widget (mais ne le supprime pas). Émet le signal `closed`."""
 
         self.closed.emit()
         self.close()
