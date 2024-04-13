@@ -1,5 +1,5 @@
 class Singleton(type):
-    """Un metaclass pour une élection. But: partager les données entre plusieurs widgets de QT."""
+    """Une metaclass pour une élection. But: partager les données entre plusieurs widgets de QT."""
     _instances = {}  # clé : class, valeur : instance
 
     def __call__(cls, *args, **kwargs):
