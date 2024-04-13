@@ -10,7 +10,7 @@ from .chart_one_round import ChartOneRound
 
 
 class ChartView(QChartView):
-    """Un view qui affiche des diagrammes à bandes des résultats des règles du vote à un ou plusieurs tours."""
+    """Un view qui affiche les diagrammes à bandes des résultats des règles de vote à un ou plusieurs tours."""
 
     sig_chart_view_destroying = Signal()
     sig_poll_conducted = Signal(str)
@@ -22,8 +22,8 @@ class ChartView(QChartView):
         self.sig_poll_conducted.connect(self.updateScores)
 
     def initOneRoundChart(self, one_round_set: Set[str]) -> None:
-        """Initialiser des diagrammes à bandes pour des règles du vote à un tour.
-        Construire un dictionnaire qui associe une constante d'une règle du vote à son diagramme à bandes.
+        """Initialise les diagrammes à bandes pour les règles de vote à un tour.
+        Construit un dictionnaire qui associe une constante d'une règle de vote à son diagramme à bandes.
 
         Args:
             one_round_set (Set[str]): Un ensemble des constantes des règles du vote à un tour
@@ -35,8 +35,8 @@ class ChartView(QChartView):
         }
 
     def initMultiRoundChart(self, multi_round_set: Set[str]) -> None:
-        """Initialiser des diagrammes à bandes pour des règles du vote à plusieurs tours.
-        Construire un dictionnaire qui associe une constante d'une règle du vote à son diagramme à bandes.
+        """Initialise les diagrammes à bandes pour des règles de vote à plusieurs tours.
+        Construit un dictionnaire qui associe une constante d'une règle de vote à son diagramme à bandes.
 
         Args:
             multi_round_set (Set[str]): Un ensemble des constantes des règles du vote à plusieurs tours
@@ -49,7 +49,7 @@ class ChartView(QChartView):
 
     @Slot(str)
     def setChartBySig(self, voting_rule: str) -> None:
-        """Changer le chart affiché dans un view.
+        """Change le chart affiché dans un view.
 
         Args:
             voting_rule (str): Une constante d'une règle du vote dont le diagramme il faut afficher.
@@ -64,7 +64,7 @@ class ChartView(QChartView):
 
     @Slot(str)
     def updateScores(self, voting_rule: str) -> None:
-        """MAJ des scores des candidats dans une règle du vote `voting_rule`. Utile pour les sondages.
+        """MAJ les scores des candidats selon une règle de vote `voting_rule`. Utile pour les sondages.
 
         Args:
             voting_rule (str): Une constante associée à une règle du vote.
@@ -74,7 +74,7 @@ class ChartView(QChartView):
 
     @Slot()
     def delete_children(self) -> None:
-        """Supprimer tous les charts qui ont été initialisés"""
+        """Supprime tous les charts qui ont été initialisés"""
 
         self.setChart(None)  # because setChart takes ownership
         for multi_chart in self.charts_multi_rounds.values():
