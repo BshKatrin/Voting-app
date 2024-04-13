@@ -17,7 +17,7 @@ __pdoc__ = {
 
 
 class ExportData:
-    """Une classe qui fournit la fonctionnalité nécessaire pour une exportation des données de l'élection.
+    """Une classe qui fournit les fonctionnalités nécessaires pour une exportation des données de l'élection.
     SQLite3 est utilisé."""
 
     election: Election = Election()
@@ -25,7 +25,7 @@ class ExportData:
 
     @classmethod
     def create_database_people(cls, connection: Connection) -> tuple[bool, str]:
-        """Créer des tableaux des électeurs et des candidats d'élection et exporter les données.
+        """Crée des tableaux des électeurs et des candidats d'élection et exporte les données.
 
         Args:
             connection (sqlite3.Connection): une connection SQLite.
@@ -108,7 +108,7 @@ class ExportData:
 
     @classmethod
     def create_database_results(cls, connection: Connection) -> tuple[bool, str]:
-        """Créer des tableaux des résultats d'élection et exporter les données.  
+        """Crée des tableaux des résultats d'élection et exporte les données.  
         Au plus il peut exister 5 tableaux:  
             - Un tableau pour des règles de vote à un tour  
             - Un tableau pour des règles de vote à plusieurs tours  
@@ -160,10 +160,11 @@ class ExportData:
 
     @classmethod
     def _get_set_check(cls, voting_rules_set: Set[str]) -> str:
-        """Retourner une chaîne de caractères d'une contrainte d'intégrité sur une (des) règle(s) de vote.
+        """Retourne une chaîne de caractères d'une contrainte d'intégrité sur une ou plusieurs règle(s) de vote.
 
         Args:
-            voting_rules_set(Set[str]): Un ensemble des constantes associées aux règles de vote.
+            voting_rules_set (Set[str]): Un ensemble des constantes associées aux règles de vote.
+
         Returns:
             str: Une constrainte d'intégrité utilisé dans `CHECK(...)`
         """
@@ -174,7 +175,7 @@ class ExportData:
 
     @classmethod
     def _one_round_create_table(cls, connection: Connection, chosen_one_round: Set[str]) -> None:
-        """Créer un tableau des résultats des règles de vote à un tour.
+        """Crée un tableau des résultats des règles de vote à un tour.
 
         Args:
             connection (sqlite3.Connection): Une connection SQLite.
@@ -201,7 +202,7 @@ class ExportData:
 
     @classmethod
     def _one_round_insert(cls, connection: Connection, chosen_one_round: Set[str]) -> bool:
-        """Remplir le tableau des résultats des règles de vote à un tour.
+        """Remplit le tableau des résultats des règles de vote à un tour.
 
         Args:
             connection (sqlite3.Connection): Une connection SQLite.
@@ -231,7 +232,7 @@ class ExportData:
 
     @classmethod
     def _multi_round_create_table(cls, connection: Connection, chosen_multi_round: Set[str]) -> None:
-        """Créer un tableau des résultats des règles de vote à plusiers tours.
+        """Crée un tableau des résultats des règles de vote à plusiers tours.
 
         Args:
             connection (sqlite3.Connection): Une connection SQLite.
@@ -259,11 +260,12 @@ class ExportData:
 
     @classmethod
     def _multi_round_insert(cls, connection: Connection, chosen_multi_round: Set[str]) -> bool:
-        """Remplir le tableau des résultats dess règle sde vote à plusieurs tours.
+        """Remplit le tableau des résultats dess règle sde vote à plusieurs tours.
 
         Args:
             connection (sqlite3.Connection): Une connection SQLite.
             chosen_multi_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l'élection.
+        
         Returns:
             bool: `True` si les données ont été insérées, `False` si l'erreur est survenue.
         """
@@ -288,7 +290,7 @@ class ExportData:
 
     @classmethod
     def _condorcet_create_table(cls, connection: Connection, chosen_condorcet: Set[str]) -> None:
-        """Créer un tableau des résultats des règles de vote Condorcet-cohérentes et un tableau des duels entre les candidats.
+        """Crée un tableau des résultats des règles de vote Condorcet-cohérentes et un tableau des duels entre les candidats.
 
         Args:
             connection (sqlite3.Connection): Une connection SQLite.
@@ -329,7 +331,7 @@ class ExportData:
 
     @classmethod
     def _condorcet_insert(cls, connection: Connection, chosen_condorcet: Set[str]) -> bool:
-        """Remplir le tableau des scores des règles de vote Condorcet-cohérentes et le tableau des duels.
+        """Remplit le tableau des scores des règles de vote Condorcet-cohérentes et le tableau des duels.
 
         Args:
             connection (sqlite3.Connection): Une connection SQLite.
@@ -372,9 +374,9 @@ class ExportData:
 
     @classmethod
     def _export_config(cls, connection: Connection) -> None:
-        """Exporter les configurations d'une élection, i.e. si  
-            - la résolution des égalités par duels a été activée  
-            - la démocratie liquide a été activée  
+        """Exporte les configurations d'une élection, i.e. si  
+            - la résolution des égalités par duels a été activée.    
+            - la démocratie liquide a été activée.  
 
         Args:
             connection (sqlite3.Connection): Une connection SQLite.
