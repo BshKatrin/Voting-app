@@ -14,7 +14,7 @@ class Elector(Person):
         default_factory=list, repr=False)
     """
     Un classement des candidats selon les préférences d'un électeur dans l'ordre décroissant.
-    Cette liste doit contenir tous les candidats qui participent dans une élection.
+    Cette liste doit contenir tous les candidats qui participent à une élection.
     """
 
     weight: int = 1
@@ -28,11 +28,11 @@ class Elector(Person):
     knowledge: float = -1.0
     """
     Un taux des connaissances d'un électeur sur une élection.
-    S'il n'était pas donné lors d'initialisation, alors `knowledge` est généré selon la distribution normale.
+    S'il n'était pas donné lors d'initialisation, alors `knowledge` est généré selon la loi normale.
     """
 
     knowledge_const: InitVar[Tuple[float, float]] = (0.5, 0.3)
-    """Des paramètres (moyenne, écart-type) pour une génération de `knowledge` selon la distribution normale."""
+    """Des paramètres (moyenne, écart-type) pour une génération de `knowledge` selon la loi normale."""
 
     def __post_init__(self, knowledge_const):
         mu, sigma = knowledge_const
@@ -51,13 +51,13 @@ class Elector(Person):
         return self.__str__()
 
     def dist_from_one_cand(self, candidate: List[Candidate]) -> float:
-        """Calculer la distance euclidienne entre la position d'électeur et celle du candidat donné.
+        """Calcule la distance euclidienne entre la position d'un électeur et celle d'un candidat donné.
 
         Args:
             candidate (people.candidate.Candidate): Le candidat avec lequel la distance sera calculée.
 
         Returns:
-            float: La distance euclidienne entre l'électeur et le candidat.
+            float: La distance euclidienne entre un électeur et un candidat.
         """
 
         x, y = self.position
@@ -65,10 +65,10 @@ class Elector(Person):
         return sqrt((x_c - x) ** 2 + (y_c - y) ** 2)
 
     def dist_from_cand(self, candidates: List[Candidate]) -> List[float]:
-        """Calculer une liste des distances euclidiennes entre l'électeur et les candidats.
+        """Calcule une liste des distances euclidiennes entre un électeur et des candidats.
 
         Args:
-            candidates (List[people.candidate.Candidate]) : Une liste des candidats avec lesquels les distances seront calculées.
+            candidates (List[people.candidate.Candidate]): Une liste des candidats avec lesquels les distances seront calculées.
 
         Returns:
             List[float] : Une liste des distances euclidiennes.
@@ -80,7 +80,7 @@ class Elector(Person):
         return distances
 
     def pos_to_rank(self, candidates: List[Candidate]) -> List[Candidate]:
-        """Classer les candidats en fonction des préférences d'un électeur,
+        """Classe les candidats en fonction des préférences d'un électeur,
         qui sont inversement proportionnelles à la distance des candidats.
         Plus un candidat est éloigné, moins il est préféré par l'électeur,
         et inversement, moins un candidat est éloigné, plus il est préféré.
@@ -88,7 +88,7 @@ class Elector(Person):
         Args:
             candidate (List[people.candidate.Candidate]): Une liste des candidats.
         Returns:
-            List[people.candidate.Candidate]: Un classement des candidats, du plus préféré à moins préféré.
+            List[people.candidate.Candidate]: Un classement des candidats, du plus préféré au moins préféré.
         """
 
         distances = self.dist_from_cand(candidates)
@@ -98,7 +98,7 @@ class Elector(Person):
         return ranking
 
     def rank_candidates(self, candidates: List[Candidate]) -> None:
-        """Remplir un attribut `candidates_ranked` avec un classement des candidats selon leur éloignement d'électeur.
+        """Remplit un attribut `candidates_ranked` avec le classement des candidats selon leur éloignement d'un électeur.
 
         Args:
             candidates (List[people.candidate.Candidate]): Une liste des candidats.
