@@ -14,5 +14,5 @@ class IdIterator:
         return id
 
     def restart(self):
-        """Recommencer une génération, i.e. le nombre suivant généré sera `self.start`"""
+        """Recommence une génération, i.e. le nombre suivant généré sera `self.start`"""
         self.current = self.start
