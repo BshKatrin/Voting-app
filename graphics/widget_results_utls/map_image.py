@@ -14,7 +14,6 @@ class MapImage(QWidget):
 
     def __init__(self, size, parent: QWidget = None):
         """Initialise une instance d'élection (pour le partage des données).
-        Initialise la taille, la carte politique, désactive l'interaction avec la souris.
 
         Args:
             size (PySide6.QtCore.QSize): La taille d'un widget.

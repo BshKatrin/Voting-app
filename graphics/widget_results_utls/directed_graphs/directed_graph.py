@@ -14,8 +14,8 @@ class DirectedGraph(QGraphicsScene):
     """Une scène sur laquelle un graphe orienté sera dessiné."""
 
     def __init__(self, view_size: QSize, voting_rule: str, parent: QWidget):
-        """Initialise une instance d'élection (pour le partage des données). Fixe la taille.
-        Définit la couleur de l'arrière plan. Initialise un `PySide6.QtGui.QPainterPath` pour les arêtes. 
+        """Initialise une instance d'élection (pour le partage des données). 
+        Initialise un `PySide6.QtGui.QPainterPath` pour les arêtes. 
 
         Args:
             view_size (PySide6.QtCore.QSize): La taille d'un view associé.
@@ -72,7 +72,7 @@ class DirectedGraph(QGraphicsScene):
         """Initialise et place les arêtes d'un graphe.
 
         Args:
-            weighted (bool): True s'il faut représenter des poids. Sinon, False.
+            weighted (bool): `True` s'il faut représenter des poids. Sinon, `False`.
         """
 
         # Les duels des candidats déjà remplis
@@ -113,8 +113,8 @@ class DirectedGraph(QGraphicsScene):
         """Calcule la norme d'un vecteur point1 -> point2.
 
         Args:
-            point1 (PySide6.QtCore.QPointF): point de départ d'un vecteur.
-            point2 (PySide6.QtCore.QPointF): point d'arrivée d'un vecteur.
+            point1 (PySide6.QtCore.QPointF): Point de départ d'un vecteur.
+            point2 (PySide6.QtCore.QPointF): Point d'arrivée d'un vecteur.
 
         Returns:
             float: La norme d'un vecteur.

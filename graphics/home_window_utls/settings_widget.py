@@ -18,7 +18,7 @@ class SettingsWidget(QWidget):
     sig_saved = Signal()
 
     def __init__(self, parent: QWidget):
-        """Initialise une instance d'élection (pour le partage des données). Initialise UI.
+        """Initialise une instance d'élection (pour le partage des données).
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.

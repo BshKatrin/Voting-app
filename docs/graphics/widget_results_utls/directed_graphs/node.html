@@ -34,13 +34,21 @@ from PySide6.QtGui import QColor
 class Node(QGraphicsEllipseItem):
     &#34;&#34;&#34;Une classe qui représente un noeud d&#39;un graphe orienté.&#34;&#34;&#34;
 
-    RADIUS = 40.0
+    RADIUS:float = 40.0
+    &#34;&#34;&#34;Un rayon d&#39;un noeud.&#34;&#34;&#34;
 
-    def __init__(self, x, y, title: str):
-        super().__init__(
-            -self.RADIUS, -self.RADIUS, 2 * self.RADIUS, 2 * self.RADIUS, None
-        )
+    def __init__(self, x:float, y:float, title: str):
+        &#34;&#34;&#34;Initialise un noeud d&#39;un graphe orienté.
+
+        Args:
+            x (float): La coordonnée horizontale dans le système des coordonnées de l&#39;ordinateur.
+            y (float): La coordonnée horizontale dans le système des coordonnées de l&#39;ordinateur.
+            title (str): Un titre d&#39;un noeud.
+        &#34;&#34;&#34;
+
         # Scene will take ownership
+        super().__init__(-self.RADIUS, -self.RADIUS, 2 * self.RADIUS, 2 * self.RADIUS, None) 
+        
 
         self.setZValue(1)
         self.setBrush(QColor(217, 185, 155))
@@ -52,11 +60,14 @@ class Node(QGraphicsEllipseItem):
 
         width = self.boundingRect().size().width()
         height = self.boundingRect().size().height()
+
         titleOffset = QPointF(-width / 3, -height / 3)
         self.title.setPos(titleOffset)
 
-    def highlight(self):
-        self.setBrush(QColor(250, 128, 114))</code></pre>
+    def highlight(self) -&gt; None:
+        &#34;&#34;&#34;Change le d&#39;un noeud couleur en vert pâle.&#34;&#34;&#34;
+
+        self.setBrush(QColor(152,251,152))</code></pre>
 </details>
 </section>
 <section>
@@ -70,15 +81,20 @@ class Node(QGraphicsEllipseItem):
 <dl>
 <dt id="graphics.widget_results_utls.directed_graphs.node.Node"><code class="flex name class">
 <span>class <span class="ident">Node</span></span>
-<span>(</span><span>x, y, title: str)</span>
+<span>(</span><span>x: float, y: float, title: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Une classe qui représente un noeud d'un graphe orienté.</p>
-<p><strong>init</strong>(self, parent: Optional[PySide6.QtWidgets.QGraphicsItem] = None) -&gt; None
-<strong>init</strong>(self, rect: Union[PySide6.QtCore.QRectF, PySide6.QtCore.QRect], parent: Optional[PySide6.QtWidgets.QGraphicsItem] = None) -&gt; None
-<strong>init</strong>(self, x: float, y: float, w: float, h: float, parent: Optional[PySide6.QtWidgets.QGraphicsItem] = None) -&gt; None</p>
-<p>Initialize self.
-See help(type(self)) for accurate signature.</p></div>
+<p>Initialise un noeud d'un graphe orienté.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
+<dd>La coordonnée horizontale dans le système des coordonnées de l'ordinateur.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>float</code></dt>
+<dd>La coordonnée horizontale dans le système des coordonnées de l'ordinateur.</dd>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code></dt>
+<dd>Un titre d'un noeud.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -86,13 +102,21 @@ See help(type(self)) for accurate signature.</p></div>
 <pre><code class="python">class Node(QGraphicsEllipseItem):
     &#34;&#34;&#34;Une classe qui représente un noeud d&#39;un graphe orienté.&#34;&#34;&#34;
 
-    RADIUS = 40.0
+    RADIUS:float = 40.0
+    &#34;&#34;&#34;Un rayon d&#39;un noeud.&#34;&#34;&#34;
 
-    def __init__(self, x, y, title: str):
-        super().__init__(
-            -self.RADIUS, -self.RADIUS, 2 * self.RADIUS, 2 * self.RADIUS, None
-        )
+    def __init__(self, x:float, y:float, title: str):
+        &#34;&#34;&#34;Initialise un noeud d&#39;un graphe orienté.
+
+        Args:
+            x (float): La coordonnée horizontale dans le système des coordonnées de l&#39;ordinateur.
+            y (float): La coordonnée horizontale dans le système des coordonnées de l&#39;ordinateur.
+            title (str): Un titre d&#39;un noeud.
+        &#34;&#34;&#34;
+
         # Scene will take ownership
+        super().__init__(-self.RADIUS, -self.RADIUS, 2 * self.RADIUS, 2 * self.RADIUS, None) 
+        
 
         self.setZValue(1)
         self.setBrush(QColor(217, 185, 155))
@@ -104,11 +128,14 @@ See help(type(self)) for accurate signature.</p></div>
 
         width = self.boundingRect().size().width()
         height = self.boundingRect().size().height()
+
         titleOffset = QPointF(-width / 3, -height / 3)
         self.title.setPos(titleOffset)
 
-    def highlight(self):
-        self.setBrush(QColor(250, 128, 114))</code></pre>
+    def highlight(self) -&gt; None:
+        &#34;&#34;&#34;Change le d&#39;un noeud couleur en vert pâle.&#34;&#34;&#34;
+
+        self.setBrush(QColor(152,251,152))</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -119,24 +146,26 @@ See help(type(self)) for accurate signature.</p></div>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="graphics.widget_results_utls.directed_graphs.node.Node.RADIUS"><code class="name">var <span class="ident">RADIUS</span></code></dt>
+<dt id="graphics.widget_results_utls.directed_graphs.node.Node.RADIUS"><code class="name">var <span class="ident">RADIUS</span> : float</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Un rayon d'un noeud.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="graphics.widget_results_utls.directed_graphs.node.Node.highlight"><code class="name flex">
-<span>def <span class="ident">highlight</span></span>(<span>self)</span>
+<span>def <span class="ident">highlight</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Change le d'un noeud couleur en vert pâle.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def highlight(self):
-    self.setBrush(QColor(250, 128, 114))</code></pre>
+<pre><code class="python">def highlight(self) -&gt; None:
+    &#34;&#34;&#34;Change le d&#39;un noeud couleur en vert pâle.&#34;&#34;&#34;
+
+    self.setBrush(QColor(152,251,152))</code></pre>
 </details>
 </dd>
 </dl>

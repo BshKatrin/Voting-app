@@ -22,7 +22,6 @@ class WidgetMap(QWidget):
 
     def __init__(self, parent: QWidget):
         """Initialise une instance  d'élection (pour le partage des données).
-        Initialise de la taille et l'UI du widget.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.
@@ -36,7 +35,7 @@ class WidgetMap(QWidget):
         self.initUI()
 
     def initUI(self) -> None:
-        """Initialisation d'un layout et UI (les buttons, les champs de saisie et la carte politique)."""
+        """Initialise un layout et UI (les buttons, les champs de saisie et la carte politique)."""
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -51,8 +50,8 @@ class WidgetMap(QWidget):
         self.initInputFields()
 
     def initNavigation(self) -> None:
-        """Initialise des buttons qui permettent d'ouvrir un widget avec les checkboxes pour choisir des règles de vote
-        et lance une élection."""
+        """Initialise des buttons qui permettent de lancer une élection et d'ouvrir un widget avec
+            les checkboxes pour choisir des règles de vote."""
 
         # Layout pour le buttons en haut
         layout_btns = QHBoxLayout()
@@ -131,10 +130,10 @@ class WidgetMap(QWidget):
         """Convertit une chaîne de caractères saisie en un entier.
 
         Args:
-            text_box (PySide6.QtWidgets.QLineEdit): un champ de saisie dont le text il faut convertir en un entier.
+            text_box (PySide6.QtWidgets.QLineEdit): Un champ de saisie dont le text il faut convertir en un entier.
 
         Returns:
-            int: un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.
+            int: Un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.
         """
 
         text = text_box.text()
@@ -163,9 +162,10 @@ class WidgetMap(QWidget):
 
     @Slot()
     def onStartElectionClick(self) -> None:
-        """Appelée lorsque le button `start_election_btn` est cliqué.
-        Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
-        règles de vote choisies dans le widget avec des checkboxes."""
+        """Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
+        règles de vote choisies dans le widget avec des checkboxes. 
+        Appelée lorsque le button `start_election_btn` est cliqué.
+        """
 
         chosen_voting_rule = self.voting_rules_checkbox.getChosenVotingRules()
         self.sig_start_election.emit(list(chosen_voting_rule))
@@ -185,12 +185,14 @@ class WidgetMap(QWidget):
         """Affiche un widget avec des checkboxes."""
 
         self.voting_rules_checkbox.showCustom()
+        self.voting_rules_checkbox.raise_()
 
     @Slot()
     def showWidgetRandomSettings(self) -> None:
         """Affiche un widget avec les réglages des paramètres de la génération des données."""
 
         self.widget_settings.show()
+        self.widget_settings.raise_()
 
     @Slot()
     def cleanTextBoxes(self) -> None:

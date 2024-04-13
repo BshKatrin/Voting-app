@@ -46,8 +46,8 @@ class WidgetCheckbox(QWidget):
 
     def __init__(self, parent: Optional[QWidget] = None):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Initialise la taille, le titre et UI. Si les sondages ont été activées, coche une case correspondante
-        à une règle de vote pour les sondages et désactive les autres cases.
+        Si les sondages ont été activées, coche une case correspondante à une règle de vote
+        pour les sondages et désactive les autres cases.
 
         Args:
             parent (Optional[PySide6.QtWidgets.QWidget]): Un parent d&#39;un widget. Puisque l&#39;idée est d&#39;afficher le checkbox 
@@ -150,7 +150,7 @@ class WidgetCheckbox(QWidget):
         &#34;&#34;&#34;Vérifie si au moins une règle de vote a été choisie.
 
         Returns:
-            bool: True si au moins une règle de vote a été choisie. Sinon, False.
+            bool: `True` si au moins une règle de vote a été choisie. Sinon, `False`.
         &#34;&#34;&#34;
         return bool(self.chosen_voting_rules)
 
@@ -186,8 +186,8 @@ class WidgetCheckbox(QWidget):
 <dd>
 <div class="desc"><p>Un widget qui représente l'ensemble des checkbox pour choisir des règles de vote pour une élection.</p>
 <p>Initialise une instance d'élection (pour le partage des données).
-Initialise la taille, le titre et UI. Si les sondages ont été activées, coche une case correspondante
-à une règle de vote pour les sondages et désactive les autres cases.</p>
+Si les sondages ont été activées, coche une case correspondante à une règle de vote
+pour les sondages et désactive les autres cases.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>parent</code></strong> :&ensp;<code>Optional[PySide6.QtWidgets.QWidget]</code></dt>
@@ -206,8 +206,8 @@ dans une fenêtre séparée parent est rémis à <code>None</code> par défaut.<
 
     def __init__(self, parent: Optional[QWidget] = None):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Initialise la taille, le titre et UI. Si les sondages ont été activées, coche une case correspondante
-        à une règle de vote pour les sondages et désactive les autres cases.
+        Si les sondages ont été activées, coche une case correspondante à une règle de vote
+        pour les sondages et désactive les autres cases.
 
         Args:
             parent (Optional[PySide6.QtWidgets.QWidget]): Un parent d&#39;un widget. Puisque l&#39;idée est d&#39;afficher le checkbox 
@@ -310,7 +310,7 @@ dans une fenêtre séparée parent est rémis à <code>None</code> par défaut.<
         &#34;&#34;&#34;Vérifie si au moins une règle de vote a été choisie.
 
         Returns:
-            bool: True si au moins une règle de vote a été choisie. Sinon, False.
+            bool: `True` si au moins une règle de vote a été choisie. Sinon, `False`.
         &#34;&#34;&#34;
         return bool(self.chosen_voting_rules)
 
@@ -553,7 +553,7 @@ def onStateChanged(self, voting_rule: str, state: int) -&gt; None:
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bool</code></dt>
-<dd>True si au moins une règle de vote a été choisie. Sinon, False.</dd>
+<dd><code>True</code> si au moins une règle de vote a été choisie. Sinon, <code>False</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -563,7 +563,7 @@ def onStateChanged(self, voting_rule: str, state: int) -&gt; None:
     &#34;&#34;&#34;Vérifie si au moins une règle de vote a été choisie.
 
     Returns:
-        bool: True si au moins une règle de vote a été choisie. Sinon, False.
+        bool: `True` si au moins une règle de vote a été choisie. Sinon, `False`.
     &#34;&#34;&#34;
     return bool(self.chosen_voting_rules)</code></pre>
 </details>

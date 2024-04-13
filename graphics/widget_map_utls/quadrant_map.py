@@ -6,13 +6,16 @@ from numpy import clip
 from numpy.random import normal
 from electoral_systems import Election, RandomConstants
 
+# Uniquement pour une génération des docs
+__pdoc__ = {
+    'normal':False
+}
 
 class QuadrantMap(QWidget):
     """Un widget qui représente la carte politique. La carte politique sera dessinée à l'aide de `PySide6.QtGui.QPainter`."""
 
     def __init__(self, size_proportion: float, parent: QWidget):
         """Initialise une instance d'élection (pour le partage des données).
-        Fixe la taille. Initialise (mais n'applique pas) une transformation des coordonnées.
 
         Args:
             size_proportion (float): Une proportion de la taille d'un widget parent.
@@ -254,7 +257,7 @@ class QuadrantMap(QWidget):
             point (PySide6.QtCore.QPointF): Un point mis à l'échelle dans le système de coordonnées mathématique.
 
         Returns:
-            position (tuple[float, float]): Une position dont chaque coordonnée est normalisé.
+            tuple[float, float]: Une position dont chaque coordonnée est normalisé.
         """
 
         return point.x() / self.width() * 2, point.y() / self.height() * 2
@@ -369,12 +372,12 @@ class QuadrantMap(QWidget):
 
     def generateCoordinate(self, mu: float, sigma: float, limit: float) -> float:
         """Génére une coordonnée (x ou y) selon la loi normale avec des paramètres `mu` et `sigma`.
-        Borne la valeur absolue d'une coordonnée généré entre `limit`.
+        Borne la valeur absolue d'une coordonnée généré à limite `limit`.
 
         Args:
             mu (float): La moyenne de la distribution normale. 
             sigma (float): L'écart type de la distribution normale. Un réel strictement positive.
-            lower_limit (float): La limite inférieure et supérieur pour le coordonnée. 
+            limit (float): La limite inférieure et supérieur pour le coordonnée. 
 
         Returns:
             float: Un coordonnée généré et borné.

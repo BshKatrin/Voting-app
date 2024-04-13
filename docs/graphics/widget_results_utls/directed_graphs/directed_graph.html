@@ -42,8 +42,8 @@ class DirectedGraph(QGraphicsScene):
     &#34;&#34;&#34;Une scène sur laquelle un graphe orienté sera dessiné.&#34;&#34;&#34;
 
     def __init__(self, view_size: QSize, voting_rule: str, parent: QWidget):
-        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données). Fixe la taille.
-        Définit la couleur de l&#39;arrière plan. Initialise un `PySide6.QtGui.QPainterPath` pour les arêtes. 
+        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données). 
+        Initialise un `PySide6.QtGui.QPainterPath` pour les arêtes. 
 
         Args:
             view_size (PySide6.QtCore.QSize): La taille d&#39;un view associé.
@@ -100,7 +100,7 @@ class DirectedGraph(QGraphicsScene):
         &#34;&#34;&#34;Initialise et place les arêtes d&#39;un graphe.
 
         Args:
-            weighted (bool): True s&#39;il faut représenter des poids. Sinon, False.
+            weighted (bool): `True` s&#39;il faut représenter des poids. Sinon, `False`.
         &#34;&#34;&#34;
 
         # Les duels des candidats déjà remplis
@@ -141,8 +141,8 @@ class DirectedGraph(QGraphicsScene):
         &#34;&#34;&#34;Calcule la norme d&#39;un vecteur point1 -&gt; point2.
 
         Args:
-            point1 (PySide6.QtCore.QPointF): point de départ d&#39;un vecteur.
-            point2 (PySide6.QtCore.QPointF): point d&#39;arrivée d&#39;un vecteur.
+            point1 (PySide6.QtCore.QPointF): Point de départ d&#39;un vecteur.
+            point2 (PySide6.QtCore.QPointF): Point d&#39;arrivée d&#39;un vecteur.
 
         Returns:
             float: La norme d&#39;un vecteur.
@@ -168,8 +168,8 @@ class DirectedGraph(QGraphicsScene):
 </code></dt>
 <dd>
 <div class="desc"><p>Une scène sur laquelle un graphe orienté sera dessiné.</p>
-<p>Initialise une instance d'élection (pour le partage des données). Fixe la taille.
-Définit la couleur de l'arrière plan. Initialise un <code>PySide6.QtGui.QPainterPath</code> pour les arêtes. </p>
+<p>Initialise une instance d'élection (pour le partage des données).
+Initialise un <code>PySide6.QtGui.QPainterPath</code> pour les arêtes. </p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>view_size</code></strong> :&ensp;<code>PySide6.QtCore.QSize</code></dt>
@@ -187,8 +187,8 @@ Définit la couleur de l'arrière plan. Initialise un <code>PySide6.QtGui.QPaint
     &#34;&#34;&#34;Une scène sur laquelle un graphe orienté sera dessiné.&#34;&#34;&#34;
 
     def __init__(self, view_size: QSize, voting_rule: str, parent: QWidget):
-        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données). Fixe la taille.
-        Définit la couleur de l&#39;arrière plan. Initialise un `PySide6.QtGui.QPainterPath` pour les arêtes. 
+        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données). 
+        Initialise un `PySide6.QtGui.QPainterPath` pour les arêtes. 
 
         Args:
             view_size (PySide6.QtCore.QSize): La taille d&#39;un view associé.
@@ -245,7 +245,7 @@ Définit la couleur de l'arrière plan. Initialise un <code>PySide6.QtGui.QPaint
         &#34;&#34;&#34;Initialise et place les arêtes d&#39;un graphe.
 
         Args:
-            weighted (bool): True s&#39;il faut représenter des poids. Sinon, False.
+            weighted (bool): `True` s&#39;il faut représenter des poids. Sinon, `False`.
         &#34;&#34;&#34;
 
         # Les duels des candidats déjà remplis
@@ -286,8 +286,8 @@ Définit la couleur de l'arrière plan. Initialise un <code>PySide6.QtGui.QPaint
         &#34;&#34;&#34;Calcule la norme d&#39;un vecteur point1 -&gt; point2.
 
         Args:
-            point1 (PySide6.QtCore.QPointF): point de départ d&#39;un vecteur.
-            point2 (PySide6.QtCore.QPointF): point d&#39;arrivée d&#39;un vecteur.
+            point1 (PySide6.QtCore.QPointF): Point de départ d&#39;un vecteur.
+            point2 (PySide6.QtCore.QPointF): Point d&#39;arrivée d&#39;un vecteur.
 
         Returns:
             float: La norme d&#39;un vecteur.
@@ -340,9 +340,9 @@ Définit la couleur de l'arrière plan. Initialise un <code>PySide6.QtGui.QPaint
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>point1</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
-<dd>point de départ d'un vecteur.</dd>
+<dd>Point de départ d'un vecteur.</dd>
 <dt><strong><code>point2</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
-<dd>point d'arrivée d'un vecteur.</dd>
+<dd>Point d'arrivée d'un vecteur.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -357,8 +357,8 @@ Définit la couleur de l'arrière plan. Initialise un <code>PySide6.QtGui.QPaint
     &#34;&#34;&#34;Calcule la norme d&#39;un vecteur point1 -&gt; point2.
 
     Args:
-        point1 (PySide6.QtCore.QPointF): point de départ d&#39;un vecteur.
-        point2 (PySide6.QtCore.QPointF): point d&#39;arrivée d&#39;un vecteur.
+        point1 (PySide6.QtCore.QPointF): Point de départ d&#39;un vecteur.
+        point2 (PySide6.QtCore.QPointF): Point d&#39;arrivée d&#39;un vecteur.
 
     Returns:
         float: La norme d&#39;un vecteur.
@@ -402,7 +402,7 @@ Définit la couleur de l'arrière plan. Initialise un <code>PySide6.QtGui.QPaint
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>weighted</code></strong> :&ensp;<code>bool</code></dt>
-<dd>True s'il faut représenter des poids. Sinon, False.</dd>
+<dd><code>True</code> s'il faut représenter des poids. Sinon, <code>False</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -412,7 +412,7 @@ Définit la couleur de l'arrière plan. Initialise un <code>PySide6.QtGui.QPaint
     &#34;&#34;&#34;Initialise et place les arêtes d&#39;un graphe.
 
     Args:
-        weighted (bool): True s&#39;il faut représenter des poids. Sinon, False.
+        weighted (bool): `True` s&#39;il faut représenter des poids. Sinon, `False`.
     &#34;&#34;&#34;
 
     # Les duels des candidats déjà remplis

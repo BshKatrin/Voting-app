@@ -14,7 +14,14 @@ class Edge(QGraphicsPathItem):
     """Une classe qui représente une arête d'un graphe orienté."""
 
     def __init__(self, painter_path: QPainterPath, start_point: QPointF, end_point: QPointF):
-        """Initialise une arête noire et une tête d'une flèche. Une arête va de `start_point` à `end_point`."""
+        """Initialise une arête noire et une tête d'une flèche qui sort de `start_point` et arrive dans `end_point`.
+        
+        Args:
+            painter_path (PySide6.QtGui.QPainterPath): Un painter qui dessinera une arête.
+            start_point (PySide6.QtCore.QPointF): Un point de départ.
+            end_point (PySide6.QtCore.QPointF): Un point d'arrivée.
+        """
+        
         super().__init__(painter_path, None)  # Scene will take ownership
 
         self.setPen(QPen(Qt.black, 2))

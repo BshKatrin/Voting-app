@@ -19,7 +19,8 @@ class WidgetRandomSettings(QWidget):
 
     def __init__(self, main_window_size: QSize, parent: Optional[QWidget] = None):
         """Initialise une instance d'élection (pour le partage des données).
-        Fixe la taille, le titre et UI.
+        Initiliase les sliders et graphiques pour chaque paramètre de la génération des données.
+
 
         Args:
             main_window_size (PySide6.QtCore.QSize): La taille de la fenêtre principale. La taille du widget est fixé en fonction 

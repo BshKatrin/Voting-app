@@ -18,7 +18,7 @@ class ChartOneRound(QChart):
 
     def __init__(self, voting_rule: str, parent: QGraphicsItem = None):
         """Initialise le diagramme à bandes. Initialise une instance d'élection (pour le partage des données).
-        Initialise les axes, les bars. Remplit le diagramme avec les résultats d'une règle de vote `voting_rule`.
+        Remplit le diagramme avec les résultats d'une règle de vote `voting_rule`.
 
         Args:
             voting_rule (str): Une constante d'une règle de vote.
@@ -36,8 +36,8 @@ class ChartOneRound(QChart):
         self.initAxes()
 
     def initBarSets(self) -> None:
-        """Initialise les bars pour chaque candidat avec leurs scores. Ajoute une bordure
-        pour la bar du candidat-gagnant."""
+        """Initialise les bars pour chaque candidat avec leurs scores. Ajoute une bordure noire (highlight)
+        pour le bar du candidat-gagnant."""
 
         self.winner_barset = None
         # Barset pour chaque candidat
@@ -96,7 +96,7 @@ class ChartOneRound(QChart):
         return mx
 
     def updateData(self) -> None:
-        """MAJ les données sur les scores des candidats. MAJ de l'intervalle des scores. Change le highlight si nécessaire 
+        """MAJ les données sur les scores des candidats. MAJ de l'intervalle des scores. Change le highlight (bordure) si nécessaire 
         (si le gagnant a changé). Utile pour les sondages."""
 
         self._setYRange()
@@ -108,7 +108,7 @@ class ChartOneRound(QChart):
 
     # For polls
     def removeBarsets(self):
-        """Supprime les barsets des candidats qui ont abandonné une élection."""
+        """Supprime les bars des candidats qui ont abandonné une élection."""
 
         for cand, barset in self.candidates_barsets.items():
             if cand not in self.election.candidates and barset:
@@ -116,8 +116,8 @@ class ChartOneRound(QChart):
                 self.candidates_barsets[cand] = None
 
     def reHighlight(self):
-        """Change le highlight d'un barset (si le gagnant a changé)."""
-
+        """Change le highlight d'un bar (si le gagnant a changé)."""
+        
         winner = self.election.choose_winner(self.voting_rule)
         if self.winner_barset != self.candidates_barsets[winner]:
             self.winner_barset.setBorderColor(QColor("transparent"))

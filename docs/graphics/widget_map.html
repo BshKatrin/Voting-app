@@ -50,7 +50,6 @@ class WidgetMap(QWidget):
 
     def __init__(self, parent: QWidget):
         &#34;&#34;&#34;Initialise une instance  d&#39;élection (pour le partage des données).
-        Initialise de la taille et l&#39;UI du widget.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
@@ -64,7 +63,7 @@ class WidgetMap(QWidget):
         self.initUI()
 
     def initUI(self) -&gt; None:
-        &#34;&#34;&#34;Initialisation d&#39;un layout et UI (les buttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise un layout et UI (les buttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -79,8 +78,8 @@ class WidgetMap(QWidget):
         self.initInputFields()
 
     def initNavigation(self) -&gt; None:
-        &#34;&#34;&#34;Initialise des buttons qui permettent d&#39;ouvrir un widget avec les checkboxes pour choisir des règles de vote
-        et lance une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise des buttons qui permettent de lancer une élection et d&#39;ouvrir un widget avec
+            les checkboxes pour choisir des règles de vote.&#34;&#34;&#34;
 
         # Layout pour le buttons en haut
         layout_btns = QHBoxLayout()
@@ -159,10 +158,10 @@ class WidgetMap(QWidget):
         &#34;&#34;&#34;Convertit une chaîne de caractères saisie en un entier.
 
         Args:
-            text_box (PySide6.QtWidgets.QLineEdit): un champ de saisie dont le text il faut convertir en un entier.
+            text_box (PySide6.QtWidgets.QLineEdit): Un champ de saisie dont le text il faut convertir en un entier.
 
         Returns:
-            int: un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.
+            int: Un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.
         &#34;&#34;&#34;
 
         text = text_box.text()
@@ -191,9 +190,10 @@ class WidgetMap(QWidget):
 
     @Slot()
     def onStartElectionClick(self) -&gt; None:
-        &#34;&#34;&#34;Appelée lorsque le button `start_election_btn` est cliqué.
-        Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
-        règles de vote choisies dans le widget avec des checkboxes.&#34;&#34;&#34;
+        &#34;&#34;&#34;Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
+        règles de vote choisies dans le widget avec des checkboxes. 
+        Appelée lorsque le button `start_election_btn` est cliqué.
+        &#34;&#34;&#34;
 
         chosen_voting_rule = self.voting_rules_checkbox.getChosenVotingRules()
         self.sig_start_election.emit(list(chosen_voting_rule))
@@ -213,12 +213,14 @@ class WidgetMap(QWidget):
         &#34;&#34;&#34;Affiche un widget avec des checkboxes.&#34;&#34;&#34;
 
         self.voting_rules_checkbox.showCustom()
+        self.voting_rules_checkbox.raise_()
 
     @Slot()
     def showWidgetRandomSettings(self) -&gt; None:
         &#34;&#34;&#34;Affiche un widget avec les réglages des paramètres de la génération des données.&#34;&#34;&#34;
 
         self.widget_settings.show()
+        self.widget_settings.raise_()
 
     @Slot()
     def cleanTextBoxes(self) -&gt; None:
@@ -251,8 +253,7 @@ class WidgetMap(QWidget):
 <dd>
 <div class="desc"><p>Une classe qui représente un widget avec une carte politique, la génération des données et le choix des règles de vote.</p>
 <p>Initialise une instance
-d'élection (pour le partage des données).
-Initialise de la taille et l'UI du widget.</p>
+d'élection (pour le partage des données).</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>parent</code></strong> :&ensp;<code>PySide6.QtWidgets.QWidget</code></dt>
@@ -270,7 +271,6 @@ Initialise de la taille et l'UI du widget.</p>
 
     def __init__(self, parent: QWidget):
         &#34;&#34;&#34;Initialise une instance  d&#39;élection (pour le partage des données).
-        Initialise de la taille et l&#39;UI du widget.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
@@ -284,7 +284,7 @@ Initialise de la taille et l'UI du widget.</p>
         self.initUI()
 
     def initUI(self) -&gt; None:
-        &#34;&#34;&#34;Initialisation d&#39;un layout et UI (les buttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise un layout et UI (les buttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -299,8 +299,8 @@ Initialise de la taille et l'UI du widget.</p>
         self.initInputFields()
 
     def initNavigation(self) -&gt; None:
-        &#34;&#34;&#34;Initialise des buttons qui permettent d&#39;ouvrir un widget avec les checkboxes pour choisir des règles de vote
-        et lance une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise des buttons qui permettent de lancer une élection et d&#39;ouvrir un widget avec
+            les checkboxes pour choisir des règles de vote.&#34;&#34;&#34;
 
         # Layout pour le buttons en haut
         layout_btns = QHBoxLayout()
@@ -379,10 +379,10 @@ Initialise de la taille et l'UI du widget.</p>
         &#34;&#34;&#34;Convertit une chaîne de caractères saisie en un entier.
 
         Args:
-            text_box (PySide6.QtWidgets.QLineEdit): un champ de saisie dont le text il faut convertir en un entier.
+            text_box (PySide6.QtWidgets.QLineEdit): Un champ de saisie dont le text il faut convertir en un entier.
 
         Returns:
-            int: un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.
+            int: Un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.
         &#34;&#34;&#34;
 
         text = text_box.text()
@@ -411,9 +411,10 @@ Initialise de la taille et l'UI du widget.</p>
 
     @Slot()
     def onStartElectionClick(self) -&gt; None:
-        &#34;&#34;&#34;Appelée lorsque le button `start_election_btn` est cliqué.
-        Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
-        règles de vote choisies dans le widget avec des checkboxes.&#34;&#34;&#34;
+        &#34;&#34;&#34;Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
+        règles de vote choisies dans le widget avec des checkboxes. 
+        Appelée lorsque le button `start_election_btn` est cliqué.
+        &#34;&#34;&#34;
 
         chosen_voting_rule = self.voting_rules_checkbox.getChosenVotingRules()
         self.sig_start_election.emit(list(chosen_voting_rule))
@@ -433,12 +434,14 @@ Initialise de la taille et l'UI du widget.</p>
         &#34;&#34;&#34;Affiche un widget avec des checkboxes.&#34;&#34;&#34;
 
         self.voting_rules_checkbox.showCustom()
+        self.voting_rules_checkbox.raise_()
 
     @Slot()
     def showWidgetRandomSettings(self) -&gt; None:
         &#34;&#34;&#34;Affiche un widget avec les réglages des paramètres de la génération des données.&#34;&#34;&#34;
 
         self.widget_settings.show()
+        self.widget_settings.raise_()
 
     @Slot()
     def cleanTextBoxes(self) -&gt; None:
@@ -544,12 +547,12 @@ def generateData(self) -&gt; None:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>text_box</code></strong> :&ensp;<code>PySide6.QtWidgets.QLineEdit</code></dt>
-<dd>un champ de saisie dont le text il faut convertir en un entier.</dd>
+<dd>Un champ de saisie dont le text il faut convertir en un entier.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>int</code></dt>
-<dd>un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.</dd>
+<dd>Un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -559,10 +562,10 @@ def generateData(self) -&gt; None:
     &#34;&#34;&#34;Convertit une chaîne de caractères saisie en un entier.
 
     Args:
-        text_box (PySide6.QtWidgets.QLineEdit): un champ de saisie dont le text il faut convertir en un entier.
+        text_box (PySide6.QtWidgets.QLineEdit): Un champ de saisie dont le text il faut convertir en un entier.
 
     Returns:
-        int: un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.
+        int: Un entier saisie ou 0 si la chaîne de caractères contient des caractères autres que des entiers.
     &#34;&#34;&#34;
 
     text = text_box.text()
@@ -631,15 +634,15 @@ de la génération des données.</p></div>
 <span>def <span class="ident">initNavigation</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise des buttons qui permettent d'ouvrir un widget avec les checkboxes pour choisir des règles de vote
-et lance une élection.</p></div>
+<div class="desc"><p>Initialise des buttons qui permettent de lancer une élection et d'ouvrir un widget avec
+les checkboxes pour choisir des règles de vote.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initNavigation(self) -&gt; None:
-    &#34;&#34;&#34;Initialise des buttons qui permettent d&#39;ouvrir un widget avec les checkboxes pour choisir des règles de vote
-    et lance une élection.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialise des buttons qui permettent de lancer une élection et d&#39;ouvrir un widget avec
+        les checkboxes pour choisir des règles de vote.&#34;&#34;&#34;
 
     # Layout pour le buttons en haut
     layout_btns = QHBoxLayout()
@@ -673,13 +676,13 @@ et lance une élection.</p></div>
 <span>def <span class="ident">initUI</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialisation d'un layout et UI (les buttons, les champs de saisie et la carte politique).</p></div>
+<div class="desc"><p>Initialise un layout et UI (les buttons, les champs de saisie et la carte politique).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initUI(self) -&gt; None:
-    &#34;&#34;&#34;Initialisation d&#39;un layout et UI (les buttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialise un layout et UI (les buttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
 
     self.layout = QVBoxLayout()
     self.setLayout(self.layout)
@@ -698,18 +701,19 @@ et lance une élection.</p></div>
 <span>def <span class="ident">onStartElectionClick</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Appelée lorsque le button <code>start_election_btn</code> est cliqué.
-Émet un signal <code>sig_start_election</code> avec une liste des constantes correpondantes aux
-règles de vote choisies dans le widget avec des checkboxes.</p></div>
+<div class="desc"><p>Émet un signal <code>sig_start_election</code> avec une liste des constantes correpondantes aux
+règles de vote choisies dans le widget avec des checkboxes.
+Appelée lorsque le button <code>start_election_btn</code> est cliqué.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@Slot()
 def onStartElectionClick(self) -&gt; None:
-    &#34;&#34;&#34;Appelée lorsque le button `start_election_btn` est cliqué.
-    Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
-    règles de vote choisies dans le widget avec des checkboxes.&#34;&#34;&#34;
+    &#34;&#34;&#34;Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
+    règles de vote choisies dans le widget avec des checkboxes. 
+    Appelée lorsque le button `start_election_btn` est cliqué.
+    &#34;&#34;&#34;
 
     chosen_voting_rule = self.voting_rules_checkbox.getChosenVotingRules()
     self.sig_start_election.emit(list(chosen_voting_rule))</code></pre>
@@ -728,7 +732,8 @@ def onStartElectionClick(self) -&gt; None:
 def showWidgetCheckbox(self) -&gt; None:
     &#34;&#34;&#34;Affiche un widget avec des checkboxes.&#34;&#34;&#34;
 
-    self.voting_rules_checkbox.showCustom()</code></pre>
+    self.voting_rules_checkbox.showCustom()
+    self.voting_rules_checkbox.raise_()</code></pre>
 </details>
 </dd>
 <dt id="graphics.widget_map.WidgetMap.showWidgetRandomSettings"><code class="name flex">
@@ -744,7 +749,8 @@ def showWidgetCheckbox(self) -&gt; None:
 def showWidgetRandomSettings(self) -&gt; None:
     &#34;&#34;&#34;Affiche un widget avec les réglages des paramètres de la génération des données.&#34;&#34;&#34;
 
-    self.widget_settings.show()</code></pre>
+    self.widget_settings.show()
+    self.widget_settings.raise_()</code></pre>
 </details>
 </dd>
 <dt id="graphics.widget_map.WidgetMap.sig_start_election"><code class="name flex">

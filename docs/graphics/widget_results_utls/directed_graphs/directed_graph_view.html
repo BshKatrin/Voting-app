@@ -26,7 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from PySide6.QtWidgets import QGraphicsView
+<pre><code class="python">from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QCloseEvent
 
@@ -34,7 +34,12 @@ from PySide6.QtGui import QCloseEvent
 class DirectedGraphView(QGraphicsView):
     &#34;&#34;&#34;Un view qui permet d&#39;afficher les graphes orientés.&#34;&#34;&#34;
 
-    def __init__(self, scene):
+    def __init__(self, scene:QGraphicsScene):
+        &#34;&#34;&#34;
+        Args:
+            scene (PySide6.QtWidgets.QGraphicsScene): La scène à représenter.
+        &#34;&#34;&#34;
+        
         super().__init__(scene)
         # To suppress warning (MacOS)
         self.viewport().setAttribute(Qt.WidgetAttribute.WA_AcceptTouchEvents, False)</code></pre>
@@ -51,14 +56,15 @@ class DirectedGraphView(QGraphicsView):
 <dl>
 <dt id="graphics.widget_results_utls.directed_graphs.directed_graph_view.DirectedGraphView"><code class="flex name class">
 <span>class <span class="ident">DirectedGraphView</span></span>
-<span>(</span><span>scene)</span>
+<span>(</span><span>scene: PySide6.QtWidgets.QGraphicsScene)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Un view qui permet d'afficher les graphes orientés.</p>
-<p><strong>init</strong>(self, parent: Optional[PySide6.QtWidgets.QWidget] = None) -&gt; None
-<strong>init</strong>(self, scene: PySide6.QtWidgets.QGraphicsScene, parent: Optional[PySide6.QtWidgets.QWidget] = None) -&gt; None</p>
-<p>Initialize self.
-See help(type(self)) for accurate signature.</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>scene</code></strong> :&ensp;<code>PySide6.QtWidgets.QGraphicsScene</code></dt>
+<dd>La scène à représenter.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -66,7 +72,12 @@ See help(type(self)) for accurate signature.</p></div>
 <pre><code class="python">class DirectedGraphView(QGraphicsView):
     &#34;&#34;&#34;Un view qui permet d&#39;afficher les graphes orientés.&#34;&#34;&#34;
 
-    def __init__(self, scene):
+    def __init__(self, scene:QGraphicsScene):
+        &#34;&#34;&#34;
+        Args:
+            scene (PySide6.QtWidgets.QGraphicsScene): La scène à représenter.
+        &#34;&#34;&#34;
+        
         super().__init__(scene)
         # To suppress warning (MacOS)
         self.viewport().setAttribute(Qt.WidgetAttribute.WA_AcceptTouchEvents, False)</code></pre>

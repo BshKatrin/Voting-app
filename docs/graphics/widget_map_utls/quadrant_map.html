@@ -34,13 +34,16 @@ from numpy import clip
 from numpy.random import normal
 from electoral_systems import Election, RandomConstants
 
+# Uniquement pour une génération des docs
+__pdoc__ = {
+    &#39;normal&#39;:False
+}
 
 class QuadrantMap(QWidget):
     &#34;&#34;&#34;Un widget qui représente la carte politique. La carte politique sera dessinée à l&#39;aide de `PySide6.QtGui.QPainter`.&#34;&#34;&#34;
 
     def __init__(self, size_proportion: float, parent: QWidget):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Fixe la taille. Initialise (mais n&#39;applique pas) une transformation des coordonnées.
 
         Args:
             size_proportion (float): Une proportion de la taille d&#39;un widget parent.
@@ -282,7 +285,7 @@ class QuadrantMap(QWidget):
             point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématique.
 
         Returns:
-            position (tuple[float, float]): Une position dont chaque coordonnée est normalisé.
+            tuple[float, float]: Une position dont chaque coordonnée est normalisé.
         &#34;&#34;&#34;
 
         return point.x() / self.width() * 2, point.y() / self.height() * 2
@@ -397,12 +400,12 @@ class QuadrantMap(QWidget):
 
     def generateCoordinate(self, mu: float, sigma: float, limit: float) -&gt; float:
         &#34;&#34;&#34;Génére une coordonnée (x ou y) selon la loi normale avec des paramètres `mu` et `sigma`.
-        Borne la valeur absolue d&#39;une coordonnée généré entre `limit`.
+        Borne la valeur absolue d&#39;une coordonnée généré à limite `limit`.
 
         Args:
             mu (float): La moyenne de la distribution normale. 
             sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
-            lower_limit (float): La limite inférieure et supérieur pour le coordonnée. 
+            limit (float): La limite inférieure et supérieur pour le coordonnée. 
 
         Returns:
             float: Un coordonnée généré et borné.
@@ -446,102 +449,6 @@ class QuadrantMap(QWidget):
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
-<dl>
-<dt id="graphics.widget_map_utls.quadrant_map.normal"><code class="name flex">
-<span>def <span class="ident">normal</span></span>(<span>loc=0.0, scale=1.0, size=None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Draw random samples from a normal (Gaussian) distribution.</p>
-<p>The probability density function of the normal distribution, first
-derived by De Moivre and 200 years later by both Gauss and Laplace
-independently [2]_, is often called the bell curve because of
-its characteristic shape (see the example below).</p>
-<p>The normal distributions occurs often in nature.
-For example, it
-describes the commonly occurring distribution of samples influenced
-by a large number of tiny, random disturbances, each with its own
-unique distribution [2]_.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>New code should use the <code>~numpy.random.Generator.normal</code>
-method of a <code>~numpy.random.Generator</code> instance instead;
-please see the :ref:<code>random-quick-start</code>.</p>
-</div>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>loc</code></strong> :&ensp;<code>float</code> or <code>array_like</code> of <code>floats</code></dt>
-<dd>Mean ("centre") of the distribution.</dd>
-<dt><strong><code>scale</code></strong> :&ensp;<code>float</code> or <code>array_like</code> of <code>floats</code></dt>
-<dd>Standard deviation (spread or "width") of the distribution. Must be
-non-negative.</dd>
-<dt><strong><code>size</code></strong> :&ensp;<code>int</code> or <code>tuple</code> of <code>ints</code>, optional</dt>
-<dd>Output shape.
-If the given shape is, e.g., <code>(m, n, k)</code>, then
-<code>m * n * k</code> samples are drawn.
-If size is <code>None</code> (default),
-a single value is returned if <code>loc</code> and <code>scale</code> are both scalars.
-Otherwise, <code>np.broadcast(loc, scale).size</code> samples are drawn.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>out</code></strong> :&ensp;<code>ndarray</code> or <code>scalar</code></dt>
-<dd>Drawn samples from the parameterized normal distribution.</dd>
-</dl>
-<h2 id="see-also">See Also</h2>
-<dl>
-<dt><code>scipy.stats.norm</code></dt>
-<dd>probability density function, distribution or cumulative density function, etc.</dd>
-<dt><code>random.Generator.normal</code></dt>
-<dd>which should be used for new code.</dd>
-</dl>
-<h2 id="notes">Notes</h2>
-<p>The probability density for the Gaussian distribution is</p>
-<p>[ e^{ - \frac{ (x - \mu)^2 } {2 \sigma^2} }, ]
-where :math:<code>\mu</code> is the mean and :math:<code>\sigma</code> the standard
-deviation. The square of the standard deviation, :math:<code>\sigma^2</code>,
-is called the variance.</p>
-<p>The function has its peak at the mean, and its "spread" increases with
-the standard deviation (the function reaches 0.607 times its maximum at
-:math:<code>x + \sigma</code> and :math:<code>x - \sigma</code> [2]_).
-This implies that
-normal is more likely to return samples lying close to the mean, rather
-than those far away.</p>
-<h2 id="references">References</h2>
-<p>.. [1] Wikipedia, "Normal distribution",
-<a href="https://en.wikipedia.org/wiki/Normal_distribution">https://en.wikipedia.org/wiki/Normal_distribution</a>
-.. [2] P. R. Peebles Jr., "Central Limit Theorem" in "Probability,
-Random Variables and Random Signal Principles", 4th ed., 2001,
-pp. 51, 51, 125.</p>
-<h2 id="examples">Examples</h2>
-<p>Draw samples from the distribution:</p>
-<pre><code class="language-python-repl">&gt;&gt;&gt; mu, sigma = 0, 0.1 # mean and standard deviation
-&gt;&gt;&gt; s = np.random.normal(mu, sigma, 1000)
-</code></pre>
-<p>Verify the mean and the variance:</p>
-<pre><code class="language-python-repl">&gt;&gt;&gt; abs(mu - np.mean(s))
-0.0  # may vary
-</code></pre>
-<pre><code class="language-python-repl">&gt;&gt;&gt; abs(sigma - np.std(s, ddof=1))
-0.1  # may vary
-</code></pre>
-<p>Display the histogram of the samples, along with
-the probability density function:</p>
-<pre><code class="language-python-repl">&gt;&gt;&gt; import matplotlib.pyplot as plt
-&gt;&gt;&gt; count, bins, ignored = plt.hist(s, 30, density=True)
-&gt;&gt;&gt; plt.plot(bins, 1/(sigma * np.sqrt(2 * np.pi)) *
-...                np.exp( - (bins - mu)**2 / (2 * sigma**2) ),
-...          linewidth=2, color='r')
-&gt;&gt;&gt; plt.show()
-</code></pre>
-<p>Two-by-four array of samples from the normal distribution with
-mean 3 and standard deviation 2.5:</p>
-<pre><code class="language-python-repl">&gt;&gt;&gt; np.random.normal(3, 2.5, size=(2, 4))
-array([[-4.49401501,  4.00950034, -1.81814867,  7.29718677],   # random
-       [ 0.39924804,  4.68456316,  4.99394529,  4.84057254]])  # random
-</code></pre></div>
-</dd>
-</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -552,8 +459,7 @@ array([[-4.49401501,  4.00950034, -1.81814867,  7.29718677],   # random
 </code></dt>
 <dd>
 <div class="desc"><p>Un widget qui représente la carte politique. La carte politique sera dessinée à l'aide de <code>PySide6.QtGui.QPainter</code>.</p>
-<p>Initialise une instance d'élection (pour le partage des données).
-Fixe la taille. Initialise (mais n'applique pas) une transformation des coordonnées.</p>
+<p>Initialise une instance d'élection (pour le partage des données).</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>size_proportion</code></strong> :&ensp;<code>float</code></dt>
@@ -571,7 +477,6 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
 
     def __init__(self, size_proportion: float, parent: QWidget):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Fixe la taille. Initialise (mais n&#39;applique pas) une transformation des coordonnées.
 
         Args:
             size_proportion (float): Une proportion de la taille d&#39;un widget parent.
@@ -813,7 +718,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
             point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématique.
 
         Returns:
-            position (tuple[float, float]): Une position dont chaque coordonnée est normalisé.
+            tuple[float, float]: Une position dont chaque coordonnée est normalisé.
         &#34;&#34;&#34;
 
         return point.x() / self.width() * 2, point.y() / self.height() * 2
@@ -928,12 +833,12 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
 
     def generateCoordinate(self, mu: float, sigma: float, limit: float) -&gt; float:
         &#34;&#34;&#34;Génére une coordonnée (x ou y) selon la loi normale avec des paramètres `mu` et `sigma`.
-        Borne la valeur absolue d&#39;une coordonnée généré entre `limit`.
+        Borne la valeur absolue d&#39;une coordonnée généré à limite `limit`.
 
         Args:
             mu (float): La moyenne de la distribution normale. 
             sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
-            lower_limit (float): La limite inférieure et supérieur pour le coordonnée. 
+            limit (float): La limite inférieure et supérieur pour le coordonnée. 
 
         Returns:
             float: Un coordonnée généré et borné.
@@ -1297,14 +1202,14 @@ et aux positions des candidats.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Génére une coordonnée (x ou y) selon la loi normale avec des paramètres <code>mu</code> et <code>sigma</code>.
-Borne la valeur absolue d'une coordonnée généré entre <code>limit</code>.</p>
+Borne la valeur absolue d'une coordonnée généré à limite <code>limit</code>.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>mu</code></strong> :&ensp;<code>float</code></dt>
 <dd>La moyenne de la distribution normale. </dd>
 <dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
 <dd>L'écart type de la distribution normale. Un réel strictement positive.</dd>
-<dt><strong><code>lower_limit</code></strong> :&ensp;<code>float</code></dt>
+<dt><strong><code>limit</code></strong> :&ensp;<code>float</code></dt>
 <dd>La limite inférieure et supérieur pour le coordonnée. </dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -1318,12 +1223,12 @@ Borne la valeur absolue d'une coordonnée généré entre <code>limit</code>.</p
 </summary>
 <pre><code class="python">def generateCoordinate(self, mu: float, sigma: float, limit: float) -&gt; float:
     &#34;&#34;&#34;Génére une coordonnée (x ou y) selon la loi normale avec des paramètres `mu` et `sigma`.
-    Borne la valeur absolue d&#39;une coordonnée généré entre `limit`.
+    Borne la valeur absolue d&#39;une coordonnée généré à limite `limit`.
 
     Args:
         mu (float): La moyenne de la distribution normale. 
         sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
-        lower_limit (float): La limite inférieure et supérieur pour le coordonnée. 
+        limit (float): La limite inférieure et supérieur pour le coordonnée. 
 
     Returns:
         float: Un coordonnée généré et borné.
@@ -1528,7 +1433,10 @@ Clique droite: place un électeur manuellement.</p></div>
 <dd>Un point mis à l'échelle dans le système de coordonnées mathématique.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>position (tuple[float, float]): Une position dont chaque coordonnée est normalisé.</p></div>
+<dl>
+<dt><code>tuple[float, float]</code></dt>
+<dd>Une position dont chaque coordonnée est normalisé.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1540,7 +1448,7 @@ Clique droite: place un électeur manuellement.</p></div>
         point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématique.
 
     Returns:
-        position (tuple[float, float]): Une position dont chaque coordonnée est normalisé.
+        tuple[float, float]: Une position dont chaque coordonnée est normalisé.
     &#34;&#34;&#34;
 
     return point.x() / self.width() * 2, point.y() / self.height() * 2</code></pre>
@@ -1697,11 +1605,6 @@ Crée un candidat, l'ajoute dans l'élection. Supprime le textbox. Redéssine la
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="graphics.widget_map_utls" href="index.html">graphics.widget_map_utls</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
-<li><code><a title="graphics.widget_map_utls.quadrant_map.normal" href="#graphics.widget_map_utls.quadrant_map.normal">normal</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

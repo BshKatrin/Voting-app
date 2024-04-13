@@ -46,7 +46,7 @@ class GraphSettings(QWidget):
 
     def __init__(self, parent: QWidget, title: str, type: str, graph_type: int):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Fixe la taille, initiliase les sliders et graphiques correspondants.
+        Initiliase les sliders et graphique correspondant.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
@@ -80,7 +80,7 @@ class GraphSettings(QWidget):
                 self.setFixedWidth(self.parent().width() * 0.8)
 
     def initLinearInput(self) -&gt; None:
-        &#34;&#34;&#34;Initialise les sliders pour une graphique affine (correspond au paramètre `Orientation`).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise les sliders pour une graphique affine (correspond au paramètre `orientation`).&#34;&#34;&#34;
 
         sub_layout = QGridLayout()
 
@@ -170,7 +170,7 @@ class GraphSettings(QWidget):
         self.layout.addWidget(self.graphWidget, 0)
 
     def initDistInput(self, title: str) -&gt; None:
-        &#34;&#34;&#34;Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `Travel_dist`).
+        &#34;&#34;&#34;Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `travel_dist`).
 
         Args:
             title (str): Un titre (UI).
@@ -250,7 +250,7 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateDistUpdate(self, value: int) -&gt; None:
-        &#34;&#34;&#34;Change la valeur de la distance parcourue (`TRAVEL_DIST`). MAJ de cette valeurs dans l&#39;élection.
+        &#34;&#34;&#34;Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeurs dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -298,7 +298,7 @@ class GraphSettings(QWidget):
         self.graphWidget.plot(x, y, pen=self.pen)
 
     def calculateYGauss(self, i: float, mu: float, sigma: float) -&gt; float:
-        &#34;&#34;&#34;Calcule la valeur de $y$ en $x$ donnée pour un graphique de la distribution normale.
+        &#34;&#34;&#34;Calcule la valeur de *y* en *x* donnée pour un graphique de la distribution normale.
 
         Args:
             i (float): La valeur de $x$.
@@ -337,7 +337,7 @@ class GraphSettings(QWidget):
 <dd>
 <div class="desc"><p>Un widget qui correspond au réglage d'un paramètre pour la génération des données.</p>
 <p>Initialise une instance d'élection (pour le partage des données).
-Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
+Initiliase les sliders et graphique correspondant.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>parent</code></strong> :&ensp;<code>PySide6.QtWidgets.QWidget</code></dt>
@@ -358,7 +358,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
 
     def __init__(self, parent: QWidget, title: str, type: str, graph_type: int):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Fixe la taille, initiliase les sliders et graphiques correspondants.
+        Initiliase les sliders et graphique correspondant.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
@@ -392,7 +392,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
                 self.setFixedWidth(self.parent().width() * 0.8)
 
     def initLinearInput(self) -&gt; None:
-        &#34;&#34;&#34;Initialise les sliders pour une graphique affine (correspond au paramètre `Orientation`).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise les sliders pour une graphique affine (correspond au paramètre `orientation`).&#34;&#34;&#34;
 
         sub_layout = QGridLayout()
 
@@ -482,7 +482,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
         self.layout.addWidget(self.graphWidget, 0)
 
     def initDistInput(self, title: str) -&gt; None:
-        &#34;&#34;&#34;Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `Travel_dist`).
+        &#34;&#34;&#34;Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `travel_dist`).
 
         Args:
             title (str): Un titre (UI).
@@ -562,7 +562,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
 
     @Slot(int)
     def updateDistUpdate(self, value: int) -&gt; None:
-        &#34;&#34;&#34;Change la valeur de la distance parcourue (`TRAVEL_DIST`). MAJ de cette valeurs dans l&#39;élection.
+        &#34;&#34;&#34;Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeurs dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -610,7 +610,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
         self.graphWidget.plot(x, y, pen=self.pen)
 
     def calculateYGauss(self, i: float, mu: float, sigma: float) -&gt; float:
-        &#34;&#34;&#34;Calcule la valeur de $y$ en $x$ donnée pour un graphique de la distribution normale.
+        &#34;&#34;&#34;Calcule la valeur de *y* en *x* donnée pour un graphique de la distribution normale.
 
         Args:
             i (float): La valeur de $x$.
@@ -652,7 +652,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
 <span>def <span class="ident">calculateYGauss</span></span>(<span>self, i: float, mu: float, sigma: float) ‑> float</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calcule la valeur de $y$ en $x$ donnée pour un graphique de la distribution normale.</p>
+<div class="desc"><p>Calcule la valeur de <em>y</em> en <em>x</em> donnée pour un graphique de la distribution normale.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>i</code></strong> :&ensp;<code>float</code></dt>
@@ -667,7 +667,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def calculateYGauss(self, i: float, mu: float, sigma: float) -&gt; float:
-    &#34;&#34;&#34;Calcule la valeur de $y$ en $x$ donnée pour un graphique de la distribution normale.
+    &#34;&#34;&#34;Calcule la valeur de *y* en *x* donnée pour un graphique de la distribution normale.
 
     Args:
         i (float): La valeur de $x$.
@@ -711,7 +711,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
 <span>def <span class="ident">initDistInput</span></span>(<span>self, title: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre <code>Travel_dist</code>).</p>
+<div class="desc"><p>Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre <code>travel_dist</code>).</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>title</code></strong> :&ensp;<code>str</code></dt>
@@ -722,7 +722,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initDistInput(self, title: str) -&gt; None:
-    &#34;&#34;&#34;Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `Travel_dist`).
+    &#34;&#34;&#34;Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `travel_dist`).
 
     Args:
         title (str): Un titre (UI).
@@ -808,13 +808,13 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
 <span>def <span class="ident">initLinearInput</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise les sliders pour une graphique affine (correspond au paramètre <code>Orientation</code>).</p></div>
+<div class="desc"><p>Initialise les sliders pour une graphique affine (correspond au paramètre <code>orientation</code>).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initLinearInput(self) -&gt; None:
-    &#34;&#34;&#34;Initialise les sliders pour une graphique affine (correspond au paramètre `Orientation`).&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialise les sliders pour une graphique affine (correspond au paramètre `orientation`).&#34;&#34;&#34;
 
     sub_layout = QGridLayout()
 
@@ -878,7 +878,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
 <span>def <span class="ident">updateDistUpdate</span></span>(<span>self, value: int) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Change la valeur de la distance parcourue (<code>TRAVEL_DIST</code>). MAJ de cette valeurs dans l'élection.</p>
+<div class="desc"><p>Change la valeur de la distance parcourue (<code>travel_dist</code>). MAJ de cette valeurs dans l'élection.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>value</code></strong> :&ensp;<code>int</code></dt>
@@ -890,7 +890,7 @@ Fixe la taille, initiliase les sliders et graphiques correspondants.</p>
 </summary>
 <pre><code class="python">@Slot(int)
 def updateDistUpdate(self, value: int) -&gt; None:
-    &#34;&#34;&#34;Change la valeur de la distance parcourue (`TRAVEL_DIST`). MAJ de cette valeurs dans l&#39;élection.
+    &#34;&#34;&#34;Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeurs dans l&#39;élection.
 
     Args:
         value (int): Une valeur sur slider (sera divisée par 100).

@@ -18,7 +18,7 @@ class GraphSettings(QWidget):
 
     def __init__(self, parent: QWidget, title: str, type: str, graph_type: int):
         """Initialise une instance d'élection (pour le partage des données).
-        Fixe la taille, initiliase les sliders et graphiques correspondants.
+        Initiliase les sliders et graphique correspondant.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.
@@ -52,7 +52,7 @@ class GraphSettings(QWidget):
                 self.setFixedWidth(self.parent().width() * 0.8)
 
     def initLinearInput(self) -> None:
-        """Initialise les sliders pour une graphique affine (correspond au paramètre `Orientation`)."""
+        """Initialise les sliders pour une graphique affine (correspond au paramètre `orientation`)."""
 
         sub_layout = QGridLayout()
 
@@ -142,7 +142,7 @@ class GraphSettings(QWidget):
         self.layout.addWidget(self.graphWidget, 0)
 
     def initDistInput(self, title: str) -> None:
-        """Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `Travel_dist`).
+        """Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `travel_dist`).
 
         Args:
             title (str): Un titre (UI).
@@ -222,7 +222,7 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateDistUpdate(self, value: int) -> None:
-        """Change la valeur de la distance parcourue (`TRAVEL_DIST`). MAJ de cette valeurs dans l'élection.
+        """Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeurs dans l'élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -270,7 +270,7 @@ class GraphSettings(QWidget):
         self.graphWidget.plot(x, y, pen=self.pen)
 
     def calculateYGauss(self, i: float, mu: float, sigma: float) -> float:
-        """Calcule la valeur de $y$ en $x$ donnée pour un graphique de la distribution normale.
+        """Calcule la valeur de *y* en *x* donnée pour un graphique de la distribution normale.
 
         Args:
             i (float): La valeur de $x$.
