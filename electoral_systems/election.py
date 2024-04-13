@@ -20,53 +20,53 @@ from people import Candidate, Elector
 
 
 class Election(metaclass=Singleton):
-    """Une classe Singleton qui contient toutes les données nécessaires pour une élection."""
+    """Une classe Singleton qui contient toutes les données nécessaires à une élection."""
 
     def __init__(self):
         super().__init__()
         self.electors = []
         self.candidates = []
 
-        # Générer les prénoms, les noms
+        # Génére les prénoms, les noms
         self.first_name_iter = NameIterator()
         self.last_name_iter = NameIterator()
 
-        # Générer les IDs
+        # Génére les IDs
         self.id_iter = IdIterator(0)
 
-        # Stocker des resultats
+        # Stocke les resultats
         self.results = dict()
-        # Stocker des duels
+        # Stocke les duels
         self.duels_scores = dict()
 
-        # Pour satisfaction
+        # Pour la satisfaction
         self.average_position_electors = (0, 0)
         self.proportion_satisfaction = 0
 
-        # Init constantes
+        # Init les constantes
         self.set_default_settings()
 
     def set_default_settings(self) -> None:
-        """Initialiser des réglages par défaut"""
+        """Initialise les réglages par défaut."""
 
-        # Nb des sondages à faire
+        # Nb de sondages à faire
         self.nb_polls = 0
 
-        # Activer/désactiver une démocratie liquide
+        # Active/désactive la démocratie liquide
         self.liquid_democracy_activated = False
 
-        # Une règle du vote pour des sondages
+        # Une règle de vote pour les sondages
         self.poll_voting_rule = VotingRulesConstants.PLURALITY_SIMPLE
 
-        # Activer/désactiver un tie-break selon les duels
+        # Active/désactive un tie-break selon les duels
         self.tie_breaker_activated = True
 
-        # Des constantes de la génération des données
+        # Les constantes de la génération des données
         self.generation_constants = dict()
         for type, default_value in RandomConstants.DEFAULT_VALUES.items():
             self.generation_constants[type] = default_value
 
-        # Pour sondages uniquement. Stocker les données pour chaque direction (division) de la carte politique
+        # Pour les sondages uniquement. Stocke les données pour chaque direction (division) de la carte politique
         self.directions_data = get_default_directions_data()
 
     def _init_results_keys(self, set_keys: Set[str]) -> None:
@@ -78,20 +78,20 @@ class Election(metaclass=Singleton):
             self.results[key] = None
 
     def _calc_distance(self, point1: tuple[float, float], point2: tuple[float, float]) -> float:
-        """Calculer la distance euclidienne entre 2 points.
+        """Calcule la distance euclidienne entre 2 points.
 
         Args:
             point1 (tuple[float, float]): position sur la carte politique
             point2 (tuple[float, float]): position sur la carte politique
         Returns:
-            float: Une distance euclidienne entre 2 points.
+            float: La distance euclidienne entre 2 points.
         """
         x1, y1 = point1
         x2, y2 = point2
         return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
     def has_electors_candidates(self) -> bool:
-        """Vérifier qu'il existe au moins un électeur et un candidat dans une élection.
+        """Vérifie qu'il existe au moins un électeur et un candidat dans une élection.
 
         Returns:
             bool: True ssi il existe au moins un électeur et un candidat dans une élection, sinon False.
@@ -101,13 +101,13 @@ class Election(metaclass=Singleton):
         return True
 
     def add_elector_import(self, new_elector: Elector) -> None:
-        """Ajouter un électeur déjà dont les données déjà sont initialisées.
-        Si les sondages sont activées, MAJ les données sur les directions de la carte politique.
-        MAJ des données sur la position moyenne de tous les électeurs participand dans une élection.
+        """Ajoute un électeur dont les données sont déjà initialisées. 
+        Si les sondages sont activés, MAJ les données sur les directions de la carte politique. 
+        MAJ les données sur la position moyenne de tous les électeurs participants à l'élection. 
         Utilisée lors d'une importation des données.
 
         Args:
-            new_elector (people.elector.Elector): Un nouveau électeur.
+            new_elector (people.elector.Elector): Un nouvel électeur.
         """
 
         if self.nb_polls:
@@ -121,13 +121,13 @@ class Election(metaclass=Singleton):
         self.electors.append(new_elector)
 
     def add_elector(self, position: tuple[float, float]) -> None:
-        """Ajouter un nouveau électeur dans une élection avec la position `position`.
-        Si les sondages sont activées, MAJ les données sur les directions de la carte politique.
-        MAJ des données sur la position moyenne de tous les électeurs participand dans une élection.
+        """Ajoute un nouvel électeur dans une élection avec sa position position. 
+        Si les sondages sont activés, MAJ les données sur les directions de la carte politique. 
+        MAJ les données sur la position moyenne de tous les électeurs participants à l'élection.
 
         Args:
-            position (tuple[float, float]): Une position d'un électeur sur la carte politique.
-                Chaque coordonnée doit être borné entre -1 et 1.
+            position (tuple[float, float]): La position d'un électeur sur la carte politique. 
+            Chaque coordonnée doit être bornée entre -1 et 1.
         """
 
         knowledge_const = self.generation_constants[RandomConstants.KNOWLEDGE]
@@ -146,12 +146,12 @@ class Election(metaclass=Singleton):
         self.electors.append(new_elector)
 
     def add_candidate_import(self, new_candidate: Candidate) -> None:
-        """Ajouter un candidat déjà dont les données déjà sont initialisées.
-        Si les sondages sont activées, MAJ les données sur les directions de la carte politique.
+        """Ajoute un candidat dont les données sont déjà initialisées. 
+        Si les sondages sont activés, MAJ les données sur les directions de la carte politique. 
         Utilisée lors d'une importation des données.
 
         Args:
-            new_elector (people.elector.Elector): un nouveau électeur.
+            new_elector (people.elector.Elector): un nouvel électeur.
         """
 
         self.candidates.append(new_candidate)
@@ -159,15 +159,15 @@ class Election(metaclass=Singleton):
             add_candidate_data(self.directions_data, new_candidate)
 
     def add_candidate(self, position: tuple[float, float], first_name: Optional[str] = "", last_name: Optional[str] = "") -> None:
-        """Ajouter un nouveau candidat dans une élection avec la position `position`, et éventuellement
-        le prénom et le nom.
-        Si les sondages sont activées, MAJ les données sur les directions de la carte politique.
+        """Ajoute un nouveau candidat dans une élection avec sa position position, 
+        et éventuellement son nom last_name et son prénom first_name. Si les sondages sont activés, 
+        MAJ les données sur les directions de la carte politique.
 
         Args:
-            position (tuple[float, float]): Une position d'un candidat sur la carte politique.
-                Chaque coordonnée doit être borné entre -1 et 1.
-            first_name (Optional[str]): Un prénom d'un candidat.
-            last_name (Optional[str]): Un nom d'un candidat.
+            position (tuple[float, float]): La position d'un candidat sur la carte politique. 
+            Chaque coordonnée doit être bornée entre -1 et 1.
+            first_name (Optional[str]): Le prénom d'un candidat.
+            last_name (Optional[str]): Le nom d'un candidat.
         """
 
         dogmat_const = self.generation_constants[RandomConstants.DOGMATISM]
@@ -190,12 +190,12 @@ class Election(metaclass=Singleton):
         self.candidates.append(new_candidate)
 
     def apply_voting_rule(self, voting_rule: str) -> None:
-        """Appliquer une règle du vote `voting_rule`. Remplir une case correspondante à `voting_rule` du dictionnaire `results`
-        avec une liste (un classement) des candidats. La fonction est appliquée uniquement s'il existe au moins un électeur
-        et un candidate, sinon elle fait rien.
+        """Applique une règle de vote voting_rule. 
+        Remplit la case correspondante à voting_rule du dictionnaire results avec une liste (un classement) des candidats. 
+        La fonction est appliquée uniquement s'il existe au moins un électeur et un candidat, sinon elle ne fait rien.
 
         Args:
-            voting_rule (str): Une constante correspondante à une règle du vote.
+            voting_rule (str): Une constante correspondant à une règle de vote.
         """
 
         if not self.has_electors_candidates():
@@ -228,14 +228,14 @@ class Election(metaclass=Singleton):
         self.results[voting_rule] = result
 
     def choose_winner(self, voting_rule: str) -> Union[Candidate, None]:
-        """Choisir un gagnant d'une règle du vote `voting_rule` selon les règles.
+        """Retourne le gagnant d'après la règle de vote voting_rule.
 
         Args:
-            voting_rule (str): Une constante correspondante à une règle du vote.
+            voting_rule (str): Une constante correspondant à une règle de vote.
 
         Returns:
-            Union[Candidate, None]: Un candidat-gagnant. Peut retourner `None` dans un condorcet simple ou
-                si le classement associé à `voting_rule` est vide.
+            Union[Candidate, None]: Un candidat-gagnant. Peut retourner None dans le cas d'un "Condorcet simple" 
+            ou si le classement associé à voting_rule est vide.
         """
         if voting_rule not in self.results:
             self.apply_voting_rule(voting_rule)
@@ -252,8 +252,8 @@ class Election(metaclass=Singleton):
         return self.results[voting_rule][0]
 
     def choose_condorcet_winner(self) -> Union[Candidate, None]:
-        """Choisir un gagnant dans une règle du vote Condorcet simple. Un gagnant est un candidat que bat
-        tous les autres candidats dans les duels.
+        """Retourne le gagnant d'après le système de vote "Condorcet simple". 
+        Le gagnant est un candidat qui bat tous les autres en duel.
 
         Returns:
             Union[Candidate, None]: Un candidat du Condorcet s'il existe, sinon None.
@@ -264,22 +264,23 @@ class Election(metaclass=Singleton):
         return fst_candidate if score == len(self.candidates) - 1 else None
 
     def _define_ranking(self) -> None:
-        """Faire chaque electeur classer des candidats. Doit être appelée uniquement quand tous les candidats ont été ajoutés."""
+        """Fait classer les candidats pour chaque électeur. Doit être appelée uniquement quand tous les candidats ont été ajoutés."""
 
         for elector in self.electors:
             elector.rank_candidates(self.candidates)
 
     def calc_results(self, imported: Optional[bool] = False) -> None:
-        """Calculer des résultats d'une élection, i.e. Calculer les duels entre les candidats, attribuer des scores aux candidats, 
-        et calculer des classements des candidats dans chaque règle du vote choisie.
+        """Calcule les résultats d'une élection : calcule les duels entre les candidats, 
+        attribue des scores aux candidats, et calcule le classement des candidats pour chaque règle de vote choisie.
 
         Args:
-            imported (bool): True si les données one été importés. Si oui, ne pas calculer des duels et des scores des candidats
-                dans chaque règle du vote choisie. Ils sont importés. Cepedant, un calcul des classement est effectué.
+            imported (bool): True si les données ont été importés. Si oui, 
+            ne calcule pas les duels et les scores des candidats pour chaque règle de vote choisie. 
+            Ils sont importés. Cepedant, un calcul des classements est effectué.
         """
 
         if imported:
-            # Duels sont importés dans sqlite.ImportData
+            # Les duels sont importés dans sqlite.ImportData
             self.set_results()
             return
 
@@ -288,8 +289,8 @@ class Election(metaclass=Singleton):
             self.apply_voting_rule(voting_rule)
 
     def set_avg_electors_position(self) -> None:
-        """Calculer une position moyenne des électeurs. Uniquement la division est faite. La somme de toutes les positions
-        est déjà stockée."""
+        """Calcule la position moyenne des électeurs. Uniquement la division est faite. 
+        La somme de toutes les positions est déjà stockée."""
 
         x_avg, y_avg = self.average_position_electors
         x_avg /= len(self.electors)
@@ -297,7 +298,7 @@ class Election(metaclass=Singleton):
         self.average_position_electors = (x_avg, y_avg)
 
     def _calc_proportion_satisfaction(self) -> None:
-        """Calculer le taux d'une satisfaction de la population."""
+        """Calcule le taux d'une satisfaction de la population."""
 
         proportion = 0
         for candidate in self.candidates:
@@ -308,7 +309,7 @@ class Election(metaclass=Singleton):
         self.proportion_satisfaction = proportion
 
     def calc_satisfaction(self, candidate: Candidate) -> float:
-        """Calculer le pourcentage de la population qui est satisfait par une victoire du candidat `candidate` dans une élection.
+        """Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.
 
         Args:
             candidate (people.candidate.Candidate): Un candidat-gagnant.
@@ -328,9 +329,9 @@ class Election(metaclass=Singleton):
         return percentage
 
     def set_results(self) -> None:
-        """Calculer un classement des candidats selon leurs scores (les scores sont déjà attribués à chaque candidat).
-        Utilisée lors de l'importation des données. MAJ d'un dictionnaire `results`. La fonction fait rien s'il n'existe pas 
-        au moins un électeur et un candidat.
+        """Calcule un classement des candidats selon leurs scores (les scores sont déjà attribués à chaque candidat). 
+        Utilisée lors de l'importation des données. MAJ d'un dictionnaire results. 
+        La fonction ne fait rien s'il n'existe pas au moins un électeur et un candidat.
         """
 
         if not self.has_electors_candidates():
@@ -363,20 +364,20 @@ class Election(metaclass=Singleton):
                 self.results[voting_rule] = result
 
     def start_election(self, imported: Optional[bool] = False, chosen_voting_rules: List[str] = None) -> None:
-        """Commencer une élection. Faire toutes les calculs nécessaires:
+        """Commence une élection. Fait tout les calculs nécessaires:
 
-        - Chaque électeur définit son classement des candidats
-        - MAJ de la position moyenne des électeurs
-        - Calculer le taux d'une satisfaction
-        - Si les sondages sont activées, MAJ des données pour chaque direction de la carte politique
-        - Si la démocratie liquide est activée, faire les délégations.
-        - Initialiser un dictionnaire `results` avec des règles du vote choisies.
-        - Calculer des résultats.
+            -Chaque électeur définit son classement des candidats
+            -MAJ de la position moyenne des électeurs
+            -Calcule le taux de satisfaction
+            -Si les sondages sont activés, MAJ les données pour chaque direction de la carte politique
+            -Si la démocratie liquide est activée, fait les délégations.
+            -Initialise un dictionnaire results avec des règles de vote choisies.
+            -Calcule les résultats.
 
         Args:
-            imported (Optional[bool]): True si les données ont été importées, sinon False.
-                Cf. `calc_results() <electoral_systems.election.Election.calc_results>`
-            chosen_voting_rules (Set[str]): Une liste des constantes des règles du vote choisies.
+            imported (Optional[bool]): True si les données ont été importées, sinon False. 
+            Cf. calc_results() <electoral_systems.election.Election.calc_results>
+            chosen_voting_rules (Set[str]): Une liste des constantes des règles de vote choisies.
         """
 
         self._define_ranking()
@@ -414,9 +415,9 @@ class Election(metaclass=Singleton):
             elector.weight = 0
 
     def conduct_poll(self) -> None:
-        """Faire une nouvelle sondage. Tout d'abord les candidats changent ses positions. Les électeurs 
-        redéfinissent leur classement des candidats. Après les électeurs changent son classement.
-        Cf. polls <electoral_systems.extensions.polls> pour les détails."""
+        """Fait un nouveau sondage. Tout d'abord les candidats changent leurs positions. 
+        Les électeurs redéfinissent leur classement des candidats. Puis les électeurs changent leur classement. 
+        Cf. polls pour les détails."""
 
         voting_rule = self.poll_voting_rule
         winner = self.choose_winner(voting_rule)
@@ -442,11 +443,11 @@ class Election(metaclass=Singleton):
             voting_rule,
             VotingRulesConstants.APPROVAL_GAP_COEF,
         )
-        # Recalculer des résultats
+        # Recalcule des résultats
         self.calc_results()
 
     def delete_all_data(self) -> None:
-        """Supprimer toutes les données d'une élection. Recommencer des itérateurs-générateurs des noms, prénoms, IDs."""
+        """Supprime toutes les données d'une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs."""
         self.electors.clear()
         self.candidates.clear()
         self.results.clear()
