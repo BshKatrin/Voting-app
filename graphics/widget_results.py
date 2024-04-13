@@ -197,7 +197,7 @@ class WidgetResults(QWidget):
         self.start_poll_btn.clicked.connect(partial(self.conductNewPoll))
 
     def initTable(self) -> None:
-        """Initialise une partie d'interface correpondant au tableau des résultats."""
+        """Initialise une partie d'interface correpondante au tableau des résultats."""
 
         start_row = 1 if self.conduct_polls else 0
 
