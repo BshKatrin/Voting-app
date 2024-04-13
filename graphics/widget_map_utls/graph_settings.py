@@ -14,11 +14,11 @@ from electoral_systems import Election, RandomConstants
 
 
 class GraphSettings(QWidget):
-    """Un widget qui correspond à une réglage d'un paramètre pour la génération des données."""
+    """Un widget qui correspond au réglage d'un paramètre pour la génération des données."""
 
     def __init__(self, parent: QWidget, title: str, type: str, graph_type: int):
-        """Initialiser une instance  d'une élection (pour le partage des données).
-        Fixer la taille, initiliaser des sliders et graphiques correspondants.
+        """Initialise une instance d'élection (pour le partage des données).
+        Fixe la taille, initiliase les sliders et graphiques correspondants.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.
@@ -52,7 +52,7 @@ class GraphSettings(QWidget):
                 self.setFixedWidth(self.parent().width() * 0.8)
 
     def initLinearInput(self) -> None:
-        """Initiliaser les sliders pour une graphique affine (correspond au paramètre `Orientation`)."""
+        """Initialise les sliders pour une graphique affine (correspond au paramètre `Orientation`)."""
 
         sub_layout = QGridLayout()
 
@@ -74,7 +74,7 @@ class GraphSettings(QWidget):
         self.layout.addLayout(sub_layout)
 
     def initGaussInput(self) -> None:
-        """Initiliaser les sliders pour une graphique de loi normale (correspond aux paramètres qui suivent la loi normale)."""
+        """Initiliase les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale)."""
 
         sub_layout = QGridLayout()
 
@@ -119,7 +119,7 @@ class GraphSettings(QWidget):
         self.layout.addLayout(sub_layout)
 
     def initPlot(self, title: str) -> None:
-        """Initiliaser un canvas pour un graphique.
+        """Initiliase le canvas pour un graphique.
 
         Args:
             title (str): Un titre (UI) pour un graphique.
@@ -142,7 +142,7 @@ class GraphSettings(QWidget):
         self.layout.addWidget(self.graphWidget, 0)
 
     def initDistInput(self, title: str) -> None:
-        """Initiliaser des sliders pour configurer un paramètre sans graphique (correspond au paramètre `Travel_dist`).
+        """Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `Travel_dist`).
 
         Args:
             title (str): Un titre (UI).
@@ -170,8 +170,8 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateMuConstant(self, value: int) -> None:
-        """Changer la valeur de la moyenne de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessiner un graphique avec la moyenne changée. MAJ de cette valeurs dans une élection.
+        """Change la valeur de la moyenne de la distribution normale (appelée si le slider corresondant a été touché).
+        Redessine le graphique avec la moyenne changée. MAJ de cette valeurs dans l'élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -189,8 +189,8 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateSigmaConstant(self, value: int) -> None:
-        """Changer la valeur d'écart-type de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessiner un graphique avec l'écart-type changé. MAJ de cette valeurs dans une élection.
+        """Change la valeur d'écart-type de la distribution normale (appelée si le slider corresondant a été touché).
+        Redessine le graphique avec l'écart-type changé. MAJ de cette valeurs dans l'élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -208,8 +208,8 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateOrientation(self, value: int) -> None:
-        """Changer la valeur du coefficient directeur de la droite. (appelée si le slider corresondant a été touché).
-        Redessiner un graphique de la droite. MAJ de cette valeurs dans une élection.
+        """Change la valeur du coefficient directeur de la droite. (appelée si le slider corresondant a été touché).
+        Redessine le graphique de la droite. MAJ de cette valeurs dans l'élection.
 
         Args:
             value (int): Une valeur sur slider.
@@ -222,7 +222,7 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateDistUpdate(self, value: int) -> None:
-        """Changer la valeur de la distance parcourue (`TRAVEL_DIST`). MAJ de cette valeurs dans une élection.
+        """Change la valeur de la distance parcourue (`TRAVEL_DIST`). MAJ de cette valeurs dans l'élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -232,7 +232,7 @@ class GraphSettings(QWidget):
         self.dist_result.setText(f"{value / 100:.2f}")
 
     def updateGraphGauss(self, mu: float, sigma: float, x_min: float, x_max: float) -> None:
-        """Redessiner le graphique de la distribution normale.
+        """Redessine le graphique de la distribution normale.
 
         Args:
             mu (float): La moyenne de la distribution normale.
@@ -253,7 +253,7 @@ class GraphSettings(QWidget):
         self.graphWidget.plot(x, y, pen=self.pen)
 
     def updateGraphAffine(self, slope: float) -> None:
-        """Redessiner le graphique de la droite. Le coefficent libre de la droite est 0.
+        """Redessine le graphique de la droite. Le coefficent libre de la droite est 0.
 
         Args:
             slope (float): Le coefficient directeur de la droite.
@@ -270,7 +270,7 @@ class GraphSettings(QWidget):
         self.graphWidget.plot(x, y, pen=self.pen)
 
     def calculateYGauss(self, i: float, mu: float, sigma: float) -> float:
-        """Calculer la valeur de $y$ en $x$ donnée pour un graphique de la distribution normale.
+        """Calcule la valeur de $y$ en $x$ donnée pour un graphique de la distribution normale.
 
         Args:
             i (float): La valeur de $x$.
@@ -283,7 +283,7 @@ class GraphSettings(QWidget):
         )
 
     def calculateYLinear(self, i: float, slope: float) -> float:
-        """Calculer la valeur de $y$ en $x$ donnée pour un graphique de la droite.
+        """Calcule la valeur de $y$ en $x$ donnée pour un graphique de la droite.
 
         Args:
             i (float): La valeur de $x$.
