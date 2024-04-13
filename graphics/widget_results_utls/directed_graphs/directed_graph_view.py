@@ -4,7 +4,7 @@ from PySide6.QtGui import QCloseEvent
 
 
 class DirectedGraphView(QGraphicsView):
-    """Un view qui permet d'afficher des graphes orientés."""
+    """Un view qui permet d'afficher les graphes orientés."""
 
     def __init__(self, scene):
         super().__init__(scene)
