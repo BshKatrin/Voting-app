@@ -7,19 +7,20 @@ from people import Candidate, Elector
 
 
 def apply_exhaustive_ballot(electors: List[Elector], candidates: List[Candidate]) -> List[List[Candidate]]:
-    """Appliquer une règle du vote *Éliminations successives*. Possible d'appliquer cette règle du vote s'il existe au moins 3 candidats.
-    Notons N: le nombre des candidats. Au plus il peut exister N-1 tours ou moins s'il existe un candidat qui a reçu la majorité
-    absolue des votes.
-    Principe d'une règle du vote *Éliminations successives*: 
+    """Applique la règle de vote *Éliminations successives*. Il n'est possible d'appliquer cette règle de vote que s'il existe au 
+    moins 3 candidats.
+    Notons N: le nombre des candidats. Il existe au plus N-1 tours (moins si un candidat a reçu la majorité
+    absolue des votes).
+    Principe d'une règle de vote *Éliminations successives*: 
         - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
         - À chaque tour chaque candidat classé premier reçoit un point, tandis que les scores des autres candidats restent inchangés.
         - Après chaque tour le candidat avec le score minimale est eliminé.
 
 
     Args:
-        electors (List[people.elector.Elector]): Une liste de tous les électeurs participant dans une élection.
+        electors (List[people.elector.Elector]): Une liste de tous les électeurs participant à une élection.
             Leur liste `candidates_ranked` doit être remplie.
-        candidates (List[people.candidate.Candidate]): Une liste de tous les candidats qui participent dans une élection.
+        candidates (List[people.candidate.Candidate]): Une liste de tous les candidats qui participent à une élection.
 
     Returns:
         List[people.candidate.Candidate]: Une liste des listes (classement dans l'ordre décroissant) des candidats par tour.
