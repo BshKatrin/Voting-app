@@ -2,24 +2,19 @@ from dataclasses import dataclass, field
 from numpy.random import normal
 from numpy import clip
 
-# Uniquement pour la génération des docs
-__pdoc__ = {'normal':False}
 
 @dataclass(kw_only=True)
 class Person:
-    """Une classe Person avec son identifiant `id` et sa position sur la carte politique `position`. Encapsule les données communes
-    des candidats et des électeurs."""
-
+    """Une classe Person avec son identifiant `id` et sa position sur la carte politique `position`"""
     id: int = field(compare=False)
-    """Un identifiant d'une personne."""
-
     position: tuple[float, float] = field(compare=False)
-    """Une position sur la carte politique. Chaque coordonée est borné entre -1 et 1"""
+    """Chaque coordonée de la position est bornée entre -1 et 1"""
 
-    
+    # Generate parameters based on Gauss normal distribution
+    # Confine generated parameter between lower and upper limits
     @staticmethod
     def generate_parameter(mu: float, sigma: float, lower_limit: float, upper_limit: float) -> float:
-        """Générer un paramètre basé sur la distribution normale et confiné entre des limites données.
+        """Génére un paramètre basé sur la distribution normale et confiné entre des limites données.
 
         Args:
             mu (float): La moyenne de la distribution normale.
