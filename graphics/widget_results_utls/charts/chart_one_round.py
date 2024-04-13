@@ -14,14 +14,14 @@ from electoral_systems import Election, VotingRulesConstants
 
 
 class ChartOneRound(QChart):
-    """Un chart (un diagramme à bandes) pour des règles du vote à un tour."""
+    """Un chart (un diagramme à bandes) pour des règles de vote à un tour."""
 
     def __init__(self, voting_rule: str, parent: QGraphicsItem = None):
-        """Initialiser un diagramme à bandes. Initialiser une instance  d'une élection (pour le partage des données).
-        Initialiser des axes, des bars. Remplir un diagramme avec des résultats d'une règle du vote `voting_rule`.
+        """Initialise le diagramme à bandes. Initialise une instance d'élection (pour le partage des données).
+        Initialise les axes, les bars. Remplit le diagramme avec les résultats d'une règle de vote `voting_rule`.
 
         Args:
-            voting_rule (str): Une constante d'une règle du vote.
+            voting_rule (str): Une constante d'une règle de vote.
             parent (PySide6.QtWidgets.QGraphicsItem): Un parent d'un diagramme. Default = `None`.
         """
 
@@ -36,8 +36,8 @@ class ChartOneRound(QChart):
         self.initAxes()
 
     def initBarSets(self) -> None:
-        """Initialiser les bars pour chaque candidat avec leurs scores. Ajouter une bordure
-        pour le bar du candidat-gagnant."""
+        """Initialise les bars pour chaque candidat avec leurs scores. Ajoute une bordure
+        pour la bar du candidat-gagnant."""
 
         self.winner_barset = None
         # Barset pour chaque candidat
@@ -61,7 +61,7 @@ class ChartOneRound(QChart):
             self.winner_barset.setBorderColor(QColor("black"))
 
     def initAxes(self) -> None:
-        """Initialiser des axes. L'axe verticale corredpond aux scores. Les valeurs de l'axe horizontal sont cachées."""
+        """Initialise les axes. L'axe verticale correspond aux scores. Les valeurs de l'axe horizontal sont cachées."""
 
         # X axis
         self.axisX = QBarCategoryAxis(self)
@@ -79,12 +79,12 @@ class ChartOneRound(QChart):
         self.series.attachAxis(self.axisY)
 
     def _setYRange(self) -> None:
-        """Fixer un intervalle des valeurs des scores."""
+        """Fixe un intervalle des valeurs des scores."""
         mx = self._findMax()
         self.axisY.setRange(0, mx)
 
     def _findMax(self) -> int:
-        """Trouver le score maximale.
+        """Trouve le score maximale.
 
         Returns:
             int: Un score maximale.
@@ -96,7 +96,7 @@ class ChartOneRound(QChart):
         return mx
 
     def updateData(self) -> None:
-        """MAJ des données sur les score des candidats. MAJ de l'intervalle des scores. Changer highlight si nécessaire 
+        """MAJ les données sur les scores des candidats. MAJ de l'intervalle des scores. Change le highlight si nécessaire 
         (si le gagnant a changé). Utile pour les sondages."""
 
         self._setYRange()
@@ -108,7 +108,7 @@ class ChartOneRound(QChart):
 
     # For polls
     def removeBarsets(self):
-        """Supprimer les barset des candidats qui ont abandonné une élection."""
+        """Supprime les barsets des candidats qui ont abandonné une élection."""
 
         for cand, barset in self.candidates_barsets.items():
             if cand not in self.election.candidates and barset:
@@ -116,7 +116,7 @@ class ChartOneRound(QChart):
                 self.candidates_barsets[cand] = None
 
     def reHighlight(self):
-        """Changer highlight d'un barset (si le gagnant a changé)."""
+        """Change le highlight d'un barset (si le gagnant a changé)."""
 
         winner = self.election.choose_winner(self.voting_rule)
         if self.winner_barset != self.candidates_barsets[winner]:
