@@ -13,11 +13,11 @@ from electoral_systems import Election
 
 
 class ChartMultiRound(QChart):
-    """Un chart (un diagramme à barres empilées) pour des règles du vote à plusieurs tours"""
+    """Un chart (un diagramme à barres empilées) pour des règles de vote à plusieurs tours"""
 
     def __init__(self, voting_rule: str, parent: QGraphicsItem = None):
-        """Initialiser un diagramme à barres empilées. Initialiser une instance d'une élection (pour le partage des données).
-        Initialiser des axes, des bars. Remplir un diagramme avec des résultats d'une règle du vote `voting_rule`.
+        """Initialise un diagramme à barres empilées. Initialise une instance d'élection (pour le partage des données).
+        Initialise les axes, les bars. Remplit le diagramme avec les résultats d'une règle de vote `voting_rule`.
 
         Args:
             voting_rule (str): Une constante d'une règle du vote.
@@ -35,8 +35,8 @@ class ChartMultiRound(QChart):
         self.initAxis()
 
     def initBarSets(self) -> None:
-        """Initialiser les bars pour chaque candidat avec leurs scores. Ajouter une bordure
-        pour le bar du candidat-gagnant. Construire un dictionnaire qui associe un candidat avec son barset."""
+        """Initialise les bars pour chaque candidat avec leurs scores. Ajoute une bordure
+        pour le bar du candidat-gagnant. Construit un dictionnaire qui associe un candidat avec son barset."""
 
         # Dict: key = candidat, value = sont barset
         barset_dict = dict()
@@ -62,7 +62,7 @@ class ChartMultiRound(QChart):
         barset_dict[winner].setBorderColor(QColor("black"))
 
     def initAxis(self) -> None:
-        """Initialiser des axes. L'axe verticale corredpond aux scores. L'axe horizontal correspond aux tours."""
+        """Initialise les axes. L'axe verticale corredpond aux scores. L'axe horizontal correspond aux tours."""
 
         # Set axis X
         self.axisX = QBarCategoryAxis(parent=self)
@@ -80,7 +80,7 @@ class ChartMultiRound(QChart):
         self.series.attachAxis(self.axisY)
 
     def findMax(self) -> int:
-        """Calculer le maximum de l'axe vertical. Le maximum est le nombre des électeurs qui participent dans une élection.
+        """Calcule le maximum de l'axe vertical. Le maximum est le nombre d'électeurs qui participent à l'élection.
 
         Returns:
             int: Un maximum pour l'axe vertical.
