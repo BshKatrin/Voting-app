@@ -7,20 +7,20 @@ from people import Candidate, Elector
 
 
 def apply_veto(electors: List[Elector], candidates: List[Candidate], duels: Optional[duels_type] = None) -> List[Candidate]:
-    """Appliquer une règle du vote *Veto*. Possible d'appliquer cette règle du vote s'il existe au moins 2 candidats.
+    """Applique la règle de vote *Veto*. Il n'est possible d'appliquer cette règle du vote que s'il existe au moins 2 candidats.
     Principe d'une règle du vote *Veto*: 
         - chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
         - pour chaque candidat, sauf le dernier dans ce classement, un point est attribué à son score.
 
     Args:
-        electors (List[people.elector.Elector]): Une liste de tous les électeurs participant dans une élection.
+        electors (List[people.elector.Elector]): Une liste de tous les électeurs participant à une élection.
             Leur liste `candidates_ranked` doit être remplie.
-        candidates (List[people.candidate.Candidate]): Une liste de tous les candidats qui participent dans une élection.
-        duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
+        candidates (List[people.candidate.Candidate]): Une liste de tous les candidats qui participent à une élection.
+        duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre de fois
         que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s'il faut résoudre les égalités avec les duels.
         Default = `None`.
     Returns:
-        List[people.candidate.Candidate]: Une liste des candidats triés dans l'ordre décroissant selon leurs dans la règle du vote *Veto*.
+        List[people.candidate.Candidate]: Une liste des candidats triés dans l'ordre décroissant selon leur score selon la règle de vote *Veto*.
     """
     init_scores(candidates, VETO, 0)
     for elector in electors:
