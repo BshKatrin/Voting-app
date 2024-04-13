@@ -164,7 +164,7 @@ class WidgetMap(QWidget):
     @Slot()
     def onStartElectionClick(self) -> None:
         """Appelée lorsque le button `start_election_btn` est cliqué.
-        Émet un signal `sig_start_election` avec une liste des constantes correpondant aux
+        Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
         règles de vote choisies dans le widget avec des checkboxes."""
 
         chosen_voting_rule = self.voting_rules_checkbox.getChosenVotingRules()
