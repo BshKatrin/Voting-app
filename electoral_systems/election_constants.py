@@ -5,7 +5,7 @@ from .voting_rules.constants import *
 
 
 class VotingRulesConstants:
-    """Une classe qui regroupent les constantes utilisées par rapport aux règles du vote."""
+    """Une classe qui regroupent les constantes utilisées par rapport aux règles de vote."""
 
     # Des règles du vote. Cf. le module electoral_systems.voting_rules.constants
     PLURALITY_SIMPLE: str = PLURALITY_SIMPLE
@@ -53,7 +53,7 @@ class VotingRulesConstants:
 
 
 class RandomConstants:
-    """Une classe qui regroupent les constantes utilisées par rapport à la génération des données."""
+    """Une classe qui regroupe les constantes utilisées lors de la génération des données."""
 
     # Random generating constants
     ECONOMICAL: str = "ECON"
