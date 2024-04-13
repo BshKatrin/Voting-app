@@ -1,3 +1,5 @@
+"""Un module fournit des constantes associées à chaque règle de vote."""
+
 PLURALITY_SIMPLE = "PS"
 PLURALITY_2_ROUNDS = "PR"
 VETO = "VT"

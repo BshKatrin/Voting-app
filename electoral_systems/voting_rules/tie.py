@@ -16,8 +16,8 @@ def get_ties(ranking: List[Candidate], voting_rule: str) -> List[List[int]]:
         voting_rule (str): Une constante associée à une règle du vote.
 
     Returns:
-        List[List[int)]]: Une liste dont chaque élément est une liste des indices des candidats dans `ranking`
-        qui ont le même score.
+        List[List[int]]: Une liste dont chaque élément est une liste des indices des candidats dans `ranking`
+            qui ont le même score.
     """
 
     ties = []
@@ -44,13 +44,13 @@ def resolve_ties(ranking: List[Candidate], nb_electors: int, voting_rule: str, d
     """Résoud toutes les égalités entre les candidats selon les duels. Le gagnant d'une égalité est un candidat
     qui a gagné le duel. S'il existe plusieurs candidats avec le même score, ils sont comparés 2 à 2. Le classement 
     `ranking` est modifié sur place. Si les candidats sont en égalité par rapport aux duels, ne fait rien.
-    Applicable uniquement pour des règles du vote à un tour.
+    *Applicable uniquement pour des règles du vote à un tour*.
 
     Args:
         ranking (List[Candidate]): Un classement des candidats selon une règle de vote `voting_rule` selon leurs scores.
         nb_electors (int): Un nombre des électeurs qui participent à une élection.
         voting_rule (str): Une constante associée à une règle de vote.
-        duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre de fois
+        duels (electoral_systems.voting_rules.utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre de fois
             que le candidat-gagnant a battu le candidat-perdant. C'est une base pour résoudre les égalités.
     """
 

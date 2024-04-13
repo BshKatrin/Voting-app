@@ -4,4 +4,3 @@ graphics/temp/map.png
 !graphics/temp.gitkeep
 *.db
 doc_gen.py
-docs/

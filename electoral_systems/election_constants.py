@@ -19,6 +19,7 @@ class VotingRulesConstants:
     APPROVAL: str = APPROVAL
 
     APPROVAL_GAP_COEF: float = 0.3  # Constante pour approbaton
+    """Une constante pour une règle de vote *Approbation*."""
 
     # Associer des fonctions avec des constantes
     VOTING_RULES_FUNC: Dict[str, Callable] = {
@@ -32,6 +33,7 @@ class VotingRulesConstants:
         EXHAUSTIVE_BALLOT: exhaustive_ballot.apply_exhaustive_ballot,
         APPROVAL: approval.apply_approval,
     }
+    """Un dictionnaire qui associe à chaque constante d'une règle de vote sa fonction."""
 
     # UI constantes (QT)
     UI: Dict[str, str] = {
@@ -45,24 +47,36 @@ class VotingRulesConstants:
         EXHAUSTIVE_BALLOT: "Exhaustive Ballot",
         APPROVAL: "Approval",
     }
+    """Un dictionnaire qui associe à chaque constante d'une règle de vote sa version pour UI (utile pour QT)"""
 
     # Séparation pour vérification après
     ONE_ROUND: Set[str] = {PLURALITY_SIMPLE, VETO, BORDA, APPROVAL}
-    MULTI_ROUND: Set[str] = {PLURALITY_2_ROUNDS, EXHAUSTIVE_BALLOT}
-    CONDORCET: Set[str] = {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}
+    """Un ensemble des constantes des règles de vote à un tour."""
 
+    MULTI_ROUND: Set[str] = {PLURALITY_2_ROUNDS, EXHAUSTIVE_BALLOT}
+    """Un ensemble des constantes des règles de vote à plusieurs tours."""
+
+    CONDORCET: Set[str] = {CONDORCET_SIMPLE, CONDORCET_COPELAND, CONDORCET_SIMPSON}
+    """Un ensemble des constantes des règles de vote Condorcet-cohérentes."""
 
 class RandomConstants:
     """Une classe qui regroupe les constantes utilisées lors de la génération des données."""
 
     # Random generating constants
     ECONOMICAL: str = "ECON"
+    """Correspond à l'axe horizontal."""
+
     SOCIAL: str = "SOC"
+    """Correspond à l'axe vertical."""
+
     ORIENTATION: str = "ORIENT"
+    """Une orientation de la génération des données (la droite descendante, horizontal ou ascendante)."""
+
     KNOWLEDGE: str = "KNW"
     DOGMATISM: str = "DGC"
     OPPOSITION: str = "OPP"
     TRAVEL_DIST: str = "TD"  # Proportion. Entre 0 et 1
+    """La distance à laquelle un candidat se déplacera s'il décide de changer sa position politique."""
 
     # Types des graphes
     LINEAR: int = 0
@@ -79,6 +93,7 @@ class RandomConstants:
         OPPOSITION: "Opposition",
         TRAVEL_DIST: "Candidate's travel distance",
     }
+    """Un dictionnaire qui associe à chaque constante de la génération des données sa version UI (utile pour QT)."""
 
     # Associer les types des graphes aux constantes
     GRAPH_TYPE: Dict[str, int] = {
@@ -90,6 +105,7 @@ class RandomConstants:
         OPPOSITION: GAUSS,
         TRAVEL_DIST: SLIDER,
     }
+    """Un dictionnaire qui associe à chaque constante de la génération des données son type de graphique."""
 
     # Les valeurs min et max pour des sliders (QT). Div par 100 car les sliders de QT acceptent uniquement des entiers.
     VALUES_MIN_MAX: Dict[str, tuple[int, int]] = {
@@ -101,6 +117,8 @@ class RandomConstants:
         OPPOSITION: (10, 90),  # Div par 100
         TRAVEL_DIST: (1, 100),  # Div par 100
     }
+    """Un dictionnaire qui associe à chaque constante de la génération des données ses valeurs minimale et maximale.
+    Utilisé pour des sliders de QT. Toutes les valeurs sauf orientation seront divisée par 100."""
 
     # Les valeurs par défaut
     DEFAULT_VALUES: Dict[str, Union[tuple[float, float], float, int]] = {
@@ -112,3 +130,4 @@ class RandomConstants:
         OPPOSITION: (0.3, 0.3),
         TRAVEL_DIST: 0.1,
     }
+    """Un dictionnaire qui associe à chaque constante de la génération des données ses valeurs par défaut."""

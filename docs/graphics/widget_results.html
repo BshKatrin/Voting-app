@@ -1,0 +1,1460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>graphics.widget_results API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>graphics.widget_results</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from functools import partial
+from typing import Set, Union, Optional
+
+from PySide6.QtCharts import QChartView
+from PySide6.QtCore import Qt, Slot, Signal, QSize
+from PySide6.QtWidgets import (
+    QWidget,
+    QGridLayout,
+    QLabel,
+    QPushButton,
+    QCheckBox,
+    QGraphicsView
+)
+
+from .widget_results_utls import DirectedGraph, DirectedGraphView, ChartView, MapImage
+
+from electoral_systems import Election, VotingRulesConstants
+
+
+class WidgetResults(QWidget):
+    &#34;&#34;&#34;Une classe qui représente la widget avec les résultats d&#39;une élection,
+    permet de voir les graphes et les diagrammes et de lancer les sondages.&#34;&#34;&#34;
+
+    sig_show_chart = Signal(str)
+    &#34;&#34;&#34;Un signal émis lorsqu&#39;il faut de changer un diagramme à bandes avec une visualisation des diagrammes visibles.&#34;&#34;&#34;
+
+    sig_poll_conducted = Signal()
+    &#34;&#34;&#34;Un signal émis lorsqu&#39;un nouveau sondage a été effectué.&#34;&#34;&#34;
+
+    def __init__(self, parent: QWidget):
+        &#34;&#34;&#34;Initialise la taille des views nécessaires et UI.
+
+        Args:
+            parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
+        &#34;&#34;&#34;
+
+        super().__init__(parent)
+
+        self.election = Election()
+
+        self.setGeometry(0, 0, parent.width(), parent.height())
+
+        self.graph_view = None
+        self.charts_view = None
+
+        self.condorcet_bool, self.condorcet_set = self.condorcetChosen()
+        self.one_round_bool, self.one_round_set = self.oneRoundChosen()
+        self.multi_round_bool, self.multi_round_set = self.multiRoundChosen()
+
+        self.conduct_polls = False
+        if (self.election.nb_polls and (not self.condorcet_bool) and (not self.multi_round_bool)
+                and self.one_round_bool):
+            self.conduct_polls = True
+
+        self.initViews()
+        self.initUI()
+
+    def initViews(self) -&gt; None:
+        &#34;&#34;&#34;Initialise les views pour les diagrammes à bandes si au moins une règle de vote à 1 ou plusieurs tour a été choisie.
+        Initialise les views pour les graphes si au moins une règle de vote Condorcet-cohérente a été choisie.&#34;&#34;&#34;
+
+        if self.condorcet_bool:
+            # Un dictionnaire qui associe voting_rule : QGraphicsScene
+            self.graphs_scenes = dict()
+            self.initDirectedGraph(self.condorcet_set)
+
+        if self.one_round_bool or self.multi_round_bool:
+            self.initChartsView()
+
+        if self.one_round_bool:
+            self.charts_view.initOneRoundChart(self.one_round_set)
+
+        if self.multi_round_bool:
+            self.charts_view.initMultiRoundChart(self.multi_round_set)
+
+    def oneRoundChosen(self) -&gt; tuple[bool, Set[str]]:
+        &#34;&#34;&#34;Trouve les règles de vote à un tour choisies.
+
+        Returns:
+            tuple[bool, Set[str]]: un booléan True si au moins 1 règle de vote à 1 tour a été choisie (False sinon)
+                et un ensemble des constantes de telles règles de vote.
+        &#34;&#34;&#34;
+
+        intersect = VotingRulesConstants.ONE_ROUND &amp; self.election.results.keys()
+        return bool(intersect), intersect
+
+    def condorcetChosen(self) -&gt; tuple[bool, Set[str]]:
+        &#34;&#34;&#34;Trouve les règles de vote Condorcet-cohérentes choisies.
+
+        Returns:
+            tuple[bool, Set[str]]: un booléan True si au moins une règle de vote Condorcet-cohérente a été choisie (False sinon)
+                et un ensemble des constantes de telles règles de vote.
+        &#34;&#34;&#34;
+
+        intersect = VotingRulesConstants.CONDORCET &amp; self.election.results.keys()
+        return bool(intersect), intersect
+
+    def multiRoundChosen(self) -&gt; tuple[bool, Set[str]]:
+        &#34;&#34;&#34;Trouve les règles de vote à plusieurs tours choisies.
+
+        Returns:
+            tuple[bool, Set[str]]: un booléan True si au moins une règle de vote à plusieurs tours a été choisie (False sinon)
+                et un ensemble des constantes de telles règles de vote
+        &#34;&#34;&#34;
+
+        intersect = VotingRulesConstants.MULTI_ROUND &amp; self.election.results.keys()
+        return bool(intersect), intersect
+
+    def initDirectedGraph(self, condorcet_voting_rules: Set[str]) -&gt; None:
+        &#34;&#34;&#34;Initialise les `PySide6.QtWidgets.QGraphicsScene` et `PySide6.QtWidgets.QGraphicsView` pour afficher les résultats
+        des règles de vote Condorcet-cohérentes. Construit un dictionnaire du type `Dict[str, PySide6.QtWidgets.QGraphicsScene]`
+        qui associe à chaque constante d&#39;une règle de vote Condorcet-cohérente un `QGraphicsScene`.
+
+        Args:
+            condorcet_voting_rules (Set[str]): Un ensemble des constantes des règles de vote Condorcet-cohérentes choisies.
+                N&#39;est pas vide.
+        &#34;&#34;&#34;
+
+        graph_scene = None
+
+        for voting_rule in condorcet_voting_rules:
+            graph_scene = DirectedGraph(self.getViewSize(), voting_rule, parent=self)
+            self.graphs_scenes[voting_rule] = graph_scene
+
+        self.graph_view = DirectedGraphView(graph_scene)
+        self.resizeView(self.graph_view)
+
+    def initChartsView(self) -&gt; None:
+        &#34;&#34;&#34;Initialise les `from PySide6.QtCharts.QChartView` pour afficher les résultats
+        des règles de vote à 1 ou plusieurs tours.&#34;&#34;&#34;
+
+        self.charts_view = ChartView()
+        self.resizeView(self.charts_view)
+
+        self.sig_show_chart.connect(self.charts_view.setChartBySig)
+
+    def getViewSize(self) -&gt; QSize:
+        &#34;&#34;&#34;Calcule la taille du view en fonction de la taille du parent d&#39;un widget.
+
+        Returns:
+            PySide6.QtCore.QSize: La taille du view.
+        &#34;&#34;&#34;
+
+        return QSize(self.parent().width() * 0.7, self.parent().height() * 0.7)
+
+    def resizeView(self, view: Union[QGraphicsView, QChartView]) -&gt; None:
+        &#34;&#34;&#34;Change la taille d&#39;un view donné.
+
+        Args:
+            view (Union[PySide6.QtCharts.QChartView, PySide6.QtWidgets.QGraphicsView]): Un view dont la taille doit être changer.
+        &#34;&#34;&#34;
+
+        view.resize(self.getViewSize())
+
+    def initUI(self) -&gt; None:
+        &#34;&#34;&#34;Initialise un layout et UI. Initialise la partie d&#39;interface correspondant aux sondages
+        uniquement si nécessaire. Initialise un widget pour afficher la carte politique.&#34;&#34;&#34;
+
+        self.layout = QGridLayout()
+        self.setLayout(self.layout)
+        self.layout.setSpacing(10)
+
+        if self.conduct_polls:
+            self.initPollsUI()
+
+        self.initTable()
+
+        self.map_image = MapImage(self.getViewSize())
+        self.map_image.closed.connect(self.toggleCheckbox)
+
+    def initPollsUI(self) -&gt; None:
+        &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant aux sondages.&#34;&#34;&#34;
+
+        # Nombre des sondages
+        self.nb_polls_conducted = 1
+
+        self.remaining_polls_label = QLabel(self)
+        self.remaining_polls_label.setStyleSheet(&#34;font-weight: bold&#34;)
+        self.remaining_polls_label.setText(
+            f&#34;Polls {self.nb_polls_conducted}/{self.election.nb_polls}&#34;
+        )
+
+        self.start_poll_btn = QPushButton(&#34;Apply new poll&#34;, self)
+
+        # Ajouter au layout (en haut)
+        self.layout.addWidget(
+            self.remaining_polls_label, 0, 0, Qt.AlignmentFlag.AlignHCenter
+        )
+        self.layout.addWidget(self.start_poll_btn, 0, 1, 1, 3)
+
+        # Désactiver le button si aucune règle du vote à 1 tour a été choisie
+        if not self.one_round_bool:
+            self.start_poll_btn.setEnabled(False)
+            return
+
+        # Faire une connection au slot uniquement si nécessaire
+        self.start_poll_btn.clicked.connect(partial(self.conductNewPoll))
+
+    def initTable(self) -&gt; None:
+        &#34;&#34;&#34;Initialise une partie d&#39;interface correpondante au tableau des résultats.&#34;&#34;&#34;
+
+        start_row = 1 if self.conduct_polls else 0
+
+        column_one_header = QLabel()
+        column_one_header.setText(&#34;Voting rule&#34;)
+        self.layout.addWidget(
+            column_one_header, start_row, 0, alignment=Qt.AlignHCenter
+        )
+        column_one_header.setStyleSheet(&#34;font-weight: bold&#34;)
+
+        column_two_header = QLabel()
+        column_two_header.setText(&#34;Winner&#34;)
+        self.layout.addWidget(
+            column_two_header, start_row, 1, alignment=Qt.AlignHCenter
+        )
+        column_two_header.setStyleSheet(&#34;font-weight: bold&#34;)
+
+        column_three_header = QLabel()
+        column_three_header.setText(&#34;Satisfaction&#34;)
+        self.layout.addWidget(
+            column_three_header, start_row, 2, alignment=Qt.AlignHCenter
+        )
+        column_three_header.setStyleSheet(&#34;font-weight: bold&#34;)
+
+        self.checkbox_map = QCheckBox(&#34;Show quadrant map&#34;, parent=self)
+        self.checkbox_map.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.checkbox_map.stateChanged.connect(self.toggleMapImage)
+        self.layout.addWidget(
+            self.checkbox_map, start_row, 3, Qt.AlignRight | Qt.AlignVCenter
+        )
+
+        for row, voting_rule in enumerate(self.election.results, start=start_row + 1):
+            # Create label with name to find it later with findChild if necessary
+            label_voting_rule = QLabel(parent=self)
+            label_winner = QLabel(parent=self)
+            label_satisfaction = QLabel(parent=self)
+
+            show_btn = QPushButton(parent=self)
+
+            # Connect buttons to emitting signals
+            if voting_rule in {VotingRulesConstants.CONDORCET_SIMPLE, VotingRulesConstants.CONDORCET_COPELAND}:
+                show_btn.clicked.connect(partial(self.showDirectedGraph, voting_rule, False))
+                show_btn.setText(&#34;Show graph&#34;)
+
+            elif voting_rule == VotingRulesConstants.CONDORCET_SIMPSON:
+                show_btn.clicked.connect(partial(self.showDirectedGraph, voting_rule, True))
+                show_btn.setText(&#34;Show graph&#34;)
+
+            else:
+                show_btn.clicked.connect(partial(self.showChart, voting_rule))
+                show_btn.setText(&#34;Show chart&#34;)
+
+            label_voting_rule.setText(VotingRulesConstants.UI[voting_rule])
+
+            self.sig_poll_conducted.connect(
+                partial(
+                    self.setResultsLabel, label_winner, label_satisfaction, voting_rule
+                )
+            )
+            self.setResultsLabel(label_winner, label_satisfaction, voting_rule)
+
+            self.layout.addWidget(label_voting_rule, row,
+                                  0, alignment=Qt.AlignHCenter)
+            self.layout.addWidget(label_winner, row, 1,
+                                  alignment=Qt.AlignHCenter)
+            self.layout.addWidget(label_satisfaction, row,
+                                  2, alignment=Qt.AlignHCenter)
+
+            self.layout.addWidget(show_btn, row, 3, alignment=Qt.AlignHCenter)
+
+    @ Slot(QLabel, QLabel, str)
+    def setResultsLabel(self, winner_label: QLabel, satisf_label: QLabel, voting_rule: str) -&gt; None:
+        &#34;&#34;&#34;Change le texte des labels qui affichent le nom du gagnant et le taux de satisfaction.
+        Utile pour les sondages quand le gagnant d&#39;une élection peut changer.
+        Appelée à chaque fois  qu&#39;un nouveau sondage a été effectuée et un signal `sig_poll_conducted` a été émis.
+
+        Args:
+            winner_label (PySide6.QtWidgets.QLabel): Un label qui afficher le nom du gagnant.
+            satisf_label (PySide6.QtWidgets.QLabel): Un label qui afficher le taux de satisfaction.
+            voting_rule (str): Une constante associée à une règle du vote.
+        &#34;&#34;&#34;
+
+        winner = self.election.choose_winner(voting_rule)
+        # None peut arriver dans un Condorcet simple
+        if winner is None:
+            winner_label.setText(&#34;No winner&#34;)
+            satisf_label.setText(&#34;---&#34;)
+        else:
+            winner_label.setText(f&#34;{winner.first_name} {winner.last_name}&#34;)
+            satisfaction = self.election.calc_satisfaction(winner)
+            satisf_label.setText(f&#34;{satisfaction:.2f}&#34;)
+
+    @ Slot()
+    def conductNewPoll(self) -&gt; None:
+        &#34;&#34;&#34;Effectue un nouveau sondage. Désactive un button qui permet de lancer un sondage
+        si la limite des sondages a été atteinte. Redessiner la carte politique. MAJ les textes des labels.
+        MAJ les données des charts.&#34;&#34;&#34;
+
+        # Effectuer une nouvelle sondage
+        self.election.conduct_poll()
+        # MAJ du nb des sondages
+        self.nb_polls_conducted += 1
+        # MAJ d&#39;une partie d&#39;interface correspondante au nb des sondages
+        self.remaining_polls_label.setText(
+            f&#34;Polls {self.nb_polls_conducted}/{self.election.nb_polls}&#34;
+        )
+        # Désactiver le button si limite
+        if self.nb_polls_conducted == self.election.nb_polls:
+            self.start_poll_btn.setEnabled(False)
+
+        # Redéssiner la carte politique
+        self.map_image.update()
+        # MAJ des labels
+        self.sig_poll_conducted.emit()
+
+        # Changer les données dans le chart correspondant
+        if self.charts_view:
+            self.charts_view.sig_poll_conducted.emit(
+                self.election.poll_voting_rule)
+
+    @ Slot(int)
+    def toggleMapImage(self, state: int) -&gt; None:
+        &#34;&#34;&#34;Affiche ou cache la carte politique lorsqu&#39;un `checkbox_map` est coché ou décoché.
+
+        Args:
+            state (int): L&#39;état du checkbox (0 si décoché, en entier positif si coché).
+        &#34;&#34;&#34;
+
+        if state and (not self.map_image.isVisible()):
+            self.map_image.show()
+        elif (not state) and self.map_image.isVisible():
+            self.map_image.close()
+
+    @ Slot()
+    def toggleCheckbox(self) -&gt; None:
+        &#34;&#34;&#34;Désactive un `checkbox_map` si la carte politique a été fermée.&#34;&#34;&#34;
+
+        self.checkbox_map.setChecked(False)
+
+    @ Slot(str)
+    def showChart(self, voting_rule: str) -&gt; None:
+        &#34;&#34;&#34;Affiche le de diagramme à bandes correspondant à une règle de vote donnée.
+
+        Args:
+            voting_rule (str): Une constante associée à une règle du vote à un ou plusieurs tours
+            dont un diagramme à bandes il faut afficher.
+        &#34;&#34;&#34;
+
+        self.sig_show_chart.emit(voting_rule)
+
+    @ Slot(bool)
+    def showDirectedGraph(self, voting_rule: str, weighted: Optional[bool] = False) -&gt; None:
+        &#34;&#34;&#34;Affiche le graphe correspondant à une règle de vote donnée (Condorcet-cohérente).
+
+        Args:
+            voting_rule (str): Une constante associée à une règle du vote Condorcet-cohérente dont le graphe 
+                il faut afficher.
+            weighted (Optional[bool]): si True, affiche le graphe orientés avec les poids (pour Simpson uniquement).
+                Si False, affiche le graphe orientés sans les poids. Default = False.
+        &#34;&#34;&#34;
+
+        if voting_rule not in self.graphs_scenes:
+            return
+
+        scene = self.graphs_scenes[voting_rule]
+        scene.drawGraphics(weighted)
+        self.graph_view.setScene(scene)
+        self.graph_view.show()
+
+    @ Slot()
+    def destroyChildren(self) -&gt; None:
+        &#34;&#34;&#34;Supprime les widget-enfants d&#39;un widget dont le parent à été remis à `None`.&#34;&#34;&#34;
+
+        self.map_image.deleteLater()
+        # Tous Condorcet
+        if self.graph_view:
+            self.graph_view.deleteLater()
+
+        # Tous 1 tour, plusieurs tours
+        if self.charts_view:
+            self.charts_view.deleteLater()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="graphics.widget_results.WidgetResults"><code class="flex name class">
+<span>class <span class="ident">WidgetResults</span></span>
+<span>(</span><span>parent: PySide6.QtWidgets.QWidget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Une classe qui représente la widget avec les résultats d'une élection,
+permet de voir les graphes et les diagrammes et de lancer les sondages.</p>
+<p>Initialise la taille des views nécessaires et UI.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>parent</code></strong> :&ensp;<code>PySide6.QtWidgets.QWidget</code></dt>
+<dd>Un parent d'un widget.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class WidgetResults(QWidget):
+    &#34;&#34;&#34;Une classe qui représente la widget avec les résultats d&#39;une élection,
+    permet de voir les graphes et les diagrammes et de lancer les sondages.&#34;&#34;&#34;
+
+    sig_show_chart = Signal(str)
+    &#34;&#34;&#34;Un signal émis lorsqu&#39;il faut de changer un diagramme à bandes avec une visualisation des diagrammes visibles.&#34;&#34;&#34;
+
+    sig_poll_conducted = Signal()
+    &#34;&#34;&#34;Un signal émis lorsqu&#39;un nouveau sondage a été effectué.&#34;&#34;&#34;
+
+    def __init__(self, parent: QWidget):
+        &#34;&#34;&#34;Initialise la taille des views nécessaires et UI.
+
+        Args:
+            parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
+        &#34;&#34;&#34;
+
+        super().__init__(parent)
+
+        self.election = Election()
+
+        self.setGeometry(0, 0, parent.width(), parent.height())
+
+        self.graph_view = None
+        self.charts_view = None
+
+        self.condorcet_bool, self.condorcet_set = self.condorcetChosen()
+        self.one_round_bool, self.one_round_set = self.oneRoundChosen()
+        self.multi_round_bool, self.multi_round_set = self.multiRoundChosen()
+
+        self.conduct_polls = False
+        if (self.election.nb_polls and (not self.condorcet_bool) and (not self.multi_round_bool)
+                and self.one_round_bool):
+            self.conduct_polls = True
+
+        self.initViews()
+        self.initUI()
+
+    def initViews(self) -&gt; None:
+        &#34;&#34;&#34;Initialise les views pour les diagrammes à bandes si au moins une règle de vote à 1 ou plusieurs tour a été choisie.
+        Initialise les views pour les graphes si au moins une règle de vote Condorcet-cohérente a été choisie.&#34;&#34;&#34;
+
+        if self.condorcet_bool:
+            # Un dictionnaire qui associe voting_rule : QGraphicsScene
+            self.graphs_scenes = dict()
+            self.initDirectedGraph(self.condorcet_set)
+
+        if self.one_round_bool or self.multi_round_bool:
+            self.initChartsView()
+
+        if self.one_round_bool:
+            self.charts_view.initOneRoundChart(self.one_round_set)
+
+        if self.multi_round_bool:
+            self.charts_view.initMultiRoundChart(self.multi_round_set)
+
+    def oneRoundChosen(self) -&gt; tuple[bool, Set[str]]:
+        &#34;&#34;&#34;Trouve les règles de vote à un tour choisies.
+
+        Returns:
+            tuple[bool, Set[str]]: un booléan True si au moins 1 règle de vote à 1 tour a été choisie (False sinon)
+                et un ensemble des constantes de telles règles de vote.
+        &#34;&#34;&#34;
+
+        intersect = VotingRulesConstants.ONE_ROUND &amp; self.election.results.keys()
+        return bool(intersect), intersect
+
+    def condorcetChosen(self) -&gt; tuple[bool, Set[str]]:
+        &#34;&#34;&#34;Trouve les règles de vote Condorcet-cohérentes choisies.
+
+        Returns:
+            tuple[bool, Set[str]]: un booléan True si au moins une règle de vote Condorcet-cohérente a été choisie (False sinon)
+                et un ensemble des constantes de telles règles de vote.
+        &#34;&#34;&#34;
+
+        intersect = VotingRulesConstants.CONDORCET &amp; self.election.results.keys()
+        return bool(intersect), intersect
+
+    def multiRoundChosen(self) -&gt; tuple[bool, Set[str]]:
+        &#34;&#34;&#34;Trouve les règles de vote à plusieurs tours choisies.
+
+        Returns:
+            tuple[bool, Set[str]]: un booléan True si au moins une règle de vote à plusieurs tours a été choisie (False sinon)
+                et un ensemble des constantes de telles règles de vote
+        &#34;&#34;&#34;
+
+        intersect = VotingRulesConstants.MULTI_ROUND &amp; self.election.results.keys()
+        return bool(intersect), intersect
+
+    def initDirectedGraph(self, condorcet_voting_rules: Set[str]) -&gt; None:
+        &#34;&#34;&#34;Initialise les `PySide6.QtWidgets.QGraphicsScene` et `PySide6.QtWidgets.QGraphicsView` pour afficher les résultats
+        des règles de vote Condorcet-cohérentes. Construit un dictionnaire du type `Dict[str, PySide6.QtWidgets.QGraphicsScene]`
+        qui associe à chaque constante d&#39;une règle de vote Condorcet-cohérente un `QGraphicsScene`.
+
+        Args:
+            condorcet_voting_rules (Set[str]): Un ensemble des constantes des règles de vote Condorcet-cohérentes choisies.
+                N&#39;est pas vide.
+        &#34;&#34;&#34;
+
+        graph_scene = None
+
+        for voting_rule in condorcet_voting_rules:
+            graph_scene = DirectedGraph(self.getViewSize(), voting_rule, parent=self)
+            self.graphs_scenes[voting_rule] = graph_scene
+
+        self.graph_view = DirectedGraphView(graph_scene)
+        self.resizeView(self.graph_view)
+
+    def initChartsView(self) -&gt; None:
+        &#34;&#34;&#34;Initialise les `from PySide6.QtCharts.QChartView` pour afficher les résultats
+        des règles de vote à 1 ou plusieurs tours.&#34;&#34;&#34;
+
+        self.charts_view = ChartView()
+        self.resizeView(self.charts_view)
+
+        self.sig_show_chart.connect(self.charts_view.setChartBySig)
+
+    def getViewSize(self) -&gt; QSize:
+        &#34;&#34;&#34;Calcule la taille du view en fonction de la taille du parent d&#39;un widget.
+
+        Returns:
+            PySide6.QtCore.QSize: La taille du view.
+        &#34;&#34;&#34;
+
+        return QSize(self.parent().width() * 0.7, self.parent().height() * 0.7)
+
+    def resizeView(self, view: Union[QGraphicsView, QChartView]) -&gt; None:
+        &#34;&#34;&#34;Change la taille d&#39;un view donné.
+
+        Args:
+            view (Union[PySide6.QtCharts.QChartView, PySide6.QtWidgets.QGraphicsView]): Un view dont la taille doit être changer.
+        &#34;&#34;&#34;
+
+        view.resize(self.getViewSize())
+
+    def initUI(self) -&gt; None:
+        &#34;&#34;&#34;Initialise un layout et UI. Initialise la partie d&#39;interface correspondant aux sondages
+        uniquement si nécessaire. Initialise un widget pour afficher la carte politique.&#34;&#34;&#34;
+
+        self.layout = QGridLayout()
+        self.setLayout(self.layout)
+        self.layout.setSpacing(10)
+
+        if self.conduct_polls:
+            self.initPollsUI()
+
+        self.initTable()
+
+        self.map_image = MapImage(self.getViewSize())
+        self.map_image.closed.connect(self.toggleCheckbox)
+
+    def initPollsUI(self) -&gt; None:
+        &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant aux sondages.&#34;&#34;&#34;
+
+        # Nombre des sondages
+        self.nb_polls_conducted = 1
+
+        self.remaining_polls_label = QLabel(self)
+        self.remaining_polls_label.setStyleSheet(&#34;font-weight: bold&#34;)
+        self.remaining_polls_label.setText(
+            f&#34;Polls {self.nb_polls_conducted}/{self.election.nb_polls}&#34;
+        )
+
+        self.start_poll_btn = QPushButton(&#34;Apply new poll&#34;, self)
+
+        # Ajouter au layout (en haut)
+        self.layout.addWidget(
+            self.remaining_polls_label, 0, 0, Qt.AlignmentFlag.AlignHCenter
+        )
+        self.layout.addWidget(self.start_poll_btn, 0, 1, 1, 3)
+
+        # Désactiver le button si aucune règle du vote à 1 tour a été choisie
+        if not self.one_round_bool:
+            self.start_poll_btn.setEnabled(False)
+            return
+
+        # Faire une connection au slot uniquement si nécessaire
+        self.start_poll_btn.clicked.connect(partial(self.conductNewPoll))
+
+    def initTable(self) -&gt; None:
+        &#34;&#34;&#34;Initialise une partie d&#39;interface correpondante au tableau des résultats.&#34;&#34;&#34;
+
+        start_row = 1 if self.conduct_polls else 0
+
+        column_one_header = QLabel()
+        column_one_header.setText(&#34;Voting rule&#34;)
+        self.layout.addWidget(
+            column_one_header, start_row, 0, alignment=Qt.AlignHCenter
+        )
+        column_one_header.setStyleSheet(&#34;font-weight: bold&#34;)
+
+        column_two_header = QLabel()
+        column_two_header.setText(&#34;Winner&#34;)
+        self.layout.addWidget(
+            column_two_header, start_row, 1, alignment=Qt.AlignHCenter
+        )
+        column_two_header.setStyleSheet(&#34;font-weight: bold&#34;)
+
+        column_three_header = QLabel()
+        column_three_header.setText(&#34;Satisfaction&#34;)
+        self.layout.addWidget(
+            column_three_header, start_row, 2, alignment=Qt.AlignHCenter
+        )
+        column_three_header.setStyleSheet(&#34;font-weight: bold&#34;)
+
+        self.checkbox_map = QCheckBox(&#34;Show quadrant map&#34;, parent=self)
+        self.checkbox_map.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.checkbox_map.stateChanged.connect(self.toggleMapImage)
+        self.layout.addWidget(
+            self.checkbox_map, start_row, 3, Qt.AlignRight | Qt.AlignVCenter
+        )
+
+        for row, voting_rule in enumerate(self.election.results, start=start_row + 1):
+            # Create label with name to find it later with findChild if necessary
+            label_voting_rule = QLabel(parent=self)
+            label_winner = QLabel(parent=self)
+            label_satisfaction = QLabel(parent=self)
+
+            show_btn = QPushButton(parent=self)
+
+            # Connect buttons to emitting signals
+            if voting_rule in {VotingRulesConstants.CONDORCET_SIMPLE, VotingRulesConstants.CONDORCET_COPELAND}:
+                show_btn.clicked.connect(partial(self.showDirectedGraph, voting_rule, False))
+                show_btn.setText(&#34;Show graph&#34;)
+
+            elif voting_rule == VotingRulesConstants.CONDORCET_SIMPSON:
+                show_btn.clicked.connect(partial(self.showDirectedGraph, voting_rule, True))
+                show_btn.setText(&#34;Show graph&#34;)
+
+            else:
+                show_btn.clicked.connect(partial(self.showChart, voting_rule))
+                show_btn.setText(&#34;Show chart&#34;)
+
+            label_voting_rule.setText(VotingRulesConstants.UI[voting_rule])
+
+            self.sig_poll_conducted.connect(
+                partial(
+                    self.setResultsLabel, label_winner, label_satisfaction, voting_rule
+                )
+            )
+            self.setResultsLabel(label_winner, label_satisfaction, voting_rule)
+
+            self.layout.addWidget(label_voting_rule, row,
+                                  0, alignment=Qt.AlignHCenter)
+            self.layout.addWidget(label_winner, row, 1,
+                                  alignment=Qt.AlignHCenter)
+            self.layout.addWidget(label_satisfaction, row,
+                                  2, alignment=Qt.AlignHCenter)
+
+            self.layout.addWidget(show_btn, row, 3, alignment=Qt.AlignHCenter)
+
+    @ Slot(QLabel, QLabel, str)
+    def setResultsLabel(self, winner_label: QLabel, satisf_label: QLabel, voting_rule: str) -&gt; None:
+        &#34;&#34;&#34;Change le texte des labels qui affichent le nom du gagnant et le taux de satisfaction.
+        Utile pour les sondages quand le gagnant d&#39;une élection peut changer.
+        Appelée à chaque fois  qu&#39;un nouveau sondage a été effectuée et un signal `sig_poll_conducted` a été émis.
+
+        Args:
+            winner_label (PySide6.QtWidgets.QLabel): Un label qui afficher le nom du gagnant.
+            satisf_label (PySide6.QtWidgets.QLabel): Un label qui afficher le taux de satisfaction.
+            voting_rule (str): Une constante associée à une règle du vote.
+        &#34;&#34;&#34;
+
+        winner = self.election.choose_winner(voting_rule)
+        # None peut arriver dans un Condorcet simple
+        if winner is None:
+            winner_label.setText(&#34;No winner&#34;)
+            satisf_label.setText(&#34;---&#34;)
+        else:
+            winner_label.setText(f&#34;{winner.first_name} {winner.last_name}&#34;)
+            satisfaction = self.election.calc_satisfaction(winner)
+            satisf_label.setText(f&#34;{satisfaction:.2f}&#34;)
+
+    @ Slot()
+    def conductNewPoll(self) -&gt; None:
+        &#34;&#34;&#34;Effectue un nouveau sondage. Désactive un button qui permet de lancer un sondage
+        si la limite des sondages a été atteinte. Redessiner la carte politique. MAJ les textes des labels.
+        MAJ les données des charts.&#34;&#34;&#34;
+
+        # Effectuer une nouvelle sondage
+        self.election.conduct_poll()
+        # MAJ du nb des sondages
+        self.nb_polls_conducted += 1
+        # MAJ d&#39;une partie d&#39;interface correspondante au nb des sondages
+        self.remaining_polls_label.setText(
+            f&#34;Polls {self.nb_polls_conducted}/{self.election.nb_polls}&#34;
+        )
+        # Désactiver le button si limite
+        if self.nb_polls_conducted == self.election.nb_polls:
+            self.start_poll_btn.setEnabled(False)
+
+        # Redéssiner la carte politique
+        self.map_image.update()
+        # MAJ des labels
+        self.sig_poll_conducted.emit()
+
+        # Changer les données dans le chart correspondant
+        if self.charts_view:
+            self.charts_view.sig_poll_conducted.emit(
+                self.election.poll_voting_rule)
+
+    @ Slot(int)
+    def toggleMapImage(self, state: int) -&gt; None:
+        &#34;&#34;&#34;Affiche ou cache la carte politique lorsqu&#39;un `checkbox_map` est coché ou décoché.
+
+        Args:
+            state (int): L&#39;état du checkbox (0 si décoché, en entier positif si coché).
+        &#34;&#34;&#34;
+
+        if state and (not self.map_image.isVisible()):
+            self.map_image.show()
+        elif (not state) and self.map_image.isVisible():
+            self.map_image.close()
+
+    @ Slot()
+    def toggleCheckbox(self) -&gt; None:
+        &#34;&#34;&#34;Désactive un `checkbox_map` si la carte politique a été fermée.&#34;&#34;&#34;
+
+        self.checkbox_map.setChecked(False)
+
+    @ Slot(str)
+    def showChart(self, voting_rule: str) -&gt; None:
+        &#34;&#34;&#34;Affiche le de diagramme à bandes correspondant à une règle de vote donnée.
+
+        Args:
+            voting_rule (str): Une constante associée à une règle du vote à un ou plusieurs tours
+            dont un diagramme à bandes il faut afficher.
+        &#34;&#34;&#34;
+
+        self.sig_show_chart.emit(voting_rule)
+
+    @ Slot(bool)
+    def showDirectedGraph(self, voting_rule: str, weighted: Optional[bool] = False) -&gt; None:
+        &#34;&#34;&#34;Affiche le graphe correspondant à une règle de vote donnée (Condorcet-cohérente).
+
+        Args:
+            voting_rule (str): Une constante associée à une règle du vote Condorcet-cohérente dont le graphe 
+                il faut afficher.
+            weighted (Optional[bool]): si True, affiche le graphe orientés avec les poids (pour Simpson uniquement).
+                Si False, affiche le graphe orientés sans les poids. Default = False.
+        &#34;&#34;&#34;
+
+        if voting_rule not in self.graphs_scenes:
+            return
+
+        scene = self.graphs_scenes[voting_rule]
+        scene.drawGraphics(weighted)
+        self.graph_view.setScene(scene)
+        self.graph_view.show()
+
+    @ Slot()
+    def destroyChildren(self) -&gt; None:
+        &#34;&#34;&#34;Supprime les widget-enfants d&#39;un widget dont le parent à été remis à `None`.&#34;&#34;&#34;
+
+        self.map_image.deleteLater()
+        # Tous Condorcet
+        if self.graph_view:
+            self.graph_view.deleteLater()
+
+        # Tous 1 tour, plusieurs tours
+        if self.charts_view:
+            self.charts_view.deleteLater()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PySide6.QtWidgets.QWidget</li>
+<li>PySide6.QtCore.QObject</li>
+<li>PySide6.QtGui.QPaintDevice</li>
+<li>Shiboken.Object</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="graphics.widget_results.WidgetResults.staticMetaObject"><code class="name">var <span class="ident">staticMetaObject</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="graphics.widget_results.WidgetResults.condorcetChosen"><code class="name flex">
+<span>def <span class="ident">condorcetChosen</span></span>(<span>self) ‑> tuple[bool, typing.Set[str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trouve les règles de vote Condorcet-cohérentes choisies.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[bool, Set[str]]</code></dt>
+<dd>un booléan True si au moins une règle de vote Condorcet-cohérente a été choisie (False sinon)
+et un ensemble des constantes de telles règles de vote.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def condorcetChosen(self) -&gt; tuple[bool, Set[str]]:
+    &#34;&#34;&#34;Trouve les règles de vote Condorcet-cohérentes choisies.
+
+    Returns:
+        tuple[bool, Set[str]]: un booléan True si au moins une règle de vote Condorcet-cohérente a été choisie (False sinon)
+            et un ensemble des constantes de telles règles de vote.
+    &#34;&#34;&#34;
+
+    intersect = VotingRulesConstants.CONDORCET &amp; self.election.results.keys()
+    return bool(intersect), intersect</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.conductNewPoll"><code class="name flex">
+<span>def <span class="ident">conductNewPoll</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Effectue un nouveau sondage. Désactive un button qui permet de lancer un sondage
+si la limite des sondages a été atteinte. Redessiner la carte politique. MAJ les textes des labels.
+MAJ les données des charts.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def conductNewPoll(self) -&gt; None:
+    &#34;&#34;&#34;Effectue un nouveau sondage. Désactive un button qui permet de lancer un sondage
+    si la limite des sondages a été atteinte. Redessiner la carte politique. MAJ les textes des labels.
+    MAJ les données des charts.&#34;&#34;&#34;
+
+    # Effectuer une nouvelle sondage
+    self.election.conduct_poll()
+    # MAJ du nb des sondages
+    self.nb_polls_conducted += 1
+    # MAJ d&#39;une partie d&#39;interface correspondante au nb des sondages
+    self.remaining_polls_label.setText(
+        f&#34;Polls {self.nb_polls_conducted}/{self.election.nb_polls}&#34;
+    )
+    # Désactiver le button si limite
+    if self.nb_polls_conducted == self.election.nb_polls:
+        self.start_poll_btn.setEnabled(False)
+
+    # Redéssiner la carte politique
+    self.map_image.update()
+    # MAJ des labels
+    self.sig_poll_conducted.emit()
+
+    # Changer les données dans le chart correspondant
+    if self.charts_view:
+        self.charts_view.sig_poll_conducted.emit(
+            self.election.poll_voting_rule)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.destroyChildren"><code class="name flex">
+<span>def <span class="ident">destroyChildren</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Supprime les widget-enfants d'un widget dont le parent à été remis à <code>None</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def destroyChildren(self) -&gt; None:
+    &#34;&#34;&#34;Supprime les widget-enfants d&#39;un widget dont le parent à été remis à `None`.&#34;&#34;&#34;
+
+    self.map_image.deleteLater()
+    # Tous Condorcet
+    if self.graph_view:
+        self.graph_view.deleteLater()
+
+    # Tous 1 tour, plusieurs tours
+    if self.charts_view:
+        self.charts_view.deleteLater()</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.getViewSize"><code class="name flex">
+<span>def <span class="ident">getViewSize</span></span>(<span>self) ‑> PySide6.QtCore.QSize</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calcule la taille du view en fonction de la taille du parent d'un widget.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>PySide6.QtCore.QSize</code></dt>
+<dd>La taille du view.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getViewSize(self) -&gt; QSize:
+    &#34;&#34;&#34;Calcule la taille du view en fonction de la taille du parent d&#39;un widget.
+
+    Returns:
+        PySide6.QtCore.QSize: La taille du view.
+    &#34;&#34;&#34;
+
+    return QSize(self.parent().width() * 0.7, self.parent().height() * 0.7)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.initChartsView"><code class="name flex">
+<span>def <span class="ident">initChartsView</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialise les <code>from PySide6.QtCharts.QChartView</code> pour afficher les résultats
+des règles de vote à 1 ou plusieurs tours.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initChartsView(self) -&gt; None:
+    &#34;&#34;&#34;Initialise les `from PySide6.QtCharts.QChartView` pour afficher les résultats
+    des règles de vote à 1 ou plusieurs tours.&#34;&#34;&#34;
+
+    self.charts_view = ChartView()
+    self.resizeView(self.charts_view)
+
+    self.sig_show_chart.connect(self.charts_view.setChartBySig)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.initDirectedGraph"><code class="name flex">
+<span>def <span class="ident">initDirectedGraph</span></span>(<span>self, condorcet_voting_rules: Set[str]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialise les <code>PySide6.QtWidgets.QGraphicsScene</code> et <code>PySide6.QtWidgets.QGraphicsView</code> pour afficher les résultats
+des règles de vote Condorcet-cohérentes. Construit un dictionnaire du type <code>Dict[str, PySide6.QtWidgets.QGraphicsScene]</code>
+qui associe à chaque constante d'une règle de vote Condorcet-cohérente un <code>QGraphicsScene</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>condorcet_voting_rules</code></strong> :&ensp;<code>Set[str]</code></dt>
+<dd>Un ensemble des constantes des règles de vote Condorcet-cohérentes choisies.
+N'est pas vide.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initDirectedGraph(self, condorcet_voting_rules: Set[str]) -&gt; None:
+    &#34;&#34;&#34;Initialise les `PySide6.QtWidgets.QGraphicsScene` et `PySide6.QtWidgets.QGraphicsView` pour afficher les résultats
+    des règles de vote Condorcet-cohérentes. Construit un dictionnaire du type `Dict[str, PySide6.QtWidgets.QGraphicsScene]`
+    qui associe à chaque constante d&#39;une règle de vote Condorcet-cohérente un `QGraphicsScene`.
+
+    Args:
+        condorcet_voting_rules (Set[str]): Un ensemble des constantes des règles de vote Condorcet-cohérentes choisies.
+            N&#39;est pas vide.
+    &#34;&#34;&#34;
+
+    graph_scene = None
+
+    for voting_rule in condorcet_voting_rules:
+        graph_scene = DirectedGraph(self.getViewSize(), voting_rule, parent=self)
+        self.graphs_scenes[voting_rule] = graph_scene
+
+    self.graph_view = DirectedGraphView(graph_scene)
+    self.resizeView(self.graph_view)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.initPollsUI"><code class="name flex">
+<span>def <span class="ident">initPollsUI</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialise la partie d'interface correspondant aux sondages.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initPollsUI(self) -&gt; None:
+    &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant aux sondages.&#34;&#34;&#34;
+
+    # Nombre des sondages
+    self.nb_polls_conducted = 1
+
+    self.remaining_polls_label = QLabel(self)
+    self.remaining_polls_label.setStyleSheet(&#34;font-weight: bold&#34;)
+    self.remaining_polls_label.setText(
+        f&#34;Polls {self.nb_polls_conducted}/{self.election.nb_polls}&#34;
+    )
+
+    self.start_poll_btn = QPushButton(&#34;Apply new poll&#34;, self)
+
+    # Ajouter au layout (en haut)
+    self.layout.addWidget(
+        self.remaining_polls_label, 0, 0, Qt.AlignmentFlag.AlignHCenter
+    )
+    self.layout.addWidget(self.start_poll_btn, 0, 1, 1, 3)
+
+    # Désactiver le button si aucune règle du vote à 1 tour a été choisie
+    if not self.one_round_bool:
+        self.start_poll_btn.setEnabled(False)
+        return
+
+    # Faire une connection au slot uniquement si nécessaire
+    self.start_poll_btn.clicked.connect(partial(self.conductNewPoll))</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.initTable"><code class="name flex">
+<span>def <span class="ident">initTable</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialise une partie d'interface correpondante au tableau des résultats.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initTable(self) -&gt; None:
+    &#34;&#34;&#34;Initialise une partie d&#39;interface correpondante au tableau des résultats.&#34;&#34;&#34;
+
+    start_row = 1 if self.conduct_polls else 0
+
+    column_one_header = QLabel()
+    column_one_header.setText(&#34;Voting rule&#34;)
+    self.layout.addWidget(
+        column_one_header, start_row, 0, alignment=Qt.AlignHCenter
+    )
+    column_one_header.setStyleSheet(&#34;font-weight: bold&#34;)
+
+    column_two_header = QLabel()
+    column_two_header.setText(&#34;Winner&#34;)
+    self.layout.addWidget(
+        column_two_header, start_row, 1, alignment=Qt.AlignHCenter
+    )
+    column_two_header.setStyleSheet(&#34;font-weight: bold&#34;)
+
+    column_three_header = QLabel()
+    column_three_header.setText(&#34;Satisfaction&#34;)
+    self.layout.addWidget(
+        column_three_header, start_row, 2, alignment=Qt.AlignHCenter
+    )
+    column_three_header.setStyleSheet(&#34;font-weight: bold&#34;)
+
+    self.checkbox_map = QCheckBox(&#34;Show quadrant map&#34;, parent=self)
+    self.checkbox_map.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+    self.checkbox_map.stateChanged.connect(self.toggleMapImage)
+    self.layout.addWidget(
+        self.checkbox_map, start_row, 3, Qt.AlignRight | Qt.AlignVCenter
+    )
+
+    for row, voting_rule in enumerate(self.election.results, start=start_row + 1):
+        # Create label with name to find it later with findChild if necessary
+        label_voting_rule = QLabel(parent=self)
+        label_winner = QLabel(parent=self)
+        label_satisfaction = QLabel(parent=self)
+
+        show_btn = QPushButton(parent=self)
+
+        # Connect buttons to emitting signals
+        if voting_rule in {VotingRulesConstants.CONDORCET_SIMPLE, VotingRulesConstants.CONDORCET_COPELAND}:
+            show_btn.clicked.connect(partial(self.showDirectedGraph, voting_rule, False))
+            show_btn.setText(&#34;Show graph&#34;)
+
+        elif voting_rule == VotingRulesConstants.CONDORCET_SIMPSON:
+            show_btn.clicked.connect(partial(self.showDirectedGraph, voting_rule, True))
+            show_btn.setText(&#34;Show graph&#34;)
+
+        else:
+            show_btn.clicked.connect(partial(self.showChart, voting_rule))
+            show_btn.setText(&#34;Show chart&#34;)
+
+        label_voting_rule.setText(VotingRulesConstants.UI[voting_rule])
+
+        self.sig_poll_conducted.connect(
+            partial(
+                self.setResultsLabel, label_winner, label_satisfaction, voting_rule
+            )
+        )
+        self.setResultsLabel(label_winner, label_satisfaction, voting_rule)
+
+        self.layout.addWidget(label_voting_rule, row,
+                              0, alignment=Qt.AlignHCenter)
+        self.layout.addWidget(label_winner, row, 1,
+                              alignment=Qt.AlignHCenter)
+        self.layout.addWidget(label_satisfaction, row,
+                              2, alignment=Qt.AlignHCenter)
+
+        self.layout.addWidget(show_btn, row, 3, alignment=Qt.AlignHCenter)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.initUI"><code class="name flex">
+<span>def <span class="ident">initUI</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialise un layout et UI. Initialise la partie d'interface correspondant aux sondages
+uniquement si nécessaire. Initialise un widget pour afficher la carte politique.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initUI(self) -&gt; None:
+    &#34;&#34;&#34;Initialise un layout et UI. Initialise la partie d&#39;interface correspondant aux sondages
+    uniquement si nécessaire. Initialise un widget pour afficher la carte politique.&#34;&#34;&#34;
+
+    self.layout = QGridLayout()
+    self.setLayout(self.layout)
+    self.layout.setSpacing(10)
+
+    if self.conduct_polls:
+        self.initPollsUI()
+
+    self.initTable()
+
+    self.map_image = MapImage(self.getViewSize())
+    self.map_image.closed.connect(self.toggleCheckbox)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.initViews"><code class="name flex">
+<span>def <span class="ident">initViews</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialise les views pour les diagrammes à bandes si au moins une règle de vote à 1 ou plusieurs tour a été choisie.
+Initialise les views pour les graphes si au moins une règle de vote Condorcet-cohérente a été choisie.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initViews(self) -&gt; None:
+    &#34;&#34;&#34;Initialise les views pour les diagrammes à bandes si au moins une règle de vote à 1 ou plusieurs tour a été choisie.
+    Initialise les views pour les graphes si au moins une règle de vote Condorcet-cohérente a été choisie.&#34;&#34;&#34;
+
+    if self.condorcet_bool:
+        # Un dictionnaire qui associe voting_rule : QGraphicsScene
+        self.graphs_scenes = dict()
+        self.initDirectedGraph(self.condorcet_set)
+
+    if self.one_round_bool or self.multi_round_bool:
+        self.initChartsView()
+
+    if self.one_round_bool:
+        self.charts_view.initOneRoundChart(self.one_round_set)
+
+    if self.multi_round_bool:
+        self.charts_view.initMultiRoundChart(self.multi_round_set)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.multiRoundChosen"><code class="name flex">
+<span>def <span class="ident">multiRoundChosen</span></span>(<span>self) ‑> tuple[bool, typing.Set[str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trouve les règles de vote à plusieurs tours choisies.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[bool, Set[str]]</code></dt>
+<dd>un booléan True si au moins une règle de vote à plusieurs tours a été choisie (False sinon)
+et un ensemble des constantes de telles règles de vote</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def multiRoundChosen(self) -&gt; tuple[bool, Set[str]]:
+    &#34;&#34;&#34;Trouve les règles de vote à plusieurs tours choisies.
+
+    Returns:
+        tuple[bool, Set[str]]: un booléan True si au moins une règle de vote à plusieurs tours a été choisie (False sinon)
+            et un ensemble des constantes de telles règles de vote
+    &#34;&#34;&#34;
+
+    intersect = VotingRulesConstants.MULTI_ROUND &amp; self.election.results.keys()
+    return bool(intersect), intersect</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.oneRoundChosen"><code class="name flex">
+<span>def <span class="ident">oneRoundChosen</span></span>(<span>self) ‑> tuple[bool, typing.Set[str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trouve les règles de vote à un tour choisies.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[bool, Set[str]]</code></dt>
+<dd>un booléan True si au moins 1 règle de vote à 1 tour a été choisie (False sinon)
+et un ensemble des constantes de telles règles de vote.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def oneRoundChosen(self) -&gt; tuple[bool, Set[str]]:
+    &#34;&#34;&#34;Trouve les règles de vote à un tour choisies.
+
+    Returns:
+        tuple[bool, Set[str]]: un booléan True si au moins 1 règle de vote à 1 tour a été choisie (False sinon)
+            et un ensemble des constantes de telles règles de vote.
+    &#34;&#34;&#34;
+
+    intersect = VotingRulesConstants.ONE_ROUND &amp; self.election.results.keys()
+    return bool(intersect), intersect</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.resizeView"><code class="name flex">
+<span>def <span class="ident">resizeView</span></span>(<span>self, view: Union[PySide6.QtWidgets.QGraphicsView, PySide6.QtCharts.QChartView]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change la taille d'un view donné.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>view</code></strong> :&ensp;<code>Union[PySide6.QtCharts.QChartView, PySide6.QtWidgets.QGraphicsView]</code></dt>
+<dd>Un view dont la taille doit être changer.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def resizeView(self, view: Union[QGraphicsView, QChartView]) -&gt; None:
+    &#34;&#34;&#34;Change la taille d&#39;un view donné.
+
+    Args:
+        view (Union[PySide6.QtCharts.QChartView, PySide6.QtWidgets.QGraphicsView]): Un view dont la taille doit être changer.
+    &#34;&#34;&#34;
+
+    view.resize(self.getViewSize())</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.setResultsLabel"><code class="name flex">
+<span>def <span class="ident">setResultsLabel</span></span>(<span>self, winner_label: PySide6.QtWidgets.QLabel, satisf_label: PySide6.QtWidgets.QLabel, voting_rule: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change le texte des labels qui affichent le nom du gagnant et le taux de satisfaction.
+Utile pour les sondages quand le gagnant d'une élection peut changer.
+Appelée à chaque fois
+qu'un nouveau sondage a été effectuée et un signal <code>sig_poll_conducted</code> a été émis.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>winner_label</code></strong> :&ensp;<code>PySide6.QtWidgets.QLabel</code></dt>
+<dd>Un label qui afficher le nom du gagnant.</dd>
+<dt><strong><code>satisf_label</code></strong> :&ensp;<code>PySide6.QtWidgets.QLabel</code></dt>
+<dd>Un label qui afficher le taux de satisfaction.</dd>
+<dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une constante associée à une règle du vote.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot(QLabel, QLabel, str)
+def setResultsLabel(self, winner_label: QLabel, satisf_label: QLabel, voting_rule: str) -&gt; None:
+    &#34;&#34;&#34;Change le texte des labels qui affichent le nom du gagnant et le taux de satisfaction.
+    Utile pour les sondages quand le gagnant d&#39;une élection peut changer.
+    Appelée à chaque fois  qu&#39;un nouveau sondage a été effectuée et un signal `sig_poll_conducted` a été émis.
+
+    Args:
+        winner_label (PySide6.QtWidgets.QLabel): Un label qui afficher le nom du gagnant.
+        satisf_label (PySide6.QtWidgets.QLabel): Un label qui afficher le taux de satisfaction.
+        voting_rule (str): Une constante associée à une règle du vote.
+    &#34;&#34;&#34;
+
+    winner = self.election.choose_winner(voting_rule)
+    # None peut arriver dans un Condorcet simple
+    if winner is None:
+        winner_label.setText(&#34;No winner&#34;)
+        satisf_label.setText(&#34;---&#34;)
+    else:
+        winner_label.setText(f&#34;{winner.first_name} {winner.last_name}&#34;)
+        satisfaction = self.election.calc_satisfaction(winner)
+        satisf_label.setText(f&#34;{satisfaction:.2f}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.showChart"><code class="name flex">
+<span>def <span class="ident">showChart</span></span>(<span>self, voting_rule: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Affiche le de diagramme à bandes correspondant à une règle de vote donnée.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une constante associée à une règle du vote à un ou plusieurs tours</dd>
+</dl>
+<p>dont un diagramme à bandes il faut afficher.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot(str)
+def showChart(self, voting_rule: str) -&gt; None:
+    &#34;&#34;&#34;Affiche le de diagramme à bandes correspondant à une règle de vote donnée.
+
+    Args:
+        voting_rule (str): Une constante associée à une règle du vote à un ou plusieurs tours
+        dont un diagramme à bandes il faut afficher.
+    &#34;&#34;&#34;
+
+    self.sig_show_chart.emit(voting_rule)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.showDirectedGraph"><code class="name flex">
+<span>def <span class="ident">showDirectedGraph</span></span>(<span>self, voting_rule: str, weighted: Optional[bool] = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Affiche le graphe correspondant à une règle de vote donnée (Condorcet-cohérente).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une constante associée à une règle du vote Condorcet-cohérente dont le graphe
+il faut afficher.</dd>
+<dt><strong><code>weighted</code></strong> :&ensp;<code>Optional[bool]</code></dt>
+<dd>si True, affiche le graphe orientés avec les poids (pour Simpson uniquement).
+Si False, affiche le graphe orientés sans les poids. Default = False.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot(bool)
+def showDirectedGraph(self, voting_rule: str, weighted: Optional[bool] = False) -&gt; None:
+    &#34;&#34;&#34;Affiche le graphe correspondant à une règle de vote donnée (Condorcet-cohérente).
+
+    Args:
+        voting_rule (str): Une constante associée à une règle du vote Condorcet-cohérente dont le graphe 
+            il faut afficher.
+        weighted (Optional[bool]): si True, affiche le graphe orientés avec les poids (pour Simpson uniquement).
+            Si False, affiche le graphe orientés sans les poids. Default = False.
+    &#34;&#34;&#34;
+
+    if voting_rule not in self.graphs_scenes:
+        return
+
+    scene = self.graphs_scenes[voting_rule]
+    scene.drawGraphics(weighted)
+    self.graph_view.setScene(scene)
+    self.graph_view.show()</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.sig_poll_conducted"><code class="name flex">
+<span>def <span class="ident">sig_poll_conducted</span></span>(<span>...)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.sig_show_chart"><code class="name flex">
+<span>def <span class="ident">sig_show_chart</span></span>(<span>...)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.toggleCheckbox"><code class="name flex">
+<span>def <span class="ident">toggleCheckbox</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Désactive un <code>checkbox_map</code> si la carte politique a été fermée.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot()
+def toggleCheckbox(self) -&gt; None:
+    &#34;&#34;&#34;Désactive un `checkbox_map` si la carte politique a été fermée.&#34;&#34;&#34;
+
+    self.checkbox_map.setChecked(False)</code></pre>
+</details>
+</dd>
+<dt id="graphics.widget_results.WidgetResults.toggleMapImage"><code class="name flex">
+<span>def <span class="ident">toggleMapImage</span></span>(<span>self, state: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Affiche ou cache la carte politique lorsqu'un <code>checkbox_map</code> est coché ou décoché.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>state</code></strong> :&ensp;<code>int</code></dt>
+<dd>L'état du checkbox (0 si décoché, en entier positif si coché).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@ Slot(int)
+def toggleMapImage(self, state: int) -&gt; None:
+    &#34;&#34;&#34;Affiche ou cache la carte politique lorsqu&#39;un `checkbox_map` est coché ou décoché.
+
+    Args:
+        state (int): L&#39;état du checkbox (0 si décoché, en entier positif si coché).
+    &#34;&#34;&#34;
+
+    if state and (not self.map_image.isVisible()):
+        self.map_image.show()
+    elif (not state) and self.map_image.isVisible():
+        self.map_image.close()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="graphics" href="index.html">graphics</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="graphics.widget_results.WidgetResults" href="#graphics.widget_results.WidgetResults">WidgetResults</a></code></h4>
+<ul class="two-column">
+<li><code><a title="graphics.widget_results.WidgetResults.condorcetChosen" href="#graphics.widget_results.WidgetResults.condorcetChosen">condorcetChosen</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.conductNewPoll" href="#graphics.widget_results.WidgetResults.conductNewPoll">conductNewPoll</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.destroyChildren" href="#graphics.widget_results.WidgetResults.destroyChildren">destroyChildren</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.getViewSize" href="#graphics.widget_results.WidgetResults.getViewSize">getViewSize</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.initChartsView" href="#graphics.widget_results.WidgetResults.initChartsView">initChartsView</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.initDirectedGraph" href="#graphics.widget_results.WidgetResults.initDirectedGraph">initDirectedGraph</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.initPollsUI" href="#graphics.widget_results.WidgetResults.initPollsUI">initPollsUI</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.initTable" href="#graphics.widget_results.WidgetResults.initTable">initTable</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.initUI" href="#graphics.widget_results.WidgetResults.initUI">initUI</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.initViews" href="#graphics.widget_results.WidgetResults.initViews">initViews</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.multiRoundChosen" href="#graphics.widget_results.WidgetResults.multiRoundChosen">multiRoundChosen</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.oneRoundChosen" href="#graphics.widget_results.WidgetResults.oneRoundChosen">oneRoundChosen</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.resizeView" href="#graphics.widget_results.WidgetResults.resizeView">resizeView</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.setResultsLabel" href="#graphics.widget_results.WidgetResults.setResultsLabel">setResultsLabel</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.showChart" href="#graphics.widget_results.WidgetResults.showChart">showChart</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.showDirectedGraph" href="#graphics.widget_results.WidgetResults.showDirectedGraph">showDirectedGraph</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.sig_poll_conducted" href="#graphics.widget_results.WidgetResults.sig_poll_conducted">sig_poll_conducted</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.sig_show_chart" href="#graphics.widget_results.WidgetResults.sig_show_chart">sig_show_chart</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.staticMetaObject" href="#graphics.widget_results.WidgetResults.staticMetaObject">staticMetaObject</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.toggleCheckbox" href="#graphics.widget_results.WidgetResults.toggleCheckbox">toggleCheckbox</a></code></li>
+<li><code><a title="graphics.widget_results.WidgetResults.toggleMapImage" href="#graphics.widget_results.WidgetResults.toggleMapImage">toggleMapImage</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

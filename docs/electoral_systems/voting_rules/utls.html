@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>electoral_systems.voting_rules.utls API documentation</title>
+<meta name="description" content="Un module qui fournit les fonctions auxiliaires nécessaires pour appliquer les différentes règles de vote.
+De plus, il permet de factoriser des …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>electoral_systems.voting_rules.utls</code></h1>
+</header>
+<section id="section-intro">
+<p>Un module qui fournit les fonctions auxiliaires nécessaires pour appliquer les différentes règles de vote.
+De plus, il permet de factoriser des algorithmes pour les règles de vote à plusieurs tours.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Un module qui fournit les fonctions auxiliaires nécessaires pour appliquer les différentes règles de vote.
+De plus, il permet de factoriser des algorithmes pour les règles de vote à plusieurs tours.&#34;&#34;&#34;
+
+from itertools import combinations, permutations
+from typing import Dict, List, Union, Optional
+
+from .tie import resolve_ties
+from people import Candidate, Elector
+
+# Pour une génération des docs uniquement
+__pdoc__ = {
+    &#39;_has_majority&#39;:True,
+    &#39;_simplify_duels&#39;:True,
+    &#39;_set_score_round&#39;:True,
+    &#39;_choose_next_cand&#39;:True,
+}
+
+duels_type = Dict[tuple[Candidate, Candidate], int]
+&#34;&#34;&#34;Un type des données des duels entre les candidat.&#34;&#34;&#34;
+
+def init_scores(candidates: List[Candidate], voting_rule: str,
+                new_score: Union[int, float, List[int]], list_type: Optional[bool] = False) -&gt; None:
+    &#34;&#34;&#34;Initialise les scores avec `new_score`de tous les candidats `candidates` selon une règle de vote `voting_rule`.
+
+    Args:
+        candidates (List[people.candidate.Candidate]): Une liste des candidats dont il faut initialiser les scores.
+        voting_rule (str): Une constante associée à une règle de vote.
+        new_score (Union[int, float, List[int]): Un nouveau score. Peut être une liste, dans ce cas l&#39;initialisation passera
+            par `deepcopy`.
+        list_type (Optional[bool]): Un booléan pour indiquer si le type de `new_score` est une liste et s&#39;il faut passer par `deepcopy`.
+    &#34;&#34;&#34;
+
+    for candidate in candidates:
+        candidate.init_score(voting_rule, new_score, list_type)
+
+
+def sort_cand_by_value(candidates: List[Candidate], voting_rule: str, nb_electors: int,
+                       duels: duels_type = None, scores_asc: bool = False) -&gt; List[Candidate]:
+    &#34;&#34;&#34;Trie les candidats `candidates` selon leurs score selon une règle de vote `voting_rule`. Utiliser uniquement 
+    pour les règles du vote à 1 tour ou Condorcet-cohérentes.
+    S&#39;il existe une égalité des scores trier par l&#39;ordre alphabétique des leurs prénoms et noms.
+    Si `duels` n&#39;est pas `None`, résoudre une égalité avec les duels.
+
+    Args:
+        candidates (List[people.candidate.Candidate]): Une liste des candidats qu&#39;il faut trier.
+        voting_rule (str): Une constante associée à une règle du vote.
+        nb_electors (int): Un nombre des électeurs qui participent dans une élection.
+        duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
+        que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
+        Default = `None`.
+        scores_asc (bool): Si True, trier par les scores de manière croissant, sinon de manière décroissant.
+
+    Returns:
+        List[people.candidate.Candidate]: Une liste des candidats triée et toutes les égalités résolues.
+    &#34;&#34;&#34;
+
+    lst = [(candidate, candidate.scores[voting_rule])
+           for candidate in candidates]
+
+    if not scores_asc:
+        ranking = [c for (c, _) in sorted(lst, key=lambda e: (-e[1], e[0]))]
+    else:
+        ranking = [c for (c, _) in sorted(lst, key=lambda e: (e[1], e[0]))]
+    if duels:
+        resolve_ties(ranking, nb_electors, voting_rule, duels)
+    return ranking
+
+
+def sort_cand_by_round(candidates: List[Candidate], voting_rule: str, round: int) -&gt; List[Candidate]:
+    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans le tour `round` dans une règle du vote `voting_rule`. Utiliser uniquement 
+    pour les règles du vote à plusieurs tours.
+    S&#39;il existe une égalité des scores trier par l&#39;ordre alphabétique des leurs prénoms et noms.
+    Si `duels` n&#39;est pas `None`, résoudre une égalité avec les duels.
+
+    Args:
+        candidates (List[people.candidate.Candidate]): Une liste des candidats qu&#39;il faut trier.
+        voting_rule (str): Une constante associée à une règle de vote.
+        round (int): Un tour d&#39;une règle de vote (commence à partir de 0)
+
+    Returns:
+        List[people.candidate.Candidate]: Une liste des candidats triée et toutes les égalités résolues.
+    &#34;&#34;&#34;
+    lst = [(candidate, candidate.scores[voting_rule][round]) for candidate in candidates]
+
+    ranking = [c for (c, _) in sorted(lst, key=lambda e: (-e[1], e[0]))]
+    return ranking
+
+
+def _has_majority(candidates_sorted: List[Candidate], nb_electors: int, voting_rule: str, round: int) -&gt; bool:
+    &#34;&#34;&#34;Vérifie si le candidat classé premier a la majorité absolue des votes dans une règle du vote `voting_rule`
+    dans le tour `round`. Utilisée uniquement pour les règles du vote à plusieurs tours.
+
+    Args:
+        candidates_sorted (List[people.candidate.Candidate]): Une liste des candidats triée.
+        nb_electors (int): Le nombre d&#39;électeurs qui participent à une élection.
+        voting_rule (str): Une constante associée à une règle du vote.
+        round (int): Un tour d&#39;une règle du vote  (commence à partir de 0).
+
+    Returns:
+        List[people.candidate.Candidate]: True si le premier candidat a la majorité des votes, sinon False.
+    &#34;&#34;&#34;
+    return candidates_sorted[0].scores[voting_rule][round] &gt; nb_electors / 2
+
+
+def set_duels_scores(electors: List[Elector], candidates: List[Candidate]) -&gt; duels_type:
+    &#34;&#34;&#34;Calculee les duels et les scores pour chaque duels. 
+
+    Args:
+        electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
+        candidates (List[people.candidate.Candidate]): Une liste des candidats participant à une élection.
+    Returns:
+        electoral_systems.voting_rules.utls.duels_type: Un dictionnaire dont les clés sont des paires des candidats
+            (gagnant, perdant) et la valeur associé le nombre de fois que gagnant a battu perdant.
+            Si (candidat1, candidat2) dans un dictionnaire, alors (candidat2, candidat1) ne sera pas présent.
+            De plus, cela signifie que candidat1 a battu candidat2 plus de fois.
+            Cf. `_simplify_duels()` &lt;electoral_systems.voting_rules.utls._simplify_duels&gt;
+    &#34;&#34;&#34;
+
+    duels = {perm: 0 for perm in permutations(candidates, 2)}
+
+    for elector in electors:
+        pairs = combinations(elector.candidates_ranked, 2)
+        # combinations est inclus dans permutations -&gt; pas de KeyError
+        for fst, snd in pairs:
+            if (fst, snd) in duels:
+                duels[(fst, snd)] += elector.weight
+            elif (snd, fst) in duels:
+                duels[(snd, fst)] += elector.weight
+    duels_simple = _simplify_duels(duels)
+    return duels_simple
+
+
+def _simplify_duels(duels: duels_type) -&gt; duels_type:
+    &#34;&#34;&#34;Élimine les redondances d&#39;un dictionnaire des duels, i.e. si candidat1 a battu candidat2 plusieurs fois,
+    sauvegarde uniqument une clé (candidat1, candidat2) avec la valeur associé. 
+    Cf. `set_duels_scores()` &lt;electoral_systems.voting_rules.utls.set_duels_scores&gt;
+
+    Args:
+        duels (Utls.duels_type): Un dictionnaire des duels avec les redondances, i.e. les paires 
+        (candidat1, candidat2) et (candidat2, candidat1) sont présentes.
+
+    Returns:
+        Utls.duels_type: Un dictionnaire simplifié.
+    &#34;&#34;&#34;
+    duels_simplified = dict()
+    for c1, c2 in duels:
+        if (c1, c2) in duels_simplified or (c2, c1) in duels_simplified:
+            continue
+        if duels[(c1, c2)] &gt;= duels[(c2, c1)]:
+            duels_simplified[(c1, c2)] = duels[(c1, c2)]
+        else:
+            duels_simplified[(c2, c1)] = duels[(c2, c1)]
+    return duels_simplified
+
+
+def apply_voting_rule_rounds(electors: List[Elector], candidates: List[Candidate],
+                             voting_rule: str, max_rounds: int, elimination_index: int) -&gt; List[List[Candidate]]:
+    &#34;&#34;&#34;
+    Applique une régle de vote à plusieurs tours.
+
+    Args:
+        electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
+        candidates (List[people.candidate.Candidate]): Une liste des candidats participant à une élection.
+        voting_rule (str): Une constante associée à une règle du vote.
+        max_rounds (int): Le nombre des tours maximale qui peut exister dans une règle du vote.
+        elimination_index (int): Une indice pour couper les candidats (utilisé pour couper la liste).
+
+    Returns:
+        List[List[people.candidate.Candidate]]: Une liste des listes (classement dans l&#39;ordre décroissant) des candidats par tour.
+            La longueur de la liste correpond au nombre des tours effectués (peut être inférieur à `max_rounds`)
+    &#34;&#34;&#34;
+    init_scores(candidates, voting_rule, [0], True)
+    # Tour 0, initialisation
+    curr_round = 0
+    winners_backlog = [_set_score_round(electors, candidates, voting_rule, curr_round)]
+    majority_exists = _has_majority(winners_backlog[curr_round], len(electors), voting_rule, curr_round)
+
+    while (curr_round &lt; max_rounds - 1 and (not majority_exists)):
+        curr_round += 1
+
+        # Ajouter un slot pour un tour supplementaire
+        for candidate in candidates:
+            candidate.scores[voting_rule].extend([0])
+
+        cands_curr_round = winners_backlog[curr_round - 1][:elimination_index]
+
+        result_round = _set_score_round(electors, cands_curr_round, voting_rule, curr_round)
+
+        winners_backlog.append(result_round)
+        majority_exists = _has_majority(winners_backlog[curr_round], len(electors), voting_rule, curr_round)
+    return winners_backlog
+
+
+def _set_score_round(electors: List[Elector], remaining_candidates: List[Candidate],
+                     voting_rule: str, round: int) -&gt; List[Candidate]:
+    &#34;&#34;&#34;Ajoute le score pour chaque candidat qui participe encore à une élection. Utilisée pour les règles de vote
+    à plusieurs tours.
+
+    Args:
+        electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
+        remaining_candidates (List[people.candidate.Candidate]): Une liste des candidats qui encore participent à une élection.
+        voting_rule (str): Une constante associée à une règle du vote.
+        round (int): Un tour pour lequel il faut ajouter le score.
+
+    Returns:
+        List[people.candidate.Candidate]: Une liste (classement) des candidats triée dans l&#39;ordre décroissant dans le tour `round`.
+    &#34;&#34;&#34;
+
+    # Ajouter le score pour tout le monde
+    if round == 0:
+        for elector in electors:
+            elector.candidates_ranked[0].add_score_round(voting_rule, elector.weight, round)
+
+    else:
+        # Donner les scores pour les candidats restants
+        for elector in electors:
+            chosen_candidate = _choose_next_cand(elector, remaining_candidates)
+            chosen_candidate.add_score_round(voting_rule, elector.weight, round)
+    return sort_cand_by_round(remaining_candidates, voting_rule, round)
+
+
+def _choose_next_cand(elector: Elector, remaining_candidates: List[Candidate]) -&gt; Candidate:
+    &#34;&#34;&#34;Choisit un candidat qui participe encore à une élection selon les préférences d&#39;un électeur.
+    On choisit le premier candidat préféré d&#39;un électeur parmi les candidats dans `remaining_candidates`.
+    Utilisée pour les règle de vote à plusieurs tours.
+
+    Args:
+        elector (people.elector.Elector): Un électeur pour qui il faudra choisir un candidat restant.
+        remaining_candidates (List[people.candidate.Candidate]): Une liste des candidats qui encore participent dans une élection.
+
+    Returns:
+        people.candidate.Candidate: Un candidat choisi. Un électeur va voter pour lui.
+    &#34;&#34;&#34;
+
+    remaining_candidates_set = set(remaining_candidates)
+    index = 0
+    current_candidate = elector.candidates_ranked[index]
+
+    while index &lt; len(remaining_candidates) and (
+        current_candidate not in remaining_candidates_set
+    ):
+        index += 1
+        current_candidate = elector.candidates_ranked[index]
+
+    return current_candidate</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="electoral_systems.voting_rules.utls.duels_type"><code class="name">var <span class="ident">duels_type</span></code></dt>
+<dd>
+<div class="desc"><p>Un type des données des duels entre les candidat.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="electoral_systems.voting_rules.utls._choose_next_cand"><code class="name flex">
+<span>def <span class="ident">_choose_next_cand</span></span>(<span>elector: <a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>, remaining_candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]) ‑> <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Choisit un candidat qui participe encore à une élection selon les préférences d'un électeur.
+On choisit le premier candidat préféré d'un électeur parmi les candidats dans <code>remaining_candidates</code>.
+Utilisée pour les règle de vote à plusieurs tours.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>elector</code></strong> :&ensp;<code><a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a></code></dt>
+<dd>Un électeur pour qui il faudra choisir un candidat restant.</dd>
+<dt><strong><code>remaining_candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats qui encore participent dans une élection.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a></code></dt>
+<dd>Un candidat choisi. Un électeur va voter pour lui.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _choose_next_cand(elector: Elector, remaining_candidates: List[Candidate]) -&gt; Candidate:
+    &#34;&#34;&#34;Choisit un candidat qui participe encore à une élection selon les préférences d&#39;un électeur.
+    On choisit le premier candidat préféré d&#39;un électeur parmi les candidats dans `remaining_candidates`.
+    Utilisée pour les règle de vote à plusieurs tours.
+
+    Args:
+        elector (people.elector.Elector): Un électeur pour qui il faudra choisir un candidat restant.
+        remaining_candidates (List[people.candidate.Candidate]): Une liste des candidats qui encore participent dans une élection.
+
+    Returns:
+        people.candidate.Candidate: Un candidat choisi. Un électeur va voter pour lui.
+    &#34;&#34;&#34;
+
+    remaining_candidates_set = set(remaining_candidates)
+    index = 0
+    current_candidate = elector.candidates_ranked[index]
+
+    while index &lt; len(remaining_candidates) and (
+        current_candidate not in remaining_candidates_set
+    ):
+        index += 1
+        current_candidate = elector.candidates_ranked[index]
+
+    return current_candidate</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.voting_rules.utls._has_majority"><code class="name flex">
+<span>def <span class="ident">_has_majority</span></span>(<span>candidates_sorted: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], nb_electors: int, voting_rule: str, round: int) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Vérifie si le candidat classé premier a la majorité absolue des votes dans une règle du vote <code>voting_rule</code>
+dans le tour <code>round</code>. Utilisée uniquement pour les règles du vote à plusieurs tours.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>candidates_sorted</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats triée.</dd>
+<dt><strong><code>nb_electors</code></strong> :&ensp;<code>int</code></dt>
+<dd>Le nombre d'électeurs qui participent à une élection.</dd>
+<dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une constante associée à une règle du vote.</dd>
+<dt><strong><code>round</code></strong> :&ensp;<code>int</code></dt>
+<dd>Un tour d'une règle du vote
+(commence à partir de 0).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>True si le premier candidat a la majorité des votes, sinon False.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _has_majority(candidates_sorted: List[Candidate], nb_electors: int, voting_rule: str, round: int) -&gt; bool:
+    &#34;&#34;&#34;Vérifie si le candidat classé premier a la majorité absolue des votes dans une règle du vote `voting_rule`
+    dans le tour `round`. Utilisée uniquement pour les règles du vote à plusieurs tours.
+
+    Args:
+        candidates_sorted (List[people.candidate.Candidate]): Une liste des candidats triée.
+        nb_electors (int): Le nombre d&#39;électeurs qui participent à une élection.
+        voting_rule (str): Une constante associée à une règle du vote.
+        round (int): Un tour d&#39;une règle du vote  (commence à partir de 0).
+
+    Returns:
+        List[people.candidate.Candidate]: True si le premier candidat a la majorité des votes, sinon False.
+    &#34;&#34;&#34;
+    return candidates_sorted[0].scores[voting_rule][round] &gt; nb_electors / 2</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.voting_rules.utls._set_score_round"><code class="name flex">
+<span>def <span class="ident">_set_score_round</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], remaining_candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], voting_rule: str, round: int) ‑> List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ajoute le score pour chaque candidat qui participe encore à une élection. Utilisée pour les règles de vote
+à plusieurs tours.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dd>Une liste des électeurs participant à une élection.</dd>
+<dt><strong><code>remaining_candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats qui encore participent à une élection.</dd>
+<dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une constante associée à une règle du vote.</dd>
+<dt><strong><code>round</code></strong> :&ensp;<code>int</code></dt>
+<dd>Un tour pour lequel il faut ajouter le score.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste (classement) des candidats triée dans l'ordre décroissant dans le tour <code>round</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _set_score_round(electors: List[Elector], remaining_candidates: List[Candidate],
+                     voting_rule: str, round: int) -&gt; List[Candidate]:
+    &#34;&#34;&#34;Ajoute le score pour chaque candidat qui participe encore à une élection. Utilisée pour les règles de vote
+    à plusieurs tours.
+
+    Args:
+        electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
+        remaining_candidates (List[people.candidate.Candidate]): Une liste des candidats qui encore participent à une élection.
+        voting_rule (str): Une constante associée à une règle du vote.
+        round (int): Un tour pour lequel il faut ajouter le score.
+
+    Returns:
+        List[people.candidate.Candidate]: Une liste (classement) des candidats triée dans l&#39;ordre décroissant dans le tour `round`.
+    &#34;&#34;&#34;
+
+    # Ajouter le score pour tout le monde
+    if round == 0:
+        for elector in electors:
+            elector.candidates_ranked[0].add_score_round(voting_rule, elector.weight, round)
+
+    else:
+        # Donner les scores pour les candidats restants
+        for elector in electors:
+            chosen_candidate = _choose_next_cand(elector, remaining_candidates)
+            chosen_candidate.add_score_round(voting_rule, elector.weight, round)
+    return sort_cand_by_round(remaining_candidates, voting_rule, round)</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.voting_rules.utls._simplify_duels"><code class="name flex">
+<span>def <span class="ident">_simplify_duels</span></span>(<span>duels: Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]) ‑> Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Élimine les redondances d'un dictionnaire des duels, i.e. si candidat1 a battu candidat2 plusieurs fois,
+sauvegarde uniqument une clé (candidat1, candidat2) avec la valeur associé.
+Cf. <code><a title="electoral_systems.voting_rules.utls.set_duels_scores" href="#electoral_systems.voting_rules.utls.set_duels_scores">set_duels_scores()</a></code> <electoral_systems.voting_rules.utls.set_duels_scores></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>duels</code></strong> :&ensp;<code>Utls.duels_type</code></dt>
+<dd>Un dictionnaire des duels avec les redondances, i.e. les paires </dd>
+</dl>
+<p>(candidat1, candidat2) et (candidat2, candidat1) sont présentes.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Utls.duels_type</code></dt>
+<dd>Un dictionnaire simplifié.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _simplify_duels(duels: duels_type) -&gt; duels_type:
+    &#34;&#34;&#34;Élimine les redondances d&#39;un dictionnaire des duels, i.e. si candidat1 a battu candidat2 plusieurs fois,
+    sauvegarde uniqument une clé (candidat1, candidat2) avec la valeur associé. 
+    Cf. `set_duels_scores()` &lt;electoral_systems.voting_rules.utls.set_duels_scores&gt;
+
+    Args:
+        duels (Utls.duels_type): Un dictionnaire des duels avec les redondances, i.e. les paires 
+        (candidat1, candidat2) et (candidat2, candidat1) sont présentes.
+
+    Returns:
+        Utls.duels_type: Un dictionnaire simplifié.
+    &#34;&#34;&#34;
+    duels_simplified = dict()
+    for c1, c2 in duels:
+        if (c1, c2) in duels_simplified or (c2, c1) in duels_simplified:
+            continue
+        if duels[(c1, c2)] &gt;= duels[(c2, c1)]:
+            duels_simplified[(c1, c2)] = duels[(c1, c2)]
+        else:
+            duels_simplified[(c2, c1)] = duels[(c2, c1)]
+    return duels_simplified</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.voting_rules.utls.apply_voting_rule_rounds"><code class="name flex">
+<span>def <span class="ident">apply_voting_rule_rounds</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], voting_rule: str, max_rounds: int, elimination_index: int) ‑> List[List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Applique une régle de vote à plusieurs tours.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dd>Une liste des électeurs participant à une élection.</dd>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats participant à une élection.</dd>
+<dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une constante associée à une règle du vote.</dd>
+<dt><strong><code>max_rounds</code></strong> :&ensp;<code>int</code></dt>
+<dd>Le nombre des tours maximale qui peut exister dans une règle du vote.</dd>
+<dt><strong><code>elimination_index</code></strong> :&ensp;<code>int</code></dt>
+<dd>Une indice pour couper les candidats (utilisé pour couper la liste).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]]</code></dt>
+<dd>Une liste des listes (classement dans l'ordre décroissant) des candidats par tour.
+La longueur de la liste correpond au nombre des tours effectués (peut être inférieur à <code>max_rounds</code>)</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def apply_voting_rule_rounds(electors: List[Elector], candidates: List[Candidate],
+                             voting_rule: str, max_rounds: int, elimination_index: int) -&gt; List[List[Candidate]]:
+    &#34;&#34;&#34;
+    Applique une régle de vote à plusieurs tours.
+
+    Args:
+        electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
+        candidates (List[people.candidate.Candidate]): Une liste des candidats participant à une élection.
+        voting_rule (str): Une constante associée à une règle du vote.
+        max_rounds (int): Le nombre des tours maximale qui peut exister dans une règle du vote.
+        elimination_index (int): Une indice pour couper les candidats (utilisé pour couper la liste).
+
+    Returns:
+        List[List[people.candidate.Candidate]]: Une liste des listes (classement dans l&#39;ordre décroissant) des candidats par tour.
+            La longueur de la liste correpond au nombre des tours effectués (peut être inférieur à `max_rounds`)
+    &#34;&#34;&#34;
+    init_scores(candidates, voting_rule, [0], True)
+    # Tour 0, initialisation
+    curr_round = 0
+    winners_backlog = [_set_score_round(electors, candidates, voting_rule, curr_round)]
+    majority_exists = _has_majority(winners_backlog[curr_round], len(electors), voting_rule, curr_round)
+
+    while (curr_round &lt; max_rounds - 1 and (not majority_exists)):
+        curr_round += 1
+
+        # Ajouter un slot pour un tour supplementaire
+        for candidate in candidates:
+            candidate.scores[voting_rule].extend([0])
+
+        cands_curr_round = winners_backlog[curr_round - 1][:elimination_index]
+
+        result_round = _set_score_round(electors, cands_curr_round, voting_rule, curr_round)
+
+        winners_backlog.append(result_round)
+        majority_exists = _has_majority(winners_backlog[curr_round], len(electors), voting_rule, curr_round)
+    return winners_backlog</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.voting_rules.utls.init_scores"><code class="name flex">
+<span>def <span class="ident">init_scores</span></span>(<span>candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], voting_rule: str, new_score: Union[int, float, List[int]], list_type: Optional[bool] = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialise les scores avec <code>new_score</code>de tous les candidats <code>candidates</code> selon une règle de vote <code>voting_rule</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats dont il faut initialiser les scores.</dd>
+<dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une constante associée à une règle de vote.</dd>
+<dt><strong><code>new_score</code></strong> :&ensp;<code>Union[int, float, List[int]</code></dt>
+<dd>Un nouveau score. Peut être une liste, dans ce cas l'initialisation passera
+par <code>deepcopy</code>.</dd>
+<dt><strong><code>list_type</code></strong> :&ensp;<code>Optional[bool]</code></dt>
+<dd>Un booléan pour indiquer si le type de <code>new_score</code> est une liste et s'il faut passer par <code>deepcopy</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def init_scores(candidates: List[Candidate], voting_rule: str,
+                new_score: Union[int, float, List[int]], list_type: Optional[bool] = False) -&gt; None:
+    &#34;&#34;&#34;Initialise les scores avec `new_score`de tous les candidats `candidates` selon une règle de vote `voting_rule`.
+
+    Args:
+        candidates (List[people.candidate.Candidate]): Une liste des candidats dont il faut initialiser les scores.
+        voting_rule (str): Une constante associée à une règle de vote.
+        new_score (Union[int, float, List[int]): Un nouveau score. Peut être une liste, dans ce cas l&#39;initialisation passera
+            par `deepcopy`.
+        list_type (Optional[bool]): Un booléan pour indiquer si le type de `new_score` est une liste et s&#39;il faut passer par `deepcopy`.
+    &#34;&#34;&#34;
+
+    for candidate in candidates:
+        candidate.init_score(voting_rule, new_score, list_type)</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.voting_rules.utls.set_duels_scores"><code class="name flex">
+<span>def <span class="ident">set_duels_scores</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]) ‑> Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculee les duels et les scores pour chaque duels. </p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dd>Une liste des électeurs participant à une élection.</dd>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats participant à une élection.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="electoral_systems.voting_rules.utls.duels_type" href="#electoral_systems.voting_rules.utls.duels_type">duels_type</a></code></dt>
+<dd>Un dictionnaire dont les clés sont des paires des candidats
+(gagnant, perdant) et la valeur associé le nombre de fois que gagnant a battu perdant.
+Si (candidat1, candidat2) dans un dictionnaire, alors (candidat2, candidat1) ne sera pas présent.
+De plus, cela signifie que candidat1 a battu candidat2 plus de fois.
+Cf. <code><a title="electoral_systems.voting_rules.utls._simplify_duels" href="#electoral_systems.voting_rules.utls._simplify_duels">_simplify_duels()</a></code> <electoral_systems.voting_rules.utls._simplify_duels></dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_duels_scores(electors: List[Elector], candidates: List[Candidate]) -&gt; duels_type:
+    &#34;&#34;&#34;Calculee les duels et les scores pour chaque duels. 
+
+    Args:
+        electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
+        candidates (List[people.candidate.Candidate]): Une liste des candidats participant à une élection.
+    Returns:
+        electoral_systems.voting_rules.utls.duels_type: Un dictionnaire dont les clés sont des paires des candidats
+            (gagnant, perdant) et la valeur associé le nombre de fois que gagnant a battu perdant.
+            Si (candidat1, candidat2) dans un dictionnaire, alors (candidat2, candidat1) ne sera pas présent.
+            De plus, cela signifie que candidat1 a battu candidat2 plus de fois.
+            Cf. `_simplify_duels()` &lt;electoral_systems.voting_rules.utls._simplify_duels&gt;
+    &#34;&#34;&#34;
+
+    duels = {perm: 0 for perm in permutations(candidates, 2)}
+
+    for elector in electors:
+        pairs = combinations(elector.candidates_ranked, 2)
+        # combinations est inclus dans permutations -&gt; pas de KeyError
+        for fst, snd in pairs:
+            if (fst, snd) in duels:
+                duels[(fst, snd)] += elector.weight
+            elif (snd, fst) in duels:
+                duels[(snd, fst)] += elector.weight
+    duels_simple = _simplify_duels(duels)
+    return duels_simple</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.voting_rules.utls.sort_cand_by_round"><code class="name flex">
+<span>def <span class="ident">sort_cand_by_round</span></span>(<span>candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], voting_rule: str, round: int) ‑> List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trier les candidats <code>candidates</code> selon leurs score dans le tour <code>round</code> dans une règle du vote <code>voting_rule</code>. Utiliser uniquement
+pour les règles du vote à plusieurs tours.
+S'il existe une égalité des scores trier par l'ordre alphabétique des leurs prénoms et noms.
+Si <code>duels</code> n'est pas <code>None</code>, résoudre une égalité avec les duels.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats qu'il faut trier.</dd>
+<dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une constante associée à une règle de vote.</dd>
+<dt><strong><code>round</code></strong> :&ensp;<code>int</code></dt>
+<dd>Un tour d'une règle de vote (commence à partir de 0)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats triée et toutes les égalités résolues.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sort_cand_by_round(candidates: List[Candidate], voting_rule: str, round: int) -&gt; List[Candidate]:
+    &#34;&#34;&#34;Trier les candidats `candidates` selon leurs score dans le tour `round` dans une règle du vote `voting_rule`. Utiliser uniquement 
+    pour les règles du vote à plusieurs tours.
+    S&#39;il existe une égalité des scores trier par l&#39;ordre alphabétique des leurs prénoms et noms.
+    Si `duels` n&#39;est pas `None`, résoudre une égalité avec les duels.
+
+    Args:
+        candidates (List[people.candidate.Candidate]): Une liste des candidats qu&#39;il faut trier.
+        voting_rule (str): Une constante associée à une règle de vote.
+        round (int): Un tour d&#39;une règle de vote (commence à partir de 0)
+
+    Returns:
+        List[people.candidate.Candidate]: Une liste des candidats triée et toutes les égalités résolues.
+    &#34;&#34;&#34;
+    lst = [(candidate, candidate.scores[voting_rule][round]) for candidate in candidates]
+
+    ranking = [c for (c, _) in sorted(lst, key=lambda e: (-e[1], e[0]))]
+    return ranking</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.voting_rules.utls.sort_cand_by_value"><code class="name flex">
+<span>def <span class="ident">sort_cand_by_value</span></span>(<span>candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], voting_rule: str, nb_electors: int, duels: Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int] = None, scores_asc: bool = False) ‑> List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trie les candidats <code>candidates</code> selon leurs score selon une règle de vote <code>voting_rule</code>. Utiliser uniquement
+pour les règles du vote à 1 tour ou Condorcet-cohérentes.
+S'il existe une égalité des scores trier par l'ordre alphabétique des leurs prénoms et noms.
+Si <code>duels</code> n'est pas <code>None</code>, résoudre une égalité avec les duels.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats qu'il faut trier.</dd>
+<dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Une constante associée à une règle du vote.</dd>
+<dt><strong><code>nb_electors</code></strong> :&ensp;<code>int</code></dt>
+<dd>Un nombre des électeurs qui participent dans une élection.</dd>
+<dt><strong><code>duels</code></strong> :&ensp;<code>Utls.duels_type</code></dt>
+<dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois</dd>
+<dt>que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s'il faut résoudre les égalités avec les duels.</dt>
+<dt>Default = <code>None</code>.</dt>
+<dt><strong><code>scores_asc</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Si True, trier par les scores de manière croissant, sinon de manière décroissant.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dd>Une liste des candidats triée et toutes les égalités résolues.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sort_cand_by_value(candidates: List[Candidate], voting_rule: str, nb_electors: int,
+                       duels: duels_type = None, scores_asc: bool = False) -&gt; List[Candidate]:
+    &#34;&#34;&#34;Trie les candidats `candidates` selon leurs score selon une règle de vote `voting_rule`. Utiliser uniquement 
+    pour les règles du vote à 1 tour ou Condorcet-cohérentes.
+    S&#39;il existe une égalité des scores trier par l&#39;ordre alphabétique des leurs prénoms et noms.
+    Si `duels` n&#39;est pas `None`, résoudre une égalité avec les duels.
+
+    Args:
+        candidates (List[people.candidate.Candidate]): Une liste des candidats qu&#39;il faut trier.
+        voting_rule (str): Une constante associée à une règle du vote.
+        nb_electors (int): Un nombre des électeurs qui participent dans une élection.
+        duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
+        que le candidat-gagnant a battu le candidat-perdant. Nécessaire uniquement s&#39;il faut résoudre les égalités avec les duels.
+        Default = `None`.
+        scores_asc (bool): Si True, trier par les scores de manière croissant, sinon de manière décroissant.
+
+    Returns:
+        List[people.candidate.Candidate]: Une liste des candidats triée et toutes les égalités résolues.
+    &#34;&#34;&#34;
+
+    lst = [(candidate, candidate.scores[voting_rule])
+           for candidate in candidates]
+
+    if not scores_asc:
+        ranking = [c for (c, _) in sorted(lst, key=lambda e: (-e[1], e[0]))]
+    else:
+        ranking = [c for (c, _) in sorted(lst, key=lambda e: (e[1], e[0]))]
+    if duels:
+        resolve_ties(ranking, nb_electors, voting_rule, duels)
+    return ranking</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="electoral_systems.voting_rules" href="index.html">electoral_systems.voting_rules</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="electoral_systems.voting_rules.utls.duels_type" href="#electoral_systems.voting_rules.utls.duels_type">duels_type</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="electoral_systems.voting_rules.utls._choose_next_cand" href="#electoral_systems.voting_rules.utls._choose_next_cand">_choose_next_cand</a></code></li>
+<li><code><a title="electoral_systems.voting_rules.utls._has_majority" href="#electoral_systems.voting_rules.utls._has_majority">_has_majority</a></code></li>
+<li><code><a title="electoral_systems.voting_rules.utls._set_score_round" href="#electoral_systems.voting_rules.utls._set_score_round">_set_score_round</a></code></li>
+<li><code><a title="electoral_systems.voting_rules.utls._simplify_duels" href="#electoral_systems.voting_rules.utls._simplify_duels">_simplify_duels</a></code></li>
+<li><code><a title="electoral_systems.voting_rules.utls.apply_voting_rule_rounds" href="#electoral_systems.voting_rules.utls.apply_voting_rule_rounds">apply_voting_rule_rounds</a></code></li>
+<li><code><a title="electoral_systems.voting_rules.utls.init_scores" href="#electoral_systems.voting_rules.utls.init_scores">init_scores</a></code></li>
+<li><code><a title="electoral_systems.voting_rules.utls.set_duels_scores" href="#electoral_systems.voting_rules.utls.set_duels_scores">set_duels_scores</a></code></li>
+<li><code><a title="electoral_systems.voting_rules.utls.sort_cand_by_round" href="#electoral_systems.voting_rules.utls.sort_cand_by_round">sort_cand_by_round</a></code></li>
+<li><code><a title="electoral_systems.voting_rules.utls.sort_cand_by_value" href="#electoral_systems.voting_rules.utls.sort_cand_by_value">sort_cand_by_value</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

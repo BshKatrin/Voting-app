@@ -11,22 +11,23 @@ from people import Candidate, Elector
 def apply_plurality_simple(electors: List[Elector], candidates: List[Candidate],
                            duels: Optional[duels_type] = None) -> List[Candidate]:
     """Applique la règle de vote *Pluralité à 1 tour*. Il n'est possible d'appliquer cette règle de vote que s'il existe au 
-    moins 2 candidats.
-    Principe d'une règle de vote *Pluralité à 1 tour*: 
-        - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
-        - Chaque candidat classé premier reçoit un point. Les scores des autres candidats ne changent pas.
-
+    moins 2 candidats.  
+    Principe d'une règle de vote *Pluralité à 1 tour*:  
+        - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.  
+        - Chaque candidat classé premier reçoit un point. Les scores des autres candidats ne changent pas.  
 
     Args:
         electors (List[people.elector.Elector]): Une liste de tous les électeurs participant à une élection.
             Leur liste `candidates_ranked` doit être remplie.
         candidates (List[people.candidate.Candidate]): Une liste de tous les candidats qui participent à une élection.
-        duels (Utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre des fois
-        que le candidat-gagnant a battu le candidat-perdant. Default = `None`.
+        duels (electoral_systems.voting_rules.utls.duels_type): Un dictionnaire qui associe à chaque duel des candidats
+            (gagnant, perdant) le nombre des fois que le candidat-gagnant a battu le candidat-perdant. Default = `None`.
+        
     Returns:
         List[people.candidate.Candidate]:  Une liste des candidats triés dans l'ordre décroissant selon leurs scores dans
             la règle de vote *Pluralité à 1 tour*
     """
+
     init_scores(candidates, PLURALITY_SIMPLE, 0)
     for elector in electors:
         elector.candidates_ranked[0].add_score(
@@ -36,11 +37,11 @@ def apply_plurality_simple(electors: List[Elector], candidates: List[Candidate],
 
 def apply_plurality_rounds(electors: List[Elector], candidates: List[Candidate]) -> List[List[Candidate]]:
     """Applique une règle de vote *Pluralité à 2 tours*. Il n'est possible d'appliquer cette règle du vote que s'il existe 
-    au moins 3 candidats.
-      Principe d'une règle de vote *Pluralité à 2 tours*: 
-        - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.
-        - Tour 1 : Chaque candidat classé premier reçoit un point, tandis que les scores des autres candidats restent inchangés.
-        - Tour 2: Ce tour commence si aucun candidat n'obtient la majorité absolue des votes au premier tour.
+    au moins 3 candidats.  
+    Principe d'une règle de vote *Pluralité à 2 tours*:   
+        - Chaque électeur doit placer tous les candidats selon ses préférences dans l'ordre décroissant.  
+        - Tour 1 : Chaque candidat classé premier reçoit un point, tandis que les scores des autres candidats restent inchangés.  
+        - Tour 2: Ce tour commence si aucun candidat n'obtient la majorité absolue des votes au premier tour.  
         Dans ce cas, les deux candidats ayant les scores les plus élevés passent au deuxième tour, tandis que les autres sont éliminés.
         Les électeurs classent alors ces deux candidats selon leurs préférences, en ordre décroissant.
         Comme au premier tour, le candidat classé premier reçoit 1 point, et le deuxième 0 point.
@@ -53,7 +54,7 @@ def apply_plurality_rounds(electors: List[Elector], candidates: List[Candidate])
 
     Returns:
         List[people.candidate.Candidate]: Une liste des listes (classement dans l'ordre décroissant) des candidats par tour. La longueur de la liste correpond
-        au nombre des tours effectués.
+            au nombre des tours effectués.
     """
 
     max_rounds = 2

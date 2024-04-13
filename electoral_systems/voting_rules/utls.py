@@ -7,8 +7,16 @@ from typing import Dict, List, Union, Optional
 from .tie import resolve_ties
 from people import Candidate, Elector
 
-duels_type = Dict[tuple[Candidate, Candidate], int]
+# Pour une génération des docs uniquement
+__pdoc__ = {
+    '_has_majority':True,
+    '_simplify_duels':True,
+    '_set_score_round':True,
+    '_choose_next_cand':True,
+}
 
+duels_type = Dict[tuple[Candidate, Candidate], int]
+"""Un type des données des duels entre les candidat."""
 
 def init_scores(candidates: List[Candidate], voting_rule: str,
                 new_score: Union[int, float, List[int]], list_type: Optional[bool] = False) -> None:
@@ -18,7 +26,7 @@ def init_scores(candidates: List[Candidate], voting_rule: str,
         candidates (List[people.candidate.Candidate]): Une liste des candidats dont il faut initialiser les scores.
         voting_rule (str): Une constante associée à une règle de vote.
         new_score (Union[int, float, List[int]): Un nouveau score. Peut être une liste, dans ce cas l'initialisation passera
-        par `deepcopy`.
+            par `deepcopy`.
         list_type (Optional[bool]): Un booléan pour indiquer si le type de `new_score` est une liste et s'il faut passer par `deepcopy`.
     """
 
@@ -101,11 +109,13 @@ def set_duels_scores(electors: List[Elector], candidates: List[Candidate]) -> du
         electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
         candidates (List[people.candidate.Candidate]): Une liste des candidats participant à une élection.
     Returns:
-        Utls.duels_type: Un dictionnaire dont les clés sont des paires des candidats (gagnant, perdant) et la
-        valeur associé le nombre de fois que gagnant a battu perdant. Si (candidat1, candidat2) dans un dictionnaire,
-        alors (candidat2, candidat1) ne sera pas présent. De plus, cela signifie que candidat1 a battu candidat2 plus de fois.
-        Cf. _simplify_duels() <electoral_systems.voting_rules.utls._simplify_duels>
+        electoral_systems.voting_rules.utls.duels_type: Un dictionnaire dont les clés sont des paires des candidats
+            (gagnant, perdant) et la valeur associé le nombre de fois que gagnant a battu perdant.
+            Si (candidat1, candidat2) dans un dictionnaire, alors (candidat2, candidat1) ne sera pas présent.
+            De plus, cela signifie que candidat1 a battu candidat2 plus de fois.
+            Cf. `_simplify_duels()` <electoral_systems.voting_rules.utls._simplify_duels>
     """
+
     duels = {perm: 0 for perm in permutations(candidates, 2)}
 
     for elector in electors:
@@ -123,7 +133,7 @@ def set_duels_scores(electors: List[Elector], candidates: List[Candidate]) -> du
 def _simplify_duels(duels: duels_type) -> duels_type:
     """Élimine les redondances d'un dictionnaire des duels, i.e. si candidat1 a battu candidat2 plusieurs fois,
     sauvegarde uniqument une clé (candidat1, candidat2) avec la valeur associé. 
-    Cf. set_duels_scores() <electoral_systems.voting_rules.utls.set_duels_scores>
+    Cf. `set_duels_scores()` <electoral_systems.voting_rules.utls.set_duels_scores>
 
     Args:
         duels (Utls.duels_type): Un dictionnaire des duels avec les redondances, i.e. les paires 
@@ -190,9 +200,9 @@ def _set_score_round(electors: List[Elector], remaining_candidates: List[Candida
         electors (List[people.elector.Elector]): Une liste des électeurs participant à une élection.
         remaining_candidates (List[people.candidate.Candidate]): Une liste des candidats qui encore participent à une élection.
         voting_rule (str): Une constante associée à une règle du vote.
-        rount (int): Un tour pour lequell il faut ajouter le score.
+        round (int): Un tour pour lequel il faut ajouter le score.
 
-    Returns
+    Returns:
         List[people.candidate.Candidate]: Une liste (classement) des candidats triée dans l'ordre décroissant dans le tour `round`.
     """
 
@@ -219,8 +229,9 @@ def _choose_next_cand(elector: Elector, remaining_candidates: List[Candidate]) -
         remaining_candidates (List[people.candidate.Candidate]): Une liste des candidats qui encore participent dans une élection.
 
     Returns:
-        people.candidate.Candidate]: Un candidat choisi. Un électeur va voter pour lui.
+        people.candidate.Candidate: Un candidat choisi. Un électeur va voter pour lui.
     """
+
     remaining_candidates_set = set(remaining_candidates)
     index = 0
     current_candidate = elector.candidates_ranked[index]

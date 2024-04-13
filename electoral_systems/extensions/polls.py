@@ -1,27 +1,10 @@
-"""Un module qui fournit les fonctionnalités nécessaires pour les sondages.
-
-Il est possible d'effectuer les sondages pour les règles de vote à 1 tour, i.e. 
-- Pluralité à 1 tour 
-- Borda 
-- Veto 
-- Approval
-
-Attributs:
-    Les constantes des clés d'un dictionnaire pour stocker les directions (aussi appelées les divisions) de la carte politique: 
-    - NE (str): Nord-est. 
-    - NW (str): Nord-ouest. 
-    - SE (str): Sud-est. 
-    - SW (str): Sud-ouest. 
-    - CENTER (str): Centre. 
-    Les coordonnées sont bornés entre -0.3 et 0.3. Les constantes des clés d'un dictionnaire pour stocker les données pour 
-    chaque direction de la carte politique: 
-    - AVG (str): Une position moyenne des électeurs. 
-    - STD_DEV (str): Un écart-type des positions des électeurs. 
-    - ELECTORS (str): Une liste des électeurs. 
-    - NB_CANDIDATES (str): Un nombre des candidats. 
-    - NB_ELECTORS (str): Un nombres des électeurs..
+"""Un module qui fournit les fonctionnalités nécessaires pour les sondages.  
+Il est possible d'effectuer les sondages pour les règles de vote à un tour:  
+- Pluralité à un tour  
+- Borda  
+- Veto  
+- Approval  
 """
-
 
 from math import sqrt
 from numpy import std
@@ -30,26 +13,43 @@ from typing import Union, List, Dict
 
 from people import Elector, Candidate
 
+# Pour une génération des docs uniquement
+__pdoc__ = {
+    '_get_default_direction_data' : True,
+}
 
 direction_data_type = Dict[str, Union[int, List[Elector], float, tuple[float, float]]]
-"Un type des données pour chaque direction de la carte politique."
+"Un type des données pour chaque direction (division) de la carte politique."
 
-AVG = "AVG"
-"""Valeur associée sera du type `tuple[float, float]`"""
-STD_DEV = "STD"
-"""Valeur associée sera du type `float`"""
-ELECTORS = "ELECS"
-"""Valeur associée sera du type `List[people.elector.Elector]`"""
-NB_CANDIDATES = "NBC"
-"""Valeur associée sera du type `int`"""
-NB_ELECTORS = "NBE"
-"""Valeur associée sera du type `int`"""
+AVG:str = "AVG"
+"""Une position moyenne des électeurs. Valeur associée sera du type `tuple[float, float]`."""
 
-NE = "NE"
+STD_DEV:str = "STD"
+"""Un écart-type des positions des électeurs. Valeur associée sera du type `float`."""
+
+ELECTORS:str = "ELECS"
+"""Une liste des électeurs. Valeur associée sera du type `List[people.elector.Elector]`."""
+
+NB_CANDIDATES:str = "NBC"
+"""Un nombre des candidats. Valeur associée sera du type `int`."""
+
+NB_ELECTORS:str = "NBE"
+"""Un nombres des électeurs. Valeur associée sera du type `int`."""
+
+NE:str = "NE"
+"""La direction (division) de la carte politique nord-est."""
+
 NW = "NW"
+"""La direction (division) de la carte politique nord-ouest."""
+
 SE = "SE"
+"""La direction (division) de la carte politique sud-est."""
+
 SW = "SW"
+"""La direction (division) de la carte politique sud-ouest."""
+
 CENTER = "CNT"
+"""La direction (division) de la carte politique centre. Le centre est le carré borné entre -0.3 et 0.3."""
 
 
 def calc_distance(point1: tuple[float, float], point2: tuple[float, float]) -> float:
@@ -59,8 +59,8 @@ def calc_distance(point1: tuple[float, float], point2: tuple[float, float]) -> f
         point1 (tuple[float, float]): Une position sur la carte politique dont chaque coordonée est bornée entre -1 et 1.
         point2 (tuple[float, float]): Une position sur la carte politique dont chaque coordonée est bornée entre -1 et 1.
 
-    Return:
-        float: une distance euclidienne.
+    Returns:
+        float: Une distance euclidienne.
     """
     x1, y1 = point1
     x2, y2 = point2
@@ -68,16 +68,14 @@ def calc_distance(point1: tuple[float, float], point2: tuple[float, float]) -> f
 
 
 def add_elector_data(directions_data: Dict[str, direction_data_type], new_elector: Elector) -> None:
-    """MAJ les données (AVG, NB_ELECTORS, ELECTORS) d'une case d'un dictionnaire selon la position d'un électeur. 
-    La valeur correspondante à AVG est remplie juste avec la somme. Un appel à la fonction set_avg_electors_positions() 
+    """MAJ les données (`AVG`, `NB_ELECTORS`, `ELECTORS`) d'une case d'un dictionnaire `directions_data` selon la position d'un électeur. 
+    La valeur correspondante à `AVG` est remplie juste avec la somme. Un appel à la fonction `set_avg_electors_positions`
     est nécessaire pour la division.
 
-
-
     Args:
-        directions_data Dict[str, direction_data_type]: Un dictionnaire qui stocke les données
-        pour chaque division de la carte politique
-        new_elector (people.elector.Elector): Un nouvel électeur dans une élection
+        directions_data (Dict[str, electoral_systems.extensions.polls.direction_data_type]): Un dictionnaire qui stocke
+            les données pour chaque division de la carte politique.
+        new_elector (people.elector.Elector): Un nouvel électeur dans une élection.
     """
 
     x, y = new_elector.position
@@ -97,12 +95,12 @@ def add_elector_data(directions_data: Dict[str, direction_data_type], new_electo
 
 
 def add_candidate_data(directions_data: Dict[str, direction_data_type], new_candidate: Candidate) -> None:
-    """MAJ les données (NB_CANDIDATES) d'une case d'un dictionnaire selon la position d'un électeur.
+    """MAJ les données (`NB_CANDIDATES`) d'une case d'un dictionnaire `directions_data` selon la position d'un électeur.
 
     Args:
-        directions_data (Dict[str, direction_data_type]): Un dictionnaire qui stocke les données pour 
-        chaque division de la carte politique
-        new_candidate (people.candidate.Candidate): Un nouveau candidat dans une élection
+        directions_data (Dict[str, electoral_systems.extensions.polls.direction_data_type]): Un dictionnaire qui stocke
+            les données pour chaque division de la carte politique.
+        new_candidate (people.candidate.Candidate): Un nouveau candidat dans une élection.
     """
 
     directions = {
@@ -117,33 +115,32 @@ def add_candidate_data(directions_data: Dict[str, direction_data_type], new_cand
 def get_default_directions_data() -> Dict[str, direction_data_type]:
     """Retourne un dictionnaire des dictionnaires dont chaque clé correpond à la division de la carte politique et 
     chaque valeur est un dictionnaire avec les données remis par défaut.
+
     Returns:
-        Dict[str, direction_data_type]
+        Dict[str, electoral_systems.extensions.polls.direction_data_type]
     """
+
     directions = {NE, NW, SE, SW, CENTER}
     directions_data = dict()
     for direction in directions:
-        directions_data[direction] = _get_default_direction_data(
-            direction)
+        directions_data[direction] = _get_default_direction_data()
     return directions_data
 
 
-def _get_default_direction_data(direction: str) -> direction_data_type:
+def _get_default_direction_data() -> direction_data_type:
     """Retourner un dictionnaire dont les clés correpond aux constantes
-    AVG, STD_DEV, NB_ELECTORS, ELECTORS, NB_CANDIDATES et les valeurs
-    sont remis aux valeurs par défaut, i.e.
-        - `AVG` -> (0, 0)
-        - `STD_DEV` -> 0
-        - `NB_ELECTORS` -> 0
-        - `ELECTORS` -> []
-        - `NB_CANDIDATES` -> 0
-
-    Args:
-        direction (str): Une constante correspondante à la direction pour laquelle il faut retourner un dictionnaire.
+    `AVG`, `STD_DEV`, `NB_ELECTORS`, `ELECTORS`, `NB_CANDIDATES` et les valeurs
+    sont remis aux valeurs par défaut:  
+        - `AVG` -> (0, 0)  
+        - `STD_DEV` -> 0  
+        - `NB_ELECTORS` -> 0  
+        - `ELECTORS` -> []  
+        - `NB_CANDIDATES` -> 0  
 
     Returns:
-        direction_data_type
+        electoral_systems.extensions.polls.direction_data_type: Un dictionnaire rempli avec les valeurs par défaut.
     """
+
     return {
         AVG: (0, 0),
         STD_DEV: 0,
@@ -154,14 +151,16 @@ def _get_default_direction_data(direction: str) -> direction_data_type:
 
 
 def in_center(position: tuple[float, float]) -> Union[str, None]:
-    """Retourne une constante correspondante au centre ssi la position donnée est dans le centre de la carte politique. Sinon, retourne None
+    """Retourne une constante correspondante au centre ssi la position donnée est dans le centre de la carte politique.
+        Sinon, retourne `None`
 
     Args:
         position (tuple[float, float]): Une position dont chaque coordonnée doit être bornée entre -1 et 1.
 
     Returns:
-        Union[str, None]: Une constante (`CENTER`) ou None.
+        Union[str, None]: Une constante `CENTER` ou `None`.
     """
+
     x, y = position
     if abs(x) < 0.3 and abs(y) < 0.3:
         return CENTER
@@ -177,6 +176,7 @@ def choose_direction(position: tuple[float, float]) -> str:
     Returns:
         str: Une constante correspondant à l'une des directions de la carte politque (`NE`, `SE`, `NW`, `SW`).
     """
+
     x, y = position
     if x > 0 and y > 0:
         return NE
@@ -192,7 +192,8 @@ def set_avg_electors_positions(directions_data: Dict[str, direction_data_type]) 
     """Définit la position moyenne des électeurs. Appele uniquement quand tous les électeurs ont été ajoutés.
 
     Args:
-        directions_data (Dict[str, direction_data_type]): Un dictionnaire qui stocke les données pour chaque division de la carte politique.
+        directions_data (Dict[str, electoral_systems.extensions.polls.direction_data_type]): Un dictionnaire
+            qui stocke les données pour chaque division de la carte politique.
     """
 
     for direction, data in directions_data.items():
@@ -206,11 +207,11 @@ def set_avg_electors_positions(directions_data: Dict[str, direction_data_type]) 
 def set_std_deviation(directions_data: Dict[str, direction_data_type], total_nb_electors: int) -> None:
     """Calcule l'écart-type des positions des électeurs pour chaque direction de la carte politique. 
     Remet à l'échelle le nombre des électeurs par rapport aux autres paramètres en divisant le nombre des 
-    électeurs dans chaque directions par total_nb_electors. Supprime les données stockées dans une liste 
-    des électeurs pour chaque direction. La fonction doit être appelée après la fonction set_avg_electors_positions()
+    électeurs dans chaque directions par `total_nb_electors`. Supprime les données stockées dans une liste 
+    des électeurs pour chaque direction. La fonction doit être appelée après la fonction `set_avg_electors_positions`.
 
     Args:
-        directions_data (Dict[str, direction_data_type]): Un dictionnaire qui stocke les données
+        directions_data (Dict[str, electoral_systems.extensions.polls.direction_data_type]): Un dictionnaire qui stocke les données
             pour chaque division de la carte politique.
         total_nb_electors (int): Le nombre d'électeurs qui participent dans une élection.
     """
@@ -237,8 +238,9 @@ def get_avg_directions_positions(directions_data: Dict[str, direction_data_type]
     """Retourne une liste des positions moyennes des directions dans `chosen_directions`
 
     Args:
-        directions_data (Dict[str, direction_data_type]): Un dictionnaire qui stocke les données pour chaque division de la carte politique.
-        chosen_directions (List[str)]): Une liste des constantes correspondantes aux directions
+        directions_data (Dict[str, electoral_systems.extensions.polls.direction_data_type]): Un dictionnaire
+            qui stocke les données pour chaque division de la carte politique.
+        chosen_directions (List[str]): Une liste des constantes correspondantes aux directions
 
     Returns:
         List[tuple[float, float]]: Une liste des positions moyennes.
@@ -251,17 +253,18 @@ def get_avg_directions_positions(directions_data: Dict[str, direction_data_type]
 
 
 def get_directions_scores(directions_data: Dict[str, direction_data_type], candidate: Candidate) -> Dict[str, float]:
-    """Attribue les scores à chaque direction. Le score est basé sur les données (AVG, STD_DEV, NB_ELECTORS, NB_CANDIDATES) 
+    """Attribue les scores à chaque direction. Le score est basé sur les données (`AVG`, `STD_DEV`, `NB_ELECTORS`, `NB_CANDIDATES`) 
     et la position d'un candidat candidate. Le score est calculé comme une somme pondérée. 
-    Le calcul est effectué de manière suivante pour chaque direction: 
-    - Calcule la distance entre la position d'un candidate avec AVG de la direction 
+    Le calcul est effectué de manière suivante pour chaque direction:  
+    - Calcule la distance entre la position d'un candidate avec AVG de la direction  
     - On cherche à minimiser la distance, l'écart-type, le nombre des candidates et de maximiser le nombre des électeurs 
-    (i.e. de minimiser sa valeur négative). 
-    - On attribue les poids : la distance -> 0.5, l'écart-type -> 0.2, le nombre des électeurs -> 0.2, le nombre des candidats -> 0.1 
-    - Calcule la somme pondérée avec ces paramètres.
-    Args:
-        directions_data (Dict[str, direction_data_type]): Un dictionnaire qui stocke les données pour chaque division de la carte politique.
+    (i.e. de minimiser sa valeur négative)  
+    - On attribue les poids : la distance -> 0.5, l'écart-type -> 0.2, le nombre des électeurs -> 0.2, le nombre des candidats -> 0.1  
+    - Calcule la somme pondérée avec ces paramètres.  
 
+    Args:
+        directions_data (Dict[str, electoral_systems.extensions.polls.direction_data_type]): Un dictionnaire
+            qui stocke les données pour chaque division de la carte politique.
         candidate (people.candidate.Candidate): Un candidat qui change sa position pour améliorer son score dans une élection.
 
     Returns:
@@ -289,12 +292,13 @@ def get_directions_scores(directions_data: Dict[str, direction_data_type], candi
 
 
 def choose_directions_by_scores(directions_scores: Dict[str, float]) -> List[tuple[str, float]]:
-    """Choisit les directions selon leurs scores de manière suivante: 
-    - Choisit toujours la direction qui le score minimal 
-    - Choisit les autres directions ssi l'écart entre le score minimal est suffisament petit.
+    """Choisit les directions selon leurs scores de manière suivante:  
+    - Choisit toujours la direction qui le score minimal  
+    - Choisit les autres directions ssi l'écart entre le score minimal est suffisament petit. 
 
     Args:
         directions_scores (Dict[str, float]): Un dictionnaire qui fait correpondondre une constante de la direction avec son score
+
     Returns:
         List[tuple[str, float]]: Une liste des directions et leurs scores choisies
     """
@@ -314,11 +318,12 @@ def choose_directions_by_scores(directions_scores: Dict[str, float]) -> List[tup
 
 def move_in_direction(directions_data: Dict[str, direction_data_type], candidate: Candidate, travel_dist: float) -> None:
     """Change la position d'un candidat candidate en bougeant vers la position moyenne des directions choisies 
-    (cf. choose_directions_by_scores() <electoral_systems.extensions.choose_directions_by_scores>). 
-    Le changement de la distance est donnée par travel_dist.
+    (cf. `choose_directions_by_scores`). 
+    Le changement de la distance est donnée par `travel_dist`.
 
     Args:
-        directions_data (Dict[str, direction_data_type]): Un dictionnaire qui stocke les données pour chaque division de la carte politique.
+        directions_data (Dict[str, electoral_systems.extensions.polls.direction_data_type]): Un dictionnaire
+            qui stocke les données pour chaque division de la carte politique.
         candidate (people.candidate.Candidate): Un candidat qui va bouger.
         travel_dist (float): Le taux de changement de la position d'un candidat (borné entre 0 et 1).
     """
@@ -337,23 +342,19 @@ def move_in_direction(directions_data: Dict[str, direction_data_type], candidate
     # Bouger la candidat vers les positions moyennes choisies
     candidate.move_to_avg(avg_positions, travel_dist)
 
-# Returns True iff candidate gives up
-
 
 def give_up(candidate: Candidate) -> bool:
-    """Retourne True ssi le candidat candidate décide d'abandonner une élection. C'est une vérification supplémentaire pour une alliance.
+    """Retourne `True` ssi le candidat candidate décide d'abandonner une élection.
+    C'est une vérification supplémentaire pour une alliance.
 
     Args:
         candidate (people.candidate.Candidate): Un candidat qui peut décider d'abandonner
+
     Returns:
-        bool: True si le candidat abandonne, False sinon.
+        bool: `True` si le candidat abandonne, `False` sinon.
     """
 
     return random() < 1 - candidate.dogmatism
-
-# Posssible allies is a sublist of candidate whose score is higher than that of a candidate
-# Function return True iff alliance is formed, we dont care with whom
-
 
 def alliance_formed(candidate: Candidate, possible_allies: List[Candidate]) -> bool:
     """Décide si le candidat candidate va former ou alliance ou pas. Une alliance peut être formée uniquement 
@@ -362,11 +363,12 @@ def alliance_formed(candidate: Candidate, possible_allies: List[Candidate]) -> b
 
     Args:
         candidate (people.candidate.Candidate): Un candidat qui considère une alliance
-        possible_allies:List[people.candidate.Candidate]: Une liste des candidats dont le score est plus élevés que celui d'un candidat
+        possible_allies (List[people.candidate.Candidate]): Une liste des candidats dont le score est plus élevés que celui d'un candidat
 
     Returns:
-        bool: True si le candidat a fait une alliance. False, sinon.
+        bool: `True` si le candidat a fait une alliance. Sinon, `False`.
     """
+
     for ally in possible_allies:
         dist = calc_distance(candidate.position, ally.position)
         if dist < 0.15:
@@ -376,19 +378,21 @@ def alliance_formed(candidate: Candidate, possible_allies: List[Candidate]) -> b
 
 def change_position_candidates(candidates: List[Candidate], winner: Candidate,
                                ranking: List[Candidate], directions_data: Dict[str, direction_data_type], travel_dist: float) -> None:
-    """Change les positions des candidats selon les résultats d'une élection.
-    Algorithme:
-        -Si le candidate gagne, il ne bouge pas. Sinon,
-        -Si le candidat est assez dogmatique, il peut bouger. Sinon,
-        -Si le candidat décide d'abandonner et qu'il trouve avec qui former une alliance, il sort de l'élection. Comme ça il transmet ses votes au candidat avec qui il a fait une alliance. Sinon,
-        -Si le candidat n'est pas très opposé aux autres candidats, il bouge vers la position du gagnant. Sinon,
-        -Le candidat bouge vers la direction selon les scores (cf. move_in_direction() )
+    """Change les positions des candidats selon les résultats d'une élection.  
+    **Algorithme**:  
+        -Si le candidate gagne, il ne bouge pas. Sinon,  
+        -Si le candidat est assez dogmatique, il est très probable qu'il décide ne pas bouger. Sinon,  
+        -Si le candidat décide d'abandonner et qu'il trouve avec qui former une alliance, il sort de l'élection.
+            Comme ça il transmet ses votes au candidat avec qui il a fait une alliance. Sinon,  
+        -Si le candidat n'est pas très opposé aux autres candidats, il bouge vers la position du gagnant. Sinon,  
+        -Le candidat bouge vers la direction selon les scores (cf. `move_in_direction`)
 
     Args:
         candidates (List[people.candidate.Candidate]): Une liste de tous les candidats participant encore à une élection.
         winner (people.candidate.Candidate): Le gagnant courant d'une élection.
         ranking (List[people.candidate.Candidate]): Une liste d'un placement courant des candidats.
-        directions_data (Dict[str, direction_data_type]): Un dictionnaire qui stocke les données pour chaque division de la carte politique.
+        directions_data (Dict[str, electoral_systems.extensions.polls.direction_data_type]): Un dictionnaire
+            qui stocke les données pour chaque division de la carte politique.
         travel_dist: Un taux de changement de la position d'un candidat (borné entre 0 et 1).
     """
     for i, candidate in enumerate(ranking):
@@ -398,7 +402,7 @@ def change_position_candidates(candidates: List[Candidate], winner: Candidate,
         # Un candidat très dogmatique préfére de ne pas bouger
         if random() < candidate.dogmatism:
             continue
-
+        # Alliance ?
         if give_up(candidate) and alliance_formed(candidate, ranking[:i]):
             candidates.remove(candidate)
             continue
@@ -411,23 +415,22 @@ def change_position_candidates(candidates: List[Candidate], winner: Candidate,
 
 
 def change_ranking_electors(electors: List[Elector], score_winner: int, voting_rule: str, approval_gap: float) -> None:
-    """Change les positions des électeurs selon les résultats d'une élection. 
-    - Plus le taux des connaissances est élevé, plus il est probable qu'un électeur va changer son placement. 
-    - Les candidats sont choisis dans une cercle dont le rayon maximale dépend du rayon utilisé dans la règle 
-    de vote Approval (cf. apply_approval() ). Ainsi, le rayon du cercle est inversement proportionnelle au 
-    taux des connaissances d'un électeur.
+    """Change les positions des électeurs selon les résultats d'une élection.  
+    - Plus le taux des connaissances est élevé, plus il est probable qu'un électeur va changer son placement.  
+    - Les candidats sont choisis dans une cercle dont le rayon maximale dépend du rayon utilisé dans la règle  
+    de vote par approbation. Ainsi, le rayon du cercle est inversement proportionnelle au taux des connaissances d'un électeur.  
 
-    Algorithme:
-        -Pour chaque candidat calcule le rapport entre son score et celui du gagnant.
-        -Choisit de manière aléatoire le candidat qu'il faut placer plus haut dans un placement selon ce rapport. 
-        Donc, plus le score du candidat est proche au celui du gagnant, plus il a de chance d'être placé le premier. 
-        Un électeur arrête de considérer les candidats qui se trouvent en dehors de son cercle ou qui sont 
-        placés plus bas que le gagnant actuel.
+    **Algorithme**:  
+        - Pour chaque candidat calculer le rapport entre son score et celui du gagnant.  
+        - Choisir de manière aléatoire le candidat qu'il faut placer plus haut dans un placement selon ce rapport.  
+            Donc, plus le score du candidat est proche au celui du gagnant, plus il a de chance d'être placé le premier. 
+            Un électeur arrête de considérer les candidats qui se trouvent en dehors de son cercle ou qui sont 
+            placés plus bas que le gagnant actuel.
     Args:
         electors (List[people.elector.Electors]): Une liste de tous les électeurs participant encore à une élection.
         score_winner (int): Le score du gagnant courant d'une élection.
         voting_rule (str): Une constante correpondante à la règle de vote pour laquelle le sondage est effectué.
-        approval_gap (float): Un rayon du cercle utilisée dans la règle de vote `APPROVAL`
+        approval_gap (float): Un rayon du cercle utilisée dans la règle de vote par approbation.
     """
 
     for elector in electors:
