@@ -315,7 +315,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot(list)
     def startElection(self, chosen_voting_rules: List[str]) -> None:
-        """Supprime le widget correpospondant à la carte politique, calcule les résultats d'une élection, 
+        """Supprime le widget correpondant à la carte politique, calcule les résultats d'une élection, 
         initialise le widget avec es résultats.
 
         Args:
