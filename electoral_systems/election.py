@@ -308,7 +308,10 @@ class Election(metaclass=Singleton):
         self.average_position_electors = (x_avg, y_avg)
 
     def _calc_proportion_satisfaction(self) -> None:
-        """Calcule le taux d'une satisfaction de la population."""
+        """Calcule le taux d'une satisfaction de la population.
+        
+        - calcule la distance maximale entre la position moyenne des electeurs et la position de chaque candidat et la stock dans self.proportion_satisfaction
+        """
 
         proportion = 0
         for candidate in self.candidates:
@@ -320,12 +323,17 @@ class Election(metaclass=Singleton):
 
     def calc_satisfaction(self, candidate: Candidate) -> float:
         """Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.
+        
+        - Calcule la distance du candidat par rapport a la position moyenne des electeurs
+        - Calcule la valeur absolue de la différence de cette distance moins la distance maximale (proportion_satisfaction)
+        - Calcule le pourcentage de satisfaction selon cette valeur absolue divisée par la valeur maximale (proportion_satisfaction)
+        - Renvoie ce pourcentage (plus la distance au point moyen est faible, plus le pourcentage sera élevé et inversement)
 
         Args:
             candidate (people.candidate.Candidate): Un candidat-gagnant.
 
         Returns:
-            float: Le pourcentage de la population.
+            float: Le pourcentage de satisfaction de la population.
         """
         diff = abs(
             self._calc_distance(candidate.position, self.average_position_electors)
