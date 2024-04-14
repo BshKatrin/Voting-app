@@ -71,4 +71,49 @@ Il est possible de passer par le protocol SSH ou HTTPS.
 
 ### Windows
 
+1. Installation de l'environnement virtuel
+
+`pip install virtualenv`
+
+2. Création de l'environnement virtuel dans le répertoire courant
+
+`virtualenv myenv`
+
+3. Modifier les accès aux exécutions de windows (le rétablir normalement avec `Set-ExecutionPolicy Restricted` après utilisation)
+
+- Lancer Windows powershell en administrateur
+- utiliser `Set-ExecutionPolicy RemoteSigned`
+
+4. Modifier le PATH du système dans les paramètres
+
+- Entrer dans 'modifier les variables d'environnement système' dans la recherche sur la touche windows
+- Entrer dans 'Variables d'environnement'
+- Cliquer sur 'path' dans 'variables système' 
+- Cliquer sur nouveau
+- Entrer le path recommendé par le système afin de pouvoir activer
+`C:\Users\...\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts`
+(attention ce path est différent pour chaque pc et utilisateur, celui présenté est un exemple)
+
+5. Activer l'environnement virtuel
+
+- Entrer dans le fichier \Scripts du répertoire de l'environnement virtuel 
+- `.\activate.bat`
+
+Si l'environnement a été bien activé, son nom entre les parathèses doit appraître au début de la ligne des commandes.
+
+6. Cloner le répo
+
+- Naviguer dans le répertoire où vous voulez stocker une application de vote.
+- Cloner le répo `git clone <lien_vers_répo>`
+
+Il est possible de passer par le protocol SSH ou HTTPS.
+
+7. Installer les prérequis selon `requirement.txt`
+
+`pip install -r requirements.txt`
+
+8. Lancer une application
+
+`python3 main.py`
+
 ## Utilisation (tutoriels)
