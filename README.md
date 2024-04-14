@@ -71,6 +71,14 @@ Il est possible de passer par le protocol SSH ou HTTPS.
 
 ### Windows
 
+## Installation de git
+
+1. Aller sur le site de Github et télécharger le fichier .exe pour windows
+
+2. Lancer ce fichier téléchargé
+
+## Installation et utilisation de l'environnement virtuel
+
 1. Installation de l'environnement virtuel
 
 `pip install virtualenv`
