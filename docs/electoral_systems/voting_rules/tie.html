@@ -104,7 +104,7 @@ def resolve_ties(ranking: List[Candidate], nb_electors: int, voting_rule: str, d
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="electoral_systems.voting_rules.tie.get_ties"><code class="name flex">
-<span>def <span class="ident">get_ties</span></span>(<span>ranking: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], voting_rule: str) ‑> List[List[int]]</span>
+<span>def <span class="ident">get_ties</span></span>(<span>ranking: List[people.candidate.Candidate], voting_rule: str) ‑> List[List[int]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Trouve toutes les égalités entre les candidats. Applicable uniquement pour des systèmes de vote à un tour.</p>
@@ -158,7 +158,7 @@ qui ont le même score.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.voting_rules.tie.resolve_ties"><code class="name flex">
-<span>def <span class="ident">resolve_ties</span></span>(<span>ranking: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], nb_electors: int, voting_rule: str, duels: Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]) ‑> None</span>
+<span>def <span class="ident">resolve_ties</span></span>(<span>ranking: List[people.candidate.Candidate], nb_electors: int, voting_rule: str, duels: Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Résoud toutes les égalités entre les candidats selon les duels. Le gagnant d'une égalité est un candidat

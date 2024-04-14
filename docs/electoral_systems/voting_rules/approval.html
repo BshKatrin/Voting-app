@@ -77,7 +77,7 @@ def apply_approval(electors: List[Elector], candidates: List[Candidate],
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="electoral_systems.voting_rules.approval.apply_approval"><code class="name flex">
-<span>def <span class="ident">apply_approval</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], gap: float, duels: Optional[Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]] = None) ‑> List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+<span>def <span class="ident">apply_approval</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], gap: float, duels: Optional[Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]] = None) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Applique la règle de vote Approbation. Il n'est possible d'appliquer cette règle de vote s'il existe
@@ -89,10 +89,10 @@ d'approbation d'un électeur. Un cercle d'approbation d'un électeur est un cerc
 gap + distance entre la position du candidat classé premier et celle d'un électeur.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[people.elector.Elector]</code></dt>
 <dd>Une liste de tous les électeurs participant à une élection.
 Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
-<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste de tous les candidats qui participent à une élection.</dd>
 <dt><strong><code>duels</code></strong> :&ensp;<code><a title="electoral_systems.voting_rules.utls.duels_type" href="utls.html#electoral_systems.voting_rules.utls.duels_type">duels_type</a></code></dt>
 <dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre de fois
@@ -100,7 +100,7 @@ que le candidat-gagnant a battu le candidat-perdant. Default = <code>None</code>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats triés dans l'ordre décroissant selon leurs score selon
 la règle de vote <em>Approbation</em>.</dd>
 </dl></div>

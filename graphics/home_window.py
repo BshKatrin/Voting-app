@@ -22,9 +22,6 @@ from .widget_results import WidgetResults
 
 from sqlite import ImportData, ExportData
 
-__pdoc__ = {
-    '__init__':False,
-}
 
 class HomeWindow(QMainWindow):
     """Un widget qui représente la fenêtre principale d'une application."""
@@ -150,7 +147,6 @@ class HomeWindow(QMainWindow):
             return
 
         connection = sqlite3.connect(db_file_path)
-
         success, msg = ImportData.import_people(connection, with_results)
         connection.close()
         if not success:

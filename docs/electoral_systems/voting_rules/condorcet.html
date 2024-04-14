@@ -128,7 +128,7 @@ def apply_condorcet_simpson(electors: List[Elector], candidates: List[Candidate]
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="electoral_systems.voting_rules.condorcet.apply_condorcet_copeland"><code class="name flex">
-<span>def <span class="ident">apply_condorcet_copeland</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], duels: Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]) ‑> List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+<span>def <span class="ident">apply_condorcet_copeland</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Applique la régle de vote <em>Copeland</em>. Il n'est possible d'appliquer cette règle de vote que s'il existe au moins 2 candidats.
@@ -139,10 +139,10 @@ Si c'est une égalité, chaque candidat du duel reçoit 0.5 points.
 </p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[people.elector.Elector]</code></dt>
 <dd>Une liste de tous les électeurs participant à une élection.
 Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
-<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste de tous les candidats qui participent à une élection.</dd>
 <dt><strong><code>duels</code></strong> :&ensp;<code><a title="electoral_systems.voting_rules.utls.duels_type" href="utls.html#electoral_systems.voting_rules.utls.duels_type">duels_type</a></code></dt>
 <dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant)
@@ -150,7 +150,7 @@ le nombre des fois que le candidat-gagnant a battu le candidat-perdant.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats triés dans l'ordre décroissant selon leurs scores selon
 la règle de vote <em>Copeland</em>.</dd>
 </dl></div>
@@ -190,7 +190,7 @@ la règle de vote <em>Copeland</em>.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.voting_rules.condorcet.apply_condorcet_simple"><code class="name flex">
-<span>def <span class="ident">apply_condorcet_simple</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], duels: Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]) ‑> List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+<span>def <span class="ident">apply_condorcet_simple</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Applique la régle de vote <em>Condorcet</em>. Il n'est possible d'appliquer cette règle de vote que s'il existe au moins 2 candidats.
@@ -202,10 +202,10 @@ Principe d'une règle du vote <em>Condorcet</em>:<br>
 </p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[people.elector.Elector]</code></dt>
 <dd>Une liste de tous les électeurs participant à une élection.
 Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
-<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste de tous les candidats qui participent à une élection.</dd>
 <dt><strong><code>duels</code></strong> :&ensp;<code><a title="electoral_systems.voting_rules.utls.duels_type" href="utls.html#electoral_systems.voting_rules.utls.duels_type">duels_type</a></code></dt>
 <dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant)
@@ -213,7 +213,7 @@ le nombre des fois que le candidat-gagnant a battu le candidat-perdant.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats triés dans l'ordre décroissant selon leur score selon
 la règle de vote *Condorcet. Le premier candidat n'est pas forcément le gagnant.</dd>
 </dl></div>
@@ -247,7 +247,7 @@ la règle de vote *Condorcet. Le premier candidat n'est pas forcément le gagnan
 </details>
 </dd>
 <dt id="electoral_systems.voting_rules.condorcet.apply_condorcet_simpson"><code class="name flex">
-<span>def <span class="ident">apply_condorcet_simpson</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], duels: Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]) ‑> List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+<span>def <span class="ident">apply_condorcet_simpson</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Applique la régle de vote <em>Simpson</em>. Il n'est possible d'appliquer cette règle de vote que s'il existe au moins 2 candidats.
@@ -258,10 +258,10 @@ Principe d'une règle du vote <em>Simpson</em>:<br>
 </p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[people.elector.Elector]</code></dt>
 <dd>Une liste de tous les électeurs participant à une élection.
 Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
-<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste de tous les candidats qui participent à une élection.</dd>
 <dt><strong><code>duels</code></strong> :&ensp;<code><a title="electoral_systems.voting_rules.utls.duels_type" href="utls.html#electoral_systems.voting_rules.utls.duels_type">duels_type</a></code></dt>
 <dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant)
@@ -269,7 +269,7 @@ le nombre des fois que le candidat-gagnant a battu le candidat-perdant.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats triés dans l'ordre croissant selon leurs scores selon
 la règle de vote <em>Simpson</em>.</dd>
 </dl></div>

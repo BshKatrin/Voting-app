@@ -36,6 +36,17 @@ class SettingsWidget(QWidget):
         self.layout.setSpacing(40)
         self.setLayout(self.layout)
 
+        # Initialisaton des widgets
+        self.liquid_democracy_label = QLabel(parent=self)
+        self.liquid_democracy_checkbox = QCheckBox(parent=self)
+
+        self.polls_label = QLabel(parent=self)
+        self.nb_polls_btn = QSpinBox(parent=self)
+        self.polls_dropdown = QComboBox(parent=self)
+
+        self.tie_breaker_label = QLabel(parent=self)
+        self.tie_breaker_checkbox = QCheckBox(parent=self)
+
         self.initUIPolls()
         self.initUILiquidDemocracy()
         self.initUITieBreaker()
@@ -45,7 +56,6 @@ class SettingsWidget(QWidget):
         save_button.clicked.connect(self.saveSettings)
         save_button.setFixedHeight(30)
 
-        # Add to grid self.layout (rows = 4 x cols = 3)
         # Polls
         self.layout.addWidget(self.polls_label, 0, 0, 1, 2)
         self.layout.addWidget(self.nb_polls_btn, 0, 2, 1, 1)
@@ -76,15 +86,13 @@ class SettingsWidget(QWidget):
         """Initialise la partie d'interface correspondant aux sondages."""
 
         # Number of polls
-        self.polls_label = QLabel(parent=self)
         self.polls_label.setText("Number of polls to conduct")
-        self.nb_polls_btn = QSpinBox(parent=self)
-
-        # Limits
         self.nb_polls_btn.setMinimum(0)
         self.nb_polls_btn.setMaximum(10)
         self.nb_polls_btn.setValue(self.election.nb_polls)
+        
         self.nb_polls_btn.valueChanged.connect(self.setNumberPolls)
+        self.setNumberPolls(self.election.nb_polls)
 
         self.voting_rule_ui_reverse = dict()
         for voting_rule in VotingRulesConstants.ONE_ROUND:
@@ -92,22 +100,18 @@ class SettingsWidget(QWidget):
                 voting_rule
             )
 
-         # Choose poll voting rule
-        self.polls_dropdown = QComboBox(parent=self)
+        # Choose poll voting rule
         self.polls_dropdown.addItems(self.voting_rule_ui_reverse.keys())
         self.polls_dropdown.currentTextChanged.connect(self.setPollVotingRule)
         self.polls_dropdown.setCurrentText(
             VotingRulesConstants.UI[self.election.poll_voting_rule]
         )
-        self.polls_dropdown.setEnabled(bool(self.election.nb_polls))
 
     def initUILiquidDemocracy(self) -> None:
         """Initialise la partie d'interface correspondant à la démocratie liquide."""
 
         # Activate liquid democracy checkbox
-        self.liquid_democracy_label = QLabel(parent=self)
         self.liquid_democracy_label.setText("Activate liquid democracy")
-        self.liquid_democracy_checkbox = QCheckBox(parent=self)
         self.liquid_democracy_checkbox.setChecked(
             self.election.liquid_democracy_activated
         )
@@ -118,9 +122,7 @@ class SettingsWidget(QWidget):
         """Initialise la partie d'interface correspondant au tie-break."""
 
         # Activer un tie-break par duels
-        self.tie_breaker_label = QLabel(parent=self)
         self.tie_breaker_label.setText("Activate tie-breaker by duels")
-        self.tie_breaker_checkbox = QCheckBox(parent=self)
         self.tie_breaker_checkbox.setChecked(self.election.tie_breaker_activated)
         self.tie_breaker_checkbox.stateChanged.connect(self.toggleTieBreaker)
 
@@ -133,11 +135,18 @@ class SettingsWidget(QWidget):
 
     @Slot(int)
     def setNumberPolls(self, nb_polls: int) -> None:
-        """Change le nombre de sondages maximal à faire."""
+        """Change le nombre de sondages maximal à faire. Désactive la democratie liquide."""
 
         self.election.nb_polls = nb_polls
         self.polls_dropdown.setEnabled(bool(nb_polls))
-
+        
+        if nb_polls:
+            self.liquid_democracy_checkbox.setEnabled(False)
+            self.liquid_democracy_checkbox.setCheckState(Qt.CheckState.Unchecked)
+            self.toggleLiquidDemocracy(0)
+        else:
+            self.liquid_democracy_checkbox.setEnabled(True)
+        
     @Slot(int)
     def toggleLiquidDemocracy(self, state: int) -> None:
         """Active ou désactive une démocratie liquide (i.e. si les électeurs pourront ou pas faire des délégations)"""

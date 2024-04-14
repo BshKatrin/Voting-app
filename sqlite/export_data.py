@@ -22,7 +22,7 @@ class ExportData:
 
     election: Election = Election()
     EXPORT: str = "E"
-
+    
     @classmethod
     def create_database_people(cls, connection: Connection) -> tuple[bool, str]:
         """Crée des tableaux des électeurs et des candidats d'élection et exporte les données.

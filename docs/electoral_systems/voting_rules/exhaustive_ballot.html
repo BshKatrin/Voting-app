@@ -68,7 +68,7 @@ def apply_exhaustive_ballot(electors: List[Elector], candidates: List[Candidate]
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="electoral_systems.voting_rules.exhaustive_ballot.apply_exhaustive_ballot"><code class="name flex">
-<span>def <span class="ident">apply_exhaustive_ballot</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]) ‑> List[List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]]</span>
+<span>def <span class="ident">apply_exhaustive_ballot</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate]) ‑> List[List[people.candidate.Candidate]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Applique la règle de vote <em>Éliminations successives</em>. Il n'est possible d'appliquer cette règle de vote que s'il existe au
@@ -81,15 +81,15 @@ Principe d'une règle de vote <em>Éliminations successives</em>:<br>
 - Après chaque tour le candidat avec le score minimale est eliminé.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[people.elector.Elector]</code></dt>
 <dd>Une liste de tous les électeurs participant à une élection.
 Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
-<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste de tous les candidats qui participent à une élection.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des listes (classement dans l'ordre décroissant) des candidats par tour.
 La longueur de la liste correpond au nombre des tours effectués.</dd>
 </dl></div>

@@ -26,7 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import Set, Optional, List, Union
+<pre><code class="python">from typing import Set, Optional, List, Union, Dict
 from math import sqrt
 from random import random
 
@@ -42,18 +42,18 @@ from .extensions.polls import (
     change_ranking_electors,
 )
 from .extensions.liquid_democracy import choose_delegee, choose_possible_delegees
-from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_by_round
+from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_by_round, duels_type
 
 from people import Candidate, Elector
 
 # Pour une génération des docs uniquement 
 __pdoc__ = {
     &#39;random&#39;:False,
-    &#39;_init_results_keys&#39;:True,
-    &#39;_calc_distance&#39;:True,
-    &#39;_define_ranking&#39;:True,
-    &#39;_calc_proportion_satisfaction&#39;:True,
-    &#39;_make_delegations&#39;:True
+    &#39;Election._init_results_keys&#39;:True,
+    &#39;Election._calc_distance&#39;:True,
+    &#39;Election._define_ranking&#39;:True,
+    &#39;Election._calc_proportion_satisfaction&#39;:True,
+    &#39;Election._make_delegations&#39;:True
 }
 
 class Election(metaclass=Singleton):
@@ -61,24 +61,33 @@ class Election(metaclass=Singleton):
 
     def __init__(self):
         super().__init__()
-        self.electors = []
+        self.electors:List[Elector] = []
+        &#34;&#34;&#34;Une liste qui stocke tous les électeurs qui participent dans une élection.&#34;&#34;&#34;
+
         self.candidates = []
+        &#34;&#34;&#34;Une liste qui stocke tous les candidats qui participent dans une élection.&#34;&#34;&#34;
 
-        # Génére les prénoms, les noms
         self.first_name_iter = NameIterator()
-        self.last_name_iter = NameIterator()
+        &#34;&#34;&#34;Un itérateur qui génére des prénoms des candidats (uniquement pour les données générées aléatoirement)&#34;&#34;&#34;
 
-        # Génére les IDs
+        self.last_name_iter = NameIterator()
+        &#34;&#34;&#34;Un itérateur qui génére des noms des candidats (uniquement pour les données générées aléatoirement)&#34;&#34;&#34;
+
         self.id_iter = IdIterator(0)
+        &#34;&#34;&#34;Un itérateur qui génére des IDs des candidats et des électeurs.&#34;&#34;&#34;
 
         # Stocke les resultats
-        self.results = dict()
+        self.results:Dict[str, List[Candidate]] = dict()
+        &#34;&#34;&#34;Un dictionnaire qui stocke un classement des candidats (dans l&#39;ordre décroissant) pour chaque règle de vote choisie.&#34;&#34;&#34;
+
         # Stocke les duels
-        self.duels_scores = dict()
+        self.duels_scores:duels_type = dict()
+        &#34;&#34;&#34;Un dictionnaire qui stocke les résultats des duels entre les candidats.&#34;&#34;&#34;
 
         # Pour la satisfaction
-        self.average_position_electors = (0, 0)
-        self.proportion_satisfaction = 0
+        self.average_position_electors:tuple[float, float] = (0, 0)
+        self.proportion_satisfaction:float = 0
+        &#34;&#34;&#34;La distance maximale entre la position moyenne des électeurs et la position de chaque candidat.&#34;&#34;&#34;
 
         # Init les constantes
         self.set_default_settings()
@@ -87,7 +96,8 @@ class Election(metaclass=Singleton):
         &#34;&#34;&#34;Initialise les réglages par défaut.&#34;&#34;&#34;
 
         # Nb de sondages à faire
-        self.nb_polls = 0
+        self.nb_polls:int = 0
+        &#34;&#34;&#34;Un nombre des sondages à faire&#34;&#34;&#34;
 
         # Active/désactive la démocratie liquide
         self.liquid_democracy_activated = False
@@ -336,7 +346,9 @@ class Election(metaclass=Singleton):
         self.average_position_electors = (x_avg, y_avg)
 
     def _calc_proportion_satisfaction(self) -&gt; None:
-        &#34;&#34;&#34;Calcule le taux d&#39;une satisfaction de la population.&#34;&#34;&#34;
+        &#34;&#34;&#34;Calcule la distance maximale entre la position moyenne des électeurs et la position
+            de chaque candidat et la stock dans `Election.proportion_satisfaction`.
+        &#34;&#34;&#34;
 
         proportion = 0
         for candidate in self.candidates:
@@ -347,14 +359,20 @@ class Election(metaclass=Singleton):
         self.proportion_satisfaction = proportion
 
     def calc_satisfaction(self, candidate: Candidate) -&gt; float:
-        &#34;&#34;&#34;Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.
+        &#34;&#34;&#34;Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.  
+        **Algorithme**:  
+            - Calcule la distance du candidat par rapport a la position moyenne des électeurs  
+            - Calcule la valeur absolue de la différence de cette distance moins la distance maximale (`proportion_satisfaction`)  
+            - Calcule le pourcentage de satisfaction selon cette valeur absolue divisée par la valeur maximale (`proportion_satisfaction`)  
+            - Renvoie ce pourcentage (plus la distance au point moyen est faible, plus le pourcentage sera élevé et inversement)  
 
         Args:
             candidate (people.candidate.Candidate): Un candidat-gagnant.
 
         Returns:
-            float: Le pourcentage de la population.
+            float: Le pourcentage de satisfaction de la population.
         &#34;&#34;&#34;
+
         diff = abs(
             self._calc_distance(candidate.position, self.average_position_electors)
             - self.proportion_satisfaction
@@ -459,7 +477,7 @@ class Election(metaclass=Singleton):
         voting_rule = self.poll_voting_rule
         winner = self.choose_winner(voting_rule)
         ranking = self.results[voting_rule]
-        print(&#34;Poll&#34;, self.directions_data)
+
         # Des candidats changent leurs positions politiques
         change_position_candidates(
             self.candidates,
@@ -519,24 +537,33 @@ class Election(metaclass=Singleton):
 
     def __init__(self):
         super().__init__()
-        self.electors = []
+        self.electors:List[Elector] = []
+        &#34;&#34;&#34;Une liste qui stocke tous les électeurs qui participent dans une élection.&#34;&#34;&#34;
+
         self.candidates = []
+        &#34;&#34;&#34;Une liste qui stocke tous les candidats qui participent dans une élection.&#34;&#34;&#34;
 
-        # Génére les prénoms, les noms
         self.first_name_iter = NameIterator()
-        self.last_name_iter = NameIterator()
+        &#34;&#34;&#34;Un itérateur qui génére des prénoms des candidats (uniquement pour les données générées aléatoirement)&#34;&#34;&#34;
 
-        # Génére les IDs
+        self.last_name_iter = NameIterator()
+        &#34;&#34;&#34;Un itérateur qui génére des noms des candidats (uniquement pour les données générées aléatoirement)&#34;&#34;&#34;
+
         self.id_iter = IdIterator(0)
+        &#34;&#34;&#34;Un itérateur qui génére des IDs des candidats et des électeurs.&#34;&#34;&#34;
 
         # Stocke les resultats
-        self.results = dict()
+        self.results:Dict[str, List[Candidate]] = dict()
+        &#34;&#34;&#34;Un dictionnaire qui stocke un classement des candidats (dans l&#39;ordre décroissant) pour chaque règle de vote choisie.&#34;&#34;&#34;
+
         # Stocke les duels
-        self.duels_scores = dict()
+        self.duels_scores:duels_type = dict()
+        &#34;&#34;&#34;Un dictionnaire qui stocke les résultats des duels entre les candidats.&#34;&#34;&#34;
 
         # Pour la satisfaction
-        self.average_position_electors = (0, 0)
-        self.proportion_satisfaction = 0
+        self.average_position_electors:tuple[float, float] = (0, 0)
+        self.proportion_satisfaction:float = 0
+        &#34;&#34;&#34;La distance maximale entre la position moyenne des électeurs et la position de chaque candidat.&#34;&#34;&#34;
 
         # Init les constantes
         self.set_default_settings()
@@ -545,7 +572,8 @@ class Election(metaclass=Singleton):
         &#34;&#34;&#34;Initialise les réglages par défaut.&#34;&#34;&#34;
 
         # Nb de sondages à faire
-        self.nb_polls = 0
+        self.nb_polls:int = 0
+        &#34;&#34;&#34;Un nombre des sondages à faire&#34;&#34;&#34;
 
         # Active/désactive la démocratie liquide
         self.liquid_democracy_activated = False
@@ -794,7 +822,9 @@ class Election(metaclass=Singleton):
         self.average_position_electors = (x_avg, y_avg)
 
     def _calc_proportion_satisfaction(self) -&gt; None:
-        &#34;&#34;&#34;Calcule le taux d&#39;une satisfaction de la population.&#34;&#34;&#34;
+        &#34;&#34;&#34;Calcule la distance maximale entre la position moyenne des électeurs et la position
+            de chaque candidat et la stock dans `Election.proportion_satisfaction`.
+        &#34;&#34;&#34;
 
         proportion = 0
         for candidate in self.candidates:
@@ -805,14 +835,20 @@ class Election(metaclass=Singleton):
         self.proportion_satisfaction = proportion
 
     def calc_satisfaction(self, candidate: Candidate) -&gt; float:
-        &#34;&#34;&#34;Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.
+        &#34;&#34;&#34;Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.  
+        **Algorithme**:  
+            - Calcule la distance du candidat par rapport a la position moyenne des électeurs  
+            - Calcule la valeur absolue de la différence de cette distance moins la distance maximale (`proportion_satisfaction`)  
+            - Calcule le pourcentage de satisfaction selon cette valeur absolue divisée par la valeur maximale (`proportion_satisfaction`)  
+            - Renvoie ce pourcentage (plus la distance au point moyen est faible, plus le pourcentage sera élevé et inversement)  
 
         Args:
             candidate (people.candidate.Candidate): Un candidat-gagnant.
 
         Returns:
-            float: Le pourcentage de la population.
+            float: Le pourcentage de satisfaction de la population.
         &#34;&#34;&#34;
+
         diff = abs(
             self._calc_distance(candidate.position, self.average_position_electors)
             - self.proportion_satisfaction
@@ -917,7 +953,7 @@ class Election(metaclass=Singleton):
         voting_rule = self.poll_voting_rule
         winner = self.choose_winner(voting_rule)
         ranking = self.results[voting_rule]
-        print(&#34;Poll&#34;, self.directions_data)
+
         # Des candidats changent leurs positions politiques
         change_position_candidates(
             self.candidates,
@@ -953,8 +989,167 @@ class Election(metaclass=Singleton):
 
         self.directions_data.clear()</code></pre>
 </details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="electoral_systems.election.Election.candidates"><code class="name">var <span class="ident">candidates</span></code></dt>
+<dd>
+<div class="desc"><p>Une liste qui stocke tous les candidats qui participent dans une élection.</p></div>
+</dd>
+<dt id="electoral_systems.election.Election.duels_scores"><code class="name">var <span class="ident">duels_scores</span></code></dt>
+<dd>
+<div class="desc"><p>Un dictionnaire qui stocke les résultats des duels entre les candidats.</p></div>
+</dd>
+<dt id="electoral_systems.election.Election.electors"><code class="name">var <span class="ident">electors</span></code></dt>
+<dd>
+<div class="desc"><p>Une liste qui stocke tous les électeurs qui participent dans une élection.</p></div>
+</dd>
+<dt id="electoral_systems.election.Election.first_name_iter"><code class="name">var <span class="ident">first_name_iter</span></code></dt>
+<dd>
+<div class="desc"><p>Un itérateur qui génére des prénoms des candidats (uniquement pour les données générées aléatoirement)</p></div>
+</dd>
+<dt id="electoral_systems.election.Election.id_iter"><code class="name">var <span class="ident">id_iter</span></code></dt>
+<dd>
+<div class="desc"><p>Un itérateur qui génére des IDs des candidats et des électeurs.</p></div>
+</dd>
+<dt id="electoral_systems.election.Election.last_name_iter"><code class="name">var <span class="ident">last_name_iter</span></code></dt>
+<dd>
+<div class="desc"><p>Un itérateur qui génére des noms des candidats (uniquement pour les données générées aléatoirement)</p></div>
+</dd>
+<dt id="electoral_systems.election.Election.proportion_satisfaction"><code class="name">var <span class="ident">proportion_satisfaction</span></code></dt>
+<dd>
+<div class="desc"><p>La distance maximale entre la position moyenne des électeurs et la position de chaque candidat.</p></div>
+</dd>
+<dt id="electoral_systems.election.Election.results"><code class="name">var <span class="ident">results</span></code></dt>
+<dd>
+<div class="desc"><p>Un dictionnaire qui stocke un classement des candidats (dans l'ordre décroissant) pour chaque règle de vote choisie.</p></div>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
+<dt id="electoral_systems.election.Election._calc_distance"><code class="name flex">
+<span>def <span class="ident">_calc_distance</span></span>(<span>self, point1: tuple[float, float], point2: tuple[float, float]) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calcule la distance euclidienne entre 2 points.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>point1</code></strong> :&ensp;<code>tuple[float, float]</code></dt>
+<dd>position sur la carte politique</dd>
+<dt><strong><code>point2</code></strong> :&ensp;<code>tuple[float, float]</code></dt>
+<dd>position sur la carte politique</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>La distance euclidienne entre 2 points.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _calc_distance(self, point1: tuple[float, float], point2: tuple[float, float]) -&gt; float:
+    &#34;&#34;&#34;Calcule la distance euclidienne entre 2 points.
+
+    Args:
+        point1 (tuple[float, float]): position sur la carte politique
+        point2 (tuple[float, float]): position sur la carte politique
+    Returns:
+        float: La distance euclidienne entre 2 points.
+    &#34;&#34;&#34;
+    x1, y1 = point1
+    x2, y2 = point2
+    return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.election.Election._calc_proportion_satisfaction"><code class="name flex">
+<span>def <span class="ident">_calc_proportion_satisfaction</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calcule la distance maximale entre la position moyenne des électeurs et la position
+de chaque candidat et la stock dans <code><a title="electoral_systems.election.Election.proportion_satisfaction" href="#electoral_systems.election.Election.proportion_satisfaction">Election.proportion_satisfaction</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _calc_proportion_satisfaction(self) -&gt; None:
+    &#34;&#34;&#34;Calcule la distance maximale entre la position moyenne des électeurs et la position
+        de chaque candidat et la stock dans `Election.proportion_satisfaction`.
+    &#34;&#34;&#34;
+
+    proportion = 0
+    for candidate in self.candidates:
+        dist_cand_electors = self._calc_distance(
+            candidate.position, self.average_position_electors
+        )
+        proportion = max(proportion, dist_cand_electors)
+    self.proportion_satisfaction = proportion</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.election.Election._define_ranking"><code class="name flex">
+<span>def <span class="ident">_define_ranking</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fait classer les candidats pour chaque électeur. Doit être appelée uniquement quand tous les candidats ont été ajoutés.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _define_ranking(self) -&gt; None:
+    &#34;&#34;&#34;Fait classer les candidats pour chaque électeur. Doit être appelée uniquement quand tous les candidats ont été ajoutés.&#34;&#34;&#34;
+
+    for elector in self.electors:
+        elector.rank_candidates(self.candidates)</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.election.Election._init_results_keys"><code class="name flex">
+<span>def <span class="ident">_init_results_keys</span></span>(<span>self, set_keys: Set[str]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initialiser des clés du dictionnaire <code>results</code> avec des constantes associées aux règles du vote choisies.
+Les valeurs sont rémies à <code>None</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _init_results_keys(self, set_keys: Set[str]) -&gt; None:
+    &#34;&#34;&#34;Initialiser des clés du dictionnaire `results` avec des constantes associées aux règles du vote choisies.
+    Les valeurs sont rémies à `None`.
+    &#34;&#34;&#34;
+
+    for key in set_keys:
+        self.results[key] = None</code></pre>
+</details>
+</dd>
+<dt id="electoral_systems.election.Election._make_delegations"><code class="name flex">
+<span>def <span class="ident">_make_delegations</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Pour une démocratie liquide. Pour chaque électeur décide s'il fera une délégation de son vote.
+Si oui, MAJ des données de son délégataire et de lui-même.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def _make_delegations(self) -&gt; None:
+    &#34;&#34;&#34;Pour une démocratie liquide. Pour chaque électeur décide s&#39;il fera une délégation de son vote.
+    Si oui, MAJ des données de son délégataire et de lui-même.&#34;&#34;&#34;
+
+    for elector in self.electors:
+        proba = 1 - elector.knowledge
+        # Pas de délégation
+        if random() &gt; proba:
+            continue
+        # Faire une délégation
+        possible_delegees = choose_possible_delegees(
+            self.electors, elector
+        )
+        delegee = choose_delegee(possible_delegees)
+        if delegee is None:
+            continue
+        delegee.weight += elector.weight
+        elector.weight = 0</code></pre>
+</details>
+</dd>
 <dt id="electoral_systems.election.Election.add_candidate"><code class="name flex">
 <span>def <span class="ident">add_candidate</span></span>(<span>self, position: tuple[float, float], first_name: Optional[str] = '', last_name: Optional[str] = '') ‑> None</span>
 </code></dt>
@@ -1009,7 +1204,7 @@ Chaque coordonnée doit être bornée entre -1 et 1.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.election.Election.add_candidate_import"><code class="name flex">
-<span>def <span class="ident">add_candidate_import</span></span>(<span>self, new_candidate: <a title="people.candidate.Candidate" href="../people/candidate.html#people.candidate.Candidate">Candidate</a>) ‑> None</span>
+<span>def <span class="ident">add_candidate_import</span></span>(<span>self, new_candidate: people.candidate.Candidate) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Ajoute un candidat dont les données sont déjà initialisées.
@@ -1017,7 +1212,7 @@ Si les sondages sont activés, MAJ les données sur les directions de la carte p
 Utilisée lors d'une importation des données.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>new_elector</code></strong> :&ensp;<code><a title="people.elector.Elector" href="../people/elector.html#people.elector.Elector">Elector</a></code></dt>
+<dt><strong><code>new_elector</code></strong> :&ensp;<code>people.elector.Elector</code></dt>
 <dd>Un nouvel électeur.</dd>
 </dl></div>
 <details class="source">
@@ -1082,7 +1277,7 @@ Chaque coordonnée doit être bornée entre -1 et 1.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.election.Election.add_elector_import"><code class="name flex">
-<span>def <span class="ident">add_elector_import</span></span>(<span>self, new_elector: <a title="people.elector.Elector" href="../people/elector.html#people.elector.Elector">Elector</a>) ‑> None</span>
+<span>def <span class="ident">add_elector_import</span></span>(<span>self, new_elector: people.elector.Elector) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Ajoute un électeur dont les données sont déjà initialisées.
@@ -1091,7 +1286,7 @@ MAJ les données sur la position moyenne de tous les électeurs participants à 
 Utilisée lors d'une importation des données.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>new_elector</code></strong> :&ensp;<code><a title="people.elector.Elector" href="../people/elector.html#people.elector.Elector">Elector</a></code></dt>
+<dt><strong><code>new_elector</code></strong> :&ensp;<code>people.elector.Elector</code></dt>
 <dd>Un nouvel électeur.</dd>
 </dl></div>
 <details class="source">
@@ -1212,33 +1407,45 @@ Ils sont importés. Cepedant, un calcul des classements est effectué.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.election.Election.calc_satisfaction"><code class="name flex">
-<span>def <span class="ident">calc_satisfaction</span></span>(<span>self, candidate: <a title="people.candidate.Candidate" href="../people/candidate.html#people.candidate.Candidate">Candidate</a>) ‑> float</span>
+<span>def <span class="ident">calc_satisfaction</span></span>(<span>self, candidate: people.candidate.Candidate) ‑> float</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.</p>
+<div class="desc"><p>Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.<br>
+<strong>Algorithme</strong>:<br>
+- Calcule la distance du candidat par rapport a la position moyenne des électeurs<br>
+- Calcule la valeur absolue de la différence de cette distance moins la distance maximale (<code>proportion_satisfaction</code>)<br>
+- Calcule le pourcentage de satisfaction selon cette valeur absolue divisée par la valeur maximale (<code>proportion_satisfaction</code>)<br>
+- Renvoie ce pourcentage (plus la distance au point moyen est faible, plus le pourcentage sera élevé et inversement)
+</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>candidate</code></strong> :&ensp;<code><a title="people.candidate.Candidate" href="../people/candidate.html#people.candidate.Candidate">Candidate</a></code></dt>
+<dt><strong><code>candidate</code></strong> :&ensp;<code>people.candidate.Candidate</code></dt>
 <dd>Un candidat-gagnant.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>float</code></dt>
-<dd>Le pourcentage de la population.</dd>
+<dd>Le pourcentage de satisfaction de la population.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def calc_satisfaction(self, candidate: Candidate) -&gt; float:
-    &#34;&#34;&#34;Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.
+    &#34;&#34;&#34;Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.  
+    **Algorithme**:  
+        - Calcule la distance du candidat par rapport a la position moyenne des électeurs  
+        - Calcule la valeur absolue de la différence de cette distance moins la distance maximale (`proportion_satisfaction`)  
+        - Calcule le pourcentage de satisfaction selon cette valeur absolue divisée par la valeur maximale (`proportion_satisfaction`)  
+        - Renvoie ce pourcentage (plus la distance au point moyen est faible, plus le pourcentage sera élevé et inversement)  
 
     Args:
         candidate (people.candidate.Candidate): Un candidat-gagnant.
 
     Returns:
-        float: Le pourcentage de la population.
+        float: Le pourcentage de satisfaction de la population.
     &#34;&#34;&#34;
+
     diff = abs(
         self._calc_distance(candidate.position, self.average_position_electors)
         - self.proportion_satisfaction
@@ -1252,7 +1459,7 @@ Ils sont importés. Cepedant, un calcul des classements est effectué.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.election.Election.choose_condorcet_winner"><code class="name flex">
-<span>def <span class="ident">choose_condorcet_winner</span></span>(<span>self) ‑> Optional[<a title="people.candidate.Candidate" href="../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+<span>def <span class="ident">choose_condorcet_winner</span></span>(<span>self) ‑> Optional[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Retourne le gagnant d'après le système de vote "Condorcet simple".
@@ -1280,7 +1487,7 @@ Le gagnant est un candidat qui bat tous les autres en duel.</p>
 </details>
 </dd>
 <dt id="electoral_systems.election.Election.choose_winner"><code class="name flex">
-<span>def <span class="ident">choose_winner</span></span>(<span>self, voting_rule: str) ‑> Optional[<a title="people.candidate.Candidate" href="../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+<span>def <span class="ident">choose_winner</span></span>(<span>self, voting_rule: str) ‑> Optional[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Retourne le gagnant d'après la règle de vote voting_rule.</p>
@@ -1343,7 +1550,7 @@ Cf. <code><a title="electoral_systems.extensions.polls" href="extensions/polls.h
     voting_rule = self.poll_voting_rule
     winner = self.choose_winner(voting_rule)
     ranking = self.results[voting_rule]
-    print(&#34;Poll&#34;, self.directions_data)
+
     # Des candidats changent leurs positions politiques
     change_position_candidates(
         self.candidates,
@@ -1449,7 +1656,8 @@ La somme de toutes les positions est déjà stockée.</p></div>
     &#34;&#34;&#34;Initialise les réglages par défaut.&#34;&#34;&#34;
 
     # Nb de sondages à faire
-    self.nb_polls = 0
+    self.nb_polls:int = 0
+    &#34;&#34;&#34;Un nombre des sondages à faire&#34;&#34;&#34;
 
     # Active/désactive la démocratie liquide
     self.liquid_democracy_activated = False
@@ -1594,6 +1802,11 @@ Cf. <code><a title="electoral_systems.election.Election.calc_results" href="#ele
 <li>
 <h4><code><a title="electoral_systems.election.Election" href="#electoral_systems.election.Election">Election</a></code></h4>
 <ul class="">
+<li><code><a title="electoral_systems.election.Election._calc_distance" href="#electoral_systems.election.Election._calc_distance">_calc_distance</a></code></li>
+<li><code><a title="electoral_systems.election.Election._calc_proportion_satisfaction" href="#electoral_systems.election.Election._calc_proportion_satisfaction">_calc_proportion_satisfaction</a></code></li>
+<li><code><a title="electoral_systems.election.Election._define_ranking" href="#electoral_systems.election.Election._define_ranking">_define_ranking</a></code></li>
+<li><code><a title="electoral_systems.election.Election._init_results_keys" href="#electoral_systems.election.Election._init_results_keys">_init_results_keys</a></code></li>
+<li><code><a title="electoral_systems.election.Election._make_delegations" href="#electoral_systems.election.Election._make_delegations">_make_delegations</a></code></li>
 <li><code><a title="electoral_systems.election.Election.add_candidate" href="#electoral_systems.election.Election.add_candidate">add_candidate</a></code></li>
 <li><code><a title="electoral_systems.election.Election.add_candidate_import" href="#electoral_systems.election.Election.add_candidate_import">add_candidate_import</a></code></li>
 <li><code><a title="electoral_systems.election.Election.add_elector" href="#electoral_systems.election.Election.add_elector">add_elector</a></code></li>
@@ -1601,11 +1814,19 @@ Cf. <code><a title="electoral_systems.election.Election.calc_results" href="#ele
 <li><code><a title="electoral_systems.election.Election.apply_voting_rule" href="#electoral_systems.election.Election.apply_voting_rule">apply_voting_rule</a></code></li>
 <li><code><a title="electoral_systems.election.Election.calc_results" href="#electoral_systems.election.Election.calc_results">calc_results</a></code></li>
 <li><code><a title="electoral_systems.election.Election.calc_satisfaction" href="#electoral_systems.election.Election.calc_satisfaction">calc_satisfaction</a></code></li>
+<li><code><a title="electoral_systems.election.Election.candidates" href="#electoral_systems.election.Election.candidates">candidates</a></code></li>
 <li><code><a title="electoral_systems.election.Election.choose_condorcet_winner" href="#electoral_systems.election.Election.choose_condorcet_winner">choose_condorcet_winner</a></code></li>
 <li><code><a title="electoral_systems.election.Election.choose_winner" href="#electoral_systems.election.Election.choose_winner">choose_winner</a></code></li>
 <li><code><a title="electoral_systems.election.Election.conduct_poll" href="#electoral_systems.election.Election.conduct_poll">conduct_poll</a></code></li>
 <li><code><a title="electoral_systems.election.Election.delete_all_data" href="#electoral_systems.election.Election.delete_all_data">delete_all_data</a></code></li>
+<li><code><a title="electoral_systems.election.Election.duels_scores" href="#electoral_systems.election.Election.duels_scores">duels_scores</a></code></li>
+<li><code><a title="electoral_systems.election.Election.electors" href="#electoral_systems.election.Election.electors">electors</a></code></li>
+<li><code><a title="electoral_systems.election.Election.first_name_iter" href="#electoral_systems.election.Election.first_name_iter">first_name_iter</a></code></li>
 <li><code><a title="electoral_systems.election.Election.has_electors_candidates" href="#electoral_systems.election.Election.has_electors_candidates">has_electors_candidates</a></code></li>
+<li><code><a title="electoral_systems.election.Election.id_iter" href="#electoral_systems.election.Election.id_iter">id_iter</a></code></li>
+<li><code><a title="electoral_systems.election.Election.last_name_iter" href="#electoral_systems.election.Election.last_name_iter">last_name_iter</a></code></li>
+<li><code><a title="electoral_systems.election.Election.proportion_satisfaction" href="#electoral_systems.election.Election.proportion_satisfaction">proportion_satisfaction</a></code></li>
+<li><code><a title="electoral_systems.election.Election.results" href="#electoral_systems.election.Election.results">results</a></code></li>
 <li><code><a title="electoral_systems.election.Election.set_avg_electors_position" href="#electoral_systems.election.Election.set_avg_electors_position">set_avg_electors_position</a></code></li>
 <li><code><a title="electoral_systems.election.Election.set_default_settings" href="#electoral_systems.election.Election.set_default_settings">set_default_settings</a></code></li>
 <li><code><a title="electoral_systems.election.Election.set_results" href="#electoral_systems.election.Election.set_results">set_results</a></code></li>

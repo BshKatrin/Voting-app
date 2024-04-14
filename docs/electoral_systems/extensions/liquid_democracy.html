@@ -115,7 +115,7 @@ Les délégataires doivent être assez proches par rapport à leur position poli
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="electoral_systems.extensions.liquid_democracy.choose_delegee"><code class="name flex">
-<span>def <span class="ident">choose_delegee</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]) ‑> <a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a></span>
+<span>def <span class="ident">choose_delegee</span></span>(<span>electors: List[people.elector.Elector]) ‑> people.elector.Elector</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Choisit un électeur-délégataire parmi les électeurs de façon suivante:<br>
@@ -130,7 +130,7 @@ et inversement, moins son taux de connaissances est élevé, moins il est probab
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code><a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a></code></dt>
+<dt><code>people.elector.Elector</code></dt>
 <dd>Un délégataire choisi</dd>
 </dl></div>
 <details class="source">
@@ -170,7 +170,7 @@ et inversement, moins son taux de connaissances est élevé, moins il est probab
 </details>
 </dd>
 <dt id="electoral_systems.extensions.liquid_democracy.choose_possible_delegees"><code class="name flex">
-<span>def <span class="ident">choose_possible_delegees</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], delegator: <a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>) ‑> List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</span>
+<span>def <span class="ident">choose_possible_delegees</span></span>(<span>electors: List[people.elector.Elector], delegator: people.elector.Elector) ‑> List[people.elector.Elector]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Choisit parmi electors des électeurs-délégataires pour un électeur delegator de façon suivante:<br>

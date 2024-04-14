@@ -505,7 +505,7 @@ def change_ranking_electors(electors: List[Elector], score_winner: int, voting_r
 </dd>
 <dt id="electoral_systems.extensions.polls.ELECTORS"><code class="name">var <span class="ident">ELECTORS</span> : str</code></dt>
 <dd>
-<div class="desc"><p>Une liste des électeurs. Valeur associée sera du type <code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code>.</p></div>
+<div class="desc"><p>Une liste des électeurs. Valeur associée sera du type <code>List[people.elector.Elector]</code>.</p></div>
 </dd>
 <dt id="electoral_systems.extensions.polls.NB_CANDIDATES"><code class="name">var <span class="ident">NB_CANDIDATES</span> : str</code></dt>
 <dd>
@@ -545,7 +545,7 @@ def change_ranking_electors(electors: List[Elector], score_winner: int, voting_r
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="electoral_systems.extensions.polls._get_default_direction_data"><code class="name flex">
-<span>def <span class="ident">_get_default_direction_data</span></span>(<span>) ‑> Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]</span>
+<span>def <span class="ident">_get_default_direction_data</span></span>(<span>) ‑> Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Retourner un dictionnaire dont les clés correpond aux constantes
@@ -590,7 +590,7 @@ sont remis aux valeurs par défaut:<br>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.add_candidate_data"><code class="name flex">
-<span>def <span class="ident">add_candidate_data</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]], new_candidate: <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>) ‑> None</span>
+<span>def <span class="ident">add_candidate_data</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]], new_candidate: people.candidate.Candidate) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>MAJ les données (<code><a title="electoral_systems.extensions.polls.NB_CANDIDATES" href="#electoral_systems.extensions.polls.NB_CANDIDATES">NB_CANDIDATES</a></code>) d'une case d'un dictionnaire <code>directions_data</code> selon la position d'un électeur.</p>
@@ -599,7 +599,7 @@ sont remis aux valeurs par défaut:<br>
 <dt><strong><code>directions_data</code></strong> :&ensp;<code>Dict[str, <a title="electoral_systems.extensions.polls.direction_data_type" href="#electoral_systems.extensions.polls.direction_data_type">direction_data_type</a>]</code></dt>
 <dd>Un dictionnaire qui stocke
 les données pour chaque division de la carte politique.</dd>
-<dt><strong><code>new_candidate</code></strong> :&ensp;<code><a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a></code></dt>
+<dt><strong><code>new_candidate</code></strong> :&ensp;<code>people.candidate.Candidate</code></dt>
 <dd>Un nouveau candidat dans une élection.</dd>
 </dl></div>
 <details class="source">
@@ -625,7 +625,7 @@ les données pour chaque division de la carte politique.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.add_elector_data"><code class="name flex">
-<span>def <span class="ident">add_elector_data</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]], new_elector: <a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>) ‑> None</span>
+<span>def <span class="ident">add_elector_data</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]], new_elector: people.elector.Elector) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>MAJ les données (<code><a title="electoral_systems.extensions.polls.AVG" href="#electoral_systems.extensions.polls.AVG">AVG</a></code>, <code><a title="electoral_systems.extensions.polls.NB_ELECTORS" href="#electoral_systems.extensions.polls.NB_ELECTORS">NB_ELECTORS</a></code>, <code><a title="electoral_systems.extensions.polls.ELECTORS" href="#electoral_systems.extensions.polls.ELECTORS">ELECTORS</a></code>) d'une case d'un dictionnaire <code>directions_data</code> selon la position d'un électeur.
@@ -636,7 +636,7 @@ est nécessaire pour la division.</p>
 <dt><strong><code>directions_data</code></strong> :&ensp;<code>Dict[str, <a title="electoral_systems.extensions.polls.direction_data_type" href="#electoral_systems.extensions.polls.direction_data_type">direction_data_type</a>]</code></dt>
 <dd>Un dictionnaire qui stocke
 les données pour chaque division de la carte politique.</dd>
-<dt><strong><code>new_elector</code></strong> :&ensp;<code><a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a></code></dt>
+<dt><strong><code>new_elector</code></strong> :&ensp;<code>people.elector.Elector</code></dt>
 <dd>Un nouvel électeur dans une élection.</dd>
 </dl></div>
 <details class="source">
@@ -671,7 +671,7 @@ les données pour chaque division de la carte politique.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.alliance_formed"><code class="name flex">
-<span>def <span class="ident">alliance_formed</span></span>(<span>candidate: <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, possible_allies: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]) ‑> bool</span>
+<span>def <span class="ident">alliance_formed</span></span>(<span>candidate: people.candidate.Candidate, possible_allies: List[people.candidate.Candidate]) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Décide si le candidat candidate va former ou alliance ou pas. Une alliance peut être formée uniquement
@@ -679,9 +679,9 @@ avec des autres candidats qui sont suffisament proche d'un candidat (par une pos
 leurs scores sont plus élevés que celui d'un candidat.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>candidate</code></strong> :&ensp;<code><a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a></code></dt>
+<dt><strong><code>candidate</code></strong> :&ensp;<code>people.candidate.Candidate</code></dt>
 <dd>Un candidat qui considère une alliance</dd>
-<dt><strong><code>possible_allies</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>possible_allies</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats dont le score est plus élevés que celui d'un candidat</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -750,7 +750,7 @@ leurs scores sont plus élevés que celui d'un candidat.</p>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.change_position_candidates"><code class="name flex">
-<span>def <span class="ident">change_position_candidates</span></span>(<span>candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], winner: <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, ranking: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], directions_data: Dict[str, Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]], travel_dist: float) ‑> None</span>
+<span>def <span class="ident">change_position_candidates</span></span>(<span>candidates: List[people.candidate.Candidate], winner: people.candidate.Candidate, ranking: List[people.candidate.Candidate], directions_data: Dict[str, Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]], travel_dist: float) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Change les positions des candidats selon les résultats d'une élection.<br>
@@ -763,11 +763,11 @@ Comme ça il transmet ses votes au candidat avec qui il a fait une alliance. Sin
 -Le candidat bouge vers la direction selon les scores (cf. <code><a title="electoral_systems.extensions.polls.move_in_direction" href="#electoral_systems.extensions.polls.move_in_direction">move_in_direction()</a></code>)</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste de tous les candidats participant encore à une élection.</dd>
-<dt><strong><code>winner</code></strong> :&ensp;<code><a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a></code></dt>
+<dt><strong><code>winner</code></strong> :&ensp;<code>people.candidate.Candidate</code></dt>
 <dd>Le gagnant courant d'une élection.</dd>
-<dt><strong><code>ranking</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>ranking</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste d'un placement courant des candidats.</dd>
 <dt><strong><code>directions_data</code></strong> :&ensp;<code>Dict[str, <a title="electoral_systems.extensions.polls.direction_data_type" href="#electoral_systems.extensions.polls.direction_data_type">direction_data_type</a>]</code></dt>
 <dd>Un dictionnaire
@@ -818,7 +818,7 @@ qui stocke les données pour chaque division de la carte politique.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.change_ranking_electors"><code class="name flex">
-<span>def <span class="ident">change_ranking_electors</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], score_winner: int, voting_rule: str, approval_gap: float) ‑> None</span>
+<span>def <span class="ident">change_ranking_electors</span></span>(<span>electors: List[people.elector.Elector], score_winner: int, voting_rule: str, approval_gap: float) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Change les positions des électeurs selon les résultats d'une élection.<br>
@@ -975,7 +975,7 @@ placés plus bas que le gagnant actuel.</p>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.get_avg_directions_positions"><code class="name flex">
-<span>def <span class="ident">get_avg_directions_positions</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]], chosen_directions: List[str]) ‑> List[tuple[float, float]]</span>
+<span>def <span class="ident">get_avg_directions_positions</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]], chosen_directions: List[str]) ‑> List[tuple[float, float]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Retourne une liste des positions moyennes des directions dans <code>chosen_directions</code></p>
@@ -1015,7 +1015,7 @@ qui stocke les données pour chaque division de la carte politique.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.get_default_directions_data"><code class="name flex">
-<span>def <span class="ident">get_default_directions_data</span></span>(<span>) ‑> Dict[str, Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]]</span>
+<span>def <span class="ident">get_default_directions_data</span></span>(<span>) ‑> Dict[str, Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Retourne un dictionnaire des dictionnaires dont chaque clé correpond à la division de la carte politique et
@@ -1042,7 +1042,7 @@ chaque valeur est un dictionnaire avec les données remis par défaut.</p>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.get_directions_scores"><code class="name flex">
-<span>def <span class="ident">get_directions_scores</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]], candidate: <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>) ‑> Dict[str, float]</span>
+<span>def <span class="ident">get_directions_scores</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]], candidate: people.candidate.Candidate) ‑> Dict[str, float]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Attribue les scores à chaque direction. Le score est basé sur les données (<code><a title="electoral_systems.extensions.polls.AVG" href="#electoral_systems.extensions.polls.AVG">AVG</a></code>, <code><a title="electoral_systems.extensions.polls.STD_DEV" href="#electoral_systems.extensions.polls.STD_DEV">STD_DEV</a></code>, <code><a title="electoral_systems.extensions.polls.NB_ELECTORS" href="#electoral_systems.extensions.polls.NB_ELECTORS">NB_ELECTORS</a></code>, <code><a title="electoral_systems.extensions.polls.NB_CANDIDATES" href="#electoral_systems.extensions.polls.NB_CANDIDATES">NB_CANDIDATES</a></code>)
@@ -1059,7 +1059,7 @@ Le calcul est effectué de manière suivante pour chaque direction:<br>
 <dt><strong><code>directions_data</code></strong> :&ensp;<code>Dict[str, <a title="electoral_systems.extensions.polls.direction_data_type" href="#electoral_systems.extensions.polls.direction_data_type">direction_data_type</a>]</code></dt>
 <dd>Un dictionnaire
 qui stocke les données pour chaque division de la carte politique.</dd>
-<dt><strong><code>candidate</code></strong> :&ensp;<code><a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a></code></dt>
+<dt><strong><code>candidate</code></strong> :&ensp;<code>people.candidate.Candidate</code></dt>
 <dd>Un candidat qui change sa position pour améliorer son score dans une élection.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -1111,14 +1111,14 @@ qui stocke les données pour chaque division de la carte politique.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.give_up"><code class="name flex">
-<span>def <span class="ident">give_up</span></span>(<span>candidate: <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>) ‑> bool</span>
+<span>def <span class="ident">give_up</span></span>(<span>candidate: people.candidate.Candidate) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Retourne <code>True</code> ssi le candidat candidate décide d'abandonner une élection.
 C'est une vérification supplémentaire pour une alliance.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>candidate</code></strong> :&ensp;<code><a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a></code></dt>
+<dt><strong><code>candidate</code></strong> :&ensp;<code>people.candidate.Candidate</code></dt>
 <dd>Un candidat qui peut décider d'abandonner</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -1182,7 +1182,7 @@ Sinon, retourne <code>None</code></p>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.move_in_direction"><code class="name flex">
-<span>def <span class="ident">move_in_direction</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]], candidate: <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, travel_dist: float) ‑> None</span>
+<span>def <span class="ident">move_in_direction</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]], candidate: people.candidate.Candidate, travel_dist: float) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Change la position d'un candidat candidate en bougeant vers la position moyenne des directions choisies
@@ -1193,7 +1193,7 @@ Le changement de la distance est donnée par <code>travel_dist</code>.</p>
 <dt><strong><code>directions_data</code></strong> :&ensp;<code>Dict[str, <a title="electoral_systems.extensions.polls.direction_data_type" href="#electoral_systems.extensions.polls.direction_data_type">direction_data_type</a>]</code></dt>
 <dd>Un dictionnaire
 qui stocke les données pour chaque division de la carte politique.</dd>
-<dt><strong><code>candidate</code></strong> :&ensp;<code><a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a></code></dt>
+<dt><strong><code>candidate</code></strong> :&ensp;<code>people.candidate.Candidate</code></dt>
 <dd>Un candidat qui va bouger.</dd>
 <dt><strong><code>travel_dist</code></strong> :&ensp;<code>float</code></dt>
 <dd>Le taux de changement de la position d'un candidat (borné entre 0 et 1).</dd>
@@ -1236,7 +1236,7 @@ qui stocke les données pour chaque division de la carte politique.</dd>
 <div class="desc"><p>random() -&gt; x in the interval [0, 1).</p></div>
 </dd>
 <dt id="electoral_systems.extensions.polls.set_avg_electors_positions"><code class="name flex">
-<span>def <span class="ident">set_avg_electors_positions</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]]) ‑> None</span>
+<span>def <span class="ident">set_avg_electors_positions</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Définit la position moyenne des électeurs. Appele uniquement quand tous les électeurs ont été ajoutés.</p>
@@ -1267,7 +1267,7 @@ qui stocke les données pour chaque division de la carte politique.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.extensions.polls.set_std_deviation"><code class="name flex">
-<span>def <span class="ident">set_std_deviation</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], float, tuple[float, float]]]], total_nb_electors: int) ‑> None</span>
+<span>def <span class="ident">set_std_deviation</span></span>(<span>directions_data: Dict[str, Dict[str, Union[int, List[people.elector.Elector], float, tuple[float, float]]]], total_nb_electors: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Calcule l'écart-type des positions des électeurs pour chaque direction de la carte politique.

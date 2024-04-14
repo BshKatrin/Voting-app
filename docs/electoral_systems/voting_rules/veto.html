@@ -70,7 +70,7 @@ def apply_veto(electors: List[Elector], candidates: List[Candidate], duels: Opti
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="electoral_systems.voting_rules.veto.apply_veto"><code class="name flex">
-<span>def <span class="ident">apply_veto</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], duels: Optional[Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]] = None) ‑> List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+<span>def <span class="ident">apply_veto</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Optional[Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]] = None) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Applique la règle de vote <em>Veto</em>. Il n'est possible d'appliquer cette règle du vote que s'il existe au moins 2 candidats.
@@ -79,10 +79,10 @@ Principe d'une règle du vote <em>Veto</em>:
 - pour chaque candidat, sauf le dernier dans ce classement, un point est attribué à son score.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[people.elector.Elector]</code></dt>
 <dd>Une liste de tous les électeurs participant à une élection.
 Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
-<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste de tous les candidats qui participent à une élection.</dd>
 <dt><strong><code>duels</code></strong> :&ensp;<code>Utls.duels_type</code></dt>
 <dd>Un dictionnaire qui associe à chaque duel des candidats (gagnant, perdant) le nombre de fois</dd>
@@ -91,7 +91,7 @@ Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
 Default = <code>None</code>.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats triés dans l'ordre décroissant selon leur score selon la règle de vote <em>Veto</em>.</dd>
 </dl></div>
 <details class="source">

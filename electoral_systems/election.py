@@ -1,4 +1,4 @@
-from typing import Set, Optional, List, Union
+from typing import Set, Optional, List, Union, Dict
 from math import sqrt
 from random import random
 
@@ -14,18 +14,18 @@ from .extensions.polls import (
     change_ranking_electors,
 )
 from .extensions.liquid_democracy import choose_delegee, choose_possible_delegees
-from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_by_round
+from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_by_round, duels_type
 
 from people import Candidate, Elector
 
 # Pour une génération des docs uniquement 
 __pdoc__ = {
     'random':False,
-    '_init_results_keys':True,
-    '_calc_distance':True,
-    '_define_ranking':True,
-    '_calc_proportion_satisfaction':True,
-    '_make_delegations':True
+    'Election._init_results_keys':True,
+    'Election._calc_distance':True,
+    'Election._define_ranking':True,
+    'Election._calc_proportion_satisfaction':True,
+    'Election._make_delegations':True
 }
 
 class Election(metaclass=Singleton):
@@ -33,24 +33,33 @@ class Election(metaclass=Singleton):
 
     def __init__(self):
         super().__init__()
-        self.electors = []
+        self.electors:List[Elector] = []
+        """Une liste qui stocke tous les électeurs qui participent dans une élection."""
+
         self.candidates = []
+        """Une liste qui stocke tous les candidats qui participent dans une élection."""
 
-        # Génére les prénoms, les noms
         self.first_name_iter = NameIterator()
-        self.last_name_iter = NameIterator()
+        """Un itérateur qui génére des prénoms des candidats (uniquement pour les données générées aléatoirement)"""
 
-        # Génére les IDs
+        self.last_name_iter = NameIterator()
+        """Un itérateur qui génére des noms des candidats (uniquement pour les données générées aléatoirement)"""
+
         self.id_iter = IdIterator(0)
+        """Un itérateur qui génére des IDs des candidats et des électeurs."""
 
         # Stocke les resultats
-        self.results = dict()
+        self.results:Dict[str, List[Candidate]] = dict()
+        """Un dictionnaire qui stocke un classement des candidats (dans l'ordre décroissant) pour chaque règle de vote choisie."""
+
         # Stocke les duels
-        self.duels_scores = dict()
+        self.duels_scores:duels_type = dict()
+        """Un dictionnaire qui stocke les résultats des duels entre les candidats."""
 
         # Pour la satisfaction
-        self.average_position_electors = (0, 0)
-        self.proportion_satisfaction = 0
+        self.average_position_electors:tuple[float, float] = (0, 0)
+        self.proportion_satisfaction:float = 0
+        """La distance maximale entre la position moyenne des électeurs et la position de chaque candidat."""
 
         # Init les constantes
         self.set_default_settings()
@@ -59,7 +68,7 @@ class Election(metaclass=Singleton):
         """Initialise les réglages par défaut."""
 
         # Nb de sondages à faire
-        self.nb_polls = 0
+        self.nb_polls:int = 0
 
         # Active/désactive la démocratie liquide
         self.liquid_democracy_activated = False
@@ -308,9 +317,8 @@ class Election(metaclass=Singleton):
         self.average_position_electors = (x_avg, y_avg)
 
     def _calc_proportion_satisfaction(self) -> None:
-        """Calcule le taux d'une satisfaction de la population.
-        
-        - calcule la distance maximale entre la position moyenne des electeurs et la position de chaque candidat et la stock dans self.proportion_satisfaction
+        """Calcule la distance maximale entre la position moyenne des électeurs et la position
+            de chaque candidat et la stock dans `Election.proportion_satisfaction`.
         """
 
         proportion = 0
@@ -322,12 +330,12 @@ class Election(metaclass=Singleton):
         self.proportion_satisfaction = proportion
 
     def calc_satisfaction(self, candidate: Candidate) -> float:
-        """Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.
-        
-        - Calcule la distance du candidat par rapport a la position moyenne des electeurs
-        - Calcule la valeur absolue de la différence de cette distance moins la distance maximale (proportion_satisfaction)
-        - Calcule le pourcentage de satisfaction selon cette valeur absolue divisée par la valeur maximale (proportion_satisfaction)
-        - Renvoie ce pourcentage (plus la distance au point moyen est faible, plus le pourcentage sera élevé et inversement)
+        """Calcule le pourcentage de la population qui est satisfait par une victoire du candidat candidate dans une élection.  
+        **Algorithme**:  
+            - Calcule la distance du candidat par rapport a la position moyenne des électeurs  
+            - Calcule la valeur absolue de la différence de cette distance moins la distance maximale (`proportion_satisfaction`)  
+            - Calcule le pourcentage de satisfaction selon cette valeur absolue divisée par la valeur maximale (`proportion_satisfaction`)  
+            - Renvoie ce pourcentage (plus la distance au point moyen est faible, plus le pourcentage sera élevé et inversement)  
 
         Args:
             candidate (people.candidate.Candidate): Un candidat-gagnant.
@@ -335,6 +343,7 @@ class Election(metaclass=Singleton):
         Returns:
             float: Le pourcentage de satisfaction de la population.
         """
+
         diff = abs(
             self._calc_distance(candidate.position, self.average_position_electors)
             - self.proportion_satisfaction
@@ -439,7 +448,7 @@ class Election(metaclass=Singleton):
         voting_rule = self.poll_voting_rule
         winner = self.choose_winner(voting_rule)
         ranking = self.results[voting_rule]
-        print("Poll", self.directions_data)
+
         # Des candidats changent leurs positions politiques
         change_position_candidates(
             self.candidates,

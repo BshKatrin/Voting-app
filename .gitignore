@@ -4,3 +4,6 @@ graphics/temp/map.png
 !graphics/temp.gitkeep
 *.db
 doc_gen.py
+*.csv
+powermetrics_log.txt
+.codecarbon.config

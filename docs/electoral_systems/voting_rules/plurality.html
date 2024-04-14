@@ -101,7 +101,7 @@ def apply_plurality_rounds(electors: List[Elector], candidates: List[Candidate])
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="electoral_systems.voting_rules.plurality.apply_plurality_rounds"><code class="name flex">
-<span>def <span class="ident">apply_plurality_rounds</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]) ‑> List[List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]]</span>
+<span>def <span class="ident">apply_plurality_rounds</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate]) ‑> List[List[people.candidate.Candidate]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Applique une règle de vote <em>Pluralité à 2 tours</em>. Il n'est possible d'appliquer cette règle du vote que s'il existe
@@ -115,15 +115,15 @@ Les électeurs classent alors ces deux candidats selon leurs préférences, en o
 Comme au premier tour, le candidat classé premier reçoit 1 point, et le deuxième 0 point.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[people.elector.Elector]</code></dt>
 <dd>Une liste de tous les électeurs participant à une élection.
 Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
-<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste de tous les candidats qui participent à une élection.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des listes (classement dans l'ordre décroissant) des candidats par tour. La longueur de la liste correpond
 au nombre des tours effectués.</dd>
 </dl></div>
@@ -161,7 +161,7 @@ au nombre des tours effectués.</dd>
 </details>
 </dd>
 <dt id="electoral_systems.voting_rules.plurality.apply_plurality_simple"><code class="name flex">
-<span>def <span class="ident">apply_plurality_simple</span></span>(<span>electors: List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>], candidates: List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], duels: Optional[Dict[tuple[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>, <a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>], int]] = None) ‑> List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</span>
+<span>def <span class="ident">apply_plurality_simple</span></span>(<span>electors: List[people.elector.Elector], candidates: List[people.candidate.Candidate], duels: Optional[Dict[tuple[people.candidate.Candidate, people.candidate.Candidate], int]] = None) ‑> List[people.candidate.Candidate]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Applique la règle de vote <em>Pluralité à 1 tour</em>. Il n'est possible d'appliquer cette règle de vote que s'il existe au
@@ -172,10 +172,10 @@ Principe d'une règle de vote <em>Pluralité à 1 tour</em>:<br>
 </p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>electors</code></strong> :&ensp;<code>List[<a title="people.elector.Elector" href="../../people/elector.html#people.elector.Elector">Elector</a>]</code></dt>
+<dt><strong><code>electors</code></strong> :&ensp;<code>List[people.elector.Elector]</code></dt>
 <dd>Une liste de tous les électeurs participant à une élection.
 Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
-<dt><strong><code>candidates</code></strong> :&ensp;<code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><strong><code>candidates</code></strong> :&ensp;<code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste de tous les candidats qui participent à une élection.</dd>
 <dt><strong><code>duels</code></strong> :&ensp;<code><a title="electoral_systems.voting_rules.utls.duels_type" href="utls.html#electoral_systems.voting_rules.utls.duels_type">duels_type</a></code></dt>
 <dd>Un dictionnaire qui associe à chaque duel des candidats
@@ -183,7 +183,7 @@ Leur liste <code>candidates_ranked</code> doit être remplie.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>List[<a title="people.candidate.Candidate" href="../../people/candidate.html#people.candidate.Candidate">Candidate</a>]</code></dt>
+<dt><code>List[people.candidate.Candidate]</code></dt>
 <dd>Une liste des candidats triés dans l'ordre décroissant selon leurs scores dans
 la règle de vote <em>Pluralité à 1 tour</em></dd>
 </dl></div>

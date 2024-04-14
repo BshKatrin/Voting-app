@@ -71,13 +71,13 @@ Il est possible de passer par le protocol SSH ou HTTPS.
 
 ### Windows
 
-## Installation de git
+#### Installation de git
 
-1. Aller sur le site de Github 'http://msysgit.github.io/' et télécharger le fichier .exe pour windows 
+1. Aller sur [le site de Git](http://msysgit.github.io/) et télécharger le fichier `.exe` pour Windows
 
 2. Lancer ce fichier téléchargé
 
-## Installation et utilisation de l'environnement virtuel
+#### Installation et utilisation de l'environnement virtuel
 
 1. Installation de l'environnement virtuel
 
@@ -90,21 +90,22 @@ Il est possible de passer par le protocol SSH ou HTTPS.
 3. Modifier les accès aux exécutions de windows (le rétablir normalement avec `Set-ExecutionPolicy Restricted` après utilisation)
 
 - Lancer Windows powershell en administrateur
-- utiliser `Set-ExecutionPolicy RemoteSigned`
+- Utiliser `Set-ExecutionPolicy RemoteSigned`
 
-4. Modifier le PATH du système dans les paramètres
+4. Modifier le _PATH_ du système dans les paramètres
 
-- Entrer dans 'modifier les variables d'environnement système' dans la recherche sur la touche windows
-- Entrer dans 'Variables d'environnement'
-- Cliquer sur 'path' dans 'variables système' 
+- Entrer dans _modifier les variables d'environnement système_ dans la recherche sur la touche Windows
+- Entrer dans _Variables d'environnement_
+- Cliquer sur _path_ dans _variables système_
 - Cliquer sur nouveau
 - Entrer le path recommendé par le système afin de pouvoir activer
-`C:\Users\...\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts`
-(attention ce path est différent pour chaque pc et utilisateur, celui présenté est un exemple)
+  `C:\Users\...\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts`
+
+(**_Attention_**: ce path est différent pour chaque pc et utilisateur, celui présenté est un exemple)
 
 5. Activer l'environnement virtuel
 
-- Entrer dans le fichier \Scripts du répertoire de l'environnement virtuel 
+- Entrer dans le fichier `\Scripts` du répertoire de l'environnement virtuel
 - `.\activate.bat`
 
 Si l'environnement a été bien activé, son nom entre les parathèses doit appraître au début de la ligne des commandes.

@@ -64,6 +64,17 @@ class SettingsWidget(QWidget):
         self.layout.setSpacing(40)
         self.setLayout(self.layout)
 
+        # Initialisaton des widgets
+        self.liquid_democracy_label = QLabel(parent=self)
+        self.liquid_democracy_checkbox = QCheckBox(parent=self)
+
+        self.polls_label = QLabel(parent=self)
+        self.nb_polls_btn = QSpinBox(parent=self)
+        self.polls_dropdown = QComboBox(parent=self)
+
+        self.tie_breaker_label = QLabel(parent=self)
+        self.tie_breaker_checkbox = QCheckBox(parent=self)
+
         self.initUIPolls()
         self.initUILiquidDemocracy()
         self.initUITieBreaker()
@@ -73,7 +84,6 @@ class SettingsWidget(QWidget):
         save_button.clicked.connect(self.saveSettings)
         save_button.setFixedHeight(30)
 
-        # Add to grid self.layout (rows = 4 x cols = 3)
         # Polls
         self.layout.addWidget(self.polls_label, 0, 0, 1, 2)
         self.layout.addWidget(self.nb_polls_btn, 0, 2, 1, 1)
@@ -104,15 +114,13 @@ class SettingsWidget(QWidget):
         &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant aux sondages.&#34;&#34;&#34;
 
         # Number of polls
-        self.polls_label = QLabel(parent=self)
         self.polls_label.setText(&#34;Number of polls to conduct&#34;)
-        self.nb_polls_btn = QSpinBox(parent=self)
-
-        # Limits
         self.nb_polls_btn.setMinimum(0)
         self.nb_polls_btn.setMaximum(10)
         self.nb_polls_btn.setValue(self.election.nb_polls)
+        
         self.nb_polls_btn.valueChanged.connect(self.setNumberPolls)
+        self.setNumberPolls(self.election.nb_polls)
 
         self.voting_rule_ui_reverse = dict()
         for voting_rule in VotingRulesConstants.ONE_ROUND:
@@ -120,22 +128,18 @@ class SettingsWidget(QWidget):
                 voting_rule
             )
 
-         # Choose poll voting rule
-        self.polls_dropdown = QComboBox(parent=self)
+        # Choose poll voting rule
         self.polls_dropdown.addItems(self.voting_rule_ui_reverse.keys())
         self.polls_dropdown.currentTextChanged.connect(self.setPollVotingRule)
         self.polls_dropdown.setCurrentText(
             VotingRulesConstants.UI[self.election.poll_voting_rule]
         )
-        self.polls_dropdown.setEnabled(bool(self.election.nb_polls))
 
     def initUILiquidDemocracy(self) -&gt; None:
         &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant à la démocratie liquide.&#34;&#34;&#34;
 
         # Activate liquid democracy checkbox
-        self.liquid_democracy_label = QLabel(parent=self)
         self.liquid_democracy_label.setText(&#34;Activate liquid democracy&#34;)
-        self.liquid_democracy_checkbox = QCheckBox(parent=self)
         self.liquid_democracy_checkbox.setChecked(
             self.election.liquid_democracy_activated
         )
@@ -146,9 +150,7 @@ class SettingsWidget(QWidget):
         &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant au tie-break.&#34;&#34;&#34;
 
         # Activer un tie-break par duels
-        self.tie_breaker_label = QLabel(parent=self)
         self.tie_breaker_label.setText(&#34;Activate tie-breaker by duels&#34;)
-        self.tie_breaker_checkbox = QCheckBox(parent=self)
         self.tie_breaker_checkbox.setChecked(self.election.tie_breaker_activated)
         self.tie_breaker_checkbox.stateChanged.connect(self.toggleTieBreaker)
 
@@ -161,11 +163,18 @@ class SettingsWidget(QWidget):
 
     @Slot(int)
     def setNumberPolls(self, nb_polls: int) -&gt; None:
-        &#34;&#34;&#34;Change le nombre de sondages maximal à faire.&#34;&#34;&#34;
+        &#34;&#34;&#34;Change le nombre de sondages maximal à faire. Désactive la democratie liquide.&#34;&#34;&#34;
 
         self.election.nb_polls = nb_polls
         self.polls_dropdown.setEnabled(bool(nb_polls))
-
+        
+        if nb_polls:
+            self.liquid_democracy_checkbox.setEnabled(False)
+            self.liquid_democracy_checkbox.setCheckState(Qt.CheckState.Unchecked)
+            self.toggleLiquidDemocracy(0)
+        else:
+            self.liquid_democracy_checkbox.setEnabled(True)
+        
     @Slot(int)
     def toggleLiquidDemocracy(self, state: int) -&gt; None:
         &#34;&#34;&#34;Active ou désactive une démocratie liquide (i.e. si les électeurs pourront ou pas faire des délégations)&#34;&#34;&#34;
@@ -234,6 +243,17 @@ class SettingsWidget(QWidget):
         self.layout.setSpacing(40)
         self.setLayout(self.layout)
 
+        # Initialisaton des widgets
+        self.liquid_democracy_label = QLabel(parent=self)
+        self.liquid_democracy_checkbox = QCheckBox(parent=self)
+
+        self.polls_label = QLabel(parent=self)
+        self.nb_polls_btn = QSpinBox(parent=self)
+        self.polls_dropdown = QComboBox(parent=self)
+
+        self.tie_breaker_label = QLabel(parent=self)
+        self.tie_breaker_checkbox = QCheckBox(parent=self)
+
         self.initUIPolls()
         self.initUILiquidDemocracy()
         self.initUITieBreaker()
@@ -243,7 +263,6 @@ class SettingsWidget(QWidget):
         save_button.clicked.connect(self.saveSettings)
         save_button.setFixedHeight(30)
 
-        # Add to grid self.layout (rows = 4 x cols = 3)
         # Polls
         self.layout.addWidget(self.polls_label, 0, 0, 1, 2)
         self.layout.addWidget(self.nb_polls_btn, 0, 2, 1, 1)
@@ -274,15 +293,13 @@ class SettingsWidget(QWidget):
         &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant aux sondages.&#34;&#34;&#34;
 
         # Number of polls
-        self.polls_label = QLabel(parent=self)
         self.polls_label.setText(&#34;Number of polls to conduct&#34;)
-        self.nb_polls_btn = QSpinBox(parent=self)
-
-        # Limits
         self.nb_polls_btn.setMinimum(0)
         self.nb_polls_btn.setMaximum(10)
         self.nb_polls_btn.setValue(self.election.nb_polls)
+        
         self.nb_polls_btn.valueChanged.connect(self.setNumberPolls)
+        self.setNumberPolls(self.election.nb_polls)
 
         self.voting_rule_ui_reverse = dict()
         for voting_rule in VotingRulesConstants.ONE_ROUND:
@@ -290,22 +307,18 @@ class SettingsWidget(QWidget):
                 voting_rule
             )
 
-         # Choose poll voting rule
-        self.polls_dropdown = QComboBox(parent=self)
+        # Choose poll voting rule
         self.polls_dropdown.addItems(self.voting_rule_ui_reverse.keys())
         self.polls_dropdown.currentTextChanged.connect(self.setPollVotingRule)
         self.polls_dropdown.setCurrentText(
             VotingRulesConstants.UI[self.election.poll_voting_rule]
         )
-        self.polls_dropdown.setEnabled(bool(self.election.nb_polls))
 
     def initUILiquidDemocracy(self) -&gt; None:
         &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant à la démocratie liquide.&#34;&#34;&#34;
 
         # Activate liquid democracy checkbox
-        self.liquid_democracy_label = QLabel(parent=self)
         self.liquid_democracy_label.setText(&#34;Activate liquid democracy&#34;)
-        self.liquid_democracy_checkbox = QCheckBox(parent=self)
         self.liquid_democracy_checkbox.setChecked(
             self.election.liquid_democracy_activated
         )
@@ -316,9 +329,7 @@ class SettingsWidget(QWidget):
         &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant au tie-break.&#34;&#34;&#34;
 
         # Activer un tie-break par duels
-        self.tie_breaker_label = QLabel(parent=self)
         self.tie_breaker_label.setText(&#34;Activate tie-breaker by duels&#34;)
-        self.tie_breaker_checkbox = QCheckBox(parent=self)
         self.tie_breaker_checkbox.setChecked(self.election.tie_breaker_activated)
         self.tie_breaker_checkbox.stateChanged.connect(self.toggleTieBreaker)
 
@@ -331,11 +342,18 @@ class SettingsWidget(QWidget):
 
     @Slot(int)
     def setNumberPolls(self, nb_polls: int) -&gt; None:
-        &#34;&#34;&#34;Change le nombre de sondages maximal à faire.&#34;&#34;&#34;
+        &#34;&#34;&#34;Change le nombre de sondages maximal à faire. Désactive la democratie liquide.&#34;&#34;&#34;
 
         self.election.nb_polls = nb_polls
         self.polls_dropdown.setEnabled(bool(nb_polls))
-
+        
+        if nb_polls:
+            self.liquid_democracy_checkbox.setEnabled(False)
+            self.liquid_democracy_checkbox.setCheckState(Qt.CheckState.Unchecked)
+            self.toggleLiquidDemocracy(0)
+        else:
+            self.liquid_democracy_checkbox.setEnabled(True)
+        
     @Slot(int)
     def toggleLiquidDemocracy(self, state: int) -&gt; None:
         &#34;&#34;&#34;Active ou désactive une démocratie liquide (i.e. si les électeurs pourront ou pas faire des délégations)&#34;&#34;&#34;
@@ -386,6 +404,17 @@ class SettingsWidget(QWidget):
     self.layout.setSpacing(40)
     self.setLayout(self.layout)
 
+    # Initialisaton des widgets
+    self.liquid_democracy_label = QLabel(parent=self)
+    self.liquid_democracy_checkbox = QCheckBox(parent=self)
+
+    self.polls_label = QLabel(parent=self)
+    self.nb_polls_btn = QSpinBox(parent=self)
+    self.polls_dropdown = QComboBox(parent=self)
+
+    self.tie_breaker_label = QLabel(parent=self)
+    self.tie_breaker_checkbox = QCheckBox(parent=self)
+
     self.initUIPolls()
     self.initUILiquidDemocracy()
     self.initUITieBreaker()
@@ -395,7 +424,6 @@ class SettingsWidget(QWidget):
     save_button.clicked.connect(self.saveSettings)
     save_button.setFixedHeight(30)
 
-    # Add to grid self.layout (rows = 4 x cols = 3)
     # Polls
     self.layout.addWidget(self.polls_label, 0, 0, 1, 2)
     self.layout.addWidget(self.nb_polls_btn, 0, 2, 1, 1)
@@ -436,9 +464,7 @@ class SettingsWidget(QWidget):
     &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant à la démocratie liquide.&#34;&#34;&#34;
 
     # Activate liquid democracy checkbox
-    self.liquid_democracy_label = QLabel(parent=self)
     self.liquid_democracy_label.setText(&#34;Activate liquid democracy&#34;)
-    self.liquid_democracy_checkbox = QCheckBox(parent=self)
     self.liquid_democracy_checkbox.setChecked(
         self.election.liquid_democracy_activated
     )
@@ -459,15 +485,13 @@ class SettingsWidget(QWidget):
     &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant aux sondages.&#34;&#34;&#34;
 
     # Number of polls
-    self.polls_label = QLabel(parent=self)
     self.polls_label.setText(&#34;Number of polls to conduct&#34;)
-    self.nb_polls_btn = QSpinBox(parent=self)
-
-    # Limits
     self.nb_polls_btn.setMinimum(0)
     self.nb_polls_btn.setMaximum(10)
     self.nb_polls_btn.setValue(self.election.nb_polls)
+    
     self.nb_polls_btn.valueChanged.connect(self.setNumberPolls)
+    self.setNumberPolls(self.election.nb_polls)
 
     self.voting_rule_ui_reverse = dict()
     for voting_rule in VotingRulesConstants.ONE_ROUND:
@@ -475,14 +499,12 @@ class SettingsWidget(QWidget):
             voting_rule
         )
 
-     # Choose poll voting rule
-    self.polls_dropdown = QComboBox(parent=self)
+    # Choose poll voting rule
     self.polls_dropdown.addItems(self.voting_rule_ui_reverse.keys())
     self.polls_dropdown.currentTextChanged.connect(self.setPollVotingRule)
     self.polls_dropdown.setCurrentText(
         VotingRulesConstants.UI[self.election.poll_voting_rule]
-    )
-    self.polls_dropdown.setEnabled(bool(self.election.nb_polls))</code></pre>
+    )</code></pre>
 </details>
 </dd>
 <dt id="graphics.home_window_utls.settings_widget.SettingsWidget.initUITieBreaker"><code class="name flex">
@@ -498,9 +520,7 @@ class SettingsWidget(QWidget):
     &#34;&#34;&#34;Initialise la partie d&#39;interface correspondant au tie-break.&#34;&#34;&#34;
 
     # Activer un tie-break par duels
-    self.tie_breaker_label = QLabel(parent=self)
     self.tie_breaker_label.setText(&#34;Activate tie-breaker by duels&#34;)
-    self.tie_breaker_checkbox = QCheckBox(parent=self)
     self.tie_breaker_checkbox.setChecked(self.election.tie_breaker_activated)
     self.tie_breaker_checkbox.stateChanged.connect(self.toggleTieBreaker)</code></pre>
 </details>
@@ -525,17 +545,24 @@ def saveSettings(self) -&gt; None:
 <span>def <span class="ident">setNumberPolls</span></span>(<span>self, nb_polls: int) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Change le nombre de sondages maximal à faire.</p></div>
+<div class="desc"><p>Change le nombre de sondages maximal à faire. Désactive la democratie liquide.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@Slot(int)
 def setNumberPolls(self, nb_polls: int) -&gt; None:
-    &#34;&#34;&#34;Change le nombre de sondages maximal à faire.&#34;&#34;&#34;
+    &#34;&#34;&#34;Change le nombre de sondages maximal à faire. Désactive la democratie liquide.&#34;&#34;&#34;
 
     self.election.nb_polls = nb_polls
-    self.polls_dropdown.setEnabled(bool(nb_polls))</code></pre>
+    self.polls_dropdown.setEnabled(bool(nb_polls))
+    
+    if nb_polls:
+        self.liquid_democracy_checkbox.setEnabled(False)
+        self.liquid_democracy_checkbox.setCheckState(Qt.CheckState.Unchecked)
+        self.toggleLiquidDemocracy(0)
+    else:
+        self.liquid_democracy_checkbox.setEnabled(True)</code></pre>
 </details>
 </dd>
 <dt id="graphics.home_window_utls.settings_widget.SettingsWidget.setPollVotingRule"><code class="name flex">
