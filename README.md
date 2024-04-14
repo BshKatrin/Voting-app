@@ -73,7 +73,7 @@ Il est possible de passer par le protocol SSH ou HTTPS.
 
 ## Installation de git
 
-1. Aller sur le site de Github et télécharger le fichier .exe pour windows
+1. Aller sur le site de Github 'http://msysgit.github.io/' et télécharger le fichier .exe pour windows 
 
 2. Lancer ce fichier téléchargé
 
