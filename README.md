@@ -36,7 +36,9 @@ Avant de commencer, assurez-vous d'avoir installé le logiciel suivant:
 
 ## Installation
 
-Notre application utilise le framework _Qt_. Pour installer les dépendences requises suiver les étapes:
+Notre application utilise le framework _Qt_, ainsi que la bibliothéque `numpy`. La liste complète des dépendences se trouve dans `requirement.txt`.
+
+Pour installer les dépendences requises suivez les étapes:
 
 ### MacOS, Linux
 
