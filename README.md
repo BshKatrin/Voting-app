@@ -101,7 +101,7 @@ Il est possible de passer par le protocol SSH ou HTTPS.
 - Entrer le path recommendé par le système afin de pouvoir activer
   `C:\Users\...\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts`
 
-(**_Attention_**: ce path est différent pour chaque pc et utilisateur, celui présenté est un exemple)
+**_Attention_**: ce path est différent pour chaque pc et utilisateur, celui présenté est un exemple
 
 5. Activer l'environnement virtuel
 
