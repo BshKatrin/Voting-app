@@ -68,7 +68,7 @@ def calc_distance(point1: tuple[float, float], point2: tuple[float, float]) -> f
 
 
 def add_elector_data(directions_data: Dict[str, direction_data_type], new_elector: Elector) -> None:
-    """MAJ les données (`AVG`, `NB_ELECTORS`, `ELECTORS`) d'une case d'un dictionnaire `directions_data` selon la position d'un électeur. 
+    """MAJ des données (`AVG`, `NB_ELECTORS`, `ELECTORS`) d'une case d'un dictionnaire `directions_data` selon la position d'un électeur. 
     La valeur correspondante à `AVG` est remplie juste avec la somme. Un appel à la fonction `set_avg_electors_positions`
     est nécessaire pour la division.
 
@@ -95,7 +95,7 @@ def add_elector_data(directions_data: Dict[str, direction_data_type], new_electo
 
 
 def add_candidate_data(directions_data: Dict[str, direction_data_type], new_candidate: Candidate) -> None:
-    """MAJ les données (`NB_CANDIDATES`) d'une case d'un dictionnaire `directions_data` selon la position d'un électeur.
+    """MAJ des données (`NB_CANDIDATES`) d'une case d'un dictionnaire `directions_data` selon la position d'un électeur.
 
     Args:
         directions_data (Dict[str, electoral_systems.extensions.polls.direction_data_type]): Un dictionnaire qui stocke
@@ -113,8 +113,8 @@ def add_candidate_data(directions_data: Dict[str, direction_data_type], new_cand
 
 
 def get_default_directions_data() -> Dict[str, direction_data_type]:
-    """Retourne un dictionnaire des dictionnaires dont chaque clé correpond à la division de la carte politique et 
-    chaque valeur est un dictionnaire avec les données remis par défaut.
+    """Retourne un dictionnaire dont chaque clé correpond à la division de la carte politique et 
+    chaque valeur est un dictionnaire avec les données remises par défaut.
 
     Returns:
         Dict[str, electoral_systems.extensions.polls.direction_data_type]
@@ -128,9 +128,9 @@ def get_default_directions_data() -> Dict[str, direction_data_type]:
 
 
 def _get_default_direction_data() -> direction_data_type:
-    """Retourner un dictionnaire dont les clés correpond aux constantes
+    """Retourne un dictionnaire dont les clés correpondent aux constantes
     `AVG`, `STD_DEV`, `NB_ELECTORS`, `ELECTORS`, `NB_CANDIDATES` et les valeurs
-    sont remis aux valeurs par défaut:  
+    sont remises aux valeurs par défaut:  
         - `AVG` -> (0, 0)  
         - `STD_DEV` -> 0  
         - `NB_ELECTORS` -> 0  
@@ -256,7 +256,7 @@ def get_directions_scores(directions_data: Dict[str, direction_data_type], candi
     """Attribue les scores à chaque direction. Le score est basé sur les données (`AVG`, `STD_DEV`, `NB_ELECTORS`, `NB_CANDIDATES`) 
     et la position d'un candidat candidate. Le score est calculé comme une somme pondérée. 
     Le calcul est effectué de manière suivante pour chaque direction:  
-    - Calcule la distance entre la position d'un candidate avec AVG de la direction  
+    - Calcule la distance entre la position d'un candidat avec AVG de la direction  
     - On cherche à minimiser la distance, l'écart-type, le nombre des candidates et de maximiser le nombre des électeurs 
     (i.e. de minimiser sa valeur négative)  
     - On attribue les poids : la distance -> 0.5, l'écart-type -> 0.2, le nombre des électeurs -> 0.2, le nombre des candidats -> 0.1  
@@ -380,12 +380,12 @@ def change_position_candidates(candidates: List[Candidate], winner: Candidate,
                                ranking: List[Candidate], directions_data: Dict[str, direction_data_type], travel_dist: float) -> None:
     """Change les positions des candidats selon les résultats d'une élection.  
     **Algorithme**:  
-        -Si le candidate gagne, il ne bouge pas. Sinon,  
+        -Si le candidat gagne, il ne bouge pas.
         -Si le candidat est assez dogmatique, il est très probable qu'il décide ne pas bouger. Sinon,  
         -Si le candidat décide d'abandonner et qu'il trouve avec qui former une alliance, il sort de l'élection.
-            Comme ça il transmet ses votes au candidat avec qui il a fait une alliance. Sinon,  
+            Comme ça il transmet ses votes au candidat avec qui il a fait une alliance. 
         -Si le candidat n'est pas très opposé aux autres candidats, il bouge vers la position du gagnant. Sinon,  
-        -Le candidat bouge vers la direction selon les scores (cf. `move_in_direction`)
+        -Le candidat bouge de façon à recupérer plus de votes (cf. `move_in_direction`)
 
     Args:
         candidates (List[people.candidate.Candidate]): Une liste de tous les candidats participant encore à une élection.
@@ -416,14 +416,14 @@ def change_position_candidates(candidates: List[Candidate], winner: Candidate,
 
 def change_ranking_electors(electors: List[Elector], score_winner: int, voting_rule: str, approval_gap: float) -> None:
     """Change les positions des électeurs selon les résultats d'une élection.  
-    - Plus le taux des connaissances est élevé, plus il est probable qu'un électeur va changer son placement.  
+    - Plus le taux de connaissance est élevé, plus il est probable qu'un électeur va changer son placement.  
     - Les candidats sont choisis dans une cercle dont le rayon maximale dépend du rayon utilisé dans la règle  
-    de vote par approbation. Ainsi, le rayon du cercle est inversement proportionnelle au taux des connaissances d'un électeur.  
+    de vote par approbation. Ainsi, le rayon du cercle est inversement proportionnel au taux de connaissance d'un électeur.  
 
     **Algorithme**:  
-        - Pour chaque candidat calculer le rapport entre son score et celui du gagnant.  
-        - Choisir de manière aléatoire le candidat qu'il faut placer plus haut dans un placement selon ce rapport.  
-            Donc, plus le score du candidat est proche au celui du gagnant, plus il a de chance d'être placé le premier. 
+        - Pour chaque candidat calcule le rapport entre son score et celui du gagnant.  
+        - Choisir de manière pseudo-aléatoire le candidat qu'il faut placer plus haut selon ce rapport.  
+            Donc, plus le score du candidat est proche de celui du gagnant, plus il a de chance d'être placé en première position. 
             Un électeur arrête de considérer les candidats qui se trouvent en dehors de son cercle ou qui sont 
             placés plus bas que le gagnant actuel.
     Args:
@@ -434,19 +434,19 @@ def change_ranking_electors(electors: List[Elector], score_winner: int, voting_r
     """
 
     for elector in electors:
-        if random() < elector.knowledge:
+        if random() < elector.knowledge: #l'electeur ne change pas de vote grâce à son taux de connaissance
             continue
 
         # Réarranger le placement
         for i, candidate in enumerate(elector.candidates_ranked):
             circle_limit = (1 - elector.knowledge) * approval_gap
 
-            if elector.dist_from_one_cand(candidate) > circle_limit:
+            if elector.dist_from_one_cand(candidate) > circle_limit: #le candidat est en dehors de son cercle d'acceptance
                 break
 
             score_ratio = candidate.scores[voting_rule] / score_winner
-            if random() < score_ratio:
-                # Nouvelle candidat
+            if random() < score_ratio: #vote pour ce candidat
+                # Nouveau candidat
                 chosen_candidate = candidate
                 # Décaler les candidats vers la droite
                 for j in range(i, 0, -1):
