@@ -269,7 +269,7 @@ class QuadrantMap(QWidget):
         &#34;&#34;&#34;Met les coordonnées normalisées à l&#39;échelle de la carte politique.
 
         Args:
-            position (tuple[float, float]): Une position dont chaque coordonnée est normalisé.
+            position (tuple[float, float]): Une position dont chaque coordonnée est normalisée.
 
         Returns:
             PySide6.QtCore.QPointF: Un point mis à l&#39;échelle.
@@ -285,7 +285,7 @@ class QuadrantMap(QWidget):
             point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématique.
 
         Returns:
-            tuple[float, float]: Une position dont chaque coordonnée est normalisé.
+            tuple[float, float]: Une position dont chaque coordonnée est normalisée.
         &#34;&#34;&#34;
 
         return point.x() / self.width() * 2, point.y() / self.height() * 2
@@ -314,7 +314,7 @@ class QuadrantMap(QWidget):
         Args:
             point (PySide6.QtCore.QPointF): Un point sur la carte politique (dans le système des coordonnées de l&#39;ordinateur).
             normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système des coordonnées
-                mathématique.
+                mathématiques.
         &#34;&#34;&#34;
 
         # Création de la zone de texte
@@ -334,7 +334,7 @@ class QuadrantMap(QWidget):
         Crée un candidat, l&#39;ajoute dans l&#39;élection. Supprime le textbox. Redéssine la carte politique. 
 
         Args:
-            normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématique.
+            normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématiques.
         &#34;&#34;&#34;
 
         # Récupérer le texte
@@ -400,7 +400,7 @@ class QuadrantMap(QWidget):
 
     def generateCoordinate(self, mu: float, sigma: float, limit: float) -&gt; float:
         &#34;&#34;&#34;Génére une coordonnée (x ou y) selon la loi normale avec des paramètres `mu` et `sigma`.
-        Borne la valeur absolue d&#39;une coordonnée généré à limite `limit`.
+        Borne la valeur absolue d&#39;une coordonnée générée à limite `limit`.
 
         Args:
             mu (float): La moyenne de la distribution normale. 
@@ -408,7 +408,7 @@ class QuadrantMap(QWidget):
             limit (float): La limite inférieure et supérieur pour le coordonnée. 
 
         Returns:
-            float: Un coordonnée généré et borné.
+            float: Un coordonnée générée et bornée.
         &#34;&#34;&#34;
 
         coordinate = normal(mu, sigma)
@@ -428,7 +428,7 @@ class QuadrantMap(QWidget):
         &#34;&#34;&#34;Génére une position sur la carte politique selon la loi normale.
 
         Returns:
-            tuple[float, float]: Une position générée dont chaque coordonnée est normalisé et borné.  
+            tuple[float, float]: Une position générée dont chaque coordonnée est normalisée et bornée.  
         &#34;&#34;&#34;
 
         constants = self.election.generation_constants
@@ -702,7 +702,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         &#34;&#34;&#34;Met les coordonnées normalisées à l&#39;échelle de la carte politique.
 
         Args:
-            position (tuple[float, float]): Une position dont chaque coordonnée est normalisé.
+            position (tuple[float, float]): Une position dont chaque coordonnée est normalisée.
 
         Returns:
             PySide6.QtCore.QPointF: Un point mis à l&#39;échelle.
@@ -718,7 +718,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
             point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématique.
 
         Returns:
-            tuple[float, float]: Une position dont chaque coordonnée est normalisé.
+            tuple[float, float]: Une position dont chaque coordonnée est normalisée.
         &#34;&#34;&#34;
 
         return point.x() / self.width() * 2, point.y() / self.height() * 2
@@ -747,7 +747,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         Args:
             point (PySide6.QtCore.QPointF): Un point sur la carte politique (dans le système des coordonnées de l&#39;ordinateur).
             normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système des coordonnées
-                mathématique.
+                mathématiques.
         &#34;&#34;&#34;
 
         # Création de la zone de texte
@@ -767,7 +767,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         Crée un candidat, l&#39;ajoute dans l&#39;élection. Supprime le textbox. Redéssine la carte politique. 
 
         Args:
-            normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématique.
+            normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématiques.
         &#34;&#34;&#34;
 
         # Récupérer le texte
@@ -833,7 +833,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
 
     def generateCoordinate(self, mu: float, sigma: float, limit: float) -&gt; float:
         &#34;&#34;&#34;Génére une coordonnée (x ou y) selon la loi normale avec des paramètres `mu` et `sigma`.
-        Borne la valeur absolue d&#39;une coordonnée généré à limite `limit`.
+        Borne la valeur absolue d&#39;une coordonnée générée à limite `limit`.
 
         Args:
             mu (float): La moyenne de la distribution normale. 
@@ -841,7 +841,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
             limit (float): La limite inférieure et supérieur pour le coordonnée. 
 
         Returns:
-            float: Un coordonnée généré et borné.
+            float: Un coordonnée générée et bornée.
         &#34;&#34;&#34;
 
         coordinate = normal(mu, sigma)
@@ -861,7 +861,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         &#34;&#34;&#34;Génére une position sur la carte politique selon la loi normale.
 
         Returns:
-            tuple[float, float]: Une position générée dont chaque coordonnée est normalisé et borné.  
+            tuple[float, float]: Une position générée dont chaque coordonnée est normalisée et bornée.  
         &#34;&#34;&#34;
 
         constants = self.election.generation_constants
@@ -903,7 +903,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
 <dd>Un point sur la carte politique (dans le système des coordonnées de l'ordinateur).</dd>
 <dt><strong><code>normalized_pos</code></strong> :&ensp;<code>tuple[float, float]</code></dt>
 <dd>Une position du <code>point</code> mais normalisée et dans le système des coordonnées
-mathématique.</dd>
+mathématiques.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -915,7 +915,7 @@ mathématique.</dd>
     Args:
         point (PySide6.QtCore.QPointF): Un point sur la carte politique (dans le système des coordonnées de l&#39;ordinateur).
         normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système des coordonnées
-            mathématique.
+            mathématiques.
     &#34;&#34;&#34;
 
     # Création de la zone de texte
@@ -1202,7 +1202,7 @@ et aux positions des candidats.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Génére une coordonnée (x ou y) selon la loi normale avec des paramètres <code>mu</code> et <code>sigma</code>.
-Borne la valeur absolue d'une coordonnée généré à limite <code>limit</code>.</p>
+Borne la valeur absolue d'une coordonnée générée à limite <code>limit</code>.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>mu</code></strong> :&ensp;<code>float</code></dt>
@@ -1215,7 +1215,7 @@ Borne la valeur absolue d'une coordonnée généré à limite <code>limit</code>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>float</code></dt>
-<dd>Un coordonnée généré et borné.</dd>
+<dd>Un coordonnée générée et bornée.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1223,7 +1223,7 @@ Borne la valeur absolue d'une coordonnée généré à limite <code>limit</code>
 </summary>
 <pre><code class="python">def generateCoordinate(self, mu: float, sigma: float, limit: float) -&gt; float:
     &#34;&#34;&#34;Génére une coordonnée (x ou y) selon la loi normale avec des paramètres `mu` et `sigma`.
-    Borne la valeur absolue d&#39;une coordonnée généré à limite `limit`.
+    Borne la valeur absolue d&#39;une coordonnée générée à limite `limit`.
 
     Args:
         mu (float): La moyenne de la distribution normale. 
@@ -1231,7 +1231,7 @@ Borne la valeur absolue d'une coordonnée généré à limite <code>limit</code>
         limit (float): La limite inférieure et supérieur pour le coordonnée. 
 
     Returns:
-        float: Un coordonnée généré et borné.
+        float: Un coordonnée générée et bornée.
     &#34;&#34;&#34;
 
     coordinate = normal(mu, sigma)
@@ -1256,7 +1256,7 @@ Borne la valeur absolue d'une coordonnée généré à limite <code>limit</code>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple[float, float]</code></dt>
-<dd>Une position générée dont chaque coordonnée est normalisé et borné.</dd>
+<dd>Une position générée dont chaque coordonnée est normalisée et bornée.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1266,7 +1266,7 @@ Borne la valeur absolue d'une coordonnée généré à limite <code>limit</code>
     &#34;&#34;&#34;Génére une position sur la carte politique selon la loi normale.
 
     Returns:
-        tuple[float, float]: Une position générée dont chaque coordonnée est normalisé et borné.  
+        tuple[float, float]: Une position générée dont chaque coordonnée est normalisée et bornée.  
     &#34;&#34;&#34;
 
     constants = self.election.generation_constants
@@ -1435,7 +1435,7 @@ Clique droite: place un électeur manuellement.</p></div>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple[float, float]</code></dt>
-<dd>Une position dont chaque coordonnée est normalisé.</dd>
+<dd>Une position dont chaque coordonnée est normalisée.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1448,7 +1448,7 @@ Clique droite: place un électeur manuellement.</p></div>
         point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématique.
 
     Returns:
-        tuple[float, float]: Une position dont chaque coordonnée est normalisé.
+        tuple[float, float]: Une position dont chaque coordonnée est normalisée.
     &#34;&#34;&#34;
 
     return point.x() / self.width() * 2, point.y() / self.height() * 2</code></pre>
@@ -1489,7 +1489,7 @@ Dessine les points correspondant aux positions des candidats et des électeurs.<
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>position</code></strong> :&ensp;<code>tuple[float, float]</code></dt>
-<dd>Une position dont chaque coordonnée est normalisé.</dd>
+<dd>Une position dont chaque coordonnée est normalisée.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1504,7 +1504,7 @@ Dessine les points correspondant aux positions des candidats et des électeurs.<
     &#34;&#34;&#34;Met les coordonnées normalisées à l&#39;échelle de la carte politique.
 
     Args:
-        position (tuple[float, float]): Une position dont chaque coordonnée est normalisé.
+        position (tuple[float, float]): Une position dont chaque coordonnée est normalisée.
 
     Returns:
         PySide6.QtCore.QPointF: Un point mis à l&#39;échelle.
@@ -1563,7 +1563,7 @@ Crée un candidat, l'ajoute dans l'élection. Supprime le textbox. Redéssine la
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>normalized_pos</code></strong> :&ensp;<code>tuple[float, float]</code></dt>
-<dd>Une position normalisée et dans le système des coordonnées mathématique.</dd>
+<dd>Une position normalisée et dans le système des coordonnées mathématiques.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1574,7 +1574,7 @@ Crée un candidat, l'ajoute dans l'élection. Supprime le textbox. Redéssine la
     Crée un candidat, l&#39;ajoute dans l&#39;élection. Supprime le textbox. Redéssine la carte politique. 
 
     Args:
-        normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématique.
+        normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématiques.
     &#34;&#34;&#34;
 
     # Récupérer le texte

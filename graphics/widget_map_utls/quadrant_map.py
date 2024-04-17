@@ -241,7 +241,7 @@ class QuadrantMap(QWidget):
         """Met les coordonnées normalisées à l'échelle de la carte politique.
 
         Args:
-            position (tuple[float, float]): Une position dont chaque coordonnée est normalisé.
+            position (tuple[float, float]): Une position dont chaque coordonnée est normalisée.
 
         Returns:
             PySide6.QtCore.QPointF: Un point mis à l'échelle.
@@ -257,7 +257,7 @@ class QuadrantMap(QWidget):
             point (PySide6.QtCore.QPointF): Un point mis à l'échelle dans le système de coordonnées mathématique.
 
         Returns:
-            tuple[float, float]: Une position dont chaque coordonnée est normalisé.
+            tuple[float, float]: Une position dont chaque coordonnée est normalisée.
         """
 
         return point.x() / self.width() * 2, point.y() / self.height() * 2
@@ -286,7 +286,7 @@ class QuadrantMap(QWidget):
         Args:
             point (PySide6.QtCore.QPointF): Un point sur la carte politique (dans le système des coordonnées de l'ordinateur).
             normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système des coordonnées
-                mathématique.
+                mathématiques.
         """
 
         # Création de la zone de texte
@@ -306,7 +306,7 @@ class QuadrantMap(QWidget):
         Crée un candidat, l'ajoute dans l'élection. Supprime le textbox. Redéssine la carte politique. 
 
         Args:
-            normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématique.
+            normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématiques.
         """
 
         # Récupérer le texte
@@ -372,7 +372,7 @@ class QuadrantMap(QWidget):
 
     def generateCoordinate(self, mu: float, sigma: float, limit: float) -> float:
         """Génére une coordonnée (x ou y) selon la loi normale avec des paramètres `mu` et `sigma`.
-        Borne la valeur absolue d'une coordonnée généré à limite `limit`.
+        Borne la valeur absolue d'une coordonnée générée à limite `limit`.
 
         Args:
             mu (float): La moyenne de la distribution normale. 
@@ -380,7 +380,7 @@ class QuadrantMap(QWidget):
             limit (float): La limite inférieure et supérieur pour le coordonnée. 
 
         Returns:
-            float: Un coordonnée généré et borné.
+            float: Un coordonnée générée et bornée.
         """
 
         coordinate = normal(mu, sigma)
@@ -400,7 +400,7 @@ class QuadrantMap(QWidget):
         """Génére une position sur la carte politique selon la loi normale.
 
         Returns:
-            tuple[float, float]: Une position générée dont chaque coordonnée est normalisé et borné.  
+            tuple[float, float]: Une position générée dont chaque coordonnée est normalisée et bornée.  
         """
 
         constants = self.election.generation_constants
