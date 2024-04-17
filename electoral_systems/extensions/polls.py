@@ -117,7 +117,7 @@ def get_default_directions_data() -> Dict[str, direction_data_type]:
     chaque valeur est un dictionnaire avec les données remises par défaut.
 
     Returns:
-        Dict[str, electoral_systems.extensions.polls.direction_data_type]
+        Dict[str, electoral_systems.extensions.polls.direction_data_type]: Un dictionnaire avec les données remises par défaut.
     """
 
     directions = {NE, NW, SE, SW, CENTER}
@@ -259,7 +259,8 @@ def get_directions_scores(directions_data: Dict[str, direction_data_type], candi
     - Calcule la distance entre la position d'un candidat avec AVG de la direction  
     - On cherche à minimiser la distance, l'écart-type, le nombre des candidates et de maximiser le nombre des électeurs 
     (i.e. de minimiser sa valeur négative)  
-    - On attribue les poids : la distance -> 0.5, l'écart-type -> 0.2, le nombre des électeurs -> 0.2, le nombre des candidats -> 0.1  
+    - On attribue les poids : *la distance -> 0.5, l'écart-type -> 0.2, le nombre des électeurs -> 0.2,
+        le nombre des candidats -> 0.1*  
     - Calcule la somme pondérée avec ces paramètres.  
 
     Args:
