@@ -9,7 +9,8 @@ from .person import Person
 @dataclass(kw_only=True, unsafe_hash=True, eq=True, order=True)
 class Candidate(Person):
     """Une classe permettant de représenter un candidat dans une élection.
-    *Une couple (first_name, last_name) doit être unique*."""
+    *Une couple (first_name, last_name) doit être unique*.
+    Un comparaison des candidats est effectué uniquement par leurs noms et prénoms."""
 
     first_name: str = field(default="", hash=True, compare=True)
     """Le prénom d'un candidat."""
@@ -75,7 +76,7 @@ class Candidate(Person):
 
     def __repr__(self):
         return self.__str__()
-
+        
     def init_score(self, voting_rule: str, new_score: Union[int, float], list_type: Optional[bool] = False) -> None:
         """Initialise la case `scores[voting_rule]` avec `new_score`
 

@@ -37,7 +37,8 @@ from .person import Person
 @dataclass(kw_only=True, unsafe_hash=True, eq=True, order=True)
 class Candidate(Person):
     &#34;&#34;&#34;Une classe permettant de représenter un candidat dans une élection.
-    *Une couple (first_name, last_name) doit être unique*.&#34;&#34;&#34;
+    *Une couple (first_name, last_name) doit être unique*.
+    Un comparaison des candidats est effectué uniquement par leurs noms et prénoms.&#34;&#34;&#34;
 
     first_name: str = field(default=&#34;&#34;, hash=True, compare=True)
     &#34;&#34;&#34;Le prénom d&#39;un candidat.&#34;&#34;&#34;
@@ -103,7 +104,7 @@ class Candidate(Person):
 
     def __repr__(self):
         return self.__str__()
-
+        
     def init_score(self, voting_rule: str, new_score: Union[int, float], list_type: Optional[bool] = False) -&gt; None:
         &#34;&#34;&#34;Initialise la case `scores[voting_rule]` avec `new_score`
 
@@ -205,7 +206,8 @@ class Candidate(Person):
 </code></dt>
 <dd>
 <div class="desc"><p>Une classe permettant de représenter un candidat dans une élection.
-<em>Une couple (first_name, last_name) doit être unique</em>.</p></div>
+<em>Une couple (first_name, last_name) doit être unique</em>.
+Un comparaison des candidats est effectué uniquement par leurs noms et prénoms.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -213,7 +215,8 @@ class Candidate(Person):
 <pre><code class="python">@dataclass(kw_only=True, unsafe_hash=True, eq=True, order=True)
 class Candidate(Person):
     &#34;&#34;&#34;Une classe permettant de représenter un candidat dans une élection.
-    *Une couple (first_name, last_name) doit être unique*.&#34;&#34;&#34;
+    *Une couple (first_name, last_name) doit être unique*.
+    Un comparaison des candidats est effectué uniquement par leurs noms et prénoms.&#34;&#34;&#34;
 
     first_name: str = field(default=&#34;&#34;, hash=True, compare=True)
     &#34;&#34;&#34;Le prénom d&#39;un candidat.&#34;&#34;&#34;
@@ -279,7 +282,7 @@ class Candidate(Person):
 
     def __repr__(self):
         return self.__str__()
-
+        
     def init_score(self, voting_rule: str, new_score: Union[int, float], list_type: Optional[bool] = False) -&gt; None:
         &#34;&#34;&#34;Initialise la case `scores[voting_rule]` avec `new_score`
 

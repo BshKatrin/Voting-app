@@ -29,6 +29,7 @@
 <pre><code class="python">from dataclasses import dataclass, field
 from numpy.random import normal
 from numpy import clip
+from math import isclose
 
 # Uniquement pour la génération des docs
 __pdoc__ = {&#39;normal&#39;:False}
@@ -74,7 +75,15 @@ class Person:
         return f&#34;{self.__class__.__name__}({self.id}, ({x:.2f}, {y:.2f}))&#34;
 
     def __repr__(self):
-        return self.__str__()</code></pre>
+        return self.__str__()
+
+    def __eq__(self, other):
+        # Nécessaire de définir manuellemnt à cause du Candidate
+        if isinstance(other, self.__class__):
+            x, y = self.position
+            x_o, y_o = other.position
+            return (other.id == self.id and isclose(x, x_o, rel_tol=1e-4) and isclose(y, y_o, rel_tol=1e-4))
+        return False</code></pre>
 </details>
 </section>
 <section>
@@ -138,7 +147,15 @@ class Person:
         return f&#34;{self.__class__.__name__}({self.id}, ({x:.2f}, {y:.2f}))&#34;
 
     def __repr__(self):
-        return self.__str__()</code></pre>
+        return self.__str__()
+
+    def __eq__(self, other):
+        # Nécessaire de définir manuellemnt à cause du Candidate
+        if isinstance(other, self.__class__):
+            x, y = self.position
+            x_o, y_o = other.position
+            return (other.id == self.id and isclose(x, x_o, rel_tol=1e-4) and isclose(y, y_o, rel_tol=1e-4))
+        return False</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">

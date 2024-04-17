@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from numpy.random import normal
 from numpy import clip
+from math import isclose
 
 # Uniquement pour la génération des docs
 __pdoc__ = {'normal':False}
@@ -47,3 +48,11 @@ class Person:
 
     def __repr__(self):
         return self.__str__()
+
+    def __eq__(self, other):
+        # Nécessaire de définir manuellemnt à cause du Candidate
+        if isinstance(other, self.__class__):
+            x, y = self.position
+            x_o, y_o = other.position
+            return (other.id == self.id and isclose(x, x_o, rel_tol=1e-4) and isclose(y, y_o, rel_tol=1e-4))
+        return False

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field, InitVar
 from typing import List, Tuple
-from math import sqrt
+from math import sqrt, isclose
 
 from .person import Person
 from .candidate import Candidate
@@ -31,7 +31,7 @@ class Elector(Person):
     S'il n'était pas donné lors d'initialisation, alors `knowledge` est généré selon la loi normale.
     """
 
-    knowledge_const: InitVar[Tuple[float, float]] = (0.5, 0.3)
+    knowledge_const: InitVar[Tuple[float, float]] = field(default=(0.5, 0.3), compare=False)
     """Des paramètres (moyenne, écart-type) pour une génération de `knowledge` selon la loi normale."""
 
     def __post_init__(self, knowledge_const):
@@ -49,6 +49,14 @@ class Elector(Person):
 
     def __repr__(self):
         return self.__str__()
+
+    # Nécessaire de définir manuellemnt à cause du Candidate
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return (super().__eq__(other) 
+                    and other.candidates_ranked == self.candidates_ranked
+                    and (isclose(other.knowledge, self.knowledge, rel_tol= 1e-4)) and other.weight == self.weight)
+        return False
 
     def dist_from_one_cand(self, candidate: List[Candidate]) -> float:
         """Calcule la distance euclidienne entre la position d'un électeur et celle d'un candidat donné.
