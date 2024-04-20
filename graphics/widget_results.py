@@ -18,7 +18,7 @@ from electoral_systems import Election, VotingRulesConstants
 
 
 class WidgetResults(QWidget):
-    """Une classe qui représente la widget avec les résultats d'une élection,
+    """Une classe qui représente le widget avec les résultats d'une élection,
     permet de voir les graphes et les diagrammes et de lancer les sondages."""
 
     sig_show_chart = Signal(str)
@@ -31,7 +31,7 @@ class WidgetResults(QWidget):
         """Initialise une instance d'élection (pour le partage des données).
 
         Args:
-            parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.
+            parent (PySide6.QtWidgets.QWidget): Le parent d'un widget.
         """
 
         super().__init__(parent)
@@ -77,7 +77,7 @@ class WidgetResults(QWidget):
         """Trouve les règles de vote à un tour choisies.
 
         Returns:
-            tuple[bool, Set[str]]: un booléan `True` si au moins 1 règle de vote à un tour a été choisie, `False` sinon, 
+            tuple[bool, Set[str]]: un booléen `True` si au moins 1 règle de vote à un tour a été choisie, `False` sinon, 
                 et un ensemble des constantes de telles règles de vote.
         """
 
@@ -88,7 +88,7 @@ class WidgetResults(QWidget):
         """Trouve les règles de vote Condorcet-cohérentes choisies.
 
         Returns:
-            tuple[bool, Set[str]]: un booléan `True` si au moins une règle de vote Condorcet-cohérente a été choisie, `False` sinon,
+            tuple[bool, Set[str]]: un booléen `True` si au moins une règle de vote Condorcet-cohérente a été choisie, `False` sinon,
                 et un ensemble des constantes de telles règles de vote.
         """
 
@@ -99,7 +99,7 @@ class WidgetResults(QWidget):
         """Trouve les règles de vote à plusieurs tours choisies.
 
         Returns:
-            tuple[bool, Set[str]]: un booléan `True` si au moins une règle de vote à plusieurs tours a été choisie, `False` sinon,
+            tuple[bool, Set[str]]: un booléen `True` si au moins une règle de vote à plusieurs tours a été choisie, `False` sinon,
                 et un ensemble des constantes de telles règles de vote
         """
 
@@ -153,7 +153,7 @@ class WidgetResults(QWidget):
         view.resize(self.getViewSize())
 
     def initUI(self) -> None:
-        """Initialise un layout et UI. Initialise la partie d'interface correspondant aux sondages
+        """Initialise un layout et UI. Initialise la partie d'interface correspondante aux sondages
         uniquement si nécessaire. Initialise un widget pour afficher la carte politique."""
 
         self.layout = QGridLayout()
@@ -169,7 +169,7 @@ class WidgetResults(QWidget):
         self.map_image.closed.connect(self.toggleCheckbox)
 
     def initPollsUI(self) -> None:
-        """Initialise la partie d'interface correspondant aux sondages."""
+        """Initialise la partie d'interface correspondante aux sondages."""
 
         # Nombre des sondages
         self.nb_polls_conducted = 1
@@ -272,12 +272,12 @@ class WidgetResults(QWidget):
     def setResultsLabel(self, winner_label: QLabel, satisf_label: QLabel, voting_rule: str) -> None:
         """Change le texte des labels qui affichent le nom du gagnant et le taux de satisfaction.
         Utile pour les sondages quand le gagnant d'une élection peut changer.
-        Appelée à chaque fois  qu'un nouveau sondage a été effectuée et un signal `sig_poll_conducted` a été émis.
+        Appelée à chaque fois  qu'un nouveau sondage a été effectué et un signal `sig_poll_conducted` a été émis.
 
         Args:
-            winner_label (PySide6.QtWidgets.QLabel): Un label qui afficher le nom du gagnant.
-            satisf_label (PySide6.QtWidgets.QLabel): Un label qui afficher le taux de satisfaction.
-            voting_rule (str): Une constante associée à une règle du vote.
+            winner_label (PySide6.QtWidgets.QLabel): Un label qui affiche le nom du gagnant.
+            satisf_label (PySide6.QtWidgets.QLabel): Un label qui affiche le taux de satisfaction.
+            voting_rule (str): Une constante associée à une règle de vote.
         """
 
         winner = self.election.choose_winner(voting_rule)
@@ -292,11 +292,11 @@ class WidgetResults(QWidget):
 
     @ Slot()
     def conductNewPoll(self) -> None:
-        """Effectue un nouveau sondage. Désactive un button qui permet de lancer un sondage
-        si la limite des sondages a été atteinte. Redessine la carte politique. MAJ les textes des labels.
-        MAJ les données des charts."""
+        """Effectue un nouveau sondage. Désactive un boutton qui permet de lancer un sondage
+        si la limite des sondages a été atteinte. Redessine la carte politique. MAJ des textes des labels.
+        MAJ des données des charts."""
 
-        # Effectuer une nouvelle sondage
+        # Effectuer un nouveau sondage
         self.election.conduct_poll()
         # MAJ du nb des sondages
         self.nb_polls_conducted += 1
@@ -308,7 +308,7 @@ class WidgetResults(QWidget):
         if self.nb_polls_conducted == self.election.nb_polls:
             self.start_poll_btn.setEnabled(False)
 
-        # Redéssiner la carte politique
+        # Redessiner la carte politique
         self.map_image.update()
         # MAJ des labels
         self.sig_poll_conducted.emit()
@@ -320,10 +320,10 @@ class WidgetResults(QWidget):
 
     @ Slot(int)
     def toggleMapImage(self, state: int) -> None:
-        """Affiche ou cache la carte politique lorsqu'un `checkbox_map` est coché ou décoché.
+        """Affiche ou cache la carte politique lorsqu'une `checkbox_map` est cochée ou décochée.
 
         Args:
-            state (int): L'état du checkbox (0 si décoché, en entier positif si coché).
+            state (int): L'état de la checkbox (0 si décochée, en entier positif si cochée).
         """
 
         if state and (not self.map_image.isVisible()):
@@ -333,7 +333,7 @@ class WidgetResults(QWidget):
 
     @ Slot()
     def toggleCheckbox(self) -> None:
-        """Désactive un `checkbox_map` si la carte politique a été fermée."""
+        """Désactive une `checkbox_map` si la carte politique a été fermée."""
 
         self.checkbox_map.setChecked(False)
 
@@ -354,8 +354,8 @@ class WidgetResults(QWidget):
 
         Args:
             voting_rule (str): Une constante associée à une règle du vote Condorcet-cohérente.
-            weighted (Optional[bool]): si `True`, affiche le graphe orientés avec les poids (pour Simpson uniquement).
-                Si `False`, affiche le graphe orientés sans les poids. Default = `False`.
+            weighted (Optional[bool]): si `True`, affiche le graphe orienté avec les poids (pour Simpson uniquement).
+                Si `False`, affiche le graphe orienté sans les poids. Default = `False`.
         """
 
         if voting_rule not in self.graphs_scenes:

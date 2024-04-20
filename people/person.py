@@ -24,9 +24,9 @@ class Person:
 
         Args:
             mu (float): La moyenne de la distribution normale.
-            sigma (float): L'écart type de la distribution normale. Un réel strictement positive.
+            sigma (float): L'écart type de la distribution normale. Un réel strictement positif.
             lower_limit (float): La limite inférieure pour le paramètre. 
-            upper_limit (float): La limite supérieur pour la paramètre.
+            upper_limit (float): La limite supérieure pour le paramètre.
 
         Returns:
             float: Le paramètre généré.

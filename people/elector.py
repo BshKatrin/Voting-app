@@ -19,16 +19,16 @@ class Elector(Person):
 
     weight: int = 1
     """
-    Un poids d'un électeur, un entier positive.  
-        - Si `weight` = 0, alors un électeur a fait un délégation  
-        - Si `weight` = 1, alors un électeur vote pour lui-même  
-        - Si `weight` > 1, alors un électeur a été choisie comme un délégataire.
+    Un poids d'un électeur, un entier positif.  
+        - Si `weight` = 0, alors un électeur a fait une délégation  
+        - Si `weight` = 1, alors un électeur vote pour lui-même seulement 
+        - Si `weight` > 1, alors un électeur a été choisi comme un délégataire.
     """
 
     knowledge: float = -1.0
     """
     Un taux des connaissances d'un électeur sur une élection.
-    S'il n'était pas donné lors d'initialisation, alors `knowledge` est généré selon la loi normale.
+    S'il n'était pas donné lors de l'initialisation, alors `knowledge` est généré selon la loi normale.
     """
 
     knowledge_const: InitVar[Tuple[float, float]] = field(default=(0.5, 0.3), compare=False)
@@ -109,7 +109,7 @@ class Elector(Person):
         """Remplit un attribut `candidates_ranked` avec le classement des candidats selon leur éloignement d'un électeur.
 
         Args:
-            candidates (List[people.candidate.Candidate]): Une liste des candidats.
+            candidates (List[people.candidate.Candidate]): Une liste de candidats.
         """
 
         self.candidates_ranked = self.pos_to_rank(candidates)

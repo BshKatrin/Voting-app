@@ -9,8 +9,8 @@ from .person import Person
 @dataclass(kw_only=True, unsafe_hash=True, eq=True, order=True)
 class Candidate(Person):
     """Une classe permettant de représenter un candidat dans une élection.
-    *Une couple (first_name, last_name) doit être unique*.
-    Un comparaison des candidats est effectué uniquement par leurs noms et prénoms."""
+    *Un couple (first_name, last_name) doit être unique*.
+    Une comparaison des candidats est effectuée uniquement par leurs noms et prénoms."""
 
     first_name: str = field(default="", hash=True, compare=True)
     """Le prénom d'un candidat."""
@@ -31,14 +31,14 @@ class Candidate(Person):
     """Sondages : Plus le taux d'opposition est élevé, moins il est probable que le candidat décide
     de changer sa position politique en s'approchant le gagnant d'une élection, et inversement, 
     moins le taux d'opposition est élevé, plus il est probable que le candidat décide de s'approcher 
-    le gagnant d'une élection.  
+    du gagnant d'une élection.  
     Si le taux d'opposition n'est pas donné lors de l'initialisation, il est généré selon la loi normale
     à l'aide de `opposition_const`.
     """
 
     dogmatism_const: InitVar[Tuple[float, float]] = field(
         default=(0.5, 0.3), compare=False)
-    """Des paramètres (moyenne, écart-type) pour générer le taux de dogmatism selon la loi normale."""
+    """Des paramètres (moyenne, écart-type) pour générer le taux de dogmatisme selon la loi normale."""
 
     opposition_const: InitVar[Tuple[float, float]] = field(
         default=(0.5, 0.3), compare=False)
@@ -82,7 +82,7 @@ class Candidate(Person):
 
         Args:
             voting_rule (str): La constante associée à une règle de vote.
-            new_score (Union[int, float]): Le score avec lequel il faut d'initialiser la case.
+            new_score (Union[int, float]): Le score avec lequel il faut initialiser la case.
             list_type (Optional[bool]): Doit être `True` si le type de `new_score` est `List` et il faut passer par `deepcopy`.
                 Sinon, l'initialisation est faite par une affectation simple. Default = `False`.
         """
@@ -94,7 +94,7 @@ class Candidate(Person):
 
     def add_score(self, voting_rule: str, score: Union[int, float]) -> None:
         """Ajoute le score `score` dans une case `scores[voting_rule]` vers le score déjà existant.
-        Utiliser uniqument pour des règles de vote à un tour ou Condorcet-cohérentes.
+        Utiliser uniquement pour des règles de vote à un tour ou Condorcet-cohérentes.
 
         Args:
             voting_rule (str):  La constante associée à une règle de vote à un tour ou Condorcet-cohérente.
@@ -144,7 +144,7 @@ class Candidate(Person):
     def move_to_point(self, position_goal, travel_dist) -> None:
         """Change la position d'un candidat en s'approchant de la position `position_goal`.
         Le taux de changement de la position est déterminé par `travel_dist`.
-        Si les coordonnées de la nouvelle positions sont hors bornes, alors elles sont coupées de -1 à 1.
+        Si les coordonnées de la nouvelle position sont hors bornes, alors elles sont coupées de -1 à 1.
 
         Args:
             position_goal (tuple[float, float]): La position vers laquelle il faut s'approcher. Chaque coordonnée doit être borné
