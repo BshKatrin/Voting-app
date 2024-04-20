@@ -27,7 +27,7 @@ class HomeWindow(QMainWindow):
     """Un widget qui représente la fenêtre principale d'une application."""
 
     sig_data_imported = Signal(bool)
-    """Un signal qui indique si les données d'une élections ont été importées avec ou sans des résultats"""
+    """Un signal qui indique si les données d'une élections ont été importées avec ou sans résultats"""
 
     def __init__(self, app: QApplication):
         """Initialise une instance d'élection (pour le partage des données).
@@ -64,7 +64,7 @@ class HomeWindow(QMainWindow):
         self.initUIHome()
 
     def setScreenGeometry(self) -> None:
-        """Fixe la taille de la fenêtre principale et la place au millieu d'écran."""
+        """Fixe la taille de la fenêtre principale et la place au milieu de l'écran."""
 
         # Trouver le centre
         x = self.app.primaryScreen().availableGeometry().x()
@@ -113,7 +113,7 @@ class HomeWindow(QMainWindow):
     @ Slot(str)
     def showPopupMsg(self, msg: str) -> None:
         """Initialise un pop-up avec une alerte et le message correspondant.
-        Le pop-up se ferme automatiquement au bout de 2 seconds.
+        Le pop-up se ferme automatiquement au bout de 2 secondes.
 
         Args:
             msg (str): un message à afficher.
@@ -209,7 +209,7 @@ class HomeWindow(QMainWindow):
     @ Slot(bool)
     def switchWidgetImport(self, with_results: bool) -> None:
         """Change le widget affiché si les données ont été importées. Si les résultats ont été importés, affiche 
-        la page initialisée avec des résultats. Sinon, affiche la page avec la carte politique.
+        la page initialisée avec les résultats. Sinon, affiche la page avec la carte politique.
 
         Args:
             with_results (bool): Une indication si les résultats ont été importées. Si `True` les résultats ont été importées,
@@ -312,7 +312,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def initUIResults(self) -> None:
-        """Nettoie la fenêtre principale, initialisee la navigation et le widget avec les résultats d'une élection."""
+        """Nettoie la fenêtre principale, initialise la navigation et le widget avec les résultats d'une élection."""
 
         self.cleanWindow()
 
@@ -326,7 +326,7 @@ class HomeWindow(QMainWindow):
     @ Slot(list)
     def startElection(self, chosen_voting_rules: List[str]) -> None:
         """Supprime le widget correpondant à la carte politique, calcule les résultats d'une élection, 
-        initialise le widget avec es résultats.
+        initialise le widget avec les résultats.
 
         Args:
             chosen_voting_rules (List[str]): Une liste des constantes correspondant aux règles de vote choisies pour une élection.

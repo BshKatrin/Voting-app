@@ -30,5 +30,5 @@ class NameIterator:
                 break
 
     def restart(self):
-        """Recommence une génération, i.e. la chaînes de caractères suivante sera 'A'"""
+        """Recommence une génération, i.e. la chaîne de caractères suivante sera 'A' """
         self.current_ascii = [0]

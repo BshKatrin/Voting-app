@@ -18,11 +18,11 @@ class GraphSettings(QWidget):
 
     def __init__(self, parent: QWidget, title: str, type: str, graph_type: int):
         """Initialise une instance d'élection (pour le partage des données).
-        Initiliase les sliders et graphique correspondant.
+        Initiliase les sliders et graphiques correspondant.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.
-            title (str): Un titre d'une règlage.
+            title (str): Le titre d'un règlage.
             type (str): Une constante associée au type d'un paramètre (e.g. économique, sociale etc).
             graph_type (int): Un type du graphique qu'il faudra initialiser.
         """
@@ -52,7 +52,7 @@ class GraphSettings(QWidget):
                 self.setFixedWidth(self.parent().width() * 0.8)
 
     def initLinearInput(self) -> None:
-        """Initialise les sliders pour une graphique affine (correspond au paramètre `orientation`)."""
+        """Initialise les sliders pour un graphique affine (correspond au paramètre `orientation`)."""
 
         sub_layout = QGridLayout()
 
@@ -74,7 +74,7 @@ class GraphSettings(QWidget):
         self.layout.addLayout(sub_layout)
 
     def initGaussInput(self) -> None:
-        """Initiliase les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale)."""
+        """Initialise les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale)."""
 
         sub_layout = QGridLayout()
 
@@ -119,7 +119,7 @@ class GraphSettings(QWidget):
         self.layout.addLayout(sub_layout)
 
     def initPlot(self, title: str) -> None:
-        """Initiliase le canvas pour un graphique.
+        """Initialise le canvas pour un graphique.
 
         Args:
             title (str): Un titre (UI) pour un graphique.
@@ -171,7 +171,7 @@ class GraphSettings(QWidget):
     @Slot(int)
     def updateMuConstant(self, value: int) -> None:
         """Change la valeur de la moyenne de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessine le graphique avec la moyenne changée. MAJ de cette valeurs dans l'élection.
+        Redessine le graphique avec la moyenne changée. MAJ de cette valeur dans l'élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -190,7 +190,7 @@ class GraphSettings(QWidget):
     @Slot(int)
     def updateSigmaConstant(self, value: int) -> None:
         """Change la valeur d'écart-type de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessine le graphique avec l'écart-type changé. MAJ de cette valeurs dans l'élection.
+        Redessine le graphique avec l'écart-type changé. MAJ de cette valeur dans l'élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -209,7 +209,7 @@ class GraphSettings(QWidget):
     @Slot(int)
     def updateOrientation(self, value: int) -> None:
         """Change la valeur du coefficient directeur de la droite. (appelée si le slider corresondant a été touché).
-        Redessine le graphique de la droite. MAJ de cette valeurs dans l'élection.
+        Redessine le graphique de la droite. MAJ de cette valeur dans l'élection.
 
         Args:
             value (int): Une valeur sur slider.
@@ -222,7 +222,7 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateDistUpdate(self, value: int) -> None:
-        """Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeurs dans l'élection.
+        """Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeur dans l'élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -236,9 +236,9 @@ class GraphSettings(QWidget):
 
         Args:
             mu (float): La moyenne de la distribution normale.
-            sigma (float): L'écart type de la distribution normale. Un réel strictement positive.
+            sigma (float): L'écart type de la distribution normale. Un réel strictement positif.
             x_min (float): La valeur minimale sur l'axe des X.
-            x_max (float): La valeur minimale sur l'axe des X.
+            x_max (float): La valeur maximale sur l'axe des X.
         """
 
         self.graphWidget.clear()
@@ -275,7 +275,7 @@ class GraphSettings(QWidget):
         Args:
             i (float): La valeur de $x$.
             mu (float): La moyenne de la distribution normale.
-            sigma (float): L'écart type de la distribution normale. Un réel strictement positive.
+            sigma (float): L'écart type de la distribution normale. Un réel strictement positif.
         """
 
         return (1 / ((sigma + 0.01) * sqrt(pi))) * exp(

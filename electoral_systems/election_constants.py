@@ -118,7 +118,7 @@ class RandomConstants:
         TRAVEL_DIST: (1, 100),  # Div par 100
     }
     """Un dictionnaire qui associe à chaque constante de la génération des données ses valeurs minimale et maximale.
-    Utilisé pour des sliders de QT. Toutes les valeurs sauf orientation seront divisée par 100."""
+    Utilisé pour des sliders de QT. Toutes les valeurs, sauf orientation, seront divisées par 100."""
 
     # Les valeurs par défaut
     DEFAULT_VALUES: Dict[str, Union[tuple[float, float], float, int]] = {

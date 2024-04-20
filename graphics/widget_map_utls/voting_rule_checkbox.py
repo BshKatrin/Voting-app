@@ -9,8 +9,8 @@ class VotingRuleCheckbox(QCheckBox):
 
         Args:
             label (str): Un nom d'une règle de vote (nom pour UI).
-            nb_cand_min (int): Un nombre minimum des candidats pour une règle de vote.
-            parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.
+            nb_cand_min (int): Un nombre minimum de candidats pour une règle de vote.
+            parent (PySide6.QtWidgets.QWidget): Le parent d'un widget.
         """
 
         super().__init__(label, parent)

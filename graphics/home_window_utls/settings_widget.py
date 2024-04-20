@@ -128,7 +128,7 @@ class SettingsWidget(QWidget):
 
     @Slot(str)
     def setPollVotingRule(self, voting_rule_ui: str) -> None:
-        """MAJ une règle de vote pour laquelle les sondages seront effectuées."""
+        """MAJ d'une règle de vote pour laquelle les sondages seront effectuées."""
 
         const = self.voting_rule_ui_reverse[voting_rule_ui]
         self.election.poll_voting_rule = const

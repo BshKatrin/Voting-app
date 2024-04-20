@@ -14,7 +14,7 @@ class WidgetCheckbox(QWidget):
     """Un widget qui représente l'ensemble des checkbox pour choisir des règles de vote pour une élection."""
 
     sig_toggle_election_btn = Signal()
-    """Un signal qui est émis lorsque le button `Confirm` est cliqué. Permet d'activer ou désactiver le button pour lancer une élection."""
+    """Un signal qui est émis lorsque le button `Confirm` est cliqué. Permet d'activer ou désactiver le boutton pour lancer une élection."""
 
     def __init__(self, parent: Optional[QWidget] = None):
         """Initialise une instance d'élection (pour le partage des données).
@@ -23,7 +23,7 @@ class WidgetCheckbox(QWidget):
 
         Args:
             parent (Optional[PySide6.QtWidgets.QWidget]): Un parent d'un widget. Puisque l'idée est d'afficher le checkbox 
-                dans une fenêtre séparée parent est rémis à `None` par défaut.
+                dans une fenêtre séparée parent est remis à `None` par défaut.
         """
 
         super().__init__(parent)
@@ -40,7 +40,7 @@ class WidgetCheckbox(QWidget):
             self.disableAllVotingRules()
 
     def initUI(self) -> None:
-        """Initialise le layout, les checkboxes pour chaque règle de vote disponible et les buttons."""
+        """Initialise le layout, les checkboxes pour chaque règle de vote disponible et les bouttons."""
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -72,7 +72,7 @@ class WidgetCheckbox(QWidget):
 
     @Slot(str, int)
     def onStateChanged(self, voting_rule: str, state: int) -> None:
-        """MAJ l'ensemble des règles de vote choisies si le checkbox correspondant a été coché ou décoché."""
+        """MAJ de l'ensemble des règles de vote choisies si la checkbox correspondante a été cochée ou décochée."""
 
         (
             self.chosen_voting_rules.add(voting_rule)
@@ -103,7 +103,7 @@ class WidgetCheckbox(QWidget):
 
     @Slot()
     def chooseAllVotingRules(self) -> None:
-        """Choisit tous les checkboxes activés."""
+        """Choisit tous les checkboxes activées."""
 
         for checkbox in self.rule_checkbox.values():
             if checkbox.isEnabled():
@@ -113,7 +113,7 @@ class WidgetCheckbox(QWidget):
         """Retourne l'ensemble des constantes correspondantes aux règles de vote choisies avec des checkboxes.
 
         Returns:
-            Set[str]: Un ensemble des constantes associées aux règles du vote.
+            Set[str]: Un ensemble de constantes associées aux règles du vote.
         """
 
         return self.chosen_voting_rules
@@ -127,10 +127,10 @@ class WidgetCheckbox(QWidget):
         return bool(self.chosen_voting_rules)
 
     def choosePollVotingRule(self, voting_rule: str) -> None:
-        """Coche le checkbox correspondant à une règle de vote `voting_rule`.
+        """Coche la checkbox correspondante à une règle de vote `voting_rule`.
 
         Args:
-            voting_rule (str): Une constante associée à une règle du vote dont le checkbox il faut cocher. 
+            voting_rule (str): Une constante associée à une règle du vote dont la checkbox a été cochée. 
         """
 
         self.rule_checkbox[voting_rule].setChecked(True)

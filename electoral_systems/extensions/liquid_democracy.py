@@ -47,7 +47,7 @@ def choose_delegee(electors: List[Elector]) -> Elector:
 def choose_possible_delegees(electors: List[Elector], delegator: Elector) -> List[Elector]:
     """Choisit parmi electors des électeurs-délégataires pour un électeur delegator de façon suivante:  
         - Calcule la distance entre un électeur et delegator  
-        - Si elle est inférieure à `DELEGATION_GAP_COEF`, ajoute cet électeur dans une liste des délégataires. Sinon, continuer.  
+        - Si elle est inférieure à `DELEGATION_GAP_COEF`, ajoute cet électeur dans une liste des délégataires. Sinon, continue.  
 
     Args:
         electors (List[Elector]): Tous les électeurs participant dans à élection.  
