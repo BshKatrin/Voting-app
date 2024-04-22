@@ -52,7 +52,7 @@ class WidgetMap(QWidget):
         &#34;&#34;&#34;Initialise une instance  d&#39;élection (pour le partage des données).
 
         Args:
-            parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
+            parent (PySide6.QtWidgets.QWidget): Le parent d&#39;un widget.
         &#34;&#34;&#34;
 
         super().__init__(parent)
@@ -63,7 +63,7 @@ class WidgetMap(QWidget):
         self.initUI()
 
     def initUI(self) -&gt; None:
-        &#34;&#34;&#34;Initialise un layout et UI (les buttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise un layout et UI (les bouttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -78,7 +78,7 @@ class WidgetMap(QWidget):
         self.initInputFields()
 
     def initNavigation(self) -&gt; None:
-        &#34;&#34;&#34;Initialise des buttons qui permettent de lancer une élection et d&#39;ouvrir un widget avec
+        &#34;&#34;&#34;Initialise des bouttons qui permettent de lancer une élection et d&#39;ouvrir un widget avec
             les checkboxes pour choisir des règles de vote.&#34;&#34;&#34;
 
         # Layout pour le buttons en haut
@@ -110,7 +110,7 @@ class WidgetMap(QWidget):
 
     def initInputFields(self) -&gt; None:
         &#34;&#34;&#34;Initialise les champs de saisie du nombre des candidats et des électeurs à générer aléatoirement, 
-        les buttons pour confirmer les nombres saisis et pour ouvrir un widget avec les réglages des paramètres
+        les bouttons pour confirmer les nombres saisis et pour ouvrir un widget avec les réglages des paramètres
         de la génération des données.&#34;&#34;&#34;
 
         # Layout pour les widgets en bas
@@ -169,7 +169,7 @@ class WidgetMap(QWidget):
 
     @Slot()
     def generateData(self) -&gt; None:
-        &#34;&#34;&#34;Génére les candidats et les électeurs selon les entiers entrée dans dans les champs de saisie.
+        &#34;&#34;&#34;Génére les candidats et les électeurs selon les entiers entrés dans dans les champs de saisie.
         Redessine la carte politique et supprime le texte dans les champs de saisie.&#34;&#34;&#34;
 
         nb_candidates = self.getIntInputField(self.candidates_text_box)
@@ -192,7 +192,7 @@ class WidgetMap(QWidget):
     def onStartElectionClick(self) -&gt; None:
         &#34;&#34;&#34;Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
         règles de vote choisies dans le widget avec des checkboxes. 
-        Appelée lorsque le button `start_election_btn` est cliqué.
+        Appelée lorsque le boutton `start_election_btn` est cliqué.
         &#34;&#34;&#34;
 
         chosen_voting_rule = self.voting_rules_checkbox.getChosenVotingRules()
@@ -200,8 +200,8 @@ class WidgetMap(QWidget):
 
     @Slot()
     def toggleElectionBtnState(self) -&gt; None:
-        &#34;&#34;&#34;Active ou désactive le button `start_election_btn` qui permet de lancer une élection.
-        Le button est activé uniquement s&#39;il existe des électeurs et des candidats et au moins une règle du vote 
+        &#34;&#34;&#34;Active ou désactive le boutton `start_election_btn` qui permet de lancer une élection.
+        Le boutton est activé uniquement s&#39;il existe des électeurs et des candidats et au moins une règle de vote 
         a été choisie.
         &#34;&#34;&#34;
 
@@ -257,7 +257,7 @@ d'élection (pour le partage des données).</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>parent</code></strong> :&ensp;<code>PySide6.QtWidgets.QWidget</code></dt>
-<dd>Un parent d'un widget.</dd>
+<dd>Le parent d'un widget.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -273,7 +273,7 @@ d'élection (pour le partage des données).</p>
         &#34;&#34;&#34;Initialise une instance  d&#39;élection (pour le partage des données).
 
         Args:
-            parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
+            parent (PySide6.QtWidgets.QWidget): Le parent d&#39;un widget.
         &#34;&#34;&#34;
 
         super().__init__(parent)
@@ -284,7 +284,7 @@ d'élection (pour le partage des données).</p>
         self.initUI()
 
     def initUI(self) -&gt; None:
-        &#34;&#34;&#34;Initialise un layout et UI (les buttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise un layout et UI (les bouttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -299,7 +299,7 @@ d'élection (pour le partage des données).</p>
         self.initInputFields()
 
     def initNavigation(self) -&gt; None:
-        &#34;&#34;&#34;Initialise des buttons qui permettent de lancer une élection et d&#39;ouvrir un widget avec
+        &#34;&#34;&#34;Initialise des bouttons qui permettent de lancer une élection et d&#39;ouvrir un widget avec
             les checkboxes pour choisir des règles de vote.&#34;&#34;&#34;
 
         # Layout pour le buttons en haut
@@ -331,7 +331,7 @@ d'élection (pour le partage des données).</p>
 
     def initInputFields(self) -&gt; None:
         &#34;&#34;&#34;Initialise les champs de saisie du nombre des candidats et des électeurs à générer aléatoirement, 
-        les buttons pour confirmer les nombres saisis et pour ouvrir un widget avec les réglages des paramètres
+        les bouttons pour confirmer les nombres saisis et pour ouvrir un widget avec les réglages des paramètres
         de la génération des données.&#34;&#34;&#34;
 
         # Layout pour les widgets en bas
@@ -390,7 +390,7 @@ d'élection (pour le partage des données).</p>
 
     @Slot()
     def generateData(self) -&gt; None:
-        &#34;&#34;&#34;Génére les candidats et les électeurs selon les entiers entrée dans dans les champs de saisie.
+        &#34;&#34;&#34;Génére les candidats et les électeurs selon les entiers entrés dans dans les champs de saisie.
         Redessine la carte politique et supprime le texte dans les champs de saisie.&#34;&#34;&#34;
 
         nb_candidates = self.getIntInputField(self.candidates_text_box)
@@ -413,7 +413,7 @@ d'élection (pour le partage des données).</p>
     def onStartElectionClick(self) -&gt; None:
         &#34;&#34;&#34;Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
         règles de vote choisies dans le widget avec des checkboxes. 
-        Appelée lorsque le button `start_election_btn` est cliqué.
+        Appelée lorsque le boutton `start_election_btn` est cliqué.
         &#34;&#34;&#34;
 
         chosen_voting_rule = self.voting_rules_checkbox.getChosenVotingRules()
@@ -421,8 +421,8 @@ d'élection (pour le partage des données).</p>
 
     @Slot()
     def toggleElectionBtnState(self) -&gt; None:
-        &#34;&#34;&#34;Active ou désactive le button `start_election_btn` qui permet de lancer une élection.
-        Le button est activé uniquement s&#39;il existe des électeurs et des candidats et au moins une règle du vote 
+        &#34;&#34;&#34;Active ou désactive le boutton `start_election_btn` qui permet de lancer une élection.
+        Le boutton est activé uniquement s&#39;il existe des électeurs et des candidats et au moins une règle de vote 
         a été choisie.
         &#34;&#34;&#34;
 
@@ -511,7 +511,7 @@ def destroyChildren(self) -&gt; None:
 <span>def <span class="ident">generateData</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Génére les candidats et les électeurs selon les entiers entrée dans dans les champs de saisie.
+<div class="desc"><p>Génére les candidats et les électeurs selon les entiers entrés dans dans les champs de saisie.
 Redessine la carte politique et supprime le texte dans les champs de saisie.</p></div>
 <details class="source">
 <summary>
@@ -519,7 +519,7 @@ Redessine la carte politique et supprime le texte dans les champs de saisie.</p>
 </summary>
 <pre><code class="python">@Slot()
 def generateData(self) -&gt; None:
-    &#34;&#34;&#34;Génére les candidats et les électeurs selon les entiers entrée dans dans les champs de saisie.
+    &#34;&#34;&#34;Génére les candidats et les électeurs selon les entiers entrés dans dans les champs de saisie.
     Redessine la carte politique et supprime le texte dans les champs de saisie.&#34;&#34;&#34;
 
     nb_candidates = self.getIntInputField(self.candidates_text_box)
@@ -577,7 +577,7 @@ def generateData(self) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Initialise les champs de saisie du nombre des candidats et des électeurs à générer aléatoirement,
-les buttons pour confirmer les nombres saisis et pour ouvrir un widget avec les réglages des paramètres
+les bouttons pour confirmer les nombres saisis et pour ouvrir un widget avec les réglages des paramètres
 de la génération des données.</p></div>
 <details class="source">
 <summary>
@@ -585,7 +585,7 @@ de la génération des données.</p></div>
 </summary>
 <pre><code class="python">def initInputFields(self) -&gt; None:
     &#34;&#34;&#34;Initialise les champs de saisie du nombre des candidats et des électeurs à générer aléatoirement, 
-    les buttons pour confirmer les nombres saisis et pour ouvrir un widget avec les réglages des paramètres
+    les bouttons pour confirmer les nombres saisis et pour ouvrir un widget avec les réglages des paramètres
     de la génération des données.&#34;&#34;&#34;
 
     # Layout pour les widgets en bas
@@ -634,14 +634,14 @@ de la génération des données.</p></div>
 <span>def <span class="ident">initNavigation</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise des buttons qui permettent de lancer une élection et d'ouvrir un widget avec
+<div class="desc"><p>Initialise des bouttons qui permettent de lancer une élection et d'ouvrir un widget avec
 les checkboxes pour choisir des règles de vote.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initNavigation(self) -&gt; None:
-    &#34;&#34;&#34;Initialise des buttons qui permettent de lancer une élection et d&#39;ouvrir un widget avec
+    &#34;&#34;&#34;Initialise des bouttons qui permettent de lancer une élection et d&#39;ouvrir un widget avec
         les checkboxes pour choisir des règles de vote.&#34;&#34;&#34;
 
     # Layout pour le buttons en haut
@@ -676,13 +676,13 @@ les checkboxes pour choisir des règles de vote.</p></div>
 <span>def <span class="ident">initUI</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise un layout et UI (les buttons, les champs de saisie et la carte politique).</p></div>
+<div class="desc"><p>Initialise un layout et UI (les bouttons, les champs de saisie et la carte politique).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initUI(self) -&gt; None:
-    &#34;&#34;&#34;Initialise un layout et UI (les buttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialise un layout et UI (les bouttons, les champs de saisie et la carte politique).&#34;&#34;&#34;
 
     self.layout = QVBoxLayout()
     self.setLayout(self.layout)
@@ -703,7 +703,7 @@ les checkboxes pour choisir des règles de vote.</p></div>
 <dd>
 <div class="desc"><p>Émet un signal <code>sig_start_election</code> avec une liste des constantes correpondantes aux
 règles de vote choisies dans le widget avec des checkboxes.
-Appelée lorsque le button <code>start_election_btn</code> est cliqué.</p></div>
+Appelée lorsque le boutton <code>start_election_btn</code> est cliqué.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -712,7 +712,7 @@ Appelée lorsque le button <code>start_election_btn</code> est cliqué.</p></div
 def onStartElectionClick(self) -&gt; None:
     &#34;&#34;&#34;Émet un signal `sig_start_election` avec une liste des constantes correpondantes aux
     règles de vote choisies dans le widget avec des checkboxes. 
-    Appelée lorsque le button `start_election_btn` est cliqué.
+    Appelée lorsque le boutton `start_election_btn` est cliqué.
     &#34;&#34;&#34;
 
     chosen_voting_rule = self.voting_rules_checkbox.getChosenVotingRules()
@@ -763,8 +763,8 @@ def showWidgetRandomSettings(self) -&gt; None:
 <span>def <span class="ident">toggleElectionBtnState</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Active ou désactive le button <code>start_election_btn</code> qui permet de lancer une élection.
-Le button est activé uniquement s'il existe des électeurs et des candidats et au moins une règle du vote
+<div class="desc"><p>Active ou désactive le boutton <code>start_election_btn</code> qui permet de lancer une élection.
+Le boutton est activé uniquement s'il existe des électeurs et des candidats et au moins une règle de vote
 a été choisie.</p></div>
 <details class="source">
 <summary>
@@ -772,8 +772,8 @@ a été choisie.</p></div>
 </summary>
 <pre><code class="python">@Slot()
 def toggleElectionBtnState(self) -&gt; None:
-    &#34;&#34;&#34;Active ou désactive le button `start_election_btn` qui permet de lancer une élection.
-    Le button est activé uniquement s&#39;il existe des électeurs et des candidats et au moins une règle du vote 
+    &#34;&#34;&#34;Active ou désactive le boutton `start_election_btn` qui permet de lancer une élection.
+    Le boutton est activé uniquement s&#39;il existe des électeurs et des candidats et au moins une règle de vote 
     a été choisie.
     &#34;&#34;&#34;
 

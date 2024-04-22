@@ -46,11 +46,11 @@ class GraphSettings(QWidget):
 
     def __init__(self, parent: QWidget, title: str, type: str, graph_type: int):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Initiliase les sliders et graphique correspondant.
+        Initiliase les sliders et graphiques correspondant.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
-            title (str): Un titre d&#39;une règlage.
+            title (str): Le titre d&#39;un règlage.
             type (str): Une constante associée au type d&#39;un paramètre (e.g. économique, sociale etc).
             graph_type (int): Un type du graphique qu&#39;il faudra initialiser.
         &#34;&#34;&#34;
@@ -80,7 +80,7 @@ class GraphSettings(QWidget):
                 self.setFixedWidth(self.parent().width() * 0.8)
 
     def initLinearInput(self) -&gt; None:
-        &#34;&#34;&#34;Initialise les sliders pour une graphique affine (correspond au paramètre `orientation`).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise les sliders pour un graphique affine (correspond au paramètre `orientation`).&#34;&#34;&#34;
 
         sub_layout = QGridLayout()
 
@@ -102,7 +102,7 @@ class GraphSettings(QWidget):
         self.layout.addLayout(sub_layout)
 
     def initGaussInput(self) -&gt; None:
-        &#34;&#34;&#34;Initiliase les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale).&#34;&#34;&#34;
 
         sub_layout = QGridLayout()
 
@@ -147,7 +147,7 @@ class GraphSettings(QWidget):
         self.layout.addLayout(sub_layout)
 
     def initPlot(self, title: str) -&gt; None:
-        &#34;&#34;&#34;Initiliase le canvas pour un graphique.
+        &#34;&#34;&#34;Initialise le canvas pour un graphique.
 
         Args:
             title (str): Un titre (UI) pour un graphique.
@@ -199,7 +199,7 @@ class GraphSettings(QWidget):
     @Slot(int)
     def updateMuConstant(self, value: int) -&gt; None:
         &#34;&#34;&#34;Change la valeur de la moyenne de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessine le graphique avec la moyenne changée. MAJ de cette valeurs dans l&#39;élection.
+        Redessine le graphique avec la moyenne changée. MAJ de cette valeur dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -218,7 +218,7 @@ class GraphSettings(QWidget):
     @Slot(int)
     def updateSigmaConstant(self, value: int) -&gt; None:
         &#34;&#34;&#34;Change la valeur d&#39;écart-type de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessine le graphique avec l&#39;écart-type changé. MAJ de cette valeurs dans l&#39;élection.
+        Redessine le graphique avec l&#39;écart-type changé. MAJ de cette valeur dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -237,7 +237,7 @@ class GraphSettings(QWidget):
     @Slot(int)
     def updateOrientation(self, value: int) -&gt; None:
         &#34;&#34;&#34;Change la valeur du coefficient directeur de la droite. (appelée si le slider corresondant a été touché).
-        Redessine le graphique de la droite. MAJ de cette valeurs dans l&#39;élection.
+        Redessine le graphique de la droite. MAJ de cette valeur dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider.
@@ -250,7 +250,7 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateDistUpdate(self, value: int) -&gt; None:
-        &#34;&#34;&#34;Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeurs dans l&#39;élection.
+        &#34;&#34;&#34;Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeur dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -264,9 +264,9 @@ class GraphSettings(QWidget):
 
         Args:
             mu (float): La moyenne de la distribution normale.
-            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
+            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positif.
             x_min (float): La valeur minimale sur l&#39;axe des X.
-            x_max (float): La valeur minimale sur l&#39;axe des X.
+            x_max (float): La valeur maximale sur l&#39;axe des X.
         &#34;&#34;&#34;
 
         self.graphWidget.clear()
@@ -303,7 +303,7 @@ class GraphSettings(QWidget):
         Args:
             i (float): La valeur de $x$.
             mu (float): La moyenne de la distribution normale.
-            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
+            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positif.
         &#34;&#34;&#34;
 
         return (1 / ((sigma + 0.01) * sqrt(pi))) * exp(
@@ -337,13 +337,13 @@ class GraphSettings(QWidget):
 <dd>
 <div class="desc"><p>Un widget qui correspond au réglage d'un paramètre pour la génération des données.</p>
 <p>Initialise une instance d'élection (pour le partage des données).
-Initiliase les sliders et graphique correspondant.</p>
+Initiliase les sliders et graphiques correspondant.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>parent</code></strong> :&ensp;<code>PySide6.QtWidgets.QWidget</code></dt>
 <dd>Un parent d'un widget.</dd>
 <dt><strong><code>title</code></strong> :&ensp;<code>str</code></dt>
-<dd>Un titre d'une règlage.</dd>
+<dd>Le titre d'un règlage.</dd>
 <dt><strong><code>type</code></strong> :&ensp;<code>str</code></dt>
 <dd>Une constante associée au type d'un paramètre (e.g. économique, sociale etc).</dd>
 <dt><strong><code>graph_type</code></strong> :&ensp;<code>int</code></dt>
@@ -358,11 +358,11 @@ Initiliase les sliders et graphique correspondant.</p>
 
     def __init__(self, parent: QWidget, title: str, type: str, graph_type: int):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Initiliase les sliders et graphique correspondant.
+        Initiliase les sliders et graphiques correspondant.
 
         Args:
             parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget.
-            title (str): Un titre d&#39;une règlage.
+            title (str): Le titre d&#39;un règlage.
             type (str): Une constante associée au type d&#39;un paramètre (e.g. économique, sociale etc).
             graph_type (int): Un type du graphique qu&#39;il faudra initialiser.
         &#34;&#34;&#34;
@@ -392,7 +392,7 @@ Initiliase les sliders et graphique correspondant.</p>
                 self.setFixedWidth(self.parent().width() * 0.8)
 
     def initLinearInput(self) -&gt; None:
-        &#34;&#34;&#34;Initialise les sliders pour une graphique affine (correspond au paramètre `orientation`).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise les sliders pour un graphique affine (correspond au paramètre `orientation`).&#34;&#34;&#34;
 
         sub_layout = QGridLayout()
 
@@ -414,7 +414,7 @@ Initiliase les sliders et graphique correspondant.</p>
         self.layout.addLayout(sub_layout)
 
     def initGaussInput(self) -&gt; None:
-        &#34;&#34;&#34;Initiliase les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale).&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale).&#34;&#34;&#34;
 
         sub_layout = QGridLayout()
 
@@ -459,7 +459,7 @@ Initiliase les sliders et graphique correspondant.</p>
         self.layout.addLayout(sub_layout)
 
     def initPlot(self, title: str) -&gt; None:
-        &#34;&#34;&#34;Initiliase le canvas pour un graphique.
+        &#34;&#34;&#34;Initialise le canvas pour un graphique.
 
         Args:
             title (str): Un titre (UI) pour un graphique.
@@ -511,7 +511,7 @@ Initiliase les sliders et graphique correspondant.</p>
     @Slot(int)
     def updateMuConstant(self, value: int) -&gt; None:
         &#34;&#34;&#34;Change la valeur de la moyenne de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessine le graphique avec la moyenne changée. MAJ de cette valeurs dans l&#39;élection.
+        Redessine le graphique avec la moyenne changée. MAJ de cette valeur dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -530,7 +530,7 @@ Initiliase les sliders et graphique correspondant.</p>
     @Slot(int)
     def updateSigmaConstant(self, value: int) -&gt; None:
         &#34;&#34;&#34;Change la valeur d&#39;écart-type de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessine le graphique avec l&#39;écart-type changé. MAJ de cette valeurs dans l&#39;élection.
+        Redessine le graphique avec l&#39;écart-type changé. MAJ de cette valeur dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -549,7 +549,7 @@ Initiliase les sliders et graphique correspondant.</p>
     @Slot(int)
     def updateOrientation(self, value: int) -&gt; None:
         &#34;&#34;&#34;Change la valeur du coefficient directeur de la droite. (appelée si le slider corresondant a été touché).
-        Redessine le graphique de la droite. MAJ de cette valeurs dans l&#39;élection.
+        Redessine le graphique de la droite. MAJ de cette valeur dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider.
@@ -562,7 +562,7 @@ Initiliase les sliders et graphique correspondant.</p>
 
     @Slot(int)
     def updateDistUpdate(self, value: int) -&gt; None:
-        &#34;&#34;&#34;Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeurs dans l&#39;élection.
+        &#34;&#34;&#34;Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeur dans l&#39;élection.
 
         Args:
             value (int): Une valeur sur slider (sera divisée par 100).
@@ -576,9 +576,9 @@ Initiliase les sliders et graphique correspondant.</p>
 
         Args:
             mu (float): La moyenne de la distribution normale.
-            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
+            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positif.
             x_min (float): La valeur minimale sur l&#39;axe des X.
-            x_max (float): La valeur minimale sur l&#39;axe des X.
+            x_max (float): La valeur maximale sur l&#39;axe des X.
         &#34;&#34;&#34;
 
         self.graphWidget.clear()
@@ -615,7 +615,7 @@ Initiliase les sliders et graphique correspondant.</p>
         Args:
             i (float): La valeur de $x$.
             mu (float): La moyenne de la distribution normale.
-            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
+            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positif.
         &#34;&#34;&#34;
 
         return (1 / ((sigma + 0.01) * sqrt(pi))) * exp(
@@ -660,7 +660,7 @@ Initiliase les sliders et graphique correspondant.</p>
 <dt><strong><code>mu</code></strong> :&ensp;<code>float</code></dt>
 <dd>La moyenne de la distribution normale.</dd>
 <dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
-<dd>L'écart type de la distribution normale. Un réel strictement positive.</dd>
+<dd>L'écart type de la distribution normale. Un réel strictement positif.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -672,7 +672,7 @@ Initiliase les sliders et graphique correspondant.</p>
     Args:
         i (float): La valeur de $x$.
         mu (float): La moyenne de la distribution normale.
-        sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
+        sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positif.
     &#34;&#34;&#34;
 
     return (1 / ((sigma + 0.01) * sqrt(pi))) * exp(
@@ -753,13 +753,13 @@ Initiliase les sliders et graphique correspondant.</p>
 <span>def <span class="ident">initGaussInput</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initiliase les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale).</p></div>
+<div class="desc"><p>Initialise les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initGaussInput(self) -&gt; None:
-    &#34;&#34;&#34;Initiliase les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale).&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialise les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale).&#34;&#34;&#34;
 
     sub_layout = QGridLayout()
 
@@ -808,13 +808,13 @@ Initiliase les sliders et graphique correspondant.</p>
 <span>def <span class="ident">initLinearInput</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise les sliders pour une graphique affine (correspond au paramètre <code>orientation</code>).</p></div>
+<div class="desc"><p>Initialise les sliders pour un graphique affine (correspond au paramètre <code>orientation</code>).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initLinearInput(self) -&gt; None:
-    &#34;&#34;&#34;Initialise les sliders pour une graphique affine (correspond au paramètre `orientation`).&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialise les sliders pour un graphique affine (correspond au paramètre `orientation`).&#34;&#34;&#34;
 
     sub_layout = QGridLayout()
 
@@ -840,7 +840,7 @@ Initiliase les sliders et graphique correspondant.</p>
 <span>def <span class="ident">initPlot</span></span>(<span>self, title: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initiliase le canvas pour un graphique.</p>
+<div class="desc"><p>Initialise le canvas pour un graphique.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>title</code></strong> :&ensp;<code>str</code></dt>
@@ -851,7 +851,7 @@ Initiliase les sliders et graphique correspondant.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initPlot(self, title: str) -&gt; None:
-    &#34;&#34;&#34;Initiliase le canvas pour un graphique.
+    &#34;&#34;&#34;Initialise le canvas pour un graphique.
 
     Args:
         title (str): Un titre (UI) pour un graphique.
@@ -878,7 +878,7 @@ Initiliase les sliders et graphique correspondant.</p>
 <span>def <span class="ident">updateDistUpdate</span></span>(<span>self, value: int) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Change la valeur de la distance parcourue (<code>travel_dist</code>). MAJ de cette valeurs dans l'élection.</p>
+<div class="desc"><p>Change la valeur de la distance parcourue (<code>travel_dist</code>). MAJ de cette valeur dans l'élection.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>value</code></strong> :&ensp;<code>int</code></dt>
@@ -890,7 +890,7 @@ Initiliase les sliders et graphique correspondant.</p>
 </summary>
 <pre><code class="python">@Slot(int)
 def updateDistUpdate(self, value: int) -&gt; None:
-    &#34;&#34;&#34;Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeurs dans l&#39;élection.
+    &#34;&#34;&#34;Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeur dans l&#39;élection.
 
     Args:
         value (int): Une valeur sur slider (sera divisée par 100).
@@ -942,11 +942,11 @@ def updateDistUpdate(self, value: int) -&gt; None:
 <dt><strong><code>mu</code></strong> :&ensp;<code>float</code></dt>
 <dd>La moyenne de la distribution normale.</dd>
 <dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
-<dd>L'écart type de la distribution normale. Un réel strictement positive.</dd>
+<dd>L'écart type de la distribution normale. Un réel strictement positif.</dd>
 <dt><strong><code>x_min</code></strong> :&ensp;<code>float</code></dt>
 <dd>La valeur minimale sur l'axe des X.</dd>
 <dt><strong><code>x_max</code></strong> :&ensp;<code>float</code></dt>
-<dd>La valeur minimale sur l'axe des X.</dd>
+<dd>La valeur maximale sur l'axe des X.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -957,9 +957,9 @@ def updateDistUpdate(self, value: int) -&gt; None:
 
     Args:
         mu (float): La moyenne de la distribution normale.
-        sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
+        sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positif.
         x_min (float): La valeur minimale sur l&#39;axe des X.
-        x_max (float): La valeur minimale sur l&#39;axe des X.
+        x_max (float): La valeur maximale sur l&#39;axe des X.
     &#34;&#34;&#34;
 
     self.graphWidget.clear()
@@ -979,7 +979,7 @@ def updateDistUpdate(self, value: int) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Change la valeur de la moyenne de la distribution normale (appelée si le slider corresondant a été touché).
-Redessine le graphique avec la moyenne changée. MAJ de cette valeurs dans l'élection.</p>
+Redessine le graphique avec la moyenne changée. MAJ de cette valeur dans l'élection.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>value</code></strong> :&ensp;<code>int</code></dt>
@@ -992,7 +992,7 @@ Redessine le graphique avec la moyenne changée. MAJ de cette valeurs dans l'él
 <pre><code class="python">@Slot(int)
 def updateMuConstant(self, value: int) -&gt; None:
     &#34;&#34;&#34;Change la valeur de la moyenne de la distribution normale (appelée si le slider corresondant a été touché).
-    Redessine le graphique avec la moyenne changée. MAJ de cette valeurs dans l&#39;élection.
+    Redessine le graphique avec la moyenne changée. MAJ de cette valeur dans l&#39;élection.
 
     Args:
         value (int): Une valeur sur slider (sera divisée par 100).
@@ -1014,7 +1014,7 @@ def updateMuConstant(self, value: int) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Change la valeur du coefficient directeur de la droite. (appelée si le slider corresondant a été touché).
-Redessine le graphique de la droite. MAJ de cette valeurs dans l'élection.</p>
+Redessine le graphique de la droite. MAJ de cette valeur dans l'élection.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>value</code></strong> :&ensp;<code>int</code></dt>
@@ -1027,7 +1027,7 @@ Redessine le graphique de la droite. MAJ de cette valeurs dans l'élection.</p>
 <pre><code class="python">@Slot(int)
 def updateOrientation(self, value: int) -&gt; None:
     &#34;&#34;&#34;Change la valeur du coefficient directeur de la droite. (appelée si le slider corresondant a été touché).
-    Redessine le graphique de la droite. MAJ de cette valeurs dans l&#39;élection.
+    Redessine le graphique de la droite. MAJ de cette valeur dans l&#39;élection.
 
     Args:
         value (int): Une valeur sur slider.
@@ -1044,7 +1044,7 @@ def updateOrientation(self, value: int) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Change la valeur d'écart-type de la distribution normale (appelée si le slider corresondant a été touché).
-Redessine le graphique avec l'écart-type changé. MAJ de cette valeurs dans l'élection.</p>
+Redessine le graphique avec l'écart-type changé. MAJ de cette valeur dans l'élection.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>value</code></strong> :&ensp;<code>int</code></dt>
@@ -1057,7 +1057,7 @@ Redessine le graphique avec l'écart-type changé. MAJ de cette valeurs dans l'�
 <pre><code class="python">@Slot(int)
 def updateSigmaConstant(self, value: int) -&gt; None:
     &#34;&#34;&#34;Change la valeur d&#39;écart-type de la distribution normale (appelée si le slider corresondant a été touché).
-    Redessine le graphique avec l&#39;écart-type changé. MAJ de cette valeurs dans l&#39;élection.
+    Redessine le graphique avec l&#39;écart-type changé. MAJ de cette valeur dans l&#39;élection.
 
     Args:
         value (int): Une valeur sur slider (sera divisée par 100).

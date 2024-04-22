@@ -27,9 +27,15 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class IdIterator:
-    &#34;&#34;&#34;Un itérateur pour générer les IDs des candidats et des électeurs.&#34;&#34;&#34;
+    &#34;&#34;&#34;Un itérateur pour générer les IDs des candidats et des électeurs&#34;&#34;&#34;
 
-    def __init__(self, start):
+    def __init__(self, start:int):
+        &#34;&#34;&#34;Un itérateur commence à partir du `start`.
+        
+        Args:
+            start (int): Un nombre à partir duquel il faut commencer la génération.
+        &#34;&#34;&#34;
+
         self.start = start  # Premier nombre à générer
         self.current = self.start
 
@@ -42,7 +48,7 @@
         return id
 
     def restart(self):
-        &#34;&#34;&#34;Recommence une génération, i.e. le nombre suivant généré sera `self.start`&#34;&#34;&#34;
+        &#34;&#34;&#34;Recommence une génération des nombres à partir du `start`&#34;&#34;&#34;
         self.current = self.start</code></pre>
 </details>
 </section>
@@ -57,18 +63,30 @@
 <dl>
 <dt id="electoral_systems.utls.id_iterator.IdIterator"><code class="flex name class">
 <span>class <span class="ident">IdIterator</span></span>
-<span>(</span><span>start)</span>
+<span>(</span><span>start: int)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Un itérateur pour générer les IDs des candidats et des électeurs.</p></div>
+<div class="desc"><p>Un itérateur pour générer les IDs des candidats et des électeurs</p>
+<p>Un itérateur commence à partir du <code>start</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>start</code></strong> :&ensp;<code>int</code></dt>
+<dd>Un nombre à partir duquel il faut commencer la génération.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class IdIterator:
-    &#34;&#34;&#34;Un itérateur pour générer les IDs des candidats et des électeurs.&#34;&#34;&#34;
+    &#34;&#34;&#34;Un itérateur pour générer les IDs des candidats et des électeurs&#34;&#34;&#34;
 
-    def __init__(self, start):
+    def __init__(self, start:int):
+        &#34;&#34;&#34;Un itérateur commence à partir du `start`.
+        
+        Args:
+            start (int): Un nombre à partir duquel il faut commencer la génération.
+        &#34;&#34;&#34;
+
         self.start = start  # Premier nombre à générer
         self.current = self.start
 
@@ -81,7 +99,7 @@
         return id
 
     def restart(self):
-        &#34;&#34;&#34;Recommence une génération, i.e. le nombre suivant généré sera `self.start`&#34;&#34;&#34;
+        &#34;&#34;&#34;Recommence une génération des nombres à partir du `start`&#34;&#34;&#34;
         self.current = self.start</code></pre>
 </details>
 <h3>Methods</h3>
@@ -90,13 +108,13 @@
 <span>def <span class="ident">restart</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Recommence une génération, i.e. le nombre suivant généré sera <code>self.start</code></p></div>
+<div class="desc"><p>Recommence une génération des nombres à partir du <code>start</code></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def restart(self):
-    &#34;&#34;&#34;Recommence une génération, i.e. le nombre suivant généré sera `self.start`&#34;&#34;&#34;
+    &#34;&#34;&#34;Recommence une génération des nombres à partir du `start`&#34;&#34;&#34;
     self.current = self.start</code></pre>
 </details>
 </dd>

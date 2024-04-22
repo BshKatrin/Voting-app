@@ -37,8 +37,8 @@ from .person import Person
 @dataclass(kw_only=True, unsafe_hash=True, eq=True, order=True)
 class Candidate(Person):
     &#34;&#34;&#34;Une classe permettant de représenter un candidat dans une élection.
-    *Une couple (first_name, last_name) doit être unique*.
-    Un comparaison des candidats est effectué uniquement par leurs noms et prénoms.&#34;&#34;&#34;
+    *Un couple (first_name, last_name) doit être unique*.
+    Une comparaison des candidats est effectuée uniquement par leurs noms et prénoms.&#34;&#34;&#34;
 
     first_name: str = field(default=&#34;&#34;, hash=True, compare=True)
     &#34;&#34;&#34;Le prénom d&#39;un candidat.&#34;&#34;&#34;
@@ -59,14 +59,14 @@ class Candidate(Person):
     &#34;&#34;&#34;Sondages : Plus le taux d&#39;opposition est élevé, moins il est probable que le candidat décide
     de changer sa position politique en s&#39;approchant le gagnant d&#39;une élection, et inversement, 
     moins le taux d&#39;opposition est élevé, plus il est probable que le candidat décide de s&#39;approcher 
-    le gagnant d&#39;une élection.  
+    du gagnant d&#39;une élection.  
     Si le taux d&#39;opposition n&#39;est pas donné lors de l&#39;initialisation, il est généré selon la loi normale
     à l&#39;aide de `opposition_const`.
     &#34;&#34;&#34;
 
     dogmatism_const: InitVar[Tuple[float, float]] = field(
         default=(0.5, 0.3), compare=False)
-    &#34;&#34;&#34;Des paramètres (moyenne, écart-type) pour générer le taux de dogmatism selon la loi normale.&#34;&#34;&#34;
+    &#34;&#34;&#34;Des paramètres (moyenne, écart-type) pour générer le taux de dogmatisme selon la loi normale.&#34;&#34;&#34;
 
     opposition_const: InitVar[Tuple[float, float]] = field(
         default=(0.5, 0.3), compare=False)
@@ -110,7 +110,7 @@ class Candidate(Person):
 
         Args:
             voting_rule (str): La constante associée à une règle de vote.
-            new_score (Union[int, float]): Le score avec lequel il faut d&#39;initialiser la case.
+            new_score (Union[int, float]): Le score avec lequel il faut initialiser la case.
             list_type (Optional[bool]): Doit être `True` si le type de `new_score` est `List` et il faut passer par `deepcopy`.
                 Sinon, l&#39;initialisation est faite par une affectation simple. Default = `False`.
         &#34;&#34;&#34;
@@ -122,7 +122,7 @@ class Candidate(Person):
 
     def add_score(self, voting_rule: str, score: Union[int, float]) -&gt; None:
         &#34;&#34;&#34;Ajoute le score `score` dans une case `scores[voting_rule]` vers le score déjà existant.
-        Utiliser uniqument pour des règles de vote à un tour ou Condorcet-cohérentes.
+        Utiliser uniquement pour des règles de vote à un tour ou Condorcet-cohérentes.
 
         Args:
             voting_rule (str):  La constante associée à une règle de vote à un tour ou Condorcet-cohérente.
@@ -172,7 +172,7 @@ class Candidate(Person):
     def move_to_point(self, position_goal, travel_dist) -&gt; None:
         &#34;&#34;&#34;Change la position d&#39;un candidat en s&#39;approchant de la position `position_goal`.
         Le taux de changement de la position est déterminé par `travel_dist`.
-        Si les coordonnées de la nouvelle positions sont hors bornes, alors elles sont coupées de -1 à 1.
+        Si les coordonnées de la nouvelle position sont hors bornes, alors elles sont coupées de -1 à 1.
 
         Args:
             position_goal (tuple[float, float]): La position vers laquelle il faut s&#39;approcher. Chaque coordonnée doit être borné
@@ -206,8 +206,8 @@ class Candidate(Person):
 </code></dt>
 <dd>
 <div class="desc"><p>Une classe permettant de représenter un candidat dans une élection.
-<em>Une couple (first_name, last_name) doit être unique</em>.
-Un comparaison des candidats est effectué uniquement par leurs noms et prénoms.</p></div>
+<em>Un couple (first_name, last_name) doit être unique</em>.
+Une comparaison des candidats est effectuée uniquement par leurs noms et prénoms.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -215,8 +215,8 @@ Un comparaison des candidats est effectué uniquement par leurs noms et prénoms
 <pre><code class="python">@dataclass(kw_only=True, unsafe_hash=True, eq=True, order=True)
 class Candidate(Person):
     &#34;&#34;&#34;Une classe permettant de représenter un candidat dans une élection.
-    *Une couple (first_name, last_name) doit être unique*.
-    Un comparaison des candidats est effectué uniquement par leurs noms et prénoms.&#34;&#34;&#34;
+    *Un couple (first_name, last_name) doit être unique*.
+    Une comparaison des candidats est effectuée uniquement par leurs noms et prénoms.&#34;&#34;&#34;
 
     first_name: str = field(default=&#34;&#34;, hash=True, compare=True)
     &#34;&#34;&#34;Le prénom d&#39;un candidat.&#34;&#34;&#34;
@@ -237,14 +237,14 @@ class Candidate(Person):
     &#34;&#34;&#34;Sondages : Plus le taux d&#39;opposition est élevé, moins il est probable que le candidat décide
     de changer sa position politique en s&#39;approchant le gagnant d&#39;une élection, et inversement, 
     moins le taux d&#39;opposition est élevé, plus il est probable que le candidat décide de s&#39;approcher 
-    le gagnant d&#39;une élection.  
+    du gagnant d&#39;une élection.  
     Si le taux d&#39;opposition n&#39;est pas donné lors de l&#39;initialisation, il est généré selon la loi normale
     à l&#39;aide de `opposition_const`.
     &#34;&#34;&#34;
 
     dogmatism_const: InitVar[Tuple[float, float]] = field(
         default=(0.5, 0.3), compare=False)
-    &#34;&#34;&#34;Des paramètres (moyenne, écart-type) pour générer le taux de dogmatism selon la loi normale.&#34;&#34;&#34;
+    &#34;&#34;&#34;Des paramètres (moyenne, écart-type) pour générer le taux de dogmatisme selon la loi normale.&#34;&#34;&#34;
 
     opposition_const: InitVar[Tuple[float, float]] = field(
         default=(0.5, 0.3), compare=False)
@@ -288,7 +288,7 @@ class Candidate(Person):
 
         Args:
             voting_rule (str): La constante associée à une règle de vote.
-            new_score (Union[int, float]): Le score avec lequel il faut d&#39;initialiser la case.
+            new_score (Union[int, float]): Le score avec lequel il faut initialiser la case.
             list_type (Optional[bool]): Doit être `True` si le type de `new_score` est `List` et il faut passer par `deepcopy`.
                 Sinon, l&#39;initialisation est faite par une affectation simple. Default = `False`.
         &#34;&#34;&#34;
@@ -300,7 +300,7 @@ class Candidate(Person):
 
     def add_score(self, voting_rule: str, score: Union[int, float]) -&gt; None:
         &#34;&#34;&#34;Ajoute le score `score` dans une case `scores[voting_rule]` vers le score déjà existant.
-        Utiliser uniqument pour des règles de vote à un tour ou Condorcet-cohérentes.
+        Utiliser uniquement pour des règles de vote à un tour ou Condorcet-cohérentes.
 
         Args:
             voting_rule (str):  La constante associée à une règle de vote à un tour ou Condorcet-cohérente.
@@ -350,7 +350,7 @@ class Candidate(Person):
     def move_to_point(self, position_goal, travel_dist) -&gt; None:
         &#34;&#34;&#34;Change la position d&#39;un candidat en s&#39;approchant de la position `position_goal`.
         Le taux de changement de la position est déterminé par `travel_dist`.
-        Si les coordonnées de la nouvelle positions sont hors bornes, alors elles sont coupées de -1 à 1.
+        Si les coordonnées de la nouvelle position sont hors bornes, alors elles sont coupées de -1 à 1.
 
         Args:
             position_goal (tuple[float, float]): La position vers laquelle il faut s&#39;approcher. Chaque coordonnée doit être borné
@@ -385,7 +385,7 @@ Si le taux de dogmatisme n'est pas donné lors de l'initialisation, il est gén�
 </dd>
 <dt id="people.candidate.Candidate.dogmatism_const"><code class="name">var <span class="ident">dogmatism_const</span> : dataclasses.InitVar[typing.Tuple[float, float]]</code></dt>
 <dd>
-<div class="desc"><p>Des paramètres (moyenne, écart-type) pour générer le taux de dogmatism selon la loi normale.</p></div>
+<div class="desc"><p>Des paramètres (moyenne, écart-type) pour générer le taux de dogmatisme selon la loi normale.</p></div>
 </dd>
 <dt id="people.candidate.Candidate.first_name"><code class="name">var <span class="ident">first_name</span> : str</code></dt>
 <dd>
@@ -400,7 +400,7 @@ Si le taux de dogmatisme n'est pas donné lors de l'initialisation, il est gén�
 <div class="desc"><p>Sondages : Plus le taux d'opposition est élevé, moins il est probable que le candidat décide
 de changer sa position politique en s'approchant le gagnant d'une élection, et inversement,
 moins le taux d'opposition est élevé, plus il est probable que le candidat décide de s'approcher
-le gagnant d'une élection.<br>
+du gagnant d'une élection.<br>
 Si le taux d'opposition n'est pas donné lors de l'initialisation, il est généré selon la loi normale
 à l'aide de <code>opposition_const</code>.</p></div>
 </dd>
@@ -424,7 +424,7 @@ Les types selon les règles de vote:<br>
 </code></dt>
 <dd>
 <div class="desc"><p>Ajoute le score <code>score</code> dans une case <code>scores[voting_rule]</code> vers le score déjà existant.
-Utiliser uniqument pour des règles de vote à un tour ou Condorcet-cohérentes.</p>
+Utiliser uniquement pour des règles de vote à un tour ou Condorcet-cohérentes.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
@@ -438,7 +438,7 @@ Utiliser uniqument pour des règles de vote à un tour ou Condorcet-cohérentes.
 </summary>
 <pre><code class="python">def add_score(self, voting_rule: str, score: Union[int, float]) -&gt; None:
     &#34;&#34;&#34;Ajoute le score `score` dans une case `scores[voting_rule]` vers le score déjà existant.
-    Utiliser uniqument pour des règles de vote à un tour ou Condorcet-cohérentes.
+    Utiliser uniquement pour des règles de vote à un tour ou Condorcet-cohérentes.
 
     Args:
         voting_rule (str):  La constante associée à une règle de vote à un tour ou Condorcet-cohérente.
@@ -504,7 +504,7 @@ Utiliser uniquement pour des règles de vote à plusieurs tours.</p>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
 <dd>La constante associée à une règle de vote.</dd>
 <dt><strong><code>new_score</code></strong> :&ensp;<code>Union[int, float]</code></dt>
-<dd>Le score avec lequel il faut d'initialiser la case.</dd>
+<dd>Le score avec lequel il faut initialiser la case.</dd>
 <dt><strong><code>list_type</code></strong> :&ensp;<code>Optional[bool]</code></dt>
 <dd>Doit être <code>True</code> si le type de <code>new_score</code> est <code>List</code> et il faut passer par <code>deepcopy</code>.
 Sinon, l'initialisation est faite par une affectation simple. Default = <code>False</code>.</dd>
@@ -518,7 +518,7 @@ Sinon, l'initialisation est faite par une affectation simple. Default = <code>Fa
 
     Args:
         voting_rule (str): La constante associée à une règle de vote.
-        new_score (Union[int, float]): Le score avec lequel il faut d&#39;initialiser la case.
+        new_score (Union[int, float]): Le score avec lequel il faut initialiser la case.
         list_type (Optional[bool]): Doit être `True` si le type de `new_score` est `List` et il faut passer par `deepcopy`.
             Sinon, l&#39;initialisation est faite par une affectation simple. Default = `False`.
     &#34;&#34;&#34;
@@ -569,7 +569,7 @@ Le taux de changement de la position est déterminé par <code>travel_dist</code
 <dd>
 <div class="desc"><p>Change la position d'un candidat en s'approchant de la position <code>position_goal</code>.
 Le taux de changement de la position est déterminé par <code>travel_dist</code>.
-Si les coordonnées de la nouvelle positions sont hors bornes, alors elles sont coupées de -1 à 1.</p>
+Si les coordonnées de la nouvelle position sont hors bornes, alors elles sont coupées de -1 à 1.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>position_goal</code></strong> :&ensp;<code>tuple[float, float]</code></dt>
@@ -585,7 +585,7 @@ entre -1 et 1.</dd>
 <pre><code class="python">def move_to_point(self, position_goal, travel_dist) -&gt; None:
     &#34;&#34;&#34;Change la position d&#39;un candidat en s&#39;approchant de la position `position_goal`.
     Le taux de changement de la position est déterminé par `travel_dist`.
-    Si les coordonnées de la nouvelle positions sont hors bornes, alors elles sont coupées de -1 à 1.
+    Si les coordonnées de la nouvelle position sont hors bornes, alors elles sont coupées de -1 à 1.
 
     Args:
         position_goal (tuple[float, float]): La position vers laquelle il faut s&#39;approcher. Chaque coordonnée doit être borné

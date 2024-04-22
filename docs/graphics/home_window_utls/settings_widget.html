@@ -156,7 +156,7 @@ class SettingsWidget(QWidget):
 
     @Slot(str)
     def setPollVotingRule(self, voting_rule_ui: str) -&gt; None:
-        &#34;&#34;&#34;MAJ une règle de vote pour laquelle les sondages seront effectuées.&#34;&#34;&#34;
+        &#34;&#34;&#34;MAJ d&#39;une règle de vote pour laquelle les sondages seront effectuées.&#34;&#34;&#34;
 
         const = self.voting_rule_ui_reverse[voting_rule_ui]
         self.election.poll_voting_rule = const
@@ -335,7 +335,7 @@ class SettingsWidget(QWidget):
 
     @Slot(str)
     def setPollVotingRule(self, voting_rule_ui: str) -&gt; None:
-        &#34;&#34;&#34;MAJ une règle de vote pour laquelle les sondages seront effectuées.&#34;&#34;&#34;
+        &#34;&#34;&#34;MAJ d&#39;une règle de vote pour laquelle les sondages seront effectuées.&#34;&#34;&#34;
 
         const = self.voting_rule_ui_reverse[voting_rule_ui]
         self.election.poll_voting_rule = const
@@ -569,14 +569,14 @@ def setNumberPolls(self, nb_polls: int) -&gt; None:
 <span>def <span class="ident">setPollVotingRule</span></span>(<span>self, voting_rule_ui: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MAJ une règle de vote pour laquelle les sondages seront effectuées.</p></div>
+<div class="desc"><p>MAJ d'une règle de vote pour laquelle les sondages seront effectuées.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@Slot(str)
 def setPollVotingRule(self, voting_rule_ui: str) -&gt; None:
-    &#34;&#34;&#34;MAJ une règle de vote pour laquelle les sondages seront effectuées.&#34;&#34;&#34;
+    &#34;&#34;&#34;MAJ d&#39;une règle de vote pour laquelle les sondages seront effectuées.&#34;&#34;&#34;
 
     const = self.voting_rule_ui_reverse[voting_rule_ui]
     self.election.poll_voting_rule = const</code></pre>

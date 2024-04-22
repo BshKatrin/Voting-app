@@ -74,7 +74,7 @@ class QuadrantMap(QWidget):
         self.transform.translate(self.width() / 2, -self.height() / 2)
 
     def initUI(self):
-        &#34;&#34;&#34;Initialise le layout. Changee la couleur d&#39;arrière-plan sur blanc. Initialise le step pour dessiner la grille.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise le layout. Change la couleur d&#39;arrière-plan sur blanc. Initialise le step pour dessiner la grille.&#34;&#34;&#34;
 
         self.layout = QVBoxLayout(self)
         self.setPallete()
@@ -92,7 +92,7 @@ class QuadrantMap(QWidget):
 
     def paintEvent(self, event: QPaintEvent) -&gt; None:
         &#34;&#34;&#34;Redéfinit `paintEvent` par défaut. Dessine la grille, les axes X, Y. Applique la transformation.
-        Dessine les points correspondant aux positions des candidats et des électeurs.&#34;&#34;&#34;
+        Dessine les points correspondants aux positions des candidats et des électeurs.&#34;&#34;&#34;
 
         painter = QPainter(self)
         self.drawGrid(painter)
@@ -110,7 +110,7 @@ class QuadrantMap(QWidget):
         &#34;&#34;&#34;Dessine la grille.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur gris clair
@@ -133,7 +133,7 @@ class QuadrantMap(QWidget):
         &#34;&#34;&#34;Dessine les axes X, Y.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur noire
@@ -162,7 +162,7 @@ class QuadrantMap(QWidget):
         &#34;&#34;&#34;Dessine les labels des axes.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur noire
@@ -184,7 +184,7 @@ class QuadrantMap(QWidget):
         &#34;&#34;&#34;Dessine les points correspondants aux positions des électeurs (sans la démocratie liquide).
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur bleue standard
@@ -198,7 +198,7 @@ class QuadrantMap(QWidget):
         &#34;&#34;&#34;Dessine les points correspondants aux positions des candidats.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur rouge standard
@@ -226,7 +226,7 @@ class QuadrantMap(QWidget):
         et aux positions des candidats.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         self.drawElectors(painter)
@@ -237,7 +237,7 @@ class QuadrantMap(QWidget):
         i.e. avec les poids.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+           painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         pen = QPen(QColor(128, 128, 128))
@@ -282,7 +282,7 @@ class QuadrantMap(QWidget):
         &#34;&#34;&#34;Normalise chaque coordonnée du point.
 
         Args:
-            point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématique.
+            point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématiques.
 
         Returns:
             tuple[float, float]: Une position dont chaque coordonnée est normalisée.
@@ -313,7 +313,7 @@ class QuadrantMap(QWidget):
 
         Args:
             point (PySide6.QtCore.QPointF): Un point sur la carte politique (dans le système des coordonnées de l&#39;ordinateur).
-            normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système des coordonnées
+            normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système de coordonnées
                 mathématiques.
         &#34;&#34;&#34;
 
@@ -331,10 +331,10 @@ class QuadrantMap(QWidget):
 
     def storeName(self, normalized_pos: tuple[float, float]) -&gt; None:
         &#34;&#34;&#34;Stocke le prénom et le nom d&#39;un candidat créé manuellement. Le nom et le prénom sont obligatoires.
-        Crée un candidat, l&#39;ajoute dans l&#39;élection. Supprime le textbox. Redéssine la carte politique. 
+        Crée un candidat, l&#39;ajoute dans l&#39;élection. Supprime le textbox. Redessine la carte politique. 
 
         Args:
-            normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématiques.
+            normalized_pos (tuple[float, float]): Une position normalisée et dans le système de coordonnées mathématiques.
         &#34;&#34;&#34;
 
         # Récupérer le texte
@@ -354,11 +354,11 @@ class QuadrantMap(QWidget):
         &#34;&#34;&#34;Calcule les coordonnées du texte pour qu&#39;il ne sort pas en dehors de la carte politique.
 
         Args:
-            point (PySide6.QtCore.QPointF): Un point dans le système des coordonnés de l&#39;ordinateur. Correpond au point d&#39;origine.
+            point (PySide6.QtCore.QPointF): Un point dans le système des coordonnés de l&#39;ordinateur. Correspond au point d&#39;origine.
 
         Returns:
             PySide6.QtCore.QPointF: Un point qui correpond aux coordonnées du texte où il faudra le dessiner (i.e. c&#39;est un point
-                déjà décalé à partir du `point`). C&#39;est le point dans le système des coordonnés de l&#39;ordinateur.
+                déjà décalé à partir du `point`). C&#39;est le point dans le système de coordonnées de l&#39;ordinateur.
         &#34;&#34;&#34;
 
         point_text = QPoint(5, 15)
@@ -378,15 +378,15 @@ class QuadrantMap(QWidget):
         return point_text
 
     def getTextBoxPosition(self, point: QPointF, size: QSize) -&gt; QPoint:
-        &#34;&#34;&#34;Calcule les coordonnées du textbox pour qu&#39;il ne sort pas en dehors de la carte politique.
+        &#34;&#34;&#34;Calcule les coordonnées du textbox pour qu&#39;il ne sorte pas en dehors de la carte politique.
 
         Args:
-            point (PySide6.QtCore.QPointF): Un point dans le système des coordonnés de l&#39;ordinateur. Correpond au point d&#39;origine.
+            point (PySide6.QtCore.QPointF): Un point dans le système de coordonnées de l&#39;ordinateur. Correpond au point d&#39;origine.
             size (PySide6.QtCore.QSize): La taille du textbox.
 
         Returns:
             PySide6.QtCore.QPoint: Un point qui correpond aux coordonnées du texte où il faudra le dessiner (i.e. c&#39;est un point
-                déjà décalé à partir du `point`). C&#39;est le point dans le système des coordonnés de l&#39;ordinateur.
+                déjà décalé à partir du `point`). C&#39;est le point dans le système de coordonnées de l&#39;ordinateur.
         &#34;&#34;&#34;
 
         width, height = size.width(), size.height()
@@ -404,11 +404,11 @@ class QuadrantMap(QWidget):
 
         Args:
             mu (float): La moyenne de la distribution normale. 
-            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
-            limit (float): La limite inférieure et supérieur pour le coordonnée. 
+            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positif.
+            limit (float): La limite inférieure et supérieure pour la coordonnée. 
 
         Returns:
-            float: Un coordonnée générée et bornée.
+            float: Une coordonnée générée et bornée.
         &#34;&#34;&#34;
 
         coordinate = normal(mu, sigma)
@@ -507,7 +507,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         self.transform.translate(self.width() / 2, -self.height() / 2)
 
     def initUI(self):
-        &#34;&#34;&#34;Initialise le layout. Changee la couleur d&#39;arrière-plan sur blanc. Initialise le step pour dessiner la grille.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialise le layout. Change la couleur d&#39;arrière-plan sur blanc. Initialise le step pour dessiner la grille.&#34;&#34;&#34;
 
         self.layout = QVBoxLayout(self)
         self.setPallete()
@@ -525,7 +525,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
 
     def paintEvent(self, event: QPaintEvent) -&gt; None:
         &#34;&#34;&#34;Redéfinit `paintEvent` par défaut. Dessine la grille, les axes X, Y. Applique la transformation.
-        Dessine les points correspondant aux positions des candidats et des électeurs.&#34;&#34;&#34;
+        Dessine les points correspondants aux positions des candidats et des électeurs.&#34;&#34;&#34;
 
         painter = QPainter(self)
         self.drawGrid(painter)
@@ -543,7 +543,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         &#34;&#34;&#34;Dessine la grille.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur gris clair
@@ -566,7 +566,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         &#34;&#34;&#34;Dessine les axes X, Y.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur noire
@@ -595,7 +595,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         &#34;&#34;&#34;Dessine les labels des axes.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur noire
@@ -617,7 +617,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         &#34;&#34;&#34;Dessine les points correspondants aux positions des électeurs (sans la démocratie liquide).
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur bleue standard
@@ -631,7 +631,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         &#34;&#34;&#34;Dessine les points correspondants aux positions des candidats.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         # Couleur rouge standard
@@ -659,7 +659,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         et aux positions des candidats.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+            painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         self.drawElectors(painter)
@@ -670,7 +670,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         i.e. avec les poids.
 
         Args:
-            painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+           painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
         &#34;&#34;&#34;
 
         pen = QPen(QColor(128, 128, 128))
@@ -715,7 +715,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         &#34;&#34;&#34;Normalise chaque coordonnée du point.
 
         Args:
-            point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématique.
+            point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématiques.
 
         Returns:
             tuple[float, float]: Une position dont chaque coordonnée est normalisée.
@@ -746,7 +746,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
 
         Args:
             point (PySide6.QtCore.QPointF): Un point sur la carte politique (dans le système des coordonnées de l&#39;ordinateur).
-            normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système des coordonnées
+            normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système de coordonnées
                 mathématiques.
         &#34;&#34;&#34;
 
@@ -764,10 +764,10 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
 
     def storeName(self, normalized_pos: tuple[float, float]) -&gt; None:
         &#34;&#34;&#34;Stocke le prénom et le nom d&#39;un candidat créé manuellement. Le nom et le prénom sont obligatoires.
-        Crée un candidat, l&#39;ajoute dans l&#39;élection. Supprime le textbox. Redéssine la carte politique. 
+        Crée un candidat, l&#39;ajoute dans l&#39;élection. Supprime le textbox. Redessine la carte politique. 
 
         Args:
-            normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématiques.
+            normalized_pos (tuple[float, float]): Une position normalisée et dans le système de coordonnées mathématiques.
         &#34;&#34;&#34;
 
         # Récupérer le texte
@@ -787,11 +787,11 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         &#34;&#34;&#34;Calcule les coordonnées du texte pour qu&#39;il ne sort pas en dehors de la carte politique.
 
         Args:
-            point (PySide6.QtCore.QPointF): Un point dans le système des coordonnés de l&#39;ordinateur. Correpond au point d&#39;origine.
+            point (PySide6.QtCore.QPointF): Un point dans le système des coordonnés de l&#39;ordinateur. Correspond au point d&#39;origine.
 
         Returns:
             PySide6.QtCore.QPointF: Un point qui correpond aux coordonnées du texte où il faudra le dessiner (i.e. c&#39;est un point
-                déjà décalé à partir du `point`). C&#39;est le point dans le système des coordonnés de l&#39;ordinateur.
+                déjà décalé à partir du `point`). C&#39;est le point dans le système de coordonnées de l&#39;ordinateur.
         &#34;&#34;&#34;
 
         point_text = QPoint(5, 15)
@@ -811,15 +811,15 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
         return point_text
 
     def getTextBoxPosition(self, point: QPointF, size: QSize) -&gt; QPoint:
-        &#34;&#34;&#34;Calcule les coordonnées du textbox pour qu&#39;il ne sort pas en dehors de la carte politique.
+        &#34;&#34;&#34;Calcule les coordonnées du textbox pour qu&#39;il ne sorte pas en dehors de la carte politique.
 
         Args:
-            point (PySide6.QtCore.QPointF): Un point dans le système des coordonnés de l&#39;ordinateur. Correpond au point d&#39;origine.
+            point (PySide6.QtCore.QPointF): Un point dans le système de coordonnées de l&#39;ordinateur. Correpond au point d&#39;origine.
             size (PySide6.QtCore.QSize): La taille du textbox.
 
         Returns:
             PySide6.QtCore.QPoint: Un point qui correpond aux coordonnées du texte où il faudra le dessiner (i.e. c&#39;est un point
-                déjà décalé à partir du `point`). C&#39;est le point dans le système des coordonnés de l&#39;ordinateur.
+                déjà décalé à partir du `point`). C&#39;est le point dans le système de coordonnées de l&#39;ordinateur.
         &#34;&#34;&#34;
 
         width, height = size.width(), size.height()
@@ -837,11 +837,11 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
 
         Args:
             mu (float): La moyenne de la distribution normale. 
-            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
-            limit (float): La limite inférieure et supérieur pour le coordonnée. 
+            sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positif.
+            limit (float): La limite inférieure et supérieure pour la coordonnée. 
 
         Returns:
-            float: Un coordonnée générée et bornée.
+            float: Une coordonnée générée et bornée.
         &#34;&#34;&#34;
 
         coordinate = normal(mu, sigma)
@@ -902,7 +902,7 @@ La taille d'un widget est fixé en fonction de cette proportion.</dd>
 <dt><strong><code>point</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
 <dd>Un point sur la carte politique (dans le système des coordonnées de l'ordinateur).</dd>
 <dt><strong><code>normalized_pos</code></strong> :&ensp;<code>tuple[float, float]</code></dt>
-<dd>Une position du <code>point</code> mais normalisée et dans le système des coordonnées
+<dd>Une position du <code>point</code> mais normalisée et dans le système de coordonnées
 mathématiques.</dd>
 </dl></div>
 <details class="source">
@@ -914,7 +914,7 @@ mathématiques.</dd>
 
     Args:
         point (PySide6.QtCore.QPointF): Un point sur la carte politique (dans le système des coordonnées de l&#39;ordinateur).
-        normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système des coordonnées
+        normalized_pos (tuple[float, float]): Une position du `point` mais normalisée et dans le système de coordonnées
             mathématiques.
     &#34;&#34;&#34;
 
@@ -939,7 +939,7 @@ mathématiques.</dd>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>painter</code></strong> :&ensp;<code>PySide6.QtGui.QPainter</code></dt>
-<dd>Un painter déjà initiliasé.</dd>
+<dd>Un painter déjà initialisé.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -949,7 +949,7 @@ mathématiques.</dd>
     &#34;&#34;&#34;Dessine les axes X, Y.
 
     Args:
-        painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+        painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
     &#34;&#34;&#34;
 
     # Couleur noire
@@ -983,7 +983,7 @@ mathématiques.</dd>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>painter</code></strong> :&ensp;<code>PySide6.QtGui.QPainter</code></dt>
-<dd>Un painter déjà initiliasé.</dd>
+<dd>Un painter déjà initialisé.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -993,7 +993,7 @@ mathématiques.</dd>
     &#34;&#34;&#34;Dessine les labels des axes.
 
     Args:
-        painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+        painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
     &#34;&#34;&#34;
 
     # Couleur noire
@@ -1020,7 +1020,7 @@ mathématiques.</dd>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>painter</code></strong> :&ensp;<code>PySide6.QtGui.QPainter</code></dt>
-<dd>Un painter déjà initiliasé.</dd>
+<dd>Un painter déjà initialisé.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1030,7 +1030,7 @@ mathématiques.</dd>
     &#34;&#34;&#34;Dessine les points correspondants aux positions des candidats.
 
     Args:
-        painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+        painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
     &#34;&#34;&#34;
 
     # Couleur rouge standard
@@ -1062,7 +1062,7 @@ mathématiques.</dd>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>painter</code></strong> :&ensp;<code>PySide6.QtGui.QPainter</code></dt>
-<dd>Un painter déjà initiliasé.</dd>
+<dd>Un painter déjà initialisé.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1072,7 +1072,7 @@ mathématiques.</dd>
     &#34;&#34;&#34;Dessine les points correspondants aux positions des électeurs (sans la démocratie liquide).
 
     Args:
-        painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+        painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
     &#34;&#34;&#34;
 
     # Couleur bleue standard
@@ -1092,7 +1092,7 @@ i.e. avec les poids.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>painter</code></strong> :&ensp;<code>PySide6.QtGui.QPainter</code></dt>
-<dd>Un painter déjà initiliasé.</dd>
+<dd>Un painter déjà initialisé.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1103,7 +1103,7 @@ i.e. avec les poids.</p>
     i.e. avec les poids.
 
     Args:
-        painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+       painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
     &#34;&#34;&#34;
 
     pen = QPen(QColor(128, 128, 128))
@@ -1140,7 +1140,7 @@ i.e. avec les poids.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>painter</code></strong> :&ensp;<code>PySide6.QtGui.QPainter</code></dt>
-<dd>Un painter déjà initiliasé.</dd>
+<dd>Un painter déjà initialisé.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1150,7 +1150,7 @@ i.e. avec les poids.</p>
     &#34;&#34;&#34;Dessine la grille.
 
     Args:
-        painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+        painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
     &#34;&#34;&#34;
 
     # Couleur gris clair
@@ -1179,7 +1179,7 @@ et aux positions des candidats.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>painter</code></strong> :&ensp;<code>PySide6.QtGui.QPainter</code></dt>
-<dd>Un painter déjà initiliasé.</dd>
+<dd>Un painter déjà initialisé.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1190,7 +1190,7 @@ et aux positions des candidats.</p>
     et aux positions des candidats.
 
     Args:
-        painter (PySide6.QtGui.QPainter): Un painter déjà initiliasé.
+        painter (PySide6.QtGui.QPainter): Un painter déjà initialisé.
     &#34;&#34;&#34;
 
     self.drawElectors(painter)
@@ -1208,14 +1208,14 @@ Borne la valeur absolue d'une coordonnée générée à limite <code>limit</code
 <dt><strong><code>mu</code></strong> :&ensp;<code>float</code></dt>
 <dd>La moyenne de la distribution normale. </dd>
 <dt><strong><code>sigma</code></strong> :&ensp;<code>float</code></dt>
-<dd>L'écart type de la distribution normale. Un réel strictement positive.</dd>
+<dd>L'écart type de la distribution normale. Un réel strictement positif.</dd>
 <dt><strong><code>limit</code></strong> :&ensp;<code>float</code></dt>
-<dd>La limite inférieure et supérieur pour le coordonnée. </dd>
+<dd>La limite inférieure et supérieure pour la coordonnée. </dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>float</code></dt>
-<dd>Un coordonnée générée et bornée.</dd>
+<dd>Une coordonnée générée et bornée.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1227,11 +1227,11 @@ Borne la valeur absolue d'une coordonnée générée à limite <code>limit</code
 
     Args:
         mu (float): La moyenne de la distribution normale. 
-        sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positive.
-        limit (float): La limite inférieure et supérieur pour le coordonnée. 
+        sigma (float): L&#39;écart type de la distribution normale. Un réel strictement positif.
+        limit (float): La limite inférieure et supérieure pour la coordonnée. 
 
     Returns:
-        float: Un coordonnée générée et bornée.
+        float: Une coordonnée générée et bornée.
     &#34;&#34;&#34;
 
     coordinate = normal(mu, sigma)
@@ -1286,11 +1286,11 @@ Borne la valeur absolue d'une coordonnée générée à limite <code>limit</code
 <span>def <span class="ident">getTextBoxPosition</span></span>(<span>self, point: PySide6.QtCore.QPointF, size: PySide6.QtCore.QSize) ‑> PySide6.QtCore.QPoint</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calcule les coordonnées du textbox pour qu'il ne sort pas en dehors de la carte politique.</p>
+<div class="desc"><p>Calcule les coordonnées du textbox pour qu'il ne sorte pas en dehors de la carte politique.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>point</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
-<dd>Un point dans le système des coordonnés de l'ordinateur. Correpond au point d'origine.</dd>
+<dd>Un point dans le système de coordonnées de l'ordinateur. Correpond au point d'origine.</dd>
 <dt><strong><code>size</code></strong> :&ensp;<code>PySide6.QtCore.QSize</code></dt>
 <dd>La taille du textbox.</dd>
 </dl>
@@ -1298,22 +1298,22 @@ Borne la valeur absolue d'une coordonnée générée à limite <code>limit</code
 <dl>
 <dt><code>PySide6.QtCore.QPoint</code></dt>
 <dd>Un point qui correpond aux coordonnées du texte où il faudra le dessiner (i.e. c'est un point
-déjà décalé à partir du <code>point</code>). C'est le point dans le système des coordonnés de l'ordinateur.</dd>
+déjà décalé à partir du <code>point</code>). C'est le point dans le système de coordonnées de l'ordinateur.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def getTextBoxPosition(self, point: QPointF, size: QSize) -&gt; QPoint:
-    &#34;&#34;&#34;Calcule les coordonnées du textbox pour qu&#39;il ne sort pas en dehors de la carte politique.
+    &#34;&#34;&#34;Calcule les coordonnées du textbox pour qu&#39;il ne sorte pas en dehors de la carte politique.
 
     Args:
-        point (PySide6.QtCore.QPointF): Un point dans le système des coordonnés de l&#39;ordinateur. Correpond au point d&#39;origine.
+        point (PySide6.QtCore.QPointF): Un point dans le système de coordonnées de l&#39;ordinateur. Correpond au point d&#39;origine.
         size (PySide6.QtCore.QSize): La taille du textbox.
 
     Returns:
         PySide6.QtCore.QPoint: Un point qui correpond aux coordonnées du texte où il faudra le dessiner (i.e. c&#39;est un point
-            déjà décalé à partir du `point`). C&#39;est le point dans le système des coordonnés de l&#39;ordinateur.
+            déjà décalé à partir du `point`). C&#39;est le point dans le système de coordonnées de l&#39;ordinateur.
     &#34;&#34;&#34;
 
     width, height = size.width(), size.height()
@@ -1334,13 +1334,13 @@ déjà décalé à partir du <code>point</code>). C'est le point dans le systèm
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>point</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
-<dd>Un point dans le système des coordonnés de l'ordinateur. Correpond au point d'origine.</dd>
+<dd>Un point dans le système des coordonnés de l'ordinateur. Correspond au point d'origine.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>PySide6.QtCore.QPointF</code></dt>
 <dd>Un point qui correpond aux coordonnées du texte où il faudra le dessiner (i.e. c'est un point
-déjà décalé à partir du <code>point</code>). C'est le point dans le système des coordonnés de l'ordinateur.</dd>
+déjà décalé à partir du <code>point</code>). C'est le point dans le système de coordonnées de l'ordinateur.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1350,11 +1350,11 @@ déjà décalé à partir du <code>point</code>). C'est le point dans le systèm
     &#34;&#34;&#34;Calcule les coordonnées du texte pour qu&#39;il ne sort pas en dehors de la carte politique.
 
     Args:
-        point (PySide6.QtCore.QPointF): Un point dans le système des coordonnés de l&#39;ordinateur. Correpond au point d&#39;origine.
+        point (PySide6.QtCore.QPointF): Un point dans le système des coordonnés de l&#39;ordinateur. Correspond au point d&#39;origine.
 
     Returns:
         PySide6.QtCore.QPointF: Un point qui correpond aux coordonnées du texte où il faudra le dessiner (i.e. c&#39;est un point
-            déjà décalé à partir du `point`). C&#39;est le point dans le système des coordonnés de l&#39;ordinateur.
+            déjà décalé à partir du `point`). C&#39;est le point dans le système de coordonnées de l&#39;ordinateur.
     &#34;&#34;&#34;
 
     point_text = QPoint(5, 15)
@@ -1378,13 +1378,13 @@ déjà décalé à partir du <code>point</code>). C'est le point dans le systèm
 <span>def <span class="ident">initUI</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise le layout. Changee la couleur d'arrière-plan sur blanc. Initialise le step pour dessiner la grille.</p></div>
+<div class="desc"><p>Initialise le layout. Change la couleur d'arrière-plan sur blanc. Initialise le step pour dessiner la grille.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initUI(self):
-    &#34;&#34;&#34;Initialise le layout. Changee la couleur d&#39;arrière-plan sur blanc. Initialise le step pour dessiner la grille.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialise le layout. Change la couleur d&#39;arrière-plan sur blanc. Initialise le step pour dessiner la grille.&#34;&#34;&#34;
 
     self.layout = QVBoxLayout(self)
     self.setPallete()
@@ -1430,7 +1430,7 @@ Clique droite: place un électeur manuellement.</p></div>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>point</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
-<dd>Un point mis à l'échelle dans le système de coordonnées mathématique.</dd>
+<dd>Un point mis à l'échelle dans le système de coordonnées mathématiques.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1445,7 +1445,7 @@ Clique droite: place un électeur manuellement.</p></div>
     &#34;&#34;&#34;Normalise chaque coordonnée du point.
 
     Args:
-        point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématique.
+        point (PySide6.QtCore.QPointF): Un point mis à l&#39;échelle dans le système de coordonnées mathématiques.
 
     Returns:
         tuple[float, float]: Une position dont chaque coordonnée est normalisée.
@@ -1459,14 +1459,14 @@ Clique droite: place un électeur manuellement.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Redéfinit <code>paintEvent</code> par défaut. Dessine la grille, les axes X, Y. Applique la transformation.
-Dessine les points correspondant aux positions des candidats et des électeurs.</p></div>
+Dessine les points correspondants aux positions des candidats et des électeurs.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def paintEvent(self, event: QPaintEvent) -&gt; None:
     &#34;&#34;&#34;Redéfinit `paintEvent` par défaut. Dessine la grille, les axes X, Y. Applique la transformation.
-    Dessine les points correspondant aux positions des candidats et des électeurs.&#34;&#34;&#34;
+    Dessine les points correspondants aux positions des candidats et des électeurs.&#34;&#34;&#34;
 
     painter = QPainter(self)
     self.drawGrid(painter)
@@ -1559,11 +1559,11 @@ But: avoir un système des coordonnées comme en maths.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Stocke le prénom et le nom d'un candidat créé manuellement. Le nom et le prénom sont obligatoires.
-Crée un candidat, l'ajoute dans l'élection. Supprime le textbox. Redéssine la carte politique. </p>
+Crée un candidat, l'ajoute dans l'élection. Supprime le textbox. Redessine la carte politique. </p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>normalized_pos</code></strong> :&ensp;<code>tuple[float, float]</code></dt>
-<dd>Une position normalisée et dans le système des coordonnées mathématiques.</dd>
+<dd>Une position normalisée et dans le système de coordonnées mathématiques.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1571,10 +1571,10 @@ Crée un candidat, l'ajoute dans l'élection. Supprime le textbox. Redéssine la
 </summary>
 <pre><code class="python">def storeName(self, normalized_pos: tuple[float, float]) -&gt; None:
     &#34;&#34;&#34;Stocke le prénom et le nom d&#39;un candidat créé manuellement. Le nom et le prénom sont obligatoires.
-    Crée un candidat, l&#39;ajoute dans l&#39;élection. Supprime le textbox. Redéssine la carte politique. 
+    Crée un candidat, l&#39;ajoute dans l&#39;élection. Supprime le textbox. Redessine la carte politique. 
 
     Args:
-        normalized_pos (tuple[float, float]): Une position normalisée et dans le système des coordonnées mathématiques.
+        normalized_pos (tuple[float, float]): Une position normalisée et dans le système de coordonnées mathématiques.
     &#34;&#34;&#34;
 
     # Récupérer le texte

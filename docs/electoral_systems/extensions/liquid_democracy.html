@@ -76,7 +76,7 @@ def choose_delegee(electors: List[Elector]) -&gt; Elector:
 def choose_possible_delegees(electors: List[Elector], delegator: Elector) -&gt; List[Elector]:
     &#34;&#34;&#34;Choisit parmi electors des électeurs-délégataires pour un électeur delegator de façon suivante:  
         - Calcule la distance entre un électeur et delegator  
-        - Si elle est inférieure à `DELEGATION_GAP_COEF`, ajoute cet électeur dans une liste des délégataires. Sinon, continuer.  
+        - Si elle est inférieure à `DELEGATION_GAP_COEF`, ajoute cet électeur dans une liste des délégataires. Sinon, continue.  
 
     Args:
         electors (List[Elector]): Tous les électeurs participant dans à élection.  
@@ -175,7 +175,7 @@ et inversement, moins son taux de connaissances est élevé, moins il est probab
 <dd>
 <div class="desc"><p>Choisit parmi electors des électeurs-délégataires pour un électeur delegator de façon suivante:<br>
 - Calcule la distance entre un électeur et delegator<br>
-- Si elle est inférieure à <code><a title="electoral_systems.extensions.liquid_democracy.DELEGATION_GAP_COEF" href="#electoral_systems.extensions.liquid_democracy.DELEGATION_GAP_COEF">DELEGATION_GAP_COEF</a></code>, ajoute cet électeur dans une liste des délégataires. Sinon, continuer.
+- Si elle est inférieure à <code><a title="electoral_systems.extensions.liquid_democracy.DELEGATION_GAP_COEF" href="#electoral_systems.extensions.liquid_democracy.DELEGATION_GAP_COEF">DELEGATION_GAP_COEF</a></code>, ajoute cet électeur dans une liste des délégataires. Sinon, continue.
 </p>
 <h2 id="args">Args</h2>
 <dl>
@@ -198,7 +198,7 @@ et inversement, moins son taux de connaissances est élevé, moins il est probab
 <pre><code class="python">def choose_possible_delegees(electors: List[Elector], delegator: Elector) -&gt; List[Elector]:
     &#34;&#34;&#34;Choisit parmi electors des électeurs-délégataires pour un électeur delegator de façon suivante:  
         - Calcule la distance entre un électeur et delegator  
-        - Si elle est inférieure à `DELEGATION_GAP_COEF`, ajoute cet électeur dans une liste des délégataires. Sinon, continuer.  
+        - Si elle est inférieure à `DELEGATION_GAP_COEF`, ajoute cet électeur dans une liste des délégataires. Sinon, continue.  
 
     Args:
         electors (List[Elector]): Tous les électeurs participant dans à élection.  

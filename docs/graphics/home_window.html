@@ -55,7 +55,7 @@ class HomeWindow(QMainWindow):
     &#34;&#34;&#34;Un widget qui représente la fenêtre principale d&#39;une application.&#34;&#34;&#34;
 
     sig_data_imported = Signal(bool)
-    &#34;&#34;&#34;Un signal qui indique si les données d&#39;une élections ont été importées avec ou sans des résultats&#34;&#34;&#34;
+    &#34;&#34;&#34;Un signal qui indique si les données d&#39;une élections ont été importées avec ou sans résultats&#34;&#34;&#34;
 
     def __init__(self, app: QApplication):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
@@ -92,7 +92,7 @@ class HomeWindow(QMainWindow):
         self.initUIHome()
 
     def setScreenGeometry(self) -&gt; None:
-        &#34;&#34;&#34;Fixe la taille de la fenêtre principale et la place au millieu d&#39;écran.&#34;&#34;&#34;
+        &#34;&#34;&#34;Fixe la taille de la fenêtre principale et la place au milieu de l&#39;écran.&#34;&#34;&#34;
 
         # Trouver le centre
         x = self.app.primaryScreen().availableGeometry().x()
@@ -141,7 +141,7 @@ class HomeWindow(QMainWindow):
     @ Slot(str)
     def showPopupMsg(self, msg: str) -&gt; None:
         &#34;&#34;&#34;Initialise un pop-up avec une alerte et le message correspondant.
-        Le pop-up se ferme automatiquement au bout de 2 seconds.
+        Le pop-up se ferme automatiquement au bout de 2 secondes.
 
         Args:
             msg (str): un message à afficher.
@@ -237,7 +237,7 @@ class HomeWindow(QMainWindow):
     @ Slot(bool)
     def switchWidgetImport(self, with_results: bool) -&gt; None:
         &#34;&#34;&#34;Change le widget affiché si les données ont été importées. Si les résultats ont été importés, affiche 
-        la page initialisée avec des résultats. Sinon, affiche la page avec la carte politique.
+        la page initialisée avec les résultats. Sinon, affiche la page avec la carte politique.
 
         Args:
             with_results (bool): Une indication si les résultats ont été importées. Si `True` les résultats ont été importées,
@@ -340,7 +340,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def initUIResults(self) -&gt; None:
-        &#34;&#34;&#34;Nettoie la fenêtre principale, initialisee la navigation et le widget avec les résultats d&#39;une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la navigation et le widget avec les résultats d&#39;une élection.&#34;&#34;&#34;
 
         self.cleanWindow()
 
@@ -354,7 +354,7 @@ class HomeWindow(QMainWindow):
     @ Slot(list)
     def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
         &#34;&#34;&#34;Supprime le widget correpondant à la carte politique, calcule les résultats d&#39;une élection, 
-        initialise le widget avec es résultats.
+        initialise le widget avec les résultats.
 
         Args:
             chosen_voting_rules (List[str]): Une liste des constantes correspondant aux règles de vote choisies pour une élection.
@@ -433,7 +433,7 @@ class HomeWindow(QMainWindow):
     &#34;&#34;&#34;Un widget qui représente la fenêtre principale d&#39;une application.&#34;&#34;&#34;
 
     sig_data_imported = Signal(bool)
-    &#34;&#34;&#34;Un signal qui indique si les données d&#39;une élections ont été importées avec ou sans des résultats&#34;&#34;&#34;
+    &#34;&#34;&#34;Un signal qui indique si les données d&#39;une élections ont été importées avec ou sans résultats&#34;&#34;&#34;
 
     def __init__(self, app: QApplication):
         &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
@@ -470,7 +470,7 @@ class HomeWindow(QMainWindow):
         self.initUIHome()
 
     def setScreenGeometry(self) -&gt; None:
-        &#34;&#34;&#34;Fixe la taille de la fenêtre principale et la place au millieu d&#39;écran.&#34;&#34;&#34;
+        &#34;&#34;&#34;Fixe la taille de la fenêtre principale et la place au milieu de l&#39;écran.&#34;&#34;&#34;
 
         # Trouver le centre
         x = self.app.primaryScreen().availableGeometry().x()
@@ -519,7 +519,7 @@ class HomeWindow(QMainWindow):
     @ Slot(str)
     def showPopupMsg(self, msg: str) -&gt; None:
         &#34;&#34;&#34;Initialise un pop-up avec une alerte et le message correspondant.
-        Le pop-up se ferme automatiquement au bout de 2 seconds.
+        Le pop-up se ferme automatiquement au bout de 2 secondes.
 
         Args:
             msg (str): un message à afficher.
@@ -615,7 +615,7 @@ class HomeWindow(QMainWindow):
     @ Slot(bool)
     def switchWidgetImport(self, with_results: bool) -&gt; None:
         &#34;&#34;&#34;Change le widget affiché si les données ont été importées. Si les résultats ont été importés, affiche 
-        la page initialisée avec des résultats. Sinon, affiche la page avec la carte politique.
+        la page initialisée avec les résultats. Sinon, affiche la page avec la carte politique.
 
         Args:
             with_results (bool): Une indication si les résultats ont été importées. Si `True` les résultats ont été importées,
@@ -718,7 +718,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def initUIResults(self) -&gt; None:
-        &#34;&#34;&#34;Nettoie la fenêtre principale, initialisee la navigation et le widget avec les résultats d&#39;une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la navigation et le widget avec les résultats d&#39;une élection.&#34;&#34;&#34;
 
         self.cleanWindow()
 
@@ -732,7 +732,7 @@ class HomeWindow(QMainWindow):
     @ Slot(list)
     def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
         &#34;&#34;&#34;Supprime le widget correpondant à la carte politique, calcule les résultats d&#39;une élection, 
-        initialise le widget avec es résultats.
+        initialise le widget avec les résultats.
 
         Args:
             chosen_voting_rules (List[str]): Une liste des constantes correspondant aux règles de vote choisies pour une élection.
@@ -1112,14 +1112,14 @@ def initUIMap(self) -&gt; None:
 <span>def <span class="ident">initUIResults</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Nettoie la fenêtre principale, initialisee la navigation et le widget avec les résultats d'une élection.</p></div>
+<div class="desc"><p>Nettoie la fenêtre principale, initialise la navigation et le widget avec les résultats d'une élection.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@ Slot()
 def initUIResults(self) -&gt; None:
-    &#34;&#34;&#34;Nettoie la fenêtre principale, initialisee la navigation et le widget avec les résultats d&#39;une élection.&#34;&#34;&#34;
+    &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la navigation et le widget avec les résultats d&#39;une élection.&#34;&#34;&#34;
 
     self.cleanWindow()
 
@@ -1190,13 +1190,13 @@ def saveSettings(self) -&gt; None:
 <span>def <span class="ident">setScreenGeometry</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Fixe la taille de la fenêtre principale et la place au millieu d'écran.</p></div>
+<div class="desc"><p>Fixe la taille de la fenêtre principale et la place au milieu de l'écran.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def setScreenGeometry(self) -&gt; None:
-    &#34;&#34;&#34;Fixe la taille de la fenêtre principale et la place au millieu d&#39;écran.&#34;&#34;&#34;
+    &#34;&#34;&#34;Fixe la taille de la fenêtre principale et la place au milieu de l&#39;écran.&#34;&#34;&#34;
 
     # Trouver le centre
     x = self.app.primaryScreen().availableGeometry().x()
@@ -1212,7 +1212,7 @@ def saveSettings(self) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Initialise un pop-up avec une alerte et le message correspondant.
-Le pop-up se ferme automatiquement au bout de 2 seconds.</p>
+Le pop-up se ferme automatiquement au bout de 2 secondes.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>msg</code></strong> :&ensp;<code>str</code></dt>
@@ -1225,7 +1225,7 @@ Le pop-up se ferme automatiquement au bout de 2 seconds.</p>
 <pre><code class="python">@ Slot(str)
 def showPopupMsg(self, msg: str) -&gt; None:
     &#34;&#34;&#34;Initialise un pop-up avec une alerte et le message correspondant.
-    Le pop-up se ferme automatiquement au bout de 2 seconds.
+    Le pop-up se ferme automatiquement au bout de 2 secondes.
 
     Args:
         msg (str): un message à afficher.
@@ -1252,7 +1252,7 @@ def showPopupMsg(self, msg: str) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Supprime le widget correpondant à la carte politique, calcule les résultats d'une élection,
-initialise le widget avec es résultats.</p>
+initialise le widget avec les résultats.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>chosen_voting_rules</code></strong> :&ensp;<code>List[str]</code></dt>
@@ -1265,7 +1265,7 @@ initialise le widget avec es résultats.</p>
 <pre><code class="python">@ Slot(list)
 def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
     &#34;&#34;&#34;Supprime le widget correpondant à la carte politique, calcule les résultats d&#39;une élection, 
-    initialise le widget avec es résultats.
+    initialise le widget avec les résultats.
 
     Args:
         chosen_voting_rules (List[str]): Une liste des constantes correspondant aux règles de vote choisies pour une élection.
@@ -1282,7 +1282,7 @@ def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
 </code></dt>
 <dd>
 <div class="desc"><p>Change le widget affiché si les données ont été importées. Si les résultats ont été importés, affiche
-la page initialisée avec des résultats. Sinon, affiche la page avec la carte politique.</p>
+la page initialisée avec les résultats. Sinon, affiche la page avec la carte politique.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>with_results</code></strong> :&ensp;<code>bool</code></dt>
@@ -1296,7 +1296,7 @@ si <code>False</code> uniquement les électeurs et les candidats ont été impor
 <pre><code class="python">@ Slot(bool)
 def switchWidgetImport(self, with_results: bool) -&gt; None:
     &#34;&#34;&#34;Change le widget affiché si les données ont été importées. Si les résultats ont été importés, affiche 
-    la page initialisée avec des résultats. Sinon, affiche la page avec la carte politique.
+    la page initialisée avec les résultats. Sinon, affiche la page avec la carte politique.
 
     Args:
         with_results (bool): Une indication si les résultats ont été importées. Si `True` les résultats ont été importées,
