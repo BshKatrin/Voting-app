@@ -361,20 +361,17 @@ class HomeWindow(QMainWindow):
         &#34;&#34;&#34;
 
         self.election.start_election(chosen_voting_rules=chosen_voting_rules)
-
-        # Initialize Results page (winners, results, graphs)
         self.initUIResults()
 
     @ Slot()
     def backHomeWindow(self) -&gt; None:
         &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la page d&#39;accueil,
-        supprime les données de l&#39;élection et remet les règlages par défaut.&#34;&#34;&#34;
+        supprime les données de l&#39;élection. Les règlages de l&#39;élection sont préservées.&#34;&#34;&#34;
 
         self.cleanWindow()
         self.initUIHome()
 
         self.election.delete_all_data()
-        self.election.set_default_settings()
 
     @ Slot()
     def cleanWindow(self) -&gt; None:
@@ -739,20 +736,17 @@ class HomeWindow(QMainWindow):
         &#34;&#34;&#34;
 
         self.election.start_election(chosen_voting_rules=chosen_voting_rules)
-
-        # Initialize Results page (winners, results, graphs)
         self.initUIResults()
 
     @ Slot()
     def backHomeWindow(self) -&gt; None:
         &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la page d&#39;accueil,
-        supprime les données de l&#39;élection et remet les règlages par défaut.&#34;&#34;&#34;
+        supprime les données de l&#39;élection. Les règlages de l&#39;élection sont préservées.&#34;&#34;&#34;
 
         self.cleanWindow()
         self.initUIHome()
 
         self.election.delete_all_data()
-        self.election.set_default_settings()
 
     @ Slot()
     def cleanWindow(self) -&gt; None:
@@ -803,7 +797,7 @@ class HomeWindow(QMainWindow):
 </code></dt>
 <dd>
 <div class="desc"><p>Nettoie la fenêtre principale, initialise la page d'accueil,
-supprime les données de l'élection et remet les règlages par défaut.</p></div>
+supprime les données de l'élection. Les règlages de l'élection sont préservées.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -811,13 +805,12 @@ supprime les données de l'élection et remet les règlages par défaut.</p></di
 <pre><code class="python">@ Slot()
 def backHomeWindow(self) -&gt; None:
     &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la page d&#39;accueil,
-    supprime les données de l&#39;élection et remet les règlages par défaut.&#34;&#34;&#34;
+    supprime les données de l&#39;élection. Les règlages de l&#39;élection sont préservées.&#34;&#34;&#34;
 
     self.cleanWindow()
     self.initUIHome()
 
-    self.election.delete_all_data()
-    self.election.set_default_settings()</code></pre>
+    self.election.delete_all_data()</code></pre>
 </details>
 </dd>
 <dt id="graphics.home_window.HomeWindow.cleanWindow"><code class="name flex">
@@ -1272,8 +1265,6 @@ def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
     &#34;&#34;&#34;
 
     self.election.start_election(chosen_voting_rules=chosen_voting_rules)
-
-    # Initialize Results page (winners, results, graphs)
     self.initUIResults()</code></pre>
 </details>
 </dd>

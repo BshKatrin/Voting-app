@@ -12,6 +12,7 @@ from .extensions.polls import (
     set_std_deviation,
     change_position_candidates,
     change_ranking_electors,
+    direction_data_type
 )
 from .extensions.liquid_democracy import choose_delegee, choose_possible_delegees
 from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_by_round, duels_type
@@ -61,6 +62,10 @@ class Election(metaclass=Singleton):
         self.proportion_satisfaction:float = 0
         """La distance maximale entre la position moyenne des électeurs et la position de chaque candidat."""
 
+        self.directions_data:Dict[str, direction_data_type] = get_default_directions_data()
+        """Un dictionnaire dont chaque clé correpond à la division de la carte politique et 
+        chaque valeur est un dictionnaire avec les données remises par défaut. Pour les sondages uniquement."""
+
         # Init les constantes
         self.set_default_settings()
 
@@ -83,9 +88,6 @@ class Election(metaclass=Singleton):
         self.generation_constants = dict()
         for type, default_value in RandomConstants.DEFAULT_VALUES.items():
             self.generation_constants[type] = default_value
-
-        # Pour les sondages uniquement. Stocke les données pour chaque direction (division) de la carte politique
-        self.directions_data = get_default_directions_data()
 
     def _init_results_keys(self, set_keys: Set[str]) -> None:
         """Initialiser des clés du dictionnaire `results` avec des constantes associées aux règles du vote choisies.
@@ -418,7 +420,7 @@ class Election(metaclass=Singleton):
             self._make_delegations()
         if chosen_voting_rules:
             self._init_results_keys(chosen_voting_rules)
-
+            
         self.calc_results(imported)
 
     def _make_delegations(self) -> None:
@@ -473,7 +475,9 @@ class Election(metaclass=Singleton):
         self.calc_results()
 
     def delete_all_data(self) -> None:
-        """Supprime toutes les données d'une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs."""
+        """Supprime toutes les données d'une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs.
+        Réinitialise le dictionnaire des données des divisions de la carte politique."""
+
         self.electors.clear()
         self.candidates.clear()
         self.results.clear()
@@ -482,4 +486,4 @@ class Election(metaclass=Singleton):
         self.last_name_iter.restart()
         self.id_iter.restart()
 
-        self.directions_data.clear()
+        self.directions_data = get_default_directions_data()

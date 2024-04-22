@@ -40,6 +40,7 @@ from .extensions.polls import (
     set_std_deviation,
     change_position_candidates,
     change_ranking_electors,
+    direction_data_type
 )
 from .extensions.liquid_democracy import choose_delegee, choose_possible_delegees
 from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_by_round, duels_type
@@ -89,6 +90,10 @@ class Election(metaclass=Singleton):
         self.proportion_satisfaction:float = 0
         &#34;&#34;&#34;La distance maximale entre la position moyenne des électeurs et la position de chaque candidat.&#34;&#34;&#34;
 
+        self.directions_data:Dict[str, direction_data_type] = get_default_directions_data()
+        &#34;&#34;&#34;Un dictionnaire dont chaque clé correpond à la division de la carte politique et 
+        chaque valeur est un dictionnaire avec les données remises par défaut. Pour les sondages uniquement.&#34;&#34;&#34;
+
         # Init les constantes
         self.set_default_settings()
 
@@ -111,9 +116,6 @@ class Election(metaclass=Singleton):
         self.generation_constants = dict()
         for type, default_value in RandomConstants.DEFAULT_VALUES.items():
             self.generation_constants[type] = default_value
-
-        # Pour les sondages uniquement. Stocke les données pour chaque direction (division) de la carte politique
-        self.directions_data = get_default_directions_data()
 
     def _init_results_keys(self, set_keys: Set[str]) -&gt; None:
         &#34;&#34;&#34;Initialiser des clés du dictionnaire `results` avec des constantes associées aux règles du vote choisies.
@@ -446,7 +448,7 @@ class Election(metaclass=Singleton):
             self._make_delegations()
         if chosen_voting_rules:
             self._init_results_keys(chosen_voting_rules)
-
+            
         self.calc_results(imported)
 
     def _make_delegations(self) -&gt; None:
@@ -501,7 +503,9 @@ class Election(metaclass=Singleton):
         self.calc_results()
 
     def delete_all_data(self) -&gt; None:
-        &#34;&#34;&#34;Supprime toutes les données d&#39;une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs.&#34;&#34;&#34;
+        &#34;&#34;&#34;Supprime toutes les données d&#39;une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs.
+        Réinitialise le dictionnaire des données des divisions de la carte politique.&#34;&#34;&#34;
+
         self.electors.clear()
         self.candidates.clear()
         self.results.clear()
@@ -510,7 +514,7 @@ class Election(metaclass=Singleton):
         self.last_name_iter.restart()
         self.id_iter.restart()
 
-        self.directions_data.clear()</code></pre>
+        self.directions_data = get_default_directions_data()</code></pre>
 </details>
 </section>
 <section>
@@ -564,6 +568,10 @@ class Election(metaclass=Singleton):
         self.proportion_satisfaction:float = 0
         &#34;&#34;&#34;La distance maximale entre la position moyenne des électeurs et la position de chaque candidat.&#34;&#34;&#34;
 
+        self.directions_data:Dict[str, direction_data_type] = get_default_directions_data()
+        &#34;&#34;&#34;Un dictionnaire dont chaque clé correpond à la division de la carte politique et 
+        chaque valeur est un dictionnaire avec les données remises par défaut. Pour les sondages uniquement.&#34;&#34;&#34;
+
         # Init les constantes
         self.set_default_settings()
 
@@ -586,9 +594,6 @@ class Election(metaclass=Singleton):
         self.generation_constants = dict()
         for type, default_value in RandomConstants.DEFAULT_VALUES.items():
             self.generation_constants[type] = default_value
-
-        # Pour les sondages uniquement. Stocke les données pour chaque direction (division) de la carte politique
-        self.directions_data = get_default_directions_data()
 
     def _init_results_keys(self, set_keys: Set[str]) -&gt; None:
         &#34;&#34;&#34;Initialiser des clés du dictionnaire `results` avec des constantes associées aux règles du vote choisies.
@@ -921,7 +926,7 @@ class Election(metaclass=Singleton):
             self._make_delegations()
         if chosen_voting_rules:
             self._init_results_keys(chosen_voting_rules)
-
+            
         self.calc_results(imported)
 
     def _make_delegations(self) -&gt; None:
@@ -976,7 +981,9 @@ class Election(metaclass=Singleton):
         self.calc_results()
 
     def delete_all_data(self) -&gt; None:
-        &#34;&#34;&#34;Supprime toutes les données d&#39;une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs.&#34;&#34;&#34;
+        &#34;&#34;&#34;Supprime toutes les données d&#39;une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs.
+        Réinitialise le dictionnaire des données des divisions de la carte politique.&#34;&#34;&#34;
+
         self.electors.clear()
         self.candidates.clear()
         self.results.clear()
@@ -985,13 +992,18 @@ class Election(metaclass=Singleton):
         self.last_name_iter.restart()
         self.id_iter.restart()
 
-        self.directions_data.clear()</code></pre>
+        self.directions_data = get_default_directions_data()</code></pre>
 </details>
 <h3>Instance variables</h3>
 <dl>
 <dt id="electoral_systems.election.Election.candidates"><code class="name">var <span class="ident">candidates</span></code></dt>
 <dd>
 <div class="desc"><p>Une liste qui stocke tous les candidats qui participent dans une élection.</p></div>
+</dd>
+<dt id="electoral_systems.election.Election.directions_data"><code class="name">var <span class="ident">directions_data</span></code></dt>
+<dd>
+<div class="desc"><p>Un dictionnaire dont chaque clé correpond à la division de la carte politique et
+chaque valeur est un dictionnaire avec les données remises par défaut. Pour les sondages uniquement.</p></div>
 </dd>
 <dt id="electoral_systems.election.Election.duels_scores"><code class="name">var <span class="ident">duels_scores</span></code></dt>
 <dd>
@@ -1577,13 +1589,16 @@ Cf. <code><a title="electoral_systems.extensions.polls" href="extensions/polls.h
 <span>def <span class="ident">delete_all_data</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Supprime toutes les données d'une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs.</p></div>
+<div class="desc"><p>Supprime toutes les données d'une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs.
+Réinitialise le dictionnaire des données des divisions de la carte politique.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete_all_data(self) -&gt; None:
-    &#34;&#34;&#34;Supprime toutes les données d&#39;une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs.&#34;&#34;&#34;
+    &#34;&#34;&#34;Supprime toutes les données d&#39;une élection. Relance les itérateurs-générateurs des noms, prénoms, IDs.
+    Réinitialise le dictionnaire des données des divisions de la carte politique.&#34;&#34;&#34;
+
     self.electors.clear()
     self.candidates.clear()
     self.results.clear()
@@ -1592,7 +1607,7 @@ Cf. <code><a title="electoral_systems.extensions.polls" href="extensions/polls.h
     self.last_name_iter.restart()
     self.id_iter.restart()
 
-    self.directions_data.clear()</code></pre>
+    self.directions_data = get_default_directions_data()</code></pre>
 </details>
 </dd>
 <dt id="electoral_systems.election.Election.has_electors_candidates"><code class="name flex">
@@ -1668,10 +1683,7 @@ La somme de toutes les positions est déjà stockée.</p></div>
     # Les constantes de la génération des données
     self.generation_constants = dict()
     for type, default_value in RandomConstants.DEFAULT_VALUES.items():
-        self.generation_constants[type] = default_value
-
-    # Pour les sondages uniquement. Stocke les données pour chaque direction (division) de la carte politique
-    self.directions_data = get_default_directions_data()</code></pre>
+        self.generation_constants[type] = default_value</code></pre>
 </details>
 </dd>
 <dt id="electoral_systems.election.Election.set_results"><code class="name flex">
@@ -1774,7 +1786,7 @@ Cf. <code><a title="electoral_systems.election.Election.calc_results" href="#ele
         self._make_delegations()
     if chosen_voting_rules:
         self._init_results_keys(chosen_voting_rules)
-
+        
     self.calc_results(imported)</code></pre>
 </details>
 </dd>
@@ -1816,6 +1828,7 @@ Cf. <code><a title="electoral_systems.election.Election.calc_results" href="#ele
 <li><code><a title="electoral_systems.election.Election.choose_winner" href="#electoral_systems.election.Election.choose_winner">choose_winner</a></code></li>
 <li><code><a title="electoral_systems.election.Election.conduct_poll" href="#electoral_systems.election.Election.conduct_poll">conduct_poll</a></code></li>
 <li><code><a title="electoral_systems.election.Election.delete_all_data" href="#electoral_systems.election.Election.delete_all_data">delete_all_data</a></code></li>
+<li><code><a title="electoral_systems.election.Election.directions_data" href="#electoral_systems.election.Election.directions_data">directions_data</a></code></li>
 <li><code><a title="electoral_systems.election.Election.duels_scores" href="#electoral_systems.election.Election.duels_scores">duels_scores</a></code></li>
 <li><code><a title="electoral_systems.election.Election.electors" href="#electoral_systems.election.Election.electors">electors</a></code></li>
 <li><code><a title="electoral_systems.election.Election.first_name_iter" href="#electoral_systems.election.Election.first_name_iter">first_name_iter</a></code></li>

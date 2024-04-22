@@ -333,20 +333,17 @@ class HomeWindow(QMainWindow):
         """
 
         self.election.start_election(chosen_voting_rules=chosen_voting_rules)
-
-        # Initialize Results page (winners, results, graphs)
         self.initUIResults()
 
     @ Slot()
     def backHomeWindow(self) -> None:
         """Nettoie la fenêtre principale, initialise la page d'accueil,
-        supprime les données de l'élection et remet les règlages par défaut."""
+        supprime les données de l'élection. Les règlages de l'élection sont préservées."""
 
         self.cleanWindow()
         self.initUIHome()
 
         self.election.delete_all_data()
-        self.election.set_default_settings()
 
     @ Slot()
     def cleanWindow(self) -> None:
