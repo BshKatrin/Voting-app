@@ -88,7 +88,7 @@ class SettingsWidget(QWidget):
         # Number of polls
         self.polls_label.setText("Number of polls to conduct")
         self.nb_polls_btn.setMinimum(0)
-        self.nb_polls_btn.setMaximum(10)
+        self.nb_polls_btn.setMaximum(12)
         self.nb_polls_btn.setValue(self.election.nb_polls)
         
         self.nb_polls_btn.valueChanged.connect(self.setNumberPolls)

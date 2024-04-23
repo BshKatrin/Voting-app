@@ -6,4 +6,5 @@ graphics/temp/map.png
 doc_gen.py
 *.csv
 powermetrics_log.txt
-.codecarbon.config
+codecarbon/
+databases/
