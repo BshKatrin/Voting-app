@@ -312,12 +312,11 @@ class QuadrantMap(QWidget):
         # Récupérer le texte
         full_name = self.text_box.text().strip().split(" ", 1)
         # Interdire la création de candidats avec uniquement le prénom
-        if len(full_name) == 1:
-            return
-        first_name, last_name = tuple(full_name)
-
-        self.election.add_candidate(normalized_pos, first_name, last_name)
-        self.update()
+        if len(full_name) >= 2:
+            first_name, last_name = tuple(full_name)
+            self.election.add_candidate(normalized_pos, first_name, last_name)
+            self.update()
+            
         self.text_box_active = False
         # Supprime la zone de texte
         self.text_box.deleteLater()
