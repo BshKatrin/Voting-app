@@ -19,6 +19,8 @@ from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_b
 
 from people import Candidate, Elector
 
+from codecarbon import track_emissions
+
 # Pour une génération des docs uniquement 
 __pdoc__ = {
     'random':False,
@@ -210,6 +212,7 @@ class Election(metaclass=Singleton):
 
         self.candidates.append(new_candidate)
 
+    # @track_emissions(project_name="voting_rule", output_dir = 'codecarbon', output_file = '10-3000.csv', measure_power_secs=5)
     def apply_voting_rule(self, voting_rule: str) -> None:
         """Applique une règle de vote voting_rule. 
         Remplit la case correspondante à voting_rule du dictionnaire results avec une liste (un classement) des candidats. 
@@ -218,7 +221,7 @@ class Election(metaclass=Singleton):
         Args:
             voting_rule (str): Une constante correspondant à une règle de vote.
         """
-
+        print("Applying voting rule", VotingRulesConstants.UI[voting_rule])
         if not self.has_electors_candidates():
             return
 

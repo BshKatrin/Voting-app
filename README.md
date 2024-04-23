@@ -125,4 +125,19 @@ Il est possible de passer par le protocol SSH ou HTTPS.
 
 `python3 main.py`
 
-## Utilisation (tutoriels)
+## Docs
+
+La documentation se trouve dans la dossier _docs_. La liste de tous les packages se trouve sur la page _index.html_. Pour ouvrir la page _index.html_ ou n'importe quelle autre page nécessaire, en étant dans la répértoire _tzb_ il faut
+lancer une commande :
+
+#### Windows
+
+`start docs/index.html`
+
+#### MacOS
+
+`open docs/index.html`
+
+#### Linux
+
+`xdg-open docs/index.html`
