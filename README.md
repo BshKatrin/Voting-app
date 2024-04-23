@@ -3,7 +3,7 @@
 ## Participants
 
 - Ekaterina Bogush 21214957
-- Pâris Tran
+- Pâris Tran 21134366
 - Rehyann Bouteiller 21100713
 - Haroun Zerdoumi 21212992
 - Hadrien de La Taille Lolainville 21103191
