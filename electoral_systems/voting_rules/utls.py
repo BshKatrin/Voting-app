@@ -169,6 +169,7 @@ def apply_voting_rule_rounds(electors: List[Elector], candidates: List[Candidate
         List[List[people.candidate.Candidate]]: Une liste des listes (classement dans l'ordre décroissant) des candidats par tour.
             La longueur de la liste correpond au nombre des tours effectués (peut être inférieur à `max_rounds`)
     """
+    
     init_scores(candidates, voting_rule, [0], True)
     # Tour 0, initialisation
     curr_round = 0

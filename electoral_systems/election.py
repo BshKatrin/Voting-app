@@ -19,24 +19,23 @@ from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_b
 
 from people import Candidate, Elector
 
-from codecarbon import track_emissions
-
-# Pour une génération des docs uniquement 
+# Pour une génération des docs uniquement
 __pdoc__ = {
-    'random':False,
-    'Election._init_results_keys':True,
-    'Election._calc_distance':True,
-    'Election._define_ranking':True,
-    'Election._calc_proportion_satisfaction':True,
-    'Election._make_delegations':True
+    'random': False,
+    'Election._init_results_keys': True,
+    'Election._calc_distance': True,
+    'Election._define_ranking': True,
+    'Election._calc_proportion_satisfaction': True,
+    'Election._make_delegations': True
 }
+
 
 class Election(metaclass=Singleton):
     """Une classe Singleton qui contient toutes les données nécessaires à une élection."""
 
     def __init__(self):
         super().__init__()
-        self.electors:List[Elector] = []
+        self.electors: List[Elector] = []
         """Une liste qui stocke tous les électeurs qui participent dans une élection."""
 
         self.candidates = []
@@ -52,19 +51,19 @@ class Election(metaclass=Singleton):
         """Un itérateur qui génére des IDs des candidats et des électeurs."""
 
         # Stocke les resultats
-        self.results:Dict[str, List[Candidate]] = dict()
+        self.results: Dict[str, List[Candidate]] = dict()
         """Un dictionnaire qui stocke un classement des candidats (dans l'ordre décroissant) pour chaque règle de vote choisie."""
 
         # Stocke les duels
-        self.duels_scores:duels_type = dict()
+        self.duels_scores: duels_type = dict()
         """Un dictionnaire qui stocke les résultats des duels entre les candidats."""
 
         # Pour la satisfaction
-        self.average_position_electors:tuple[float, float] = (0, 0)
-        self.proportion_satisfaction:float = 0
+        self.average_position_electors: tuple[float, float] = (0, 0)
+        self.proportion_satisfaction: float = 0
         """La distance maximale entre la position moyenne des électeurs et la position de chaque candidat."""
 
-        self.directions_data:Dict[str, direction_data_type] = get_default_directions_data()
+        self.directions_data: Dict[str, direction_data_type] = get_default_directions_data()
         """Un dictionnaire dont chaque clé correpond à la division de la carte politique et 
         chaque valeur est un dictionnaire avec les données remises par défaut. Pour les sondages uniquement."""
 
@@ -75,7 +74,7 @@ class Election(metaclass=Singleton):
         """Initialise les réglages par défaut."""
 
         # Nb de sondages à faire
-        self.nb_polls:int = 0
+        self.nb_polls: int = 0
 
         # Active/désactive la démocratie liquide
         self.liquid_democracy_activated = False
@@ -212,7 +211,6 @@ class Election(metaclass=Singleton):
 
         self.candidates.append(new_candidate)
 
-    # @track_emissions(project_name="voting_rule", output_dir = 'codecarbon', output_file = '10-3000.csv', measure_power_secs=5)
     def apply_voting_rule(self, voting_rule: str) -> None:
         """Applique une règle de vote voting_rule. 
         Remplit la case correspondante à voting_rule du dictionnaire results avec une liste (un classement) des candidats. 
@@ -221,7 +219,7 @@ class Election(metaclass=Singleton):
         Args:
             voting_rule (str): Une constante correspondant à une règle de vote.
         """
-        print("Applying voting rule", VotingRulesConstants.UI[voting_rule])
+
         if not self.has_electors_candidates():
             return
 
@@ -423,7 +421,7 @@ class Election(metaclass=Singleton):
             self._make_delegations()
         if chosen_voting_rules:
             self._init_results_keys(chosen_voting_rules)
-            
+
         self.calc_results(imported)
 
     def _make_delegations(self) -> None:
