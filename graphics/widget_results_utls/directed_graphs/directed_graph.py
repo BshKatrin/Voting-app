@@ -33,8 +33,8 @@ class DirectedGraph(QGraphicsScene):
         self.voting_rule = voting_rule
         self.path = QPainterPath()
 
-        # Couleur gris-claire
-        self.setBackgroundBrush(QColor(238, 238, 238))
+        # Couleur blanche
+        self.setBackgroundBrush(QColor(255, 255, 255))
         self.calculateCircle()
 
     def drawGraphics(self, weighted: bool) -> None:
