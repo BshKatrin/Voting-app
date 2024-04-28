@@ -237,7 +237,7 @@ def _choose_next_cand(elector: Elector, remaining_candidates: List[Candidate]) -
     index = 0
     current_candidate = elector.candidates_ranked[index]
 
-    while index < len(remaining_candidates) and (
+    while index < len(elector.candidates_ranked) and (
         current_candidate not in remaining_candidates_set
     ):
         index += 1
