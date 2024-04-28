@@ -1,4 +1,3 @@
-from copy import deepcopy
 from typing import Set, Optional, List, Union, Dict
 from math import sqrt
 from random import random
@@ -248,7 +247,7 @@ class Election(metaclass=Singleton):
         if voting_rule in VotingRulesConstants.MULTI_ROUND:
             result = func(self.electors, self.candidates)
 
-        self.results[voting_rule] = deepcopy(result)
+        self.results[voting_rule] = result
 
     def choose_winner(self, voting_rule: str) -> Union[Candidate, None]:
         """Retourne le gagnant d'après la règle de vote voting_rule.
