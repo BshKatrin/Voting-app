@@ -9,7 +9,7 @@ Voting app allows to simulate election based on one or several voting rules.
 ### Features
 
 - Several voting rules:
-- Plurality 1 & 2 rounds
+- - Plurality 1 & 2 rounds
 - - Borda
 - - Veto
 - - Condorcet, method Copeland & Simpson
