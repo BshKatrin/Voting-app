@@ -3,33 +3,32 @@ from numpy.random import normal
 from numpy import clip
 from math import isclose
 
-# Uniquement pour la génération des docs
+# For docs generation only
 __pdoc__ = {'normal':False}
 
 @dataclass(kw_only=True)
 class Person:
-    """Une classe Person avec son identifiant `id` et sa position sur la carte politique `position`.
-    Encapsule les données communes des candidats et des électeurs."""
+    """A class which encapsulates the commun data between candidate and elector."""
 
     id: int = field(compare=False)
-    """Un identifiant d'une personne."""
+    """An person's identifier. Should by unique."""
 
     position: tuple[float, float] = field(compare=False)
-    """Une position sur la carte politique. Chaque coordonée est bornée entre -1 et 1"""
+    """A position on the political map. Coordinates should be bounded between -1 and 1."""
 
     
     @staticmethod
     def generate_parameter(mu: float, sigma: float, lower_limit: float, upper_limit: float) -> float:
-        """Génére un paramètre basé sur la distribution normale et confiné entre des limites données.
+        """Generate a paramater according to the normal distribution and bounded between given limits.
 
         Args:
-            mu (float): La moyenne de la distribution normale.
-            sigma (float): L'écart type de la distribution normale. Un réel strictement positif.
-            lower_limit (float): La limite inférieure pour le paramètre. 
-            upper_limit (float): La limite supérieure pour le paramètre.
+            mu (float): A mean of the normal distribution.
+            sigma (float): A variance of the normdal distribution. A strictly positive float.
+            lower_limit (float): A lower limit of the parameter.
+            upper_limit (float): An upper limit of the parameter.
 
         Returns:
-            float: Le paramètre généré.
+            float: A generated parameter.
         """
 
         max_iteration = 10
@@ -50,7 +49,7 @@ class Person:
         return self.__str__()
 
     def __eq__(self, other):
-        # Nécessaire de définir manuellemnt à cause du Candidate
+        # Necessary to define manually because of Candidate
         if isinstance(other, self.__class__):
             x, y = self.position
             x_o, y_o = other.position
