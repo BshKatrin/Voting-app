@@ -4,7 +4,7 @@ from typing import Set, Dict
 from electoral_systems import Election, VotingRulesConstants
 from people import Candidate, Elector
 
-# Pour une génération des docs uniquement
+# For docs generation only
 __pdoc__ = {
     'ImportData._check_tables': True,
     'ImportData._get_existing_tables': True,
@@ -19,25 +19,22 @@ __pdoc__ = {
 
 
 class ImportData:
-    """Une classe qui fournit les fonctionnalités nécessaires pour une importation des données dans l'élection.
-    SQLite3 est utilisé."""
+    """A class which provides functionnality for data import. SQLite3 is used."""
 
     election: Election = Election()
     IMPORT: str = "I"
 
     @classmethod
     def _check_tables(cls, tables_to_check: Set[str], existing_tables: Set[str]) -> tuple[bool, Set[str]]:
-        """Vérifie que les tableaux dans `tables_to_check` sont présents dans la base des données qui
-        contient les tableaux dans `existing_tables`.
+        """Verify if tables in `tables_to_check` exist in database. Tables in database are listed in `existing_tables`.
 
         Args:
-            tables_to_check (Set[str]): Des noms tableaux dont l'existence il faut vérifier.
-            existing_tables (Set[str]): Des noms des tableaux qui existe dans la base des données.
+            tables_to_check (Set[str]): Table names whose existence should be verified.
+            existing_tables (Set[str]): Table names that exist in database.
 
         Returns:
-            tuple[bool, Set[str]]: Un booléen `True` s'il manque au moins un tableau dans la base de données.
-                Un ensemble contenant les noms des tableaux manquants. Un booléen `False` si tous les tableaux sont bien présents,
-                l'ensemble est vide dans ce cas.
+            tuple[bool, Set[str]]: A bool `True` if at least one table is missing in database and a set of missing table names.
+                Otherwise, a bool `False` if all tables exist in DB, a set is empty in that case.
         """
 
         missing_tables = tables_to_check - (tables_to_check & existing_tables)
@@ -45,13 +42,13 @@ class ImportData:
 
     @classmethod
     def _get_existing_tables(cls, connection: Connection) -> Set[str]:
-        """Retourne des noms des tableaux qui existent dans la base des données.
+        """Get names of all existing tables in database. 
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
 
         Returns:
-            Set[str]: Un ensemble des noms des tableaux.
+            Set[str]: A set of table names.
         """
 
         cursor = connection.cursor()
@@ -60,15 +57,15 @@ class ImportData:
 
     @classmethod
     def _check_columns(cls, connection: Connection, tables_cols: Dict[str, tuple[str, str]]) -> bool:
-        """Vérifie les noms des colonnes et leur affinité de type.
+        """Verify column names and their type affinity.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            tables_cols (Dict[str, tuple[str, str]]): Un dictionnnaire dont les clés sont des noms des tableaux qui existent
-                dans la base des données. Des valeurs associées sont des noms des colonnes et leur affinité de type qu'il faut vérifier.
+            connection (sqlite3.Connection): SQLite connection.
+            tables_cols (Dict[str, tuple[str, str]]): A dictionary whose keys are table names (existing in database),
+                and values are column names ant type affinity which should be verified.
 
         Returns:
-            bool: `True` si chaque tableau contient des colonnes de données avec la bonne affinité de type. Sinon, `False`.
+            bool: `True` if every table all specified columns with the correct type affinity. `False` otherwise.
         """
 
         cursor = connection.cursor()
@@ -83,13 +80,13 @@ class ImportData:
 
     @classmethod
     def _check_columns_people(cls, connection: Connection) -> bool:
-        """Vérifie des colonnes et leur affinité de type pour les tableaux des candidats et des électeurs.
+        """Verify column names and their type affinity in tables for electors and candidates.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
 
         Returns:
-            bool: `True` si chaque tableau contient des colonnes de données avec la bonne affinité de type. Sinon, `False`.
+            bool: `True` if every table has all necessary columns with the correct type affinity. 
         """
 
         return cls._check_columns(
@@ -116,12 +113,12 @@ class ImportData:
 
     @classmethod
     def import_people(cls, connection: Connection, with_results: bool) -> tuple[bool, str]:
-        """Importe des données dans l'élection à partir de la base des données. Fait les vérifications
-        nécessaires des tableaux et des colonnes.
+        """Import data to the election from the database. Electors and candidates data are imported in any case. 
+        Results data are imported only if necessary. Make all necessary verification on tables and its columns.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            with_results (bool): `True` s'il faut importer les résultats. `False`, s'il faut importer sans les résultats.
+            connection (sqlite3.Connection): SQLite connection.
+            with_results (bool): `True` is results should be imported. `False`, otherwise.
 
         Returns:
             tuple[bool, str]: Un booléen `True` si les données ont été importées avec succès, `False` si l'erreur est survenue.
@@ -134,15 +131,15 @@ class ImportData:
 
     @classmethod
     def import_people_no_results(cls, connection: Connection) -> tuple[bool, str]:
-        """Importe des données (candidats, électeurs uniquement) dans une élection à partir de la base des données.
-        Fait les vérifications nécessaires des tableaux et des colonnes.
+        """Import data (candidates, electors only) in the election from the database.
+        Make necessary verifications on tables and columns.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
 
         Returns:
-            tuple[bool, str]: Un booléen `True` si les données ont été importées avec succès, `False`s si l'erreur est survenue.
-                Une chaîne de caractères avec le message.
+            tuple[bool, str]: A bool `True` if data was imported succesfully, `False` if an error occurred.
+                A string with message.
         """
 
         existing_tables = cls._get_existing_tables(connection)
@@ -163,8 +160,7 @@ class ImportData:
 
         cursor.execute("SELECT x, y, first_name, last_name FROM candidates")
         candidates_data = cursor.fetchall()
-        max_fst_name = "A"
-        max_lst_name = "A"
+       
         for x, y, first_name, last_name in candidates_data:
             id = next(cls.election.id_iter)
             cls.election.add_candidate_import(
@@ -187,16 +183,15 @@ class ImportData:
 
     @classmethod
     def import_people_with_results(cls, connection: Connection) -> tuple[bool, str]:
-        """Importe des données (candidats, électeurs, résultats) dans l'élection à partir de la base des données.
-        Fait les vérifications nécessaires des tableaux et des colonnes. Importe les configurations de l'élection
-        si le tableau correspondant est présent. Supprime toutes les données existantes de l'élection.
+        """Import data (candidates, electors, results) to the election from the database. Make necessary verification on 
+        tables and its columns. Import election settings if such table exists. Delete all existing data in the election.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
 
         Returns:
-            tuple[bool, str]: `True` si les données ont été importées avec succès, `False` si l'erreur est survenue.
-                Une chaîne de caractères avec le message.
+            tuple[bool, str]: A bool `True` if data was imported succesfully, `False` if an error occurred.
+                A string with message.
         """
 
         cls.election.delete_all_data()
@@ -252,19 +247,18 @@ class ImportData:
 
     @classmethod
     def _import_results(cls, connection: Connection, existing_tables: Set[str], assoc: Dict[int, Candidate]) -> tuple[bool, str]:
-        """Importe des résultats de chaque règle de vote présente dans la base des données dans  l'élection.
-        Fait les vérifications nécessaires des tableaux et des colonnes.
+        """Import results of each voting rule existing in the database to the election. 
+        Make necessary verifications on tables and its columns. 
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            existing_tables (Set[str]): Un ensemble des noms des tableaux qui existent dans la base des données.
-            assoc (Dict[int, people.candidate.Candidate]): Un dictionnaire associant à chaque ID de candidat
-                (ID dans la base de données) le candidat correspondant dans l'élection.
-                Ceci est nécessaire en raison de la possibilité de divergence de ces IDs.
+            connection (sqlite3.Connection): SQLite connection.
+            existing_tables (Set[str]): A set of names of tables existing in database.
+            assoc (Dict[int, people.candidate.Candidate]): A dictionary associating each candidate ID
+                (ID in database) a candidate in the election. Necessary because a there is a possiblity of divergence of these IDs.
 
         Returns:
-            tuple[bool, str]: Un booléen `True` si les données ont été importées avec succès, `False` si l'erreur est survenue.
-                Une chaîne de caractères avec le message.
+            tuple[bool, str]: A bool `True` if data was imported succesfully, `False` if an error occurred.
+                A string with message.
         """
 
         _, missing_tables = cls._check_tables(
@@ -333,14 +327,14 @@ class ImportData:
 
     @classmethod
     def _import_one_round(cls, connection: Connection, assoc: Dict[int, Candidate]) -> None:
-        """Importe des résultats des règles de vote à un tour dans l'élection. Remplit uniquement des scores des candidats. 
-        Les classements (un attribut `results` dans `electoral_systems.election.Election`) ne sont pas remplis.
+        """Import results of one round voting rules to the election. Fill only candidates scores. 
+        The rankings (an attribute `results` dans `electoral_systems.election.Election`) are not filled.
+
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            assoc (Dict[int, people.candidate.Candidate]): Un dictionnaire associant à chaque ID de candidat
-                (ID dans la base de données) le candidat correspondant dans l'élection.
-                Ceci est nécessaire en raison de la possibilité de divergence de ces IDs.
+            connection (sqlite3.Connection): SQLite connection.
+            assoc (Dict[int, people.candidate.Candidate]): A dictionary associating each candidate ID
+                (ID in database) a candidate in the election. Necessary because a there is a possiblity of divergence of these IDs.
         """
 
         cursor = connection.cursor()
@@ -355,19 +349,18 @@ class ImportData:
 
     @classmethod
     def _import_multi_round(cls, connection: Connection, assoc: Dict[int, int]) -> None:
-        """Importe des résultats des règles de vote à plusieurs tour dans l'élection. Remplit uniquement des scores des candidats. 
-        Les classements (un attribut `results` dans `electoral_systems.election.Election`) ne sont pas remplis.
+        """Import results of multi-round voting rules to the election. Fill only candidates scores. 
+        The rankings (an attribute `results` in `electoral_systems.election.Election`) are not filled.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            assoc (Dict[int, people.candidate.Candidate]): Un dictionnaire associant à chaque ID de candidat
-                (ID dans la base de données) le candidat correspondant dans l'élection.
-                Ceci est nécessaire en raison de la possibilité de divergence de ces IDs.
+            connection (sqlite3.Connection): SQLite connection.
+            assoc (Dict[int, people.candidate.Candidate]): A dictionary associating each candidate ID
+                (ID in database) a candidate in the election. Necessary because a there is a possiblity of divergence of these IDs.
         """
 
         cursor = connection.cursor()
 
-        # Init lists bases on length
+        # Init lists based on length
         cursor.execute(
             "SELECT max(round), voting_rule FROM results_multi_round GROUP BY voting_rule")
 
@@ -384,15 +377,14 @@ class ImportData:
 
     @classmethod
     def _import_condorcet(cls, connection: Connection, assoc: Dict[int, int]) -> None:
-        """Importe des résultats des règles de vote Condorcet-cohérentes dans une élection. Remplit uniquement des scores des candidats. 
-        Les classements (un attribut `results` dans `electoral_systems.election.Election`) ne sont pas remplis.
-        Remplit des résultats des duels entre les candidats (un attribut `duels_scores` dans `electoral_systems.election.Election`).
+        """Import results of Condorcet-based voting rules to the election. Fill only candidates scores.
+        The ranking (an attribute `results` in `electoral_systems.election.Election`) are not filled.
+        Fill results of duels between candidates (un attribute `duels_scores` in `electoral_systems.election.Election`).
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            assoc (Dict[int, people.candidate.Candidate]): Un dictionnaire associant à chaque ID de candidat
-                (ID dans la base de données) le candidat correspondant dans l'élection.
-                Ceci est nécessaire en raison de la possibilité de divergence de ces IDs.
+            connection (sqlite3.Connection): SQLite connection.
+            assoc (Dict[int, people.candidate.Candidate]): A dictionary associating each candidate ID
+                (ID in database) a candidate in the election. Necessary because a there is a possiblity of divergence of these IDs.
         """
 
         cursor = connection.cursor()
@@ -418,15 +410,15 @@ class ImportData:
 
     @classmethod
     def _import_config(cls, connection: Connection, table_missing: bool) -> None:
-        """Importe les configurations dans l'élection, i.e. si  
-            - la résolution des égalités a été faite par les duels  
-            - la démocratie liquide a été activée.  
-        Si le tableau `settings` n'est pas présent dans la base des données, désactiver la démocratie liquide et 
-        la résolution des égalités par duels.
+        """Import settings to the election, i.e. if  
+            - the tie-break by duels was activated  
+            - the liquid democracy was activated
+
+        If the table `settings` does not exist in database, desactivate the liquid democracy and the tie-break by duels.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            table_missing (bool): `True` si le tableau `settings` n'est pas présent dans la base des données, `False` sinon.
+            connection (sqlite3.Connection): SQLite connection.
+            table_missing (bool): `True` if the table `settings` does not exist in the database, `False` otherwise.
         """
 
         cls.election.liquid_democracy_activated = False
