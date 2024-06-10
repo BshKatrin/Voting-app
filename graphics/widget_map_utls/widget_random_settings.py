@@ -14,19 +14,18 @@ from electoral_systems import RandomConstants
 
 
 class WidgetRandomSettings(QWidget):
-    """Un widget qui contient des graphiques de loi normale et les sliders pour configurer des paramètres de la génération
-    de données."""
+    """A class representing the widget with all graphics of the normal distribution
+    and sliders to configure the parameters of data generation."""
 
     def __init__(self, main_window_size: QSize, parent: Optional[QWidget] = None):
-        """Initialise une instance d'élection (pour le partage des données).
-        Initiliase les sliders et graphiques pour chaque paramètre de la génération de données.
+        """Initialize an instance of the election (for data sharing).
+        Initialize sliders and graphics for each data generation parameter.
 
 
         Args:
-            main_window_size (PySide6.QtCore.QSize): La taille de la fenêtre principale. La taille du widget est fixée en fonction 
-                de cet argument.
-            parent (Optional[PySide6.QtWidgets.QWidget]): Un parent d'un widget. Puisque l'idée est d'afficher le checkbox 
-                dans une fenêtre séparée parent est remis à `None` par défaut.
+            main_window_size (PySide6.QtCore.QSize): A size of the main window. A size of the widget will be determined by this arg.
+            parent (Optional[PySide6.QtWidgets.QWidget]): Widget's parent. The idea is to to show this widget
+                in a separate window so the default is `None`.
         """
 
         super().__init__(parent)
@@ -41,7 +40,7 @@ class WidgetRandomSettings(QWidget):
         self.initUI()
 
     def initUI(self):
-        """Initialise le layout, une zone de défilement et tous les graphes avec sliders."""
+        """Initialize the layout, scrolling zone, all graphics with sliders."""
 
         main_layout = QVBoxLayout()
         self.setLayout(main_layout)

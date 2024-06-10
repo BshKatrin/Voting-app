@@ -11,19 +11,21 @@ from .voting_rule_checkbox import VotingRuleCheckbox
 
 
 class WidgetCheckbox(QWidget):
-    """Un widget qui représente l'ensemble des checkbox pour choisir des règles de vote pour une élection."""
+    """A class which represents the widget with a set of checkboxes.
+    These checkboxes allow to choose voting rules to use in the election."""
 
     sig_toggle_election_btn = Signal()
-    """Un signal qui est émis lorsque le button `Confirm` est cliqué. Permet d'activer ou désactiver le boutton pour lancer une élection."""
+    """A signal emitted if the confirmation button has been clicked. 
+    Allows to toggle the button allowing to start the election."""
 
     def __init__(self, parent: Optional[QWidget] = None):
-        """Initialise une instance d'élection (pour le partage des données).
-        Si les sondages ont été activées, coche une case correspondante à une règle de vote
-        pour les sondages et désactive les autres cases.
+        """"Initialize an instance of the election (for data sharing).
+        If polls have been activated, check the checkbox corresponding to the chosen for polls voting rule 
+        and desactivate every other checkbox. 
 
         Args:
-            parent (Optional[PySide6.QtWidgets.QWidget]): Un parent d'un widget. Puisque l'idée est d'afficher le checkbox 
-                dans une fenêtre séparée parent est remis à `None` par défaut.
+            parent (Optional[PySide6.QtWidgets.QWidget]): Widget's parent. The idea is to to show this widget
+                in a separate window so the default is `None`.
         """
 
         super().__init__(parent)
@@ -40,7 +42,8 @@ class WidgetCheckbox(QWidget):
             self.disableAllVotingRules()
 
     def initUI(self) -> None:
-        """Initialise le layout, les checkboxes pour chaque règle de vote disponible et les bouttons."""
+        """Initialize the layout, a set of checkboxes for currently available each voting rule and the `Choose all`, `Confirm` buttons.
+        *Voting rules availability depends on the number of candidates and electors."""
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -72,7 +75,7 @@ class WidgetCheckbox(QWidget):
 
     @Slot(str, int)
     def onStateChanged(self, voting_rule: str, state: int) -> None:
-        """MAJ de l'ensemble des règles de vote choisies si la checkbox correspondante a été cochée ou décochée."""
+        """Update a set of chosen voting rules if the corresponding checkbox has been checked/unchecked."""
 
         (
             self.chosen_voting_rules.add(voting_rule)
@@ -81,14 +84,15 @@ class WidgetCheckbox(QWidget):
         )
 
     def enableCheckboxes(self) -> None:
-        """Active les checkboxes à cocher dont le nombre minimum de candidats a été atteint"""
+        """Activate the checkboxes whose the minumum number of candidates has been reached."""
+
         nb_candidates = len(self.election.candidates)
         for checkbox in self.rule_checkbox.values():
             if nb_candidates >= checkbox.min:
                 checkbox.setEnabled(True)
 
     def showCustom(self) -> None:
-        """Affiche le widget."""
+        """Show the widget."""
 
         if not self.election.nb_polls:
             self.enableCheckboxes()
@@ -96,47 +100,48 @@ class WidgetCheckbox(QWidget):
 
     @Slot()
     def confirmVotingRules(self) -> None:
-        """Émet le signal `sig_toggle_election_btn` et ferme le widget (le widget n'est pas supprimé, juste caché)."""
+        """Emit the signal `sig_toggle_election_btn` and close the widget. *The widget is not deleted, just hidden*."""
 
         self.sig_toggle_election_btn.emit()
         self.close()
 
     @Slot()
     def chooseAllVotingRules(self) -> None:
-        """Choisit tous les checkboxes activées."""
+        """Choose all available (i.e. activated checkboxes)."""
 
         for checkbox in self.rule_checkbox.values():
             if checkbox.isEnabled():
                 checkbox.setChecked(True)
 
     def getChosenVotingRules(self) -> Set[str]:
-        """Retourne l'ensemble des constantes correspondantes aux règles de vote choisies avec des checkboxes.
+        """Get a set of constants related to the voting rules chosen with checkboxes.
 
         Returns:
-            Set[str]: Un ensemble de constantes associées aux règles du vote.
+            Set[str]: A set of constants related to the voting rules.
         """
 
         return self.chosen_voting_rules
 
     def votingRuleChosen(self) -> bool:
-        """Vérifie si au moins une règle de vote a été choisie.
+        """Verify that at least 1 voting rule has been chosen.
 
         Returns:
-            bool: `True` si au moins une règle de vote a été choisie. Sinon, `False`.
+            bool: `True` if at least 1 voting rule has been chosen, `False` otherwise.
         """
+
         return bool(self.chosen_voting_rules)
 
     def choosePollVotingRule(self, voting_rule: str) -> None:
-        """Coche la checkbox correspondante à une règle de vote `voting_rule`.
+        """Check the checkbox corresponding to the given voting rule.
 
         Args:
-            voting_rule (str): Une constante associée à une règle du vote dont la checkbox a été cochée. 
+            voting_rule (str): A constant related to the voting rule whose checkbox should be checked. 
         """
 
         self.rule_checkbox[voting_rule].setChecked(True)
 
     def disableAllVotingRules(self) -> None:
-        """Désactive tous les checkboxes."""
+        """Desactivate all checkboxes."""
 
         for checkbox in self.rule_checkbox.values():
             checkbox.setEnabled(False)

@@ -31,7 +31,7 @@ from typing import Set
 
 from electoral_systems import Election, VotingRulesConstants
 
-# Pour une génération des docs uniquement
+# For docs generation only
 __pdoc__ = {
     &#39;ExportData._get_set_check&#39;: True,
     &#39;ExportData._one_round_create_table&#39;: True,
@@ -45,22 +45,24 @@ __pdoc__ = {
 
 
 class ExportData:
-    &#34;&#34;&#34;Une classe qui fournit les fonctionnalités nécessaires pour une exportation des données de l&#39;élection.
-    SQLite3 est utilisé.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class providing functionality for data export using SQLite3.&#34;&#34;&#34;
+
 
     election: Election = Election()
+    
     EXPORT: str = &#34;E&#34;
-
+    &#34;&#34;&#34;A constant corresponding to export option.&#34;&#34;&#34;
+    
     @classmethod
     def create_database_people(cls, connection: Connection) -&gt; tuple[bool, str]:
-        &#34;&#34;&#34;Crée des tableaux des électeurs et des candidats d&#39;élection et exporte les données.
+        &#34;&#34;&#34;Create tables for electors and candidats and exports its data. Election results are **not** exported.
 
         Args:
-            connection (sqlite3.Connection): une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
 
         Returns:
-            tuple[bool, str]: Un booléen `True` si les données ont été exportées avec succès, `False` si l&#39;erreur est survenue.
-                Une chaîne de caractères avec le message.
+            tuple[bool, str]: A bool `True` if data was exported succesfully, `False` if an error occured. 
+                A string with message.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -136,22 +138,22 @@ class ExportData:
 
     @classmethod
     def create_database_results(cls, connection: Connection) -&gt; tuple[bool, str]:
-        &#34;&#34;&#34;Crée des tableaux des résultats d&#39;élection et exporte les données.  
-        Au plus il peut exister 5 tableaux:  
-            - Un tableau pour des règles de vote à un tour  
-            - Un tableau pour des règles de vote à plusieurs tours  
-            - Deux tableaux pour des règles de vote Condorcet-cohérentes. Un tableau pour des scores des candidats, un tableau pour
-            des scores dans les duels.  
-            - Un tableau pour les configurations d&#39;élection.  
-        Chaque tableau est créé uniquement si nécessaire, par exemple, si aucune règle de vote à un tour n&#39;a été utilisée
-            lors de l&#39;élection, il ne sera pas créé.
+        &#34;&#34;&#34;Create tables for election results and exports results data. Candidates data **must** be exported before.  
+
+        At most 5 tables are created:  
+            - A table for **one round** voting rules   
+            - A table for **multi-round** voting rules   
+            - Two tables for **Condercet-based** voting rules: a table for candidates scores and a table for scores in duels  
+            - A table for election settings (liquid democracy, polls etc)  
+        Every table is created only if necessary, e.g. if no one round voting rule was chosen
+            a table for such results will not be created.
 
         Args:
-            connection (sqlite3.Connection): une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
 
         Returns:
-            tuple[bool, str]: Un booléen `True` si les données ont été exportées avec succès, `False` si l&#39;erreur est survenue.
-                Une chaîne de caractères avec le message.
+            tuple[bool, str]:  A bool `True` if data was exported succesfully, `False` if an error occured. 
+                A string with message.
         &#34;&#34;&#34;
 
         # DB for one round voting rules
@@ -188,13 +190,13 @@ class ExportData:
 
     @classmethod
     def _get_set_check(cls, voting_rules_set: Set[str]) -&gt; str:
-        &#34;&#34;&#34;Retourne une chaîne de caractères d&#39;une contrainte d&#39;intégrité sur une ou plusieurs règle(s) de vote.
+        &#34;&#34;&#34;Get a string of an integrity constraint on one or several voting rules.
 
         Args:
-            voting_rules_set (Set[str]): Un ensemble des constantes associées aux règles de vote.
+            voting_rules_set (Set[str]): A set of constants related to voting rules. 
 
         Returns:
-            str: Une constrainte d&#39;intégrité utilisé dans `CHECK(...)`
+            str: An integrity constraint which will be used `CHECK(...)`
         &#34;&#34;&#34;
 
         if len(voting_rules_set) == 1:
@@ -203,12 +205,12 @@ class ExportData:
 
     @classmethod
     def _one_round_create_table(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Crée un tableau des résultats des règles de vote à un tour.
+        &#34;&#34;&#34;Create a table for one round voting rules results.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_one_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l&#39;élection.
-                Nécessaire pour une contrainte d&#39;intégrité.
+            connection (sqlite3.Connection): SQLite connection. 
+            chosen_one_round (Set[str]): A set of constants related to one round voting rules used in the election.
+                Necessary for an integrity constraint.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -230,14 +232,14 @@ class ExportData:
 
     @classmethod
     def _one_round_insert(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; bool:
-        &#34;&#34;&#34;Remplit le tableau des résultats des règles de vote à un tour.
+        &#34;&#34;&#34;Fill the table for one round voting rules results. The table **must** be created before.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_one_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l&#39;élection.
+            connection (sqlite3.Connection): SQLite connection. 
+            chosen_one_round (Set[str]): A set of constants related to one round voting rules used in the election.
 
         Returns:
-            bool: `True` si les données ont été insérées, `False` si l&#39;erreur est survenue.
+            bool: `True` if data was inserted succesfully, `False` if an error occurred.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -260,12 +262,12 @@ class ExportData:
 
     @classmethod
     def _multi_round_create_table(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Crée un tableau des résultats des règles de vote à plusiers tours.
-
+        &#34;&#34;&#34;Create a table for multi-round voting rules results.
+        
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_multi_round (Set[str]): Un ensemble des constantes associées aux règles de vote à plusieurs tours utilisées à l&#39;élection.
-                Nécessaire pour une contrainte d&#39;intégrité.
+            connection (sqlite3.Connection): SQLite connection.
+            chosen_multi_round (Set[str]): A set of constants related to multi-round voting rules used in the election.  
+                Necessary of an integrity constraint.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -288,14 +290,14 @@ class ExportData:
 
     @classmethod
     def _multi_round_insert(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; bool:
-        &#34;&#34;&#34;Remplit le tableau des résultats dess règle sde vote à plusieurs tours.
+        &#34;&#34;&#34;Fill the table for multi-round voting rules results. The table **must** be created before.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_multi_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l&#39;élection.
-        
+            connection (sqlite3.Connection): SQLite connection. 
+            chosen_one_round (Set[str]): A set of constants related to multi-round voting rules used in the election.
+
         Returns:
-            bool: `True` si les données ont été insérées, `False` si l&#39;erreur est survenue.
+            bool: `True` if data was inserted succesfully, `False` if an error occurred.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -318,12 +320,12 @@ class ExportData:
 
     @classmethod
     def _condorcet_create_table(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Crée un tableau des résultats des règles de vote Condorcet-cohérentes et un tableau des duels entre les candidats.
+        &#34;&#34;&#34;Create a table for Condorcet-based voting rules results and a table for scores in duels between candidates.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_condorcet (Set[str]): Un ensemble des constantes associées aux règles de vote Condorcet-cohérentes
-                utilisées à l&#39;élection. Nécessaire pour une contrainte d&#39;intégrité.
+            connection (sqlite3.Connection): SQLite connection.
+            chosen_condorcet (Set[str]): A set of constants related to Condorcet-based voting rules used in the election.  
+                Necessary for an integrity constraint. 
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -359,14 +361,15 @@ class ExportData:
 
     @classmethod
     def _condorcet_insert(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; bool:
-        &#34;&#34;&#34;Remplit le tableau des scores des règles de vote Condorcet-cohérentes et le tableau des duels.
+        &#34;&#34;&#34;Fill the table for Condorced-based voting rules results as well as the table for duels scores. 
+        These two tables **must** be created before. 
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_condorcet (Set[str]): Un ensemble des constantes associées aux règles de vote Condorcet-cohérentes utilisées à l&#39;élection.
+            connection (sqlite3.Connection): SQLite connection.
+            chosen_condorcet (Set[str]): A set of constants of Condorcet-based voting rules used in the election.
 
         Returns:
-            bool: `True` si les données ont été insérées, `False` si l&#39;erreur est survenue.
+            bool: `True` if all data was inserted succesfully, `False` if an error occured.
         &#34;&#34;&#34;
 
         # Duels
@@ -384,7 +387,7 @@ class ExportData:
             return False
         connection.commit()
 
-        # Scores (comme à un tour)
+        # Scores (like in one round)
         query = &#34;&#34;&#34;INSERT INTO results_condorcet(candidate_id, voting_rule, score)
         VALUES(?, ?, ?)&#34;&#34;&#34;
 
@@ -402,12 +405,12 @@ class ExportData:
 
     @classmethod
     def _export_config(cls, connection: Connection) -&gt; None:
-        &#34;&#34;&#34;Exporte les configurations d&#39;une élection, i.e. si  
-            - la résolution des égalités par duels a été activée.    
-            - la démocratie liquide a été activée.  
+        &#34;&#34;&#34;Export election settings, i.e. if  
+            - the tie-break by duels was activated  
+            - the liquid democracy was activated   
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -447,29 +450,30 @@ class ExportData:
 <span>class <span class="ident">ExportData</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Une classe qui fournit les fonctionnalités nécessaires pour une exportation des données de l'élection.
-SQLite3 est utilisé.</p></div>
+<div class="desc"><p>A class providing functionality for data export using SQLite3.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ExportData:
-    &#34;&#34;&#34;Une classe qui fournit les fonctionnalités nécessaires pour une exportation des données de l&#39;élection.
-    SQLite3 est utilisé.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class providing functionality for data export using SQLite3.&#34;&#34;&#34;
+
 
     election: Election = Election()
+    
     EXPORT: str = &#34;E&#34;
-
+    &#34;&#34;&#34;A constant corresponding to export option.&#34;&#34;&#34;
+    
     @classmethod
     def create_database_people(cls, connection: Connection) -&gt; tuple[bool, str]:
-        &#34;&#34;&#34;Crée des tableaux des électeurs et des candidats d&#39;élection et exporte les données.
+        &#34;&#34;&#34;Create tables for electors and candidats and exports its data. Election results are **not** exported.
 
         Args:
-            connection (sqlite3.Connection): une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
 
         Returns:
-            tuple[bool, str]: Un booléen `True` si les données ont été exportées avec succès, `False` si l&#39;erreur est survenue.
-                Une chaîne de caractères avec le message.
+            tuple[bool, str]: A bool `True` if data was exported succesfully, `False` if an error occured. 
+                A string with message.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -545,22 +549,22 @@ SQLite3 est utilisé.</p></div>
 
     @classmethod
     def create_database_results(cls, connection: Connection) -&gt; tuple[bool, str]:
-        &#34;&#34;&#34;Crée des tableaux des résultats d&#39;élection et exporte les données.  
-        Au plus il peut exister 5 tableaux:  
-            - Un tableau pour des règles de vote à un tour  
-            - Un tableau pour des règles de vote à plusieurs tours  
-            - Deux tableaux pour des règles de vote Condorcet-cohérentes. Un tableau pour des scores des candidats, un tableau pour
-            des scores dans les duels.  
-            - Un tableau pour les configurations d&#39;élection.  
-        Chaque tableau est créé uniquement si nécessaire, par exemple, si aucune règle de vote à un tour n&#39;a été utilisée
-            lors de l&#39;élection, il ne sera pas créé.
+        &#34;&#34;&#34;Create tables for election results and exports results data. Candidates data **must** be exported before.  
+
+        At most 5 tables are created:  
+            - A table for **one round** voting rules   
+            - A table for **multi-round** voting rules   
+            - Two tables for **Condercet-based** voting rules: a table for candidates scores and a table for scores in duels  
+            - A table for election settings (liquid democracy, polls etc)  
+        Every table is created only if necessary, e.g. if no one round voting rule was chosen
+            a table for such results will not be created.
 
         Args:
-            connection (sqlite3.Connection): une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
 
         Returns:
-            tuple[bool, str]: Un booléen `True` si les données ont été exportées avec succès, `False` si l&#39;erreur est survenue.
-                Une chaîne de caractères avec le message.
+            tuple[bool, str]:  A bool `True` if data was exported succesfully, `False` if an error occured. 
+                A string with message.
         &#34;&#34;&#34;
 
         # DB for one round voting rules
@@ -597,13 +601,13 @@ SQLite3 est utilisé.</p></div>
 
     @classmethod
     def _get_set_check(cls, voting_rules_set: Set[str]) -&gt; str:
-        &#34;&#34;&#34;Retourne une chaîne de caractères d&#39;une contrainte d&#39;intégrité sur une ou plusieurs règle(s) de vote.
+        &#34;&#34;&#34;Get a string of an integrity constraint on one or several voting rules.
 
         Args:
-            voting_rules_set (Set[str]): Un ensemble des constantes associées aux règles de vote.
+            voting_rules_set (Set[str]): A set of constants related to voting rules. 
 
         Returns:
-            str: Une constrainte d&#39;intégrité utilisé dans `CHECK(...)`
+            str: An integrity constraint which will be used `CHECK(...)`
         &#34;&#34;&#34;
 
         if len(voting_rules_set) == 1:
@@ -612,12 +616,12 @@ SQLite3 est utilisé.</p></div>
 
     @classmethod
     def _one_round_create_table(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Crée un tableau des résultats des règles de vote à un tour.
+        &#34;&#34;&#34;Create a table for one round voting rules results.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_one_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l&#39;élection.
-                Nécessaire pour une contrainte d&#39;intégrité.
+            connection (sqlite3.Connection): SQLite connection. 
+            chosen_one_round (Set[str]): A set of constants related to one round voting rules used in the election.
+                Necessary for an integrity constraint.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -639,14 +643,14 @@ SQLite3 est utilisé.</p></div>
 
     @classmethod
     def _one_round_insert(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; bool:
-        &#34;&#34;&#34;Remplit le tableau des résultats des règles de vote à un tour.
+        &#34;&#34;&#34;Fill the table for one round voting rules results. The table **must** be created before.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_one_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l&#39;élection.
+            connection (sqlite3.Connection): SQLite connection. 
+            chosen_one_round (Set[str]): A set of constants related to one round voting rules used in the election.
 
         Returns:
-            bool: `True` si les données ont été insérées, `False` si l&#39;erreur est survenue.
+            bool: `True` if data was inserted succesfully, `False` if an error occurred.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -669,12 +673,12 @@ SQLite3 est utilisé.</p></div>
 
     @classmethod
     def _multi_round_create_table(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Crée un tableau des résultats des règles de vote à plusiers tours.
-
+        &#34;&#34;&#34;Create a table for multi-round voting rules results.
+        
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_multi_round (Set[str]): Un ensemble des constantes associées aux règles de vote à plusieurs tours utilisées à l&#39;élection.
-                Nécessaire pour une contrainte d&#39;intégrité.
+            connection (sqlite3.Connection): SQLite connection.
+            chosen_multi_round (Set[str]): A set of constants related to multi-round voting rules used in the election.  
+                Necessary of an integrity constraint.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -697,14 +701,14 @@ SQLite3 est utilisé.</p></div>
 
     @classmethod
     def _multi_round_insert(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; bool:
-        &#34;&#34;&#34;Remplit le tableau des résultats dess règle sde vote à plusieurs tours.
+        &#34;&#34;&#34;Fill the table for multi-round voting rules results. The table **must** be created before.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_multi_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l&#39;élection.
-        
+            connection (sqlite3.Connection): SQLite connection. 
+            chosen_one_round (Set[str]): A set of constants related to multi-round voting rules used in the election.
+
         Returns:
-            bool: `True` si les données ont été insérées, `False` si l&#39;erreur est survenue.
+            bool: `True` if data was inserted succesfully, `False` if an error occurred.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -727,12 +731,12 @@ SQLite3 est utilisé.</p></div>
 
     @classmethod
     def _condorcet_create_table(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Crée un tableau des résultats des règles de vote Condorcet-cohérentes et un tableau des duels entre les candidats.
+        &#34;&#34;&#34;Create a table for Condorcet-based voting rules results and a table for scores in duels between candidates.
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_condorcet (Set[str]): Un ensemble des constantes associées aux règles de vote Condorcet-cohérentes
-                utilisées à l&#39;élection. Nécessaire pour une contrainte d&#39;intégrité.
+            connection (sqlite3.Connection): SQLite connection.
+            chosen_condorcet (Set[str]): A set of constants related to Condorcet-based voting rules used in the election.  
+                Necessary for an integrity constraint. 
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -768,14 +772,15 @@ SQLite3 est utilisé.</p></div>
 
     @classmethod
     def _condorcet_insert(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; bool:
-        &#34;&#34;&#34;Remplit le tableau des scores des règles de vote Condorcet-cohérentes et le tableau des duels.
+        &#34;&#34;&#34;Fill the table for Condorced-based voting rules results as well as the table for duels scores. 
+        These two tables **must** be created before. 
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
-            chosen_condorcet (Set[str]): Un ensemble des constantes associées aux règles de vote Condorcet-cohérentes utilisées à l&#39;élection.
+            connection (sqlite3.Connection): SQLite connection.
+            chosen_condorcet (Set[str]): A set of constants of Condorcet-based voting rules used in the election.
 
         Returns:
-            bool: `True` si les données ont été insérées, `False` si l&#39;erreur est survenue.
+            bool: `True` if all data was inserted succesfully, `False` if an error occured.
         &#34;&#34;&#34;
 
         # Duels
@@ -793,7 +798,7 @@ SQLite3 est utilisé.</p></div>
             return False
         connection.commit()
 
-        # Scores (comme à un tour)
+        # Scores (like in one round)
         query = &#34;&#34;&#34;INSERT INTO results_condorcet(candidate_id, voting_rule, score)
         VALUES(?, ?, ?)&#34;&#34;&#34;
 
@@ -811,12 +816,12 @@ SQLite3 est utilisé.</p></div>
 
     @classmethod
     def _export_config(cls, connection: Connection) -&gt; None:
-        &#34;&#34;&#34;Exporte les configurations d&#39;une élection, i.e. si  
-            - la résolution des égalités par duels a été activée.    
-            - la démocratie liquide a été activée.  
+        &#34;&#34;&#34;Export election settings, i.e. if  
+            - the tie-break by duels was activated  
+            - the liquid democracy was activated   
 
         Args:
-            connection (sqlite3.Connection): Une connection SQLite.
+            connection (sqlite3.Connection): SQLite connection.
         &#34;&#34;&#34;
 
         cursor = connection.cursor()
@@ -846,9 +851,9 @@ SQLite3 est utilisé.</p></div>
 <dl>
 <dt id="sqlite.export_data.ExportData.EXPORT"><code class="name">var <span class="ident">EXPORT</span> : str</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A constant corresponding to export option.</p></div>
 </dd>
-<dt id="sqlite.export_data.ExportData.election"><code class="name">var <span class="ident">election</span> : <a title="electoral_systems.election.Election" href="../electoral_systems/election.html#electoral_systems.election.Election">Election</a></code></dt>
+<dt id="sqlite.export_data.ExportData.election"><code class="name">var <span class="ident">election</span> : electoral_systems.election.Election</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -859,14 +864,14 @@ SQLite3 est utilisé.</p></div>
 <span>def <span class="ident">_condorcet_create_table</span></span>(<span>connection: sqlite3.Connection, chosen_condorcet: Set[str]) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Crée un tableau des résultats des règles de vote Condorcet-cohérentes et un tableau des duels entre les candidats.</p>
+<div class="desc"><p>Create a table for Condorcet-based voting rules results and a table for scores in duels between candidates.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
-<dd>Une connection SQLite.</dd>
+<dd>SQLite connection.</dd>
 <dt><strong><code>chosen_condorcet</code></strong> :&ensp;<code>Set[str]</code></dt>
-<dd>Un ensemble des constantes associées aux règles de vote Condorcet-cohérentes
-utilisées à l'élection. Nécessaire pour une contrainte d'intégrité.</dd>
+<dd>A set of constants related to Condorcet-based voting rules used in the election.<br>
+Necessary for an integrity constraint.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -874,12 +879,12 @@ utilisées à l'élection. Nécessaire pour une contrainte d'intégrité.</dd>
 </summary>
 <pre><code class="python">@classmethod
 def _condorcet_create_table(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; None:
-    &#34;&#34;&#34;Crée un tableau des résultats des règles de vote Condorcet-cohérentes et un tableau des duels entre les candidats.
+    &#34;&#34;&#34;Create a table for Condorcet-based voting rules results and a table for scores in duels between candidates.
 
     Args:
-        connection (sqlite3.Connection): Une connection SQLite.
-        chosen_condorcet (Set[str]): Un ensemble des constantes associées aux règles de vote Condorcet-cohérentes
-            utilisées à l&#39;élection. Nécessaire pour une contrainte d&#39;intégrité.
+        connection (sqlite3.Connection): SQLite connection.
+        chosen_condorcet (Set[str]): A set of constants related to Condorcet-based voting rules used in the election.  
+            Necessary for an integrity constraint. 
     &#34;&#34;&#34;
 
     cursor = connection.cursor()
@@ -918,18 +923,19 @@ def _condorcet_create_table(cls, connection: Connection, chosen_condorcet: Set[s
 <span>def <span class="ident">_condorcet_insert</span></span>(<span>connection: sqlite3.Connection, chosen_condorcet: Set[str]) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Remplit le tableau des scores des règles de vote Condorcet-cohérentes et le tableau des duels.</p>
+<div class="desc"><p>Fill the table for Condorced-based voting rules results as well as the table for duels scores.
+These two tables <strong>must</strong> be created before. </p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
-<dd>Une connection SQLite.</dd>
+<dd>SQLite connection.</dd>
 <dt><strong><code>chosen_condorcet</code></strong> :&ensp;<code>Set[str]</code></dt>
-<dd>Un ensemble des constantes associées aux règles de vote Condorcet-cohérentes utilisées à l'élection.</dd>
+<dd>A set of constants of Condorcet-based voting rules used in the election.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bool</code></dt>
-<dd><code>True</code> si les données ont été insérées, <code>False</code> si l'erreur est survenue.</dd>
+<dd><code>True</code> if all data was inserted succesfully, <code>False</code> if an error occured.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -937,14 +943,15 @@ def _condorcet_create_table(cls, connection: Connection, chosen_condorcet: Set[s
 </summary>
 <pre><code class="python">@classmethod
 def _condorcet_insert(cls, connection: Connection, chosen_condorcet: Set[str]) -&gt; bool:
-    &#34;&#34;&#34;Remplit le tableau des scores des règles de vote Condorcet-cohérentes et le tableau des duels.
+    &#34;&#34;&#34;Fill the table for Condorced-based voting rules results as well as the table for duels scores. 
+    These two tables **must** be created before. 
 
     Args:
-        connection (sqlite3.Connection): Une connection SQLite.
-        chosen_condorcet (Set[str]): Un ensemble des constantes associées aux règles de vote Condorcet-cohérentes utilisées à l&#39;élection.
+        connection (sqlite3.Connection): SQLite connection.
+        chosen_condorcet (Set[str]): A set of constants of Condorcet-based voting rules used in the election.
 
     Returns:
-        bool: `True` si les données ont été insérées, `False` si l&#39;erreur est survenue.
+        bool: `True` if all data was inserted succesfully, `False` if an error occured.
     &#34;&#34;&#34;
 
     # Duels
@@ -962,7 +969,7 @@ def _condorcet_insert(cls, connection: Connection, chosen_condorcet: Set[str]) -
         return False
     connection.commit()
 
-    # Scores (comme à un tour)
+    # Scores (like in one round)
     query = &#34;&#34;&#34;INSERT INTO results_condorcet(candidate_id, voting_rule, score)
     VALUES(?, ?, ?)&#34;&#34;&#34;
 
@@ -983,15 +990,14 @@ def _condorcet_insert(cls, connection: Connection, chosen_condorcet: Set[str]) -
 <span>def <span class="ident">_export_config</span></span>(<span>connection: sqlite3.Connection) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Exporte les configurations d'une élection, i.e. si<br>
-- la résolution des égalités par duels a été activée.
-<br>
-- la démocratie liquide a été activée.
+<div class="desc"><p>Export election settings, i.e. if<br>
+- the tie-break by duels was activated<br>
+- the liquid democracy was activated
 </p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
-<dd>Une connection SQLite.</dd>
+<dd>SQLite connection.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -999,12 +1005,12 @@ def _condorcet_insert(cls, connection: Connection, chosen_condorcet: Set[str]) -
 </summary>
 <pre><code class="python">@classmethod
 def _export_config(cls, connection: Connection) -&gt; None:
-    &#34;&#34;&#34;Exporte les configurations d&#39;une élection, i.e. si  
-        - la résolution des égalités par duels a été activée.    
-        - la démocratie liquide a été activée.  
+    &#34;&#34;&#34;Export election settings, i.e. if  
+        - the tie-break by duels was activated  
+        - the liquid democracy was activated   
 
     Args:
-        connection (sqlite3.Connection): Une connection SQLite.
+        connection (sqlite3.Connection): SQLite connection.
     &#34;&#34;&#34;
 
     cursor = connection.cursor()
@@ -1035,16 +1041,16 @@ def _export_config(cls, connection: Connection) -&gt; None:
 <span>def <span class="ident">_get_set_check</span></span>(<span>voting_rules_set: Set[str]) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Retourne une chaîne de caractères d'une contrainte d'intégrité sur une ou plusieurs règle(s) de vote.</p>
+<div class="desc"><p>Get a string of an integrity constraint on one or several voting rules.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>voting_rules_set</code></strong> :&ensp;<code>Set[str]</code></dt>
-<dd>Un ensemble des constantes associées aux règles de vote.</dd>
+<dd>A set of constants related to voting rules. </dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>str</code></dt>
-<dd>Une constrainte d'intégrité utilisé dans <code>CHECK(&hellip;)</code></dd>
+<dd>An integrity constraint which will be used <code>CHECK(&hellip;)</code></dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1052,13 +1058,13 @@ def _export_config(cls, connection: Connection) -&gt; None:
 </summary>
 <pre><code class="python">@classmethod
 def _get_set_check(cls, voting_rules_set: Set[str]) -&gt; str:
-    &#34;&#34;&#34;Retourne une chaîne de caractères d&#39;une contrainte d&#39;intégrité sur une ou plusieurs règle(s) de vote.
+    &#34;&#34;&#34;Get a string of an integrity constraint on one or several voting rules.
 
     Args:
-        voting_rules_set (Set[str]): Un ensemble des constantes associées aux règles de vote.
+        voting_rules_set (Set[str]): A set of constants related to voting rules. 
 
     Returns:
-        str: Une constrainte d&#39;intégrité utilisé dans `CHECK(...)`
+        str: An integrity constraint which will be used `CHECK(...)`
     &#34;&#34;&#34;
 
     if len(voting_rules_set) == 1:
@@ -1070,14 +1076,14 @@ def _get_set_check(cls, voting_rules_set: Set[str]) -&gt; str:
 <span>def <span class="ident">_multi_round_create_table</span></span>(<span>connection: sqlite3.Connection, chosen_multi_round: Set[str]) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Crée un tableau des résultats des règles de vote à plusiers tours.</p>
+<div class="desc"><p>Create a table for multi-round voting rules results.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
-<dd>Une connection SQLite.</dd>
+<dd>SQLite connection.</dd>
 <dt><strong><code>chosen_multi_round</code></strong> :&ensp;<code>Set[str]</code></dt>
-<dd>Un ensemble des constantes associées aux règles de vote à plusieurs tours utilisées à l'élection.
-Nécessaire pour une contrainte d'intégrité.</dd>
+<dd>A set of constants related to multi-round voting rules used in the election.<br>
+Necessary of an integrity constraint.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1085,12 +1091,12 @@ Nécessaire pour une contrainte d'intégrité.</dd>
 </summary>
 <pre><code class="python">@classmethod
 def _multi_round_create_table(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; None:
-    &#34;&#34;&#34;Crée un tableau des résultats des règles de vote à plusiers tours.
-
+    &#34;&#34;&#34;Create a table for multi-round voting rules results.
+    
     Args:
-        connection (sqlite3.Connection): Une connection SQLite.
-        chosen_multi_round (Set[str]): Un ensemble des constantes associées aux règles de vote à plusieurs tours utilisées à l&#39;élection.
-            Nécessaire pour une contrainte d&#39;intégrité.
+        connection (sqlite3.Connection): SQLite connection.
+        chosen_multi_round (Set[str]): A set of constants related to multi-round voting rules used in the election.  
+            Necessary of an integrity constraint.
     &#34;&#34;&#34;
 
     cursor = connection.cursor()
@@ -1116,18 +1122,18 @@ def _multi_round_create_table(cls, connection: Connection, chosen_multi_round: S
 <span>def <span class="ident">_multi_round_insert</span></span>(<span>connection: sqlite3.Connection, chosen_multi_round: Set[str]) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Remplit le tableau des résultats dess règle sde vote à plusieurs tours.</p>
+<div class="desc"><p>Fill the table for multi-round voting rules results. The table <strong>must</strong> be created before.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
-<dd>Une connection SQLite.</dd>
-<dt><strong><code>chosen_multi_round</code></strong> :&ensp;<code>Set[str]</code></dt>
-<dd>Un ensemble des constantes associées aux règles de vote à un tour utilisées à l'élection.</dd>
+<dd>SQLite connection. </dd>
+<dt><strong><code>chosen_one_round</code></strong> :&ensp;<code>Set[str]</code></dt>
+<dd>A set of constants related to multi-round voting rules used in the election.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bool</code></dt>
-<dd><code>True</code> si les données ont été insérées, <code>False</code> si l'erreur est survenue.</dd>
+<dd><code>True</code> if data was inserted succesfully, <code>False</code> if an error occurred.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1135,14 +1141,14 @@ def _multi_round_create_table(cls, connection: Connection, chosen_multi_round: S
 </summary>
 <pre><code class="python">@classmethod
 def _multi_round_insert(cls, connection: Connection, chosen_multi_round: Set[str]) -&gt; bool:
-    &#34;&#34;&#34;Remplit le tableau des résultats dess règle sde vote à plusieurs tours.
+    &#34;&#34;&#34;Fill the table for multi-round voting rules results. The table **must** be created before.
 
     Args:
-        connection (sqlite3.Connection): Une connection SQLite.
-        chosen_multi_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l&#39;élection.
-    
+        connection (sqlite3.Connection): SQLite connection. 
+        chosen_one_round (Set[str]): A set of constants related to multi-round voting rules used in the election.
+
     Returns:
-        bool: `True` si les données ont été insérées, `False` si l&#39;erreur est survenue.
+        bool: `True` if data was inserted succesfully, `False` if an error occurred.
     &#34;&#34;&#34;
 
     cursor = connection.cursor()
@@ -1168,14 +1174,14 @@ def _multi_round_insert(cls, connection: Connection, chosen_multi_round: Set[str
 <span>def <span class="ident">_one_round_create_table</span></span>(<span>connection: sqlite3.Connection, chosen_one_round: Set[str]) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Crée un tableau des résultats des règles de vote à un tour.</p>
+<div class="desc"><p>Create a table for one round voting rules results.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
-<dd>Une connection SQLite.</dd>
+<dd>SQLite connection. </dd>
 <dt><strong><code>chosen_one_round</code></strong> :&ensp;<code>Set[str]</code></dt>
-<dd>Un ensemble des constantes associées aux règles de vote à un tour utilisées à l'élection.
-Nécessaire pour une contrainte d'intégrité.</dd>
+<dd>A set of constants related to one round voting rules used in the election.
+Necessary for an integrity constraint.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1183,12 +1189,12 @@ Nécessaire pour une contrainte d'intégrité.</dd>
 </summary>
 <pre><code class="python">@classmethod
 def _one_round_create_table(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; None:
-    &#34;&#34;&#34;Crée un tableau des résultats des règles de vote à un tour.
+    &#34;&#34;&#34;Create a table for one round voting rules results.
 
     Args:
-        connection (sqlite3.Connection): Une connection SQLite.
-        chosen_one_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l&#39;élection.
-            Nécessaire pour une contrainte d&#39;intégrité.
+        connection (sqlite3.Connection): SQLite connection. 
+        chosen_one_round (Set[str]): A set of constants related to one round voting rules used in the election.
+            Necessary for an integrity constraint.
     &#34;&#34;&#34;
 
     cursor = connection.cursor()
@@ -1213,18 +1219,18 @@ def _one_round_create_table(cls, connection: Connection, chosen_one_round: Set[s
 <span>def <span class="ident">_one_round_insert</span></span>(<span>connection: sqlite3.Connection, chosen_one_round: Set[str]) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Remplit le tableau des résultats des règles de vote à un tour.</p>
+<div class="desc"><p>Fill the table for one round voting rules results. The table <strong>must</strong> be created before.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
-<dd>Une connection SQLite.</dd>
+<dd>SQLite connection. </dd>
 <dt><strong><code>chosen_one_round</code></strong> :&ensp;<code>Set[str]</code></dt>
-<dd>Un ensemble des constantes associées aux règles de vote à un tour utilisées à l'élection.</dd>
+<dd>A set of constants related to one round voting rules used in the election.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bool</code></dt>
-<dd><code>True</code> si les données ont été insérées, <code>False</code> si l'erreur est survenue.</dd>
+<dd><code>True</code> if data was inserted succesfully, <code>False</code> if an error occurred.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1232,14 +1238,14 @@ def _one_round_create_table(cls, connection: Connection, chosen_one_round: Set[s
 </summary>
 <pre><code class="python">@classmethod
 def _one_round_insert(cls, connection: Connection, chosen_one_round: Set[str]) -&gt; bool:
-    &#34;&#34;&#34;Remplit le tableau des résultats des règles de vote à un tour.
+    &#34;&#34;&#34;Fill the table for one round voting rules results. The table **must** be created before.
 
     Args:
-        connection (sqlite3.Connection): Une connection SQLite.
-        chosen_one_round (Set[str]): Un ensemble des constantes associées aux règles de vote à un tour utilisées à l&#39;élection.
+        connection (sqlite3.Connection): SQLite connection. 
+        chosen_one_round (Set[str]): A set of constants related to one round voting rules used in the election.
 
     Returns:
-        bool: `True` si les données ont été insérées, `False` si l&#39;erreur est survenue.
+        bool: `True` if data was inserted succesfully, `False` if an error occurred.
     &#34;&#34;&#34;
 
     cursor = connection.cursor()
@@ -1265,17 +1271,17 @@ def _one_round_insert(cls, connection: Connection, chosen_one_round: Set[str]) -
 <span>def <span class="ident">create_database_people</span></span>(<span>connection: sqlite3.Connection) ‑> tuple[bool, str]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Crée des tableaux des électeurs et des candidats d'élection et exporte les données.</p>
+<div class="desc"><p>Create tables for electors and candidats and exports its data. Election results are <strong>not</strong> exported.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
-<dd>une connection SQLite.</dd>
+<dd>SQLite connection.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple[bool, str]</code></dt>
-<dd>Un booléen <code>True</code> si les données ont été exportées avec succès, <code>False</code> si l'erreur est survenue.
-Une chaîne de caractères avec le message.</dd>
+<dd>A bool <code>True</code> if data was exported succesfully, <code>False</code> if an error occured.
+A string with message.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1283,14 +1289,14 @@ Une chaîne de caractères avec le message.</dd>
 </summary>
 <pre><code class="python">@classmethod
 def create_database_people(cls, connection: Connection) -&gt; tuple[bool, str]:
-    &#34;&#34;&#34;Crée des tableaux des électeurs et des candidats d&#39;élection et exporte les données.
+    &#34;&#34;&#34;Create tables for electors and candidats and exports its data. Election results are **not** exported.
 
     Args:
-        connection (sqlite3.Connection): une connection SQLite.
+        connection (sqlite3.Connection): SQLite connection.
 
     Returns:
-        tuple[bool, str]: Un booléen `True` si les données ont été exportées avec succès, `False` si l&#39;erreur est survenue.
-            Une chaîne de caractères avec le message.
+        tuple[bool, str]: A bool `True` if data was exported succesfully, `False` if an error occured. 
+            A string with message.
     &#34;&#34;&#34;
 
     cursor = connection.cursor()
@@ -1369,25 +1375,25 @@ def create_database_people(cls, connection: Connection) -&gt; tuple[bool, str]:
 <span>def <span class="ident">create_database_results</span></span>(<span>connection: sqlite3.Connection) ‑> tuple[bool, str]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Crée des tableaux des résultats d'élection et exporte les données.<br>
-Au plus il peut exister 5 tableaux:<br>
-- Un tableau pour des règles de vote à un tour<br>
-- Un tableau pour des règles de vote à plusieurs tours<br>
-- Deux tableaux pour des règles de vote Condorcet-cohérentes. Un tableau pour des scores des candidats, un tableau pour
-des scores dans les duels.<br>
-- Un tableau pour les configurations d'élection.<br>
-Chaque tableau est créé uniquement si nécessaire, par exemple, si aucune règle de vote à un tour n'a été utilisée
-lors de l'élection, il ne sera pas créé.</p>
+<div class="desc"><p>Create tables for election results and exports results data. Candidates data <strong>must</strong> be exported before.
+</p>
+<p>At most 5 tables are created:<br>
+- A table for <strong>one round</strong> voting rules <br>
+- A table for <strong>multi-round</strong> voting rules <br>
+- Two tables for <strong>Condercet-based</strong> voting rules: a table for candidates scores and a table for scores in duels<br>
+- A table for election settings (liquid democracy, polls etc)<br>
+Every table is created only if necessary, e.g. if no one round voting rule was chosen
+a table for such results will not be created.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>connection</code></strong> :&ensp;<code>sqlite3.Connection</code></dt>
-<dd>une connection SQLite.</dd>
+<dd>SQLite connection.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple[bool, str]</code></dt>
-<dd>Un booléen <code>True</code> si les données ont été exportées avec succès, <code>False</code> si l'erreur est survenue.
-Une chaîne de caractères avec le message.</dd>
+<dd>A bool <code>True</code> if data was exported succesfully, <code>False</code> if an error occured.
+A string with message.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1395,22 +1401,22 @@ Une chaîne de caractères avec le message.</dd>
 </summary>
 <pre><code class="python">@classmethod
 def create_database_results(cls, connection: Connection) -&gt; tuple[bool, str]:
-    &#34;&#34;&#34;Crée des tableaux des résultats d&#39;élection et exporte les données.  
-    Au plus il peut exister 5 tableaux:  
-        - Un tableau pour des règles de vote à un tour  
-        - Un tableau pour des règles de vote à plusieurs tours  
-        - Deux tableaux pour des règles de vote Condorcet-cohérentes. Un tableau pour des scores des candidats, un tableau pour
-        des scores dans les duels.  
-        - Un tableau pour les configurations d&#39;élection.  
-    Chaque tableau est créé uniquement si nécessaire, par exemple, si aucune règle de vote à un tour n&#39;a été utilisée
-        lors de l&#39;élection, il ne sera pas créé.
+    &#34;&#34;&#34;Create tables for election results and exports results data. Candidates data **must** be exported before.  
+
+    At most 5 tables are created:  
+        - A table for **one round** voting rules   
+        - A table for **multi-round** voting rules   
+        - Two tables for **Condercet-based** voting rules: a table for candidates scores and a table for scores in duels  
+        - A table for election settings (liquid democracy, polls etc)  
+    Every table is created only if necessary, e.g. if no one round voting rule was chosen
+        a table for such results will not be created.
 
     Args:
-        connection (sqlite3.Connection): une connection SQLite.
+        connection (sqlite3.Connection): SQLite connection.
 
     Returns:
-        tuple[bool, str]: Un booléen `True` si les données ont été exportées avec succès, `False` si l&#39;erreur est survenue.
-            Une chaîne de caractères avec le message.
+        tuple[bool, str]:  A bool `True` if data was exported succesfully, `False` if an error occured. 
+            A string with message.
     &#34;&#34;&#34;
 
     # DB for one round voting rules

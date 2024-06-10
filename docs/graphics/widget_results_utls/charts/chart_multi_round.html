@@ -37,8 +37,7 @@ from PySide6.QtGui import QColor
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QGraphicsItem
 
-from electoral_systems import Election
-
+from electoral_systems import Election, VotingRulesConstants
 
 class ChartMultiRound(QChart):
     &#34;&#34;&#34;Un chart (un diagramme à barres empilées) pour des règles de vote à plusieurs tours&#34;&#34;&#34;
@@ -57,6 +56,7 @@ class ChartMultiRound(QChart):
         self.voting_rule = voting_rule
         self.election = Election()
 
+        self.setTitle(f&#34;{VotingRulesConstants.UI[voting_rule]} results&#34;)
         self.series = QStackedBarSeries(parent=self)
         self.addSeries(self.series)
         self.initBarSets()
@@ -162,6 +162,7 @@ Initialise les axes, les bars. Remplit le diagramme avec les résultats d'une r�
         self.voting_rule = voting_rule
         self.election = Election()
 
+        self.setTitle(f&#34;{VotingRulesConstants.UI[voting_rule]} results&#34;)
         self.series = QStackedBarSeries(parent=self)
         self.addSeries(self.series)
         self.initBarSets()

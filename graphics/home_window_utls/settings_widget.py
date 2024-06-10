@@ -13,16 +13,18 @@ from electoral_systems import Election, VotingRulesConstants
 
 
 class SettingsWidget(QWidget):
-    """Une classe qui représente le widget avec les réglages d'une élection (page d'accueil)."""
+    """A class which represents the widgets with settings of the election (accessible on the main page)."""
 
     sig_saved = Signal()
+    """A signal emitted if the user wants to save his settings and to return to the main page."""
 
     def __init__(self, parent: QWidget):
-        """Initialise une instance d'élection (pour le partage des données).
+        """Initialize an instance of the election (for data sharing).
 
         Args:
-            parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.
+            parent (PySide6.QtWidgets.QWidget): Widget's parent.
         """
+
         super().__init__(parent)
 
         self.election = Election()
@@ -30,13 +32,13 @@ class SettingsWidget(QWidget):
         self.initUI()
 
     def initUI(self) -> None:
-        """Initialise l'interface complète des réglages."""
+        """Initialize the settings interface."""
 
         self.layout = QGridLayout()
         self.layout.setSpacing(40)
         self.setLayout(self.layout)
 
-        # Initialisaton des widgets
+        # Widget init 
         self.liquid_democracy_label = QLabel(parent=self)
         self.liquid_democracy_checkbox = QCheckBox(parent=self)
 
@@ -83,7 +85,7 @@ class SettingsWidget(QWidget):
         self.layout.addWidget(save_button, 4, 0, 1, 3)
 
     def initUIPolls(self) -> None:
-        """Initialise la partie d'interface correspondant aux sondages."""
+        """Initialize the part of the interface corresponding to polls."""
 
         # Number of polls
         self.polls_label.setText("Number of polls to conduct")
@@ -108,9 +110,9 @@ class SettingsWidget(QWidget):
         )
 
     def initUILiquidDemocracy(self) -> None:
-        """Initialise la partie d'interface correspondant à la démocratie liquide."""
+        """Initialize the part of the interface corresponding to the liquid democracy."""
 
-        # Activate liquid democracy checkbox
+        # Toggle liquid democracy checkbox
         self.liquid_democracy_label.setText("Activate liquid democracy")
         self.liquid_democracy_checkbox.setChecked(
             self.election.liquid_democracy_activated
@@ -119,23 +121,23 @@ class SettingsWidget(QWidget):
             self.toggleLiquidDemocracy)
 
     def initUITieBreaker(self) -> None:
-        """Initialise la partie d'interface correspondant au tie-break."""
+        """Initialize the part of the interface corresponding to the tie-break."""
 
-        # Activer un tie-break par duels
+        # Activate the tie-break by duels
         self.tie_breaker_label.setText("Activate tie-breaker by duels")
         self.tie_breaker_checkbox.setChecked(self.election.tie_breaker_activated)
         self.tie_breaker_checkbox.stateChanged.connect(self.toggleTieBreaker)
 
     @Slot(str)
     def setPollVotingRule(self, voting_rule_ui: str) -> None:
-        """MAJ d'une règle de vote pour laquelle les sondages seront effectuées."""
+        """Update the chosen voting rule for polls."""
 
         const = self.voting_rule_ui_reverse[voting_rule_ui]
         self.election.poll_voting_rule = const
 
     @Slot(int)
     def setNumberPolls(self, nb_polls: int) -> None:
-        """Change le nombre de sondages maximal à faire. Désactive la democratie liquide."""
+        """Set the limit of polls to conduct. Desactivate the liquid democracy."""
 
         self.election.nb_polls = nb_polls
         self.polls_dropdown.setEnabled(bool(nb_polls))
@@ -149,18 +151,18 @@ class SettingsWidget(QWidget):
         
     @Slot(int)
     def toggleLiquidDemocracy(self, state: int) -> None:
-        """Active ou désactive une démocratie liquide (i.e. si les électeurs pourront ou pas faire des délégations)"""
+        """Toggle the activation of the liquid democracy (i.e. if the electors would be able to make delegations or not)."""
 
         self.election.liquid_democracy_activated = bool(state)
 
     @Slot(int)
     def toggleTieBreaker(self, state: int) -> None:
-        """Active ou désactive un tie-break selon les duels."""
+        """Toggle the activation of the tie-break by duels."""
 
         self.election.tie_breaker_activated = bool(state)
 
     @Slot()
     def saveSettings(self) -> None:
-        """Emet le signal `sig_saved`. Permettra de supprimer le widget."""
+        """Emit the signal `sig_saved` which would start the deletion of this widget."""
 
         self.sig_saved.emit()

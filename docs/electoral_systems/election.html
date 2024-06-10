@@ -47,22 +47,23 @@ from .voting_rules.utls import set_duels_scores, sort_cand_by_value, sort_cand_b
 
 from people import Candidate, Elector
 
-# Pour une génération des docs uniquement 
+# Pour une génération des docs uniquement
 __pdoc__ = {
-    &#39;random&#39;:False,
-    &#39;Election._init_results_keys&#39;:True,
-    &#39;Election._calc_distance&#39;:True,
-    &#39;Election._define_ranking&#39;:True,
-    &#39;Election._calc_proportion_satisfaction&#39;:True,
-    &#39;Election._make_delegations&#39;:True
+    &#39;random&#39;: False,
+    &#39;Election._init_results_keys&#39;: True,
+    &#39;Election._calc_distance&#39;: True,
+    &#39;Election._define_ranking&#39;: True,
+    &#39;Election._calc_proportion_satisfaction&#39;: True,
+    &#39;Election._make_delegations&#39;: True
 }
+
 
 class Election(metaclass=Singleton):
     &#34;&#34;&#34;Une classe Singleton qui contient toutes les données nécessaires à une élection.&#34;&#34;&#34;
 
     def __init__(self):
         super().__init__()
-        self.electors:List[Elector] = []
+        self.electors: List[Elector] = []
         &#34;&#34;&#34;Une liste qui stocke tous les électeurs qui participent dans une élection.&#34;&#34;&#34;
 
         self.candidates = []
@@ -78,19 +79,19 @@ class Election(metaclass=Singleton):
         &#34;&#34;&#34;Un itérateur qui génére des IDs des candidats et des électeurs.&#34;&#34;&#34;
 
         # Stocke les resultats
-        self.results:Dict[str, List[Candidate]] = dict()
+        self.results: Dict[str, List[Candidate]] = dict()
         &#34;&#34;&#34;Un dictionnaire qui stocke un classement des candidats (dans l&#39;ordre décroissant) pour chaque règle de vote choisie.&#34;&#34;&#34;
 
         # Stocke les duels
-        self.duels_scores:duels_type = dict()
+        self.duels_scores: duels_type = dict()
         &#34;&#34;&#34;Un dictionnaire qui stocke les résultats des duels entre les candidats.&#34;&#34;&#34;
 
         # Pour la satisfaction
-        self.average_position_electors:tuple[float, float] = (0, 0)
-        self.proportion_satisfaction:float = 0
+        self.average_position_electors: tuple[float, float] = (0, 0)
+        self.proportion_satisfaction: float = 0
         &#34;&#34;&#34;La distance maximale entre la position moyenne des électeurs et la position de chaque candidat.&#34;&#34;&#34;
 
-        self.directions_data:Dict[str, direction_data_type] = get_default_directions_data()
+        self.directions_data: Dict[str, direction_data_type] = get_default_directions_data()
         &#34;&#34;&#34;Un dictionnaire dont chaque clé correpond à la division de la carte politique et 
         chaque valeur est un dictionnaire avec les données remises par défaut. Pour les sondages uniquement.&#34;&#34;&#34;
 
@@ -101,7 +102,7 @@ class Election(metaclass=Singleton):
         &#34;&#34;&#34;Initialise les réglages par défaut.&#34;&#34;&#34;
 
         # Nb de sondages à faire
-        self.nb_polls:int = 0
+        self.nb_polls: int = 0
 
         # Active/désactive la démocratie liquide
         self.liquid_democracy_activated = False
@@ -448,7 +449,7 @@ class Election(metaclass=Singleton):
             self._make_delegations()
         if chosen_voting_rules:
             self._init_results_keys(chosen_voting_rules)
-            
+
         self.calc_results(imported)
 
     def _make_delegations(self) -&gt; None:
@@ -540,7 +541,7 @@ class Election(metaclass=Singleton):
 
     def __init__(self):
         super().__init__()
-        self.electors:List[Elector] = []
+        self.electors: List[Elector] = []
         &#34;&#34;&#34;Une liste qui stocke tous les électeurs qui participent dans une élection.&#34;&#34;&#34;
 
         self.candidates = []
@@ -556,19 +557,19 @@ class Election(metaclass=Singleton):
         &#34;&#34;&#34;Un itérateur qui génére des IDs des candidats et des électeurs.&#34;&#34;&#34;
 
         # Stocke les resultats
-        self.results:Dict[str, List[Candidate]] = dict()
+        self.results: Dict[str, List[Candidate]] = dict()
         &#34;&#34;&#34;Un dictionnaire qui stocke un classement des candidats (dans l&#39;ordre décroissant) pour chaque règle de vote choisie.&#34;&#34;&#34;
 
         # Stocke les duels
-        self.duels_scores:duels_type = dict()
+        self.duels_scores: duels_type = dict()
         &#34;&#34;&#34;Un dictionnaire qui stocke les résultats des duels entre les candidats.&#34;&#34;&#34;
 
         # Pour la satisfaction
-        self.average_position_electors:tuple[float, float] = (0, 0)
-        self.proportion_satisfaction:float = 0
+        self.average_position_electors: tuple[float, float] = (0, 0)
+        self.proportion_satisfaction: float = 0
         &#34;&#34;&#34;La distance maximale entre la position moyenne des électeurs et la position de chaque candidat.&#34;&#34;&#34;
 
-        self.directions_data:Dict[str, direction_data_type] = get_default_directions_data()
+        self.directions_data: Dict[str, direction_data_type] = get_default_directions_data()
         &#34;&#34;&#34;Un dictionnaire dont chaque clé correpond à la division de la carte politique et 
         chaque valeur est un dictionnaire avec les données remises par défaut. Pour les sondages uniquement.&#34;&#34;&#34;
 
@@ -579,7 +580,7 @@ class Election(metaclass=Singleton):
         &#34;&#34;&#34;Initialise les réglages par défaut.&#34;&#34;&#34;
 
         # Nb de sondages à faire
-        self.nb_polls:int = 0
+        self.nb_polls: int = 0
 
         # Active/désactive la démocratie liquide
         self.liquid_democracy_activated = False
@@ -926,7 +927,7 @@ class Election(metaclass=Singleton):
             self._make_delegations()
         if chosen_voting_rules:
             self._init_results_keys(chosen_voting_rules)
-            
+
         self.calc_results(imported)
 
     def _make_delegations(self) -&gt; None:
@@ -1669,7 +1670,7 @@ La somme de toutes les positions est déjà stockée.</p></div>
     &#34;&#34;&#34;Initialise les réglages par défaut.&#34;&#34;&#34;
 
     # Nb de sondages à faire
-    self.nb_polls:int = 0
+    self.nb_polls: int = 0
 
     # Active/désactive la démocratie liquide
     self.liquid_democracy_activated = False
@@ -1786,7 +1787,7 @@ Cf. <code><a title="electoral_systems.election.Election.calc_results" href="#ele
         self._make_delegations()
     if chosen_voting_rules:
         self._init_results_keys(chosen_voting_rules)
-        
+
     self.calc_results(imported)</code></pre>
 </details>
 </dd>

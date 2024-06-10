@@ -22,7 +22,9 @@ class ImportData:
     """A class which provides functionnality for data import. SQLite3 is used."""
 
     election: Election = Election()
+
     IMPORT: str = "I"
+    """A constant corresponding to import option."""
 
     @classmethod
     def _check_tables(cls, tables_to_check: Set[str], existing_tables: Set[str]) -> tuple[bool, Set[str]]:

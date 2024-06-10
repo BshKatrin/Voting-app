@@ -28,7 +28,7 @@ Voting app allows to simulate election based on one or several voting rules.
 ## Requirements
 
 - `python` >= 3.11
-- `pip` (gestionnaire de paquets Python)
+- `pip` (Python package management system)
 
 ## Installation
 

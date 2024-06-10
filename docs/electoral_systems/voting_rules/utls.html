@@ -200,6 +200,7 @@ def apply_voting_rule_rounds(electors: List[Elector], candidates: List[Candidate
         List[List[people.candidate.Candidate]]: Une liste des listes (classement dans l&#39;ordre décroissant) des candidats par tour.
             La longueur de la liste correpond au nombre des tours effectués (peut être inférieur à `max_rounds`)
     &#34;&#34;&#34;
+    
     init_scores(candidates, voting_rule, [0], True)
     # Tour 0, initialisation
     curr_round = 0
@@ -267,7 +268,7 @@ def _choose_next_cand(elector: Elector, remaining_candidates: List[Candidate]) -
     index = 0
     current_candidate = elector.candidates_ranked[index]
 
-    while index &lt; len(remaining_candidates) and (
+    while index &lt; len(elector.candidates_ranked) and (
         current_candidate not in remaining_candidates_set
     ):
         index += 1
@@ -330,7 +331,7 @@ Utilisée pour les règle de vote à plusieurs tours.</p>
     index = 0
     current_candidate = elector.candidates_ranked[index]
 
-    while index &lt; len(remaining_candidates) and (
+    while index &lt; len(elector.candidates_ranked) and (
         current_candidate not in remaining_candidates_set
     ):
         index += 1
@@ -525,6 +526,7 @@ La longueur de la liste correpond au nombre des tours effectués (peut être inf
         List[List[people.candidate.Candidate]]: Une liste des listes (classement dans l&#39;ordre décroissant) des candidats par tour.
             La longueur de la liste correpond au nombre des tours effectués (peut être inférieur à `max_rounds`)
     &#34;&#34;&#34;
+    
     init_scores(candidates, voting_rule, [0], True)
     # Tour 0, initialisation
     curr_round = 0

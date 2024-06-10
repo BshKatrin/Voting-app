@@ -14,17 +14,17 @@ from electoral_systems import Election, RandomConstants
 
 
 class GraphSettings(QWidget):
-    """Un widget qui correspond au réglage d'un paramètre pour la génération des données."""
+    """A class representing the widget with the configuration of a single data generation parameter."""
 
     def __init__(self, parent: QWidget, title: str, type: str, graph_type: int):
-        """Initialise une instance d'élection (pour le partage des données).
-        Initiliase les sliders et graphiques correspondant.
+        """Initialize an instance of the election (for data sharing).
+        Initialize graphic (if necessary) and one or more sliders.
 
         Args:
-            parent (PySide6.QtWidgets.QWidget): Un parent d'un widget.
-            title (str): Le titre d'un règlage.
-            type (str): Une constante associée au type d'un paramètre (e.g. économique, sociale etc).
-            graph_type (int): Un type du graphique qu'il faudra initialiser.
+            parent (PySide6.QtWidgets.QWidget): Widget's parent.
+            title (str): A name of the parameter to configure (UI version).
+            type (str): A constant associated to the parameter type (e.g. economical, social).
+            graph_type (int): A type of graphic to initialize.
         """
 
         super().__init__(parent)
@@ -37,7 +37,7 @@ class GraphSettings(QWidget):
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
-        # Initialiser des graphiques (basé sur le type)
+        # Initialize graphics (by type)
         match graph_type:
             case RandomConstants.LINEAR:
                 self.initPlot(title)
@@ -52,7 +52,7 @@ class GraphSettings(QWidget):
                 self.setFixedWidth(self.parent().width() * 0.8)
 
     def initLinearInput(self) -> None:
-        """Initialise les sliders pour un graphique affine (correspond au paramètre `orientation`)."""
+        """Initialize sliders for linear graphic (parameter `orientation`)."""
 
         sub_layout = QGridLayout()
 
@@ -74,7 +74,7 @@ class GraphSettings(QWidget):
         self.layout.addLayout(sub_layout)
 
     def initGaussInput(self) -> None:
-        """Initialise les sliders pour le graphique de loi normale (correspond aux paramètres qui suivent la loi normale)."""
+        """Initialize sliders for graphic of normal distribution (parameters based on the normal distribution)."""
 
         sub_layout = QGridLayout()
 
@@ -119,10 +119,10 @@ class GraphSettings(QWidget):
         self.layout.addLayout(sub_layout)
 
     def initPlot(self, title: str) -> None:
-        """Initialise le canvas pour un graphique.
+        """Initialize a canvas for a graphic.
 
         Args:
-            title (str): Un titre (UI) pour un graphique.
+            title (str): A name of the parameter to configure (UI version). 
         """
 
         self.graphWidget = PlotWidget()
@@ -131,7 +131,7 @@ class GraphSettings(QWidget):
             Qt.WidgetAttribute.WA_AcceptTouchEvents, False
         )
         self.graphWidget.setAntialiasing(True)
-        # Désactiver zoom
+        # Desactivate zoom
         self.graphWidget.setMouseEnabled(x=False, y=False)
 
         self.graphWidget.setBackground("w")
@@ -142,10 +142,10 @@ class GraphSettings(QWidget):
         self.layout.addWidget(self.graphWidget, 0)
 
     def initDistInput(self, title: str) -> None:
-        """Initialise les sliders pour configurer un paramètre sans graphique (correspond au paramètre `travel_dist`).
+        """Initialize sliders for parameters without graphic. (parameter `travel_dist`).
 
         Args:
-            title (str): Un titre (UI).
+            title (str): A name of the parameter to configure (UI version).
         """
 
         sub_layout = QGridLayout()
@@ -170,11 +170,11 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateMuConstant(self, value: int) -> None:
-        """Change la valeur de la moyenne de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessine le graphique avec la moyenne changée. MAJ de cette valeur dans l'élection.
+        """Change the mean value of the normal distribution. Called if a connected slider has been moved. 
+        Redraw graphic with changed mean. Update the value of this parameter in the election.
 
         Args:
-            value (int): Une valeur sur slider (sera divisée par 100).
+            value (int): A value on a slider. *Will be divided by 100*.
         """
 
         _, old_sigma = self.election.generation_constants[self.type]
@@ -189,11 +189,11 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateSigmaConstant(self, value: int) -> None:
-        """Change la valeur d'écart-type de la distribution normale (appelée si le slider corresondant a été touché).
-        Redessine le graphique avec l'écart-type changé. MAJ de cette valeur dans l'élection.
+        """Change the variance value of the normal distribution. Called if a connected slider has been moved. 
+        Redraw graphic with changed variance. Update the value of this parameter in the election.
 
         Args:
-            value (int): Une valeur sur slider (sera divisée par 100).
+            value (int): A value on a slider. *Will be divided by 100*.
         """
 
         old_mu, _ = self.election.generation_constants[self.type]
@@ -208,11 +208,11 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateOrientation(self, value: int) -> None:
-        """Change la valeur du coefficient directeur de la droite. (appelée si le slider corresondant a été touché).
-        Redessine le graphique de la droite. MAJ de cette valeur dans l'élection.
+        """Change value line's coefficient directeur. Called if the corresponding slider has been moved.
+        Redraw graphic on a line. Update the value of this parameter in the election.
 
         Args:
-            value (int): Une valeur sur slider.
+            value (int): A value on a slider. No arithmetical operation will be performed.
         """
 
         self.election.generation_constants[self.type] = value
@@ -222,23 +222,23 @@ class GraphSettings(QWidget):
 
     @Slot(int)
     def updateDistUpdate(self, value: int) -> None:
-        """Change la valeur de la distance parcourue (`travel_dist`). MAJ de cette valeur dans l'élection.
+        """Change the value of candidate's `travel_dist`. Update the value of this parameter in the election.
 
         Args:
-            value (int): Une valeur sur slider (sera divisée par 100).
+            value (int): A value on a slider. Will be divised by 100.
         """
 
         self.election.generation_constants[self.type] = value / 100
         self.dist_result.setText(f"{value / 100:.2f}")
 
     def updateGraphGauss(self, mu: float, sigma: float, x_min: float, x_max: float) -> None:
-        """Redessine le graphique de la distribution normale.
+        """Redraw graphic of the normal distribution.
 
         Args:
-            mu (float): La moyenne de la distribution normale.
-            sigma (float): L'écart type de la distribution normale. Un réel strictement positif.
-            x_min (float): La valeur minimale sur l'axe des X.
-            x_max (float): La valeur maximale sur l'axe des X.
+            mu (float): The mean of the normal distribution.
+            sigma (float): The variance of the normal distribution. A strictly positive float.
+            x_min (float): The minimum value of the X-axis.
+            x_max (float): The maximum value of the X-axis.
         """
 
         self.graphWidget.clear()
@@ -253,10 +253,10 @@ class GraphSettings(QWidget):
         self.graphWidget.plot(x, y, pen=self.pen)
 
     def updateGraphAffine(self, slope: float) -> None:
-        """Redessine le graphique de la droite. Le coefficent libre de la droite est 0.
+        """Redraw graphic of the line. It's coefficient libre is 0.
 
         Args:
-            slope (float): Le coefficient directeur de la droite.
+            slope (float): Le coefficient directeur of the line.
         """
 
         self.graphWidget.clear()
@@ -270,12 +270,12 @@ class GraphSettings(QWidget):
         self.graphWidget.plot(x, y, pen=self.pen)
 
     def calculateYGauss(self, i: float, mu: float, sigma: float) -> float:
-        """Calcule la valeur de *y* en *x* donnée pour un graphique de la distribution normale.
+        """Calculate the value of *y* on *x* (normal distribution graphic).
 
         Args:
-            i (float): La valeur de $x$.
-            mu (float): La moyenne de la distribution normale.
-            sigma (float): L'écart type de la distribution normale. Un réel strictement positif.
+            i (float): The value of *x*.
+            mu (float): The mean of the normal distribution.
+            sigma (float): The variance of the normal distribution. A strictly positive float.
         """
 
         return (1 / ((sigma + 0.01) * sqrt(pi))) * exp(
@@ -283,10 +283,10 @@ class GraphSettings(QWidget):
         )
 
     def calculateYLinear(self, i: float, slope: float) -> float:
-        """Calcule la valeur de $y$ en $x$ donnée pour un graphique de la droite.
+        """Calculate the value of *y* on *x* (linear graphic).
 
         Args:
-            i (float): La valeur de $x$.
+            i (float): The value of *x*. 
             slope (float): Le coefficient directeur.
         """
 

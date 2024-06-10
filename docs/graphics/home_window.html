@@ -52,16 +52,16 @@ from sqlite import ImportData, ExportData
 
 
 class HomeWindow(QMainWindow):
-    &#34;&#34;&#34;Un widget qui représente la fenêtre principale d&#39;une application.&#34;&#34;&#34;
+    &#34;&#34;&#34;A widget which represents the main window of the app.&#34;&#34;&#34;
 
     sig_data_imported = Signal(bool)
-    &#34;&#34;&#34;Un signal qui indique si les données d&#39;une élections ont été importées avec ou sans résultats&#34;&#34;&#34;
+    &#34;&#34;&#34;A signal which indicates if data of the election was imported with/without results.&#34;&#34;&#34;
 
     def __init__(self, app: QApplication):
-        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
+        &#34;&#34;&#34;Initialize an instance of the election (for data sharing).
 
         Args:
-            app (PySide6.QtWidgets.QApplication): une application
+            app (PySide6.QtWidgets.QApplication): The app.
         &#34;&#34;&#34;
 
         super().__init__()
@@ -92,9 +92,9 @@ class HomeWindow(QMainWindow):
         self.initUIHome()
 
     def setScreenGeometry(self) -&gt; None:
-        &#34;&#34;&#34;Fixe la taille de la fenêtre principale et la place au milieu de l&#39;écran.&#34;&#34;&#34;
+        &#34;&#34;&#34;Set the size of main window, put it in the middle of the screnn.&#34;&#34;&#34;
 
-        # Trouver le centre
+        # Find the center 
         x = self.app.primaryScreen().availableGeometry().x()
         screen_size = self.app.primaryScreen().availableSize()
         center_x = screen_size.width() / 2 + x
@@ -103,7 +103,7 @@ class HomeWindow(QMainWindow):
         self.setGeometry(center_x - side_size / 2, 0, side_size, side_size)
 
     def createActions(self) -&gt; None:
-        &#34;&#34;&#34;Initialise la fonctionnalité du menu.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the menu functionnality.&#34;&#34;&#34;
 
         # Import
         self.import_with_results = QAction(&#34;Import with results&#34;, self)
@@ -124,7 +124,7 @@ class HomeWindow(QMainWindow):
             lambda: self.exportData(False))
 
     def createMenus(self) -&gt; None:
-        &#34;&#34;&#34;Initialise le menu, place les sous-menus et les options possibles.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the menu, place sub-menus et possible options.&#34;&#34;&#34;
 
         menu_bar = self.menuBar()
         menu_bar.setNativeMenuBar(False)
@@ -140,30 +140,29 @@ class HomeWindow(QMainWindow):
 
     @ Slot(str)
     def showPopupMsg(self, msg: str) -&gt; None:
-        &#34;&#34;&#34;Initialise un pop-up avec une alerte et le message correspondant.
-        Le pop-up se ferme automatiquement au bout de 2 secondes.
+        &#34;&#34;&#34;Initialize the pop-up with an alert and a corresponding message.
+        The pop-up will be closed automatically after 2 seconds.
 
         Args:
-            msg (str): un message à afficher.
+            msg (str): A message to place on the pop-up.
         &#34;&#34;&#34;
 
         popup = QMessageBox(parent=self.main_widget)
         popup.setIcon(QMessageBox.Icon.Warning)
         popup.setText(msg)
         popup.addButton(QMessageBox.StandardButton.Close)
-        # Fermer un popup automatiquement après 2 sec
+        # close pop-up automatically after 2 seconds
         timer_close = QTimer()
         timer_close.singleShot(2000, popup, popup.close)
         popup.exec()
 
     @ Slot(bool)
     def importData(self, with_results: bool) -&gt; None:
-        &#34;&#34;&#34;Importe les données avec ou sans les résultats. 
-        Si une erreur survient, fait apparaître un pop-up avec un message d&#39;erreur.
+        &#34;&#34;&#34;Import data with or without results. If an error occured, a pop-up will appear it indicating. 
 
         Args:
-            with_results (bool): Si `False`, importe uniquement les données des électeurs et des candidats.
-                Sinon, importe en plus les résultats d&#39;une élection.
+            with_results (bool): If `False`, import only the data of candidates and electors.
+                If `True`, results of the election will be imported as well.
         &#34;&#34;&#34;
 
         db_file_path, _ = QFileDialog.getOpenFileName(
@@ -184,12 +183,11 @@ class HomeWindow(QMainWindow):
 
     @ Slot(bool)
     def exportData(self, with_results: bool) -&gt; None:
-        &#34;&#34;&#34;Exporte les données avec ou sans les résultats. 
-        Si une erreur survient, fait apparaître un pop-up avec un message d&#39;erreur
+        &#34;&#34;&#34;Export data with or without results. If an error occured, a pop-up will appear it indicating. 
 
         Args:
-            with_results (bool): Si `False`, exporte uniquement les données des électeurs et des candidats.
-                Sinon, exporte en plus les résultats d&#39;une élection.
+            with_results (bool): If `False`, export only the data of candidates and electors.
+                If `True`, results of the election will be imported as well.
         &#34;&#34;&#34;
 
         db_file_path, _ = QFileDialog.getSaveFileName(
@@ -217,14 +215,15 @@ class HomeWindow(QMainWindow):
         connection.close()
 
     def toggleIEOptions(self, type: str, with_results_status: bool, no_results_status: bool) -&gt; None:
-        &#34;&#34;&#34;Active ou désactive les options dans le menu par rapport à l&#39;import et l&#39;export.
+        &#34;&#34;&#34;Toggle the options (import, export) in the menu.
 
         Args:
-            type (str): Une indication de l&#39;export ou de l&#39;import.
-            with_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export avec les résultats.
-                Si `True`, l&#39;activer. Si `False`, le désactiver.
-            no_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export sans les résultats.
-                Si `True`, l&#39;activer. Si `False`, le désactiver.
+            type (str): A constant indicating type of option: Import or Export.
+                Cf. `sqlite.export_data.ExportData.EXPORT` and  `sqlite.import_data.ImportData.IMPORT`
+            with_results_status (bool): An indication if an option to import/export with results should activated/desactivated.
+                If `True`, activate it. If `False`, desactivate it.
+            no_results_status (bool): An indication if an option to import/export without results should activated/desactivated.
+                If `True`, activate it. If `False`, desactivate it.
         &#34;&#34;&#34;
 
         if type == ImportData.IMPORT:
@@ -236,12 +235,12 @@ class HomeWindow(QMainWindow):
 
     @ Slot(bool)
     def switchWidgetImport(self, with_results: bool) -&gt; None:
-        &#34;&#34;&#34;Change le widget affiché si les données ont été importées. Si les résultats ont été importés, affiche 
-        la page initialisée avec les résultats. Sinon, affiche la page avec la carte politique.
+        &#34;&#34;&#34;Change the widget on the main window if data has been imported. If the results were imported,
+            show the page with results. If not, show the page with the political map.
 
         Args:
-            with_results (bool): Une indication si les résultats ont été importées. Si `True` les résultats ont été importées,
-                si `False` uniquement les électeurs et les candidats ont été importés.
+            with_results (bool): An indication if results has been imported. If `True`, then the results has been imported. 
+                If not, `False`.
         &#34;&#34;&#34;
 
         self.cleanWindow()
@@ -253,14 +252,14 @@ class HomeWindow(QMainWindow):
         self.initUIResults()
 
     def initNavigation(self) -&gt; None:
-        &#34;&#34;&#34;Initialise la navigation pour revenir sur la page d&#39;accueil à partir des autres widgets.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the navigation to return to the main page from other widgets.&#34;&#34;&#34;
 
         self.button_home = QPushButton(&#34;Home&#34;, parent=self)
         self.button_home.clicked.connect(self.backHomeWindow)
         self.layout.addWidget(self.button_home)
 
     def initUIHome(self) -&gt; None:
-        &#34;&#34;&#34;Initialise la page d&#39;accueil.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the main page.&#34;&#34;&#34;
 
         widget_btns = QWidget(parent=self.main_widget)
 
@@ -306,7 +305,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def initUISettings(self) -&gt; None:
-        &#34;&#34;&#34;Initialise le widget avec les réglages pour une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the widget with the election settings.&#34;&#34;&#34;
 
         self.cleanWindow()
         settings_widget = SettingsWidget(self)
@@ -318,14 +317,14 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def saveSettings(self) -&gt; None:
-        &#34;&#34;&#34;Supprime le widget des réglages et fait revenir sur la page d&#39;accueil.&#34;&#34;&#34;
+        &#34;&#34;&#34;Delete the widget with setting et return to the main page.&#34;&#34;&#34;
 
         self.cleanWindow()
         self.initUIHome()
 
     @ Slot()
     def initUIMap(self) -&gt; None:
-        &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la navigation et le widget correspondant à la carte politique.&#34;&#34;&#34;
+        &#34;&#34;&#34;Clean the main window, initialize the navigation and the widget with the political map.&#34;&#34;&#34;
 
         self.cleanWindow()
 
@@ -340,7 +339,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def initUIResults(self) -&gt; None:
-        &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la navigation et le widget avec les résultats d&#39;une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Clean the main window, initialize the navigation and the widget with the election results&#34;&#34;&#34;
 
         self.cleanWindow()
 
@@ -353,11 +352,11 @@ class HomeWindow(QMainWindow):
 
     @ Slot(list)
     def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
-        &#34;&#34;&#34;Supprime le widget correpondant à la carte politique, calcule les résultats d&#39;une élection, 
-        initialise le widget avec les résultats.
+        &#34;&#34;&#34;Delete the widget with the potilical map, calculate the election results, 
+        initialize the widget with results.
 
         Args:
-            chosen_voting_rules (List[str]): Une liste des constantes correspondant aux règles de vote choisies pour une élection.
+            chosen_voting_rules (List[str]): A list of constants related to the voting rules used in the election.
         &#34;&#34;&#34;
 
         self.election.start_election(chosen_voting_rules=chosen_voting_rules)
@@ -365,8 +364,8 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def backHomeWindow(self) -&gt; None:
-        &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la page d&#39;accueil,
-        supprime les données de l&#39;élection. Les règlages de l&#39;élection sont préservées.&#34;&#34;&#34;
+        &#34;&#34;&#34;Clean the main window, initialize the main page, delete all data of the election.
+        The settings of the election are not changed.&#34;&#34;&#34;
 
         self.cleanWindow()
         self.initUIHome()
@@ -375,7 +374,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def cleanWindow(self) -&gt; None:
-        &#34;&#34;&#34;Supprime tous les widgets placés sur la fenêtre principale.&#34;&#34;&#34;
+        &#34;&#34;&#34;Delete all widgets placed on the main window.&#34;&#34;&#34;
 
         for i in reversed(range(self.layout.count())):
             widget_to_remove = self.layout.itemAt(i).widget()
@@ -390,12 +389,12 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def quitApp(self) -&gt; None:
-        &#34;&#34;&#34;Ferme l&#39;application.&#34;&#34;&#34;
+        &#34;&#34;&#34;Close the app.&#34;&#34;&#34;
         
         self.app.quit()
 
     def closeEvent(self, event: QCloseEvent) -&gt; None:
-        &#34;&#34;&#34;Redéfinition d&#39;un `closeEvent`. Ferme l&#39;application lorsque la fenêtre principale est fermée.&#34;&#34;&#34;
+        &#34;&#34;&#34;Redefinition of the`closeEvent`. Close the app on the main window closure.&#34;&#34;&#34;
 
         self.quitApp()
         event.accept()</code></pre>
@@ -415,28 +414,28 @@ class HomeWindow(QMainWindow):
 <span>(</span><span>app: PySide6.QtWidgets.QApplication)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Un widget qui représente la fenêtre principale d'une application.</p>
-<p>Initialise une instance d'élection (pour le partage des données).</p>
+<div class="desc"><p>A widget which represents the main window of the app.</p>
+<p>Initialize an instance of the election (for data sharing).</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>app</code></strong> :&ensp;<code>PySide6.QtWidgets.QApplication</code></dt>
-<dd>une application</dd>
+<dd>The app.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class HomeWindow(QMainWindow):
-    &#34;&#34;&#34;Un widget qui représente la fenêtre principale d&#39;une application.&#34;&#34;&#34;
+    &#34;&#34;&#34;A widget which represents the main window of the app.&#34;&#34;&#34;
 
     sig_data_imported = Signal(bool)
-    &#34;&#34;&#34;Un signal qui indique si les données d&#39;une élections ont été importées avec ou sans résultats&#34;&#34;&#34;
+    &#34;&#34;&#34;A signal which indicates if data of the election was imported with/without results.&#34;&#34;&#34;
 
     def __init__(self, app: QApplication):
-        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
+        &#34;&#34;&#34;Initialize an instance of the election (for data sharing).
 
         Args:
-            app (PySide6.QtWidgets.QApplication): une application
+            app (PySide6.QtWidgets.QApplication): The app.
         &#34;&#34;&#34;
 
         super().__init__()
@@ -467,9 +466,9 @@ class HomeWindow(QMainWindow):
         self.initUIHome()
 
     def setScreenGeometry(self) -&gt; None:
-        &#34;&#34;&#34;Fixe la taille de la fenêtre principale et la place au milieu de l&#39;écran.&#34;&#34;&#34;
+        &#34;&#34;&#34;Set the size of main window, put it in the middle of the screnn.&#34;&#34;&#34;
 
-        # Trouver le centre
+        # Find the center 
         x = self.app.primaryScreen().availableGeometry().x()
         screen_size = self.app.primaryScreen().availableSize()
         center_x = screen_size.width() / 2 + x
@@ -478,7 +477,7 @@ class HomeWindow(QMainWindow):
         self.setGeometry(center_x - side_size / 2, 0, side_size, side_size)
 
     def createActions(self) -&gt; None:
-        &#34;&#34;&#34;Initialise la fonctionnalité du menu.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the menu functionnality.&#34;&#34;&#34;
 
         # Import
         self.import_with_results = QAction(&#34;Import with results&#34;, self)
@@ -499,7 +498,7 @@ class HomeWindow(QMainWindow):
             lambda: self.exportData(False))
 
     def createMenus(self) -&gt; None:
-        &#34;&#34;&#34;Initialise le menu, place les sous-menus et les options possibles.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the menu, place sub-menus et possible options.&#34;&#34;&#34;
 
         menu_bar = self.menuBar()
         menu_bar.setNativeMenuBar(False)
@@ -515,30 +514,29 @@ class HomeWindow(QMainWindow):
 
     @ Slot(str)
     def showPopupMsg(self, msg: str) -&gt; None:
-        &#34;&#34;&#34;Initialise un pop-up avec une alerte et le message correspondant.
-        Le pop-up se ferme automatiquement au bout de 2 secondes.
+        &#34;&#34;&#34;Initialize the pop-up with an alert and a corresponding message.
+        The pop-up will be closed automatically after 2 seconds.
 
         Args:
-            msg (str): un message à afficher.
+            msg (str): A message to place on the pop-up.
         &#34;&#34;&#34;
 
         popup = QMessageBox(parent=self.main_widget)
         popup.setIcon(QMessageBox.Icon.Warning)
         popup.setText(msg)
         popup.addButton(QMessageBox.StandardButton.Close)
-        # Fermer un popup automatiquement après 2 sec
+        # close pop-up automatically after 2 seconds
         timer_close = QTimer()
         timer_close.singleShot(2000, popup, popup.close)
         popup.exec()
 
     @ Slot(bool)
     def importData(self, with_results: bool) -&gt; None:
-        &#34;&#34;&#34;Importe les données avec ou sans les résultats. 
-        Si une erreur survient, fait apparaître un pop-up avec un message d&#39;erreur.
+        &#34;&#34;&#34;Import data with or without results. If an error occured, a pop-up will appear it indicating. 
 
         Args:
-            with_results (bool): Si `False`, importe uniquement les données des électeurs et des candidats.
-                Sinon, importe en plus les résultats d&#39;une élection.
+            with_results (bool): If `False`, import only the data of candidates and electors.
+                If `True`, results of the election will be imported as well.
         &#34;&#34;&#34;
 
         db_file_path, _ = QFileDialog.getOpenFileName(
@@ -559,12 +557,11 @@ class HomeWindow(QMainWindow):
 
     @ Slot(bool)
     def exportData(self, with_results: bool) -&gt; None:
-        &#34;&#34;&#34;Exporte les données avec ou sans les résultats. 
-        Si une erreur survient, fait apparaître un pop-up avec un message d&#39;erreur
+        &#34;&#34;&#34;Export data with or without results. If an error occured, a pop-up will appear it indicating. 
 
         Args:
-            with_results (bool): Si `False`, exporte uniquement les données des électeurs et des candidats.
-                Sinon, exporte en plus les résultats d&#39;une élection.
+            with_results (bool): If `False`, export only the data of candidates and electors.
+                If `True`, results of the election will be imported as well.
         &#34;&#34;&#34;
 
         db_file_path, _ = QFileDialog.getSaveFileName(
@@ -592,14 +589,15 @@ class HomeWindow(QMainWindow):
         connection.close()
 
     def toggleIEOptions(self, type: str, with_results_status: bool, no_results_status: bool) -&gt; None:
-        &#34;&#34;&#34;Active ou désactive les options dans le menu par rapport à l&#39;import et l&#39;export.
+        &#34;&#34;&#34;Toggle the options (import, export) in the menu.
 
         Args:
-            type (str): Une indication de l&#39;export ou de l&#39;import.
-            with_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export avec les résultats.
-                Si `True`, l&#39;activer. Si `False`, le désactiver.
-            no_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export sans les résultats.
-                Si `True`, l&#39;activer. Si `False`, le désactiver.
+            type (str): A constant indicating type of option: Import or Export.
+                Cf. `sqlite.export_data.ExportData.EXPORT` and  `sqlite.import_data.ImportData.IMPORT`
+            with_results_status (bool): An indication if an option to import/export with results should activated/desactivated.
+                If `True`, activate it. If `False`, desactivate it.
+            no_results_status (bool): An indication if an option to import/export without results should activated/desactivated.
+                If `True`, activate it. If `False`, desactivate it.
         &#34;&#34;&#34;
 
         if type == ImportData.IMPORT:
@@ -611,12 +609,12 @@ class HomeWindow(QMainWindow):
 
     @ Slot(bool)
     def switchWidgetImport(self, with_results: bool) -&gt; None:
-        &#34;&#34;&#34;Change le widget affiché si les données ont été importées. Si les résultats ont été importés, affiche 
-        la page initialisée avec les résultats. Sinon, affiche la page avec la carte politique.
+        &#34;&#34;&#34;Change the widget on the main window if data has been imported. If the results were imported,
+            show the page with results. If not, show the page with the political map.
 
         Args:
-            with_results (bool): Une indication si les résultats ont été importées. Si `True` les résultats ont été importées,
-                si `False` uniquement les électeurs et les candidats ont été importés.
+            with_results (bool): An indication if results has been imported. If `True`, then the results has been imported. 
+                If not, `False`.
         &#34;&#34;&#34;
 
         self.cleanWindow()
@@ -628,14 +626,14 @@ class HomeWindow(QMainWindow):
         self.initUIResults()
 
     def initNavigation(self) -&gt; None:
-        &#34;&#34;&#34;Initialise la navigation pour revenir sur la page d&#39;accueil à partir des autres widgets.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the navigation to return to the main page from other widgets.&#34;&#34;&#34;
 
         self.button_home = QPushButton(&#34;Home&#34;, parent=self)
         self.button_home.clicked.connect(self.backHomeWindow)
         self.layout.addWidget(self.button_home)
 
     def initUIHome(self) -&gt; None:
-        &#34;&#34;&#34;Initialise la page d&#39;accueil.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the main page.&#34;&#34;&#34;
 
         widget_btns = QWidget(parent=self.main_widget)
 
@@ -681,7 +679,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def initUISettings(self) -&gt; None:
-        &#34;&#34;&#34;Initialise le widget avec les réglages pour une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the widget with the election settings.&#34;&#34;&#34;
 
         self.cleanWindow()
         settings_widget = SettingsWidget(self)
@@ -693,14 +691,14 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def saveSettings(self) -&gt; None:
-        &#34;&#34;&#34;Supprime le widget des réglages et fait revenir sur la page d&#39;accueil.&#34;&#34;&#34;
+        &#34;&#34;&#34;Delete the widget with setting et return to the main page.&#34;&#34;&#34;
 
         self.cleanWindow()
         self.initUIHome()
 
     @ Slot()
     def initUIMap(self) -&gt; None:
-        &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la navigation et le widget correspondant à la carte politique.&#34;&#34;&#34;
+        &#34;&#34;&#34;Clean the main window, initialize the navigation and the widget with the political map.&#34;&#34;&#34;
 
         self.cleanWindow()
 
@@ -715,7 +713,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def initUIResults(self) -&gt; None:
-        &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la navigation et le widget avec les résultats d&#39;une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Clean the main window, initialize the navigation and the widget with the election results&#34;&#34;&#34;
 
         self.cleanWindow()
 
@@ -728,11 +726,11 @@ class HomeWindow(QMainWindow):
 
     @ Slot(list)
     def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
-        &#34;&#34;&#34;Supprime le widget correpondant à la carte politique, calcule les résultats d&#39;une élection, 
-        initialise le widget avec les résultats.
+        &#34;&#34;&#34;Delete the widget with the potilical map, calculate the election results, 
+        initialize the widget with results.
 
         Args:
-            chosen_voting_rules (List[str]): Une liste des constantes correspondant aux règles de vote choisies pour une élection.
+            chosen_voting_rules (List[str]): A list of constants related to the voting rules used in the election.
         &#34;&#34;&#34;
 
         self.election.start_election(chosen_voting_rules=chosen_voting_rules)
@@ -740,8 +738,8 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def backHomeWindow(self) -&gt; None:
-        &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la page d&#39;accueil,
-        supprime les données de l&#39;élection. Les règlages de l&#39;élection sont préservées.&#34;&#34;&#34;
+        &#34;&#34;&#34;Clean the main window, initialize the main page, delete all data of the election.
+        The settings of the election are not changed.&#34;&#34;&#34;
 
         self.cleanWindow()
         self.initUIHome()
@@ -750,7 +748,7 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def cleanWindow(self) -&gt; None:
-        &#34;&#34;&#34;Supprime tous les widgets placés sur la fenêtre principale.&#34;&#34;&#34;
+        &#34;&#34;&#34;Delete all widgets placed on the main window.&#34;&#34;&#34;
 
         for i in reversed(range(self.layout.count())):
             widget_to_remove = self.layout.itemAt(i).widget()
@@ -765,12 +763,12 @@ class HomeWindow(QMainWindow):
 
     @ Slot()
     def quitApp(self) -&gt; None:
-        &#34;&#34;&#34;Ferme l&#39;application.&#34;&#34;&#34;
+        &#34;&#34;&#34;Close the app.&#34;&#34;&#34;
         
         self.app.quit()
 
     def closeEvent(self, event: QCloseEvent) -&gt; None:
-        &#34;&#34;&#34;Redéfinition d&#39;un `closeEvent`. Ferme l&#39;application lorsque la fenêtre principale est fermée.&#34;&#34;&#34;
+        &#34;&#34;&#34;Redefinition of the`closeEvent`. Close the app on the main window closure.&#34;&#34;&#34;
 
         self.quitApp()
         event.accept()</code></pre>
@@ -796,16 +794,16 @@ class HomeWindow(QMainWindow):
 <span>def <span class="ident">backHomeWindow</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Nettoie la fenêtre principale, initialise la page d'accueil,
-supprime les données de l'élection. Les règlages de l'élection sont préservées.</p></div>
+<div class="desc"><p>Clean the main window, initialize the main page, delete all data of the election.
+The settings of the election are not changed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@ Slot()
 def backHomeWindow(self) -&gt; None:
-    &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la page d&#39;accueil,
-    supprime les données de l&#39;élection. Les règlages de l&#39;élection sont préservées.&#34;&#34;&#34;
+    &#34;&#34;&#34;Clean the main window, initialize the main page, delete all data of the election.
+    The settings of the election are not changed.&#34;&#34;&#34;
 
     self.cleanWindow()
     self.initUIHome()
@@ -817,14 +815,14 @@ def backHomeWindow(self) -&gt; None:
 <span>def <span class="ident">cleanWindow</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Supprime tous les widgets placés sur la fenêtre principale.</p></div>
+<div class="desc"><p>Delete all widgets placed on the main window.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@ Slot()
 def cleanWindow(self) -&gt; None:
-    &#34;&#34;&#34;Supprime tous les widgets placés sur la fenêtre principale.&#34;&#34;&#34;
+    &#34;&#34;&#34;Delete all widgets placed on the main window.&#34;&#34;&#34;
 
     for i in reversed(range(self.layout.count())):
         widget_to_remove = self.layout.itemAt(i).widget()
@@ -842,13 +840,13 @@ def cleanWindow(self) -&gt; None:
 <span>def <span class="ident">closeEvent</span></span>(<span>self, event: PySide6.QtGui.QCloseEvent) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Redéfinition d'un <code>closeEvent</code>. Ferme l'application lorsque la fenêtre principale est fermée.</p></div>
+<div class="desc"><p>Redefinition of the<code>closeEvent</code>. Close the app on the main window closure.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def closeEvent(self, event: QCloseEvent) -&gt; None:
-    &#34;&#34;&#34;Redéfinition d&#39;un `closeEvent`. Ferme l&#39;application lorsque la fenêtre principale est fermée.&#34;&#34;&#34;
+    &#34;&#34;&#34;Redefinition of the`closeEvent`. Close the app on the main window closure.&#34;&#34;&#34;
 
     self.quitApp()
     event.accept()</code></pre>
@@ -858,13 +856,13 @@ def cleanWindow(self) -&gt; None:
 <span>def <span class="ident">createActions</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise la fonctionnalité du menu.</p></div>
+<div class="desc"><p>Initialize the menu functionnality.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def createActions(self) -&gt; None:
-    &#34;&#34;&#34;Initialise la fonctionnalité du menu.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the menu functionnality.&#34;&#34;&#34;
 
     # Import
     self.import_with_results = QAction(&#34;Import with results&#34;, self)
@@ -889,13 +887,13 @@ def cleanWindow(self) -&gt; None:
 <span>def <span class="ident">createMenus</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise le menu, place les sous-menus et les options possibles.</p></div>
+<div class="desc"><p>Initialize the menu, place sub-menus et possible options.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def createMenus(self) -&gt; None:
-    &#34;&#34;&#34;Initialise le menu, place les sous-menus et les options possibles.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the menu, place sub-menus et possible options.&#34;&#34;&#34;
 
     menu_bar = self.menuBar()
     menu_bar.setNativeMenuBar(False)
@@ -914,13 +912,12 @@ def cleanWindow(self) -&gt; None:
 <span>def <span class="ident">exportData</span></span>(<span>self, with_results: bool) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Exporte les données avec ou sans les résultats.
-Si une erreur survient, fait apparaître un pop-up avec un message d'erreur</p>
+<div class="desc"><p>Export data with or without results. If an error occured, a pop-up will appear it indicating. </p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>with_results</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Si <code>False</code>, exporte uniquement les données des électeurs et des candidats.
-Sinon, exporte en plus les résultats d'une élection.</dd>
+<dd>If <code>False</code>, export only the data of candidates and electors.
+If <code>True</code>, results of the election will be imported as well.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -928,12 +925,11 @@ Sinon, exporte en plus les résultats d'une élection.</dd>
 </summary>
 <pre><code class="python">@ Slot(bool)
 def exportData(self, with_results: bool) -&gt; None:
-    &#34;&#34;&#34;Exporte les données avec ou sans les résultats. 
-    Si une erreur survient, fait apparaître un pop-up avec un message d&#39;erreur
+    &#34;&#34;&#34;Export data with or without results. If an error occured, a pop-up will appear it indicating. 
 
     Args:
-        with_results (bool): Si `False`, exporte uniquement les données des électeurs et des candidats.
-            Sinon, exporte en plus les résultats d&#39;une élection.
+        with_results (bool): If `False`, export only the data of candidates and electors.
+            If `True`, results of the election will be imported as well.
     &#34;&#34;&#34;
 
     db_file_path, _ = QFileDialog.getSaveFileName(
@@ -965,13 +961,12 @@ def exportData(self, with_results: bool) -&gt; None:
 <span>def <span class="ident">importData</span></span>(<span>self, with_results: bool) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Importe les données avec ou sans les résultats.
-Si une erreur survient, fait apparaître un pop-up avec un message d'erreur.</p>
+<div class="desc"><p>Import data with or without results. If an error occured, a pop-up will appear it indicating. </p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>with_results</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Si <code>False</code>, importe uniquement les données des électeurs et des candidats.
-Sinon, importe en plus les résultats d'une élection.</dd>
+<dd>If <code>False</code>, import only the data of candidates and electors.
+If <code>True</code>, results of the election will be imported as well.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -979,12 +974,11 @@ Sinon, importe en plus les résultats d'une élection.</dd>
 </summary>
 <pre><code class="python">@ Slot(bool)
 def importData(self, with_results: bool) -&gt; None:
-    &#34;&#34;&#34;Importe les données avec ou sans les résultats. 
-    Si une erreur survient, fait apparaître un pop-up avec un message d&#39;erreur.
+    &#34;&#34;&#34;Import data with or without results. If an error occured, a pop-up will appear it indicating. 
 
     Args:
-        with_results (bool): Si `False`, importe uniquement les données des électeurs et des candidats.
-            Sinon, importe en plus les résultats d&#39;une élection.
+        with_results (bool): If `False`, import only the data of candidates and electors.
+            If `True`, results of the election will be imported as well.
     &#34;&#34;&#34;
 
     db_file_path, _ = QFileDialog.getOpenFileName(
@@ -1008,13 +1002,13 @@ def importData(self, with_results: bool) -&gt; None:
 <span>def <span class="ident">initNavigation</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise la navigation pour revenir sur la page d'accueil à partir des autres widgets.</p></div>
+<div class="desc"><p>Initialize the navigation to return to the main page from other widgets.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initNavigation(self) -&gt; None:
-    &#34;&#34;&#34;Initialise la navigation pour revenir sur la page d&#39;accueil à partir des autres widgets.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the navigation to return to the main page from other widgets.&#34;&#34;&#34;
 
     self.button_home = QPushButton(&#34;Home&#34;, parent=self)
     self.button_home.clicked.connect(self.backHomeWindow)
@@ -1025,13 +1019,13 @@ def importData(self, with_results: bool) -&gt; None:
 <span>def <span class="ident">initUIHome</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise la page d'accueil.</p></div>
+<div class="desc"><p>Initialize the main page.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initUIHome(self) -&gt; None:
-    &#34;&#34;&#34;Initialise la page d&#39;accueil.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the main page.&#34;&#34;&#34;
 
     widget_btns = QWidget(parent=self.main_widget)
 
@@ -1080,14 +1074,14 @@ def importData(self, with_results: bool) -&gt; None:
 <span>def <span class="ident">initUIMap</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Nettoie la fenêtre principale, initialise la navigation et le widget correspondant à la carte politique.</p></div>
+<div class="desc"><p>Clean the main window, initialize the navigation and the widget with the political map.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@ Slot()
 def initUIMap(self) -&gt; None:
-    &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la navigation et le widget correspondant à la carte politique.&#34;&#34;&#34;
+    &#34;&#34;&#34;Clean the main window, initialize the navigation and the widget with the political map.&#34;&#34;&#34;
 
     self.cleanWindow()
 
@@ -1105,14 +1099,14 @@ def initUIMap(self) -&gt; None:
 <span>def <span class="ident">initUIResults</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Nettoie la fenêtre principale, initialise la navigation et le widget avec les résultats d'une élection.</p></div>
+<div class="desc"><p>Clean the main window, initialize the navigation and the widget with the election results</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@ Slot()
 def initUIResults(self) -&gt; None:
-    &#34;&#34;&#34;Nettoie la fenêtre principale, initialise la navigation et le widget avec les résultats d&#39;une élection.&#34;&#34;&#34;
+    &#34;&#34;&#34;Clean the main window, initialize the navigation and the widget with the election results&#34;&#34;&#34;
 
     self.cleanWindow()
 
@@ -1128,14 +1122,14 @@ def initUIResults(self) -&gt; None:
 <span>def <span class="ident">initUISettings</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise le widget avec les réglages pour une élection.</p></div>
+<div class="desc"><p>Initialize the widget with the election settings.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@ Slot()
 def initUISettings(self) -&gt; None:
-    &#34;&#34;&#34;Initialise le widget avec les réglages pour une élection.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the widget with the election settings.&#34;&#34;&#34;
 
     self.cleanWindow()
     settings_widget = SettingsWidget(self)
@@ -1150,14 +1144,14 @@ def initUISettings(self) -&gt; None:
 <span>def <span class="ident">quitApp</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Ferme l'application.</p></div>
+<div class="desc"><p>Close the app.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@ Slot()
 def quitApp(self) -&gt; None:
-    &#34;&#34;&#34;Ferme l&#39;application.&#34;&#34;&#34;
+    &#34;&#34;&#34;Close the app.&#34;&#34;&#34;
     
     self.app.quit()</code></pre>
 </details>
@@ -1166,14 +1160,14 @@ def quitApp(self) -&gt; None:
 <span>def <span class="ident">saveSettings</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Supprime le widget des réglages et fait revenir sur la page d'accueil.</p></div>
+<div class="desc"><p>Delete the widget with setting et return to the main page.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@ Slot()
 def saveSettings(self) -&gt; None:
-    &#34;&#34;&#34;Supprime le widget des réglages et fait revenir sur la page d&#39;accueil.&#34;&#34;&#34;
+    &#34;&#34;&#34;Delete the widget with setting et return to the main page.&#34;&#34;&#34;
 
     self.cleanWindow()
     self.initUIHome()</code></pre>
@@ -1183,15 +1177,15 @@ def saveSettings(self) -&gt; None:
 <span>def <span class="ident">setScreenGeometry</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Fixe la taille de la fenêtre principale et la place au milieu de l'écran.</p></div>
+<div class="desc"><p>Set the size of main window, put it in the middle of the screnn.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def setScreenGeometry(self) -&gt; None:
-    &#34;&#34;&#34;Fixe la taille de la fenêtre principale et la place au milieu de l&#39;écran.&#34;&#34;&#34;
+    &#34;&#34;&#34;Set the size of main window, put it in the middle of the screnn.&#34;&#34;&#34;
 
-    # Trouver le centre
+    # Find the center 
     x = self.app.primaryScreen().availableGeometry().x()
     screen_size = self.app.primaryScreen().availableSize()
     center_x = screen_size.width() / 2 + x
@@ -1204,12 +1198,12 @@ def saveSettings(self) -&gt; None:
 <span>def <span class="ident">showPopupMsg</span></span>(<span>self, msg: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise un pop-up avec une alerte et le message correspondant.
-Le pop-up se ferme automatiquement au bout de 2 secondes.</p>
+<div class="desc"><p>Initialize the pop-up with an alert and a corresponding message.
+The pop-up will be closed automatically after 2 seconds.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>msg</code></strong> :&ensp;<code>str</code></dt>
-<dd>un message à afficher.</dd>
+<dd>A message to place on the pop-up.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1217,18 +1211,18 @@ Le pop-up se ferme automatiquement au bout de 2 secondes.</p>
 </summary>
 <pre><code class="python">@ Slot(str)
 def showPopupMsg(self, msg: str) -&gt; None:
-    &#34;&#34;&#34;Initialise un pop-up avec une alerte et le message correspondant.
-    Le pop-up se ferme automatiquement au bout de 2 secondes.
+    &#34;&#34;&#34;Initialize the pop-up with an alert and a corresponding message.
+    The pop-up will be closed automatically after 2 seconds.
 
     Args:
-        msg (str): un message à afficher.
+        msg (str): A message to place on the pop-up.
     &#34;&#34;&#34;
 
     popup = QMessageBox(parent=self.main_widget)
     popup.setIcon(QMessageBox.Icon.Warning)
     popup.setText(msg)
     popup.addButton(QMessageBox.StandardButton.Close)
-    # Fermer un popup automatiquement après 2 sec
+    # close pop-up automatically after 2 seconds
     timer_close = QTimer()
     timer_close.singleShot(2000, popup, popup.close)
     popup.exec()</code></pre>
@@ -1244,12 +1238,12 @@ def showPopupMsg(self, msg: str) -&gt; None:
 <span>def <span class="ident">startElection</span></span>(<span>self, chosen_voting_rules: List[str]) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Supprime le widget correpondant à la carte politique, calcule les résultats d'une élection,
-initialise le widget avec les résultats.</p>
+<div class="desc"><p>Delete the widget with the potilical map, calculate the election results,
+initialize the widget with results.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>chosen_voting_rules</code></strong> :&ensp;<code>List[str]</code></dt>
-<dd>Une liste des constantes correspondant aux règles de vote choisies pour une élection.</dd>
+<dd>A list of constants related to the voting rules used in the election.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1257,11 +1251,11 @@ initialise le widget avec les résultats.</p>
 </summary>
 <pre><code class="python">@ Slot(list)
 def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
-    &#34;&#34;&#34;Supprime le widget correpondant à la carte politique, calcule les résultats d&#39;une élection, 
-    initialise le widget avec les résultats.
+    &#34;&#34;&#34;Delete the widget with the potilical map, calculate the election results, 
+    initialize the widget with results.
 
     Args:
-        chosen_voting_rules (List[str]): Une liste des constantes correspondant aux règles de vote choisies pour une élection.
+        chosen_voting_rules (List[str]): A list of constants related to the voting rules used in the election.
     &#34;&#34;&#34;
 
     self.election.start_election(chosen_voting_rules=chosen_voting_rules)
@@ -1272,13 +1266,13 @@ def startElection(self, chosen_voting_rules: List[str]) -&gt; None:
 <span>def <span class="ident">switchWidgetImport</span></span>(<span>self, with_results: bool) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Change le widget affiché si les données ont été importées. Si les résultats ont été importés, affiche
-la page initialisée avec les résultats. Sinon, affiche la page avec la carte politique.</p>
+<div class="desc"><p>Change the widget on the main window if data has been imported. If the results were imported,
+show the page with results. If not, show the page with the political map.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>with_results</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Une indication si les résultats ont été importées. Si <code>True</code> les résultats ont été importées,
-si <code>False</code> uniquement les électeurs et les candidats ont été importés.</dd>
+<dd>An indication if results has been imported. If <code>True</code>, then the results has been imported.
+If not, <code>False</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1286,12 +1280,12 @@ si <code>False</code> uniquement les électeurs et les candidats ont été impor
 </summary>
 <pre><code class="python">@ Slot(bool)
 def switchWidgetImport(self, with_results: bool) -&gt; None:
-    &#34;&#34;&#34;Change le widget affiché si les données ont été importées. Si les résultats ont été importés, affiche 
-    la page initialisée avec les résultats. Sinon, affiche la page avec la carte politique.
+    &#34;&#34;&#34;Change the widget on the main window if data has been imported. If the results were imported,
+        show the page with results. If not, show the page with the political map.
 
     Args:
-        with_results (bool): Une indication si les résultats ont été importées. Si `True` les résultats ont été importées,
-            si `False` uniquement les électeurs et les candidats ont été importés.
+        with_results (bool): An indication if results has been imported. If `True`, then the results has been imported. 
+            If not, `False`.
     &#34;&#34;&#34;
 
     self.cleanWindow()
@@ -1307,31 +1301,34 @@ def switchWidgetImport(self, with_results: bool) -&gt; None:
 <span>def <span class="ident">toggleIEOptions</span></span>(<span>self, type: str, with_results_status: bool, no_results_status: bool) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Active ou désactive les options dans le menu par rapport à l'import et l'export.</p>
+<div class="desc"><p>Toggle the options (import, export) in the menu.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>type</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une indication de l'export ou de l'import.</dd>
+<dd>A constant indicating type of option: Import or Export.
+Cf. <code>sqlite.export_data.ExportData.EXPORT</code> and
+<code>sqlite.import_data.ImportData.IMPORT</code></dd>
 <dt><strong><code>with_results_status</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Une indication s'il faut activer ou désactiver une option d'import/export avec les résultats.
-Si <code>True</code>, l'activer. Si <code>False</code>, le désactiver.</dd>
+<dd>An indication if an option to import/export with results should activated/desactivated.
+If <code>True</code>, activate it. If <code>False</code>, desactivate it.</dd>
 <dt><strong><code>no_results_status</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Une indication s'il faut activer ou désactiver une option d'import/export sans les résultats.
-Si <code>True</code>, l'activer. Si <code>False</code>, le désactiver.</dd>
+<dd>An indication if an option to import/export without results should activated/desactivated.
+If <code>True</code>, activate it. If <code>False</code>, desactivate it.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def toggleIEOptions(self, type: str, with_results_status: bool, no_results_status: bool) -&gt; None:
-    &#34;&#34;&#34;Active ou désactive les options dans le menu par rapport à l&#39;import et l&#39;export.
+    &#34;&#34;&#34;Toggle the options (import, export) in the menu.
 
     Args:
-        type (str): Une indication de l&#39;export ou de l&#39;import.
-        with_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export avec les résultats.
-            Si `True`, l&#39;activer. Si `False`, le désactiver.
-        no_results_status (bool): Une indication s&#39;il faut activer ou désactiver une option d&#39;import/export sans les résultats.
-            Si `True`, l&#39;activer. Si `False`, le désactiver.
+        type (str): A constant indicating type of option: Import or Export.
+            Cf. `sqlite.export_data.ExportData.EXPORT` and  `sqlite.import_data.ImportData.IMPORT`
+        with_results_status (bool): An indication if an option to import/export with results should activated/desactivated.
+            If `True`, activate it. If `False`, desactivate it.
+        no_results_status (bool): An indication if an option to import/export without results should activated/desactivated.
+            If `True`, activate it. If `False`, desactivate it.
     &#34;&#34;&#34;
 
     if type == ImportData.IMPORT:

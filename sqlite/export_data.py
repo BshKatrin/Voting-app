@@ -21,7 +21,9 @@ class ExportData:
 
 
     election: Election = Election()
+    
     EXPORT: str = "E"
+    """A constant corresponding to export option."""
     
     @classmethod
     def create_database_people(cls, connection: Connection) -> tuple[bool, str]:
