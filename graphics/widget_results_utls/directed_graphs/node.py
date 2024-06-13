@@ -4,18 +4,18 @@ from PySide6.QtGui import QColor
 
 
 class Node(QGraphicsEllipseItem):
-    """Une classe qui représente un noeud d'un graphe orienté."""
+    """A class which represents a node of the oriented graph."""
 
     RADIUS:float = 40.0
-    """Un rayon d'un noeud."""
+    """A node's radius."""
 
     def __init__(self, x:float, y:float, title: str):
-        """Initialise un noeud d'un graphe orienté.
+        """Initialize the node of the oriented graph.
 
         Args:
-            x (float): La coordonnée horizontale dans le système des coordonnées de l'ordinateur.
-            y (float): La coordonnée horizontale dans le système des coordonnées de l'ordinateur.
-            title (str): Un titre d'un noeud.
+            x (float): A horizontal coordinate in the computer coordinate system.
+            y (float): A vertical coordinate in the computer coordinate system.
+            title (str): A text to put inside the node.
         """
 
         # Scene will take ownership
@@ -37,6 +37,6 @@ class Node(QGraphicsEllipseItem):
         self.title.setPos(titleOffset)
 
     def highlight(self) -> None:
-        """Change le d'un noeud couleur en vert pâle."""
+        """Change the node's color to the pale green."""
 
         self.setBrush(QColor(152,251,152))

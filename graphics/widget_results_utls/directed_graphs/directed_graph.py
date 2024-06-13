@@ -11,47 +11,46 @@ from electoral_systems import Election
 
 
 class DirectedGraph(QGraphicsScene):
-    """Une scène sur laquelle un graphe orienté sera dessiné."""
+    """A scene (kinda like canvas) on which an oriented graph will be drawn."""
 
     def __init__(self, view_size: QSize, voting_rule: str, parent: QWidget):
-        """Initialise une instance d'élection (pour le partage des données). 
-        Initialise un `PySide6.QtGui.QPainterPath` pour les arêtes. 
+        """Initialize an instance of the election (for data sharing).
+            Initialize the `PySide6.QtGui.QPainterPath` to draw edges.
 
         Args:
-            view_size (PySide6.QtCore.QSize): La taille d'un view associé.
-            voting_rule (str): Une constante d'une règle du vote dont les résultats une scène dessinera.
-            parent (PySide6.QtWidgets.QWidget): Le parent d'une scène.
+            view_size (PySide6.QtCore.QSize): A size of the associated view.
+            voting_rule (str): A constant related to the Condorcet-based voting rule whose results will be drawn. 
+            parent (PySide6.QtWidgets.QWidget): Scene's parent.
         """
 
         super().__init__(parent)
         self.election = Election()
 
-        # Un dict sera rempli dans initNodes
+        # Dict will be filled in initNodes
         self.id_position = dict()
 
         self.view_size = view_size
         self.voting_rule = voting_rule
         self.path = QPainterPath()
 
-        # Couleur blanche
+        # White color
         self.setBackgroundBrush(QColor(255, 255, 255))
         self.calculateCircle()
 
     def drawGraphics(self, weighted: bool) -> None:
-        """Initialise et place les noeuds et les arêtes d'un graphe orienté.
+        """Initialize and place nodes and edges of the oriented graph.
 
         Args:
-            weighted (bool): True s'il faut représenter des poids. Sinon, False.
+            weighted (bool): `True` if graph is also weighted. Otherwise, `False`.
         """
 
         self.initNodes()
         self.initEdges(weighted)
 
     def initNodes(self) -> None:
-        """Initialise et place les noeuds. Remplit un dictionnaire `id_position` qui associe l'ID d'un candidat
-        et le noeud d'un candidat."""
+        """Initialize and place nodes. Fill the dictionnary `id_position` which associates a candidate's ID and his node."""
 
-        # Dict key : ID d'un candidat, value : son noeud associé
+        # Dict key : ID d'un candidat, value : his node
         winner = self.election.choose_winner(self.voting_rule)
 
         for i in range(len(self.election.candidates)):
@@ -69,13 +68,13 @@ class DirectedGraph(QGraphicsScene):
 
     # draw edges between nodes
     def initEdges(self, weighted: bool) -> None:
-        """Initialise et place les arêtes d'un graphe.
+        """Initialize and draw the graph edges.
 
         Args:
-            weighted (bool): `True` s'il faut représenter des poids. Sinon, `False`.
+            weighted (bool): `True` if the graph is also weighted. Otherwise, `False`.
         """
 
-        # Les duels des candidats déjà remplis
+        # Duels between candidates are already set
         for (winner, loser), weight in self.election.duels_scores.items():
 
             winner_node = self.id_position[winner.id]
@@ -100,7 +99,7 @@ class DirectedGraph(QGraphicsScene):
             self.addItem(edge)
 
     def calculateCircle(self) -> None:
-        """Calcule un cercle sur la bordure sur laquelle les noeuds vont être placés."""
+        """Calculate a circle of the border on which nodes will be places. Nodes are places equidistantly."""
 
         self.center = QPointF(self.view_size.width() / 2, self.view_size.height() / 2)
         # Radius = 70% of window size
@@ -110,14 +109,14 @@ class DirectedGraph(QGraphicsScene):
         self.angle = 0 if nb_candidates == 0 else 2 * pi / nb_candidates
 
     def calculateNorm(self, point1: QPointF, point2: QPointF) -> float:
-        """Calcule la norme d'un vecteur point1 -> point2.
+        """Calculate a vector norm. Vector is *point1 -> point2*.
 
         Args:
-            point1 (PySide6.QtCore.QPointF): Point de départ d'un vecteur.
-            point2 (PySide6.QtCore.QPointF): Point d'arrivée d'un vecteur.
+            point1 (PySide6.QtCore.QPointF): Vector's starting point.
+            point2 (PySide6.QtCore.QPointF): Vector's ending point.
 
         Returns:
-            float: La norme d'un vecteur.
+            float: Vector norm.
         """
 
         x1, y1 = point1.x(), point1.y()

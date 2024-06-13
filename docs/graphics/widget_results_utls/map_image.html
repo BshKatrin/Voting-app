@@ -35,18 +35,17 @@ from ..widget_map_utls import QuadrantMap
 
 
 class MapImage(QWidget):
-    &#34;&#34;&#34;Un widget qui affiche la carte politique non interactive (i.e. qui ne répond pas au cliques du souris).&#34;&#34;&#34;
+    &#34;&#34;&#34;A widget which represents the non-interactive political map.&#34;&#34;&#34;
 
     closed = Signal()
-    &#34;&#34;&#34;Un signal émis lorsque le widget est fermé.&#34;&#34;&#34;
+    &#34;&#34;&#34;A signal emitted if the widget has been closed.&#34;&#34;&#34;
 
     def __init__(self, size, parent: QWidget = None):
-        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
+        &#34;&#34;&#34;Initialize an instance of the election (for data sharing).
 
         Args:
-            size (PySide6.QtCore.QSize): La taille d&#39;un widget.
-            parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget. Puisque l&#39;idée est d&#39;afficher le checkbox 
-                dans une fenêtre séparée parent est remis à `None` par défaut.
+            size (PySide6.QtCore.QSize): Widget&#39;s size.
+            parent (PySide6.QtWidgets.QWidget): Widget&#39;s parent. Default = `None`.
         &#34;&#34;&#34;
 
         super().__init__(parent)
@@ -56,7 +55,7 @@ class MapImage(QWidget):
         self.disableMouseEvent()
 
     def initImage(self) -&gt; None:
-        &#34;&#34;&#34;Initialise la layout, la carte politique.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the layout, the political map.&#34;&#34;&#34;
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -68,17 +67,17 @@ class MapImage(QWidget):
         self.layout.addWidget(self.quadrant_map, 0, Qt.AlignVCenter | Qt.AlignHCenter)
 
     def update(self) -&gt; None:
-        &#34;&#34;&#34;Redessine la carte politique.&#34;&#34;&#34;
+        &#34;&#34;&#34;Redraw the political map.&#34;&#34;&#34;
 
         self.quadrant_map.update()
 
     def disableMouseEvent(self) -&gt; None:
-        &#34;&#34;&#34;Désactive l&#39;interaction avec la souris.&#34;&#34;&#34;
+        &#34;&#34;&#34;Desactivate the interaction with the mouse.&#34;&#34;&#34;
 
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
 
     def closeEvent(self, event: QCloseEvent):
-        &#34;&#34;&#34;Redéfinition d&#39;un `closeEvent`. Ferme le widget (mais ne le supprime pas). Émet le signal `closed`.&#34;&#34;&#34;
+        &#34;&#34;&#34;Redefinition of the `closeEvent`. Close the widget (but not delete it). Emit the signal `closed`.&#34;&#34;&#34;
 
         self.closed.emit()
         self.close()
@@ -99,33 +98,31 @@ class MapImage(QWidget):
 <span>(</span><span>size, parent: PySide6.QtWidgets.QWidget = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Un widget qui affiche la carte politique non interactive (i.e. qui ne répond pas au cliques du souris).</p>
-<p>Initialise une instance d'élection (pour le partage des données).</p>
+<div class="desc"><p>A widget which represents the non-interactive political map.</p>
+<p>Initialize an instance of the election (for data sharing).</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>size</code></strong> :&ensp;<code>PySide6.QtCore.QSize</code></dt>
-<dd>La taille d'un widget.</dd>
+<dd>Widget's size.</dd>
 <dt><strong><code>parent</code></strong> :&ensp;<code>PySide6.QtWidgets.QWidget</code></dt>
-<dd>Un parent d'un widget. Puisque l'idée est d'afficher le checkbox
-dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</dd>
+<dd>Widget's parent. Default = <code>None</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MapImage(QWidget):
-    &#34;&#34;&#34;Un widget qui affiche la carte politique non interactive (i.e. qui ne répond pas au cliques du souris).&#34;&#34;&#34;
+    &#34;&#34;&#34;A widget which represents the non-interactive political map.&#34;&#34;&#34;
 
     closed = Signal()
-    &#34;&#34;&#34;Un signal émis lorsque le widget est fermé.&#34;&#34;&#34;
+    &#34;&#34;&#34;A signal emitted if the widget has been closed.&#34;&#34;&#34;
 
     def __init__(self, size, parent: QWidget = None):
-        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
+        &#34;&#34;&#34;Initialize an instance of the election (for data sharing).
 
         Args:
-            size (PySide6.QtCore.QSize): La taille d&#39;un widget.
-            parent (PySide6.QtWidgets.QWidget): Un parent d&#39;un widget. Puisque l&#39;idée est d&#39;afficher le checkbox 
-                dans une fenêtre séparée parent est remis à `None` par défaut.
+            size (PySide6.QtCore.QSize): Widget&#39;s size.
+            parent (PySide6.QtWidgets.QWidget): Widget&#39;s parent. Default = `None`.
         &#34;&#34;&#34;
 
         super().__init__(parent)
@@ -135,7 +132,7 @@ dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</
         self.disableMouseEvent()
 
     def initImage(self) -&gt; None:
-        &#34;&#34;&#34;Initialise la layout, la carte politique.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the layout, the political map.&#34;&#34;&#34;
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -147,17 +144,17 @@ dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</
         self.layout.addWidget(self.quadrant_map, 0, Qt.AlignVCenter | Qt.AlignHCenter)
 
     def update(self) -&gt; None:
-        &#34;&#34;&#34;Redessine la carte politique.&#34;&#34;&#34;
+        &#34;&#34;&#34;Redraw the political map.&#34;&#34;&#34;
 
         self.quadrant_map.update()
 
     def disableMouseEvent(self) -&gt; None:
-        &#34;&#34;&#34;Désactive l&#39;interaction avec la souris.&#34;&#34;&#34;
+        &#34;&#34;&#34;Desactivate the interaction with the mouse.&#34;&#34;&#34;
 
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
 
     def closeEvent(self, event: QCloseEvent):
-        &#34;&#34;&#34;Redéfinition d&#39;un `closeEvent`. Ferme le widget (mais ne le supprime pas). Émet le signal `closed`.&#34;&#34;&#34;
+        &#34;&#34;&#34;Redefinition of the `closeEvent`. Close the widget (but not delete it). Emit the signal `closed`.&#34;&#34;&#34;
 
         self.closed.emit()
         self.close()
@@ -183,13 +180,13 @@ dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</
 <span>def <span class="ident">closeEvent</span></span>(<span>self, event: PySide6.QtGui.QCloseEvent)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Redéfinition d'un <code>closeEvent</code>. Ferme le widget (mais ne le supprime pas). Émet le signal <code>closed</code>.</p></div>
+<div class="desc"><p>Redefinition of the <code>closeEvent</code>. Close the widget (but not delete it). Emit the signal <code>closed</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def closeEvent(self, event: QCloseEvent):
-    &#34;&#34;&#34;Redéfinition d&#39;un `closeEvent`. Ferme le widget (mais ne le supprime pas). Émet le signal `closed`.&#34;&#34;&#34;
+    &#34;&#34;&#34;Redefinition of the `closeEvent`. Close the widget (but not delete it). Emit the signal `closed`.&#34;&#34;&#34;
 
     self.closed.emit()
     self.close()
@@ -206,13 +203,13 @@ dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</
 <span>def <span class="ident">disableMouseEvent</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Désactive l'interaction avec la souris.</p></div>
+<div class="desc"><p>Desactivate the interaction with the mouse.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def disableMouseEvent(self) -&gt; None:
-    &#34;&#34;&#34;Désactive l&#39;interaction avec la souris.&#34;&#34;&#34;
+    &#34;&#34;&#34;Desactivate the interaction with the mouse.&#34;&#34;&#34;
 
     self.setAttribute(Qt.WA_TransparentForMouseEvents)</code></pre>
 </details>
@@ -221,13 +218,13 @@ dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</
 <span>def <span class="ident">initImage</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise la layout, la carte politique.</p></div>
+<div class="desc"><p>Initialize the layout, the political map.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initImage(self) -&gt; None:
-    &#34;&#34;&#34;Initialise la layout, la carte politique.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the layout, the political map.&#34;&#34;&#34;
 
     self.layout = QVBoxLayout()
     self.setLayout(self.layout)
@@ -243,13 +240,13 @@ dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</
 <span>def <span class="ident">update</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Redessine la carte politique.</p></div>
+<div class="desc"><p>Redraw the political map.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def update(self) -&gt; None:
-    &#34;&#34;&#34;Redessine la carte politique.&#34;&#34;&#34;
+    &#34;&#34;&#34;Redraw the political map.&#34;&#34;&#34;
 
     self.quadrant_map.update()</code></pre>
 </details>

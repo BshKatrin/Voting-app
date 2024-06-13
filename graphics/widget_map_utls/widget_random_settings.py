@@ -24,8 +24,7 @@ class WidgetRandomSettings(QWidget):
 
         Args:
             main_window_size (PySide6.QtCore.QSize): A size of the main window. A size of the widget will be determined by this arg.
-            parent (Optional[PySide6.QtWidgets.QWidget]): Widget's parent. The idea is to to show this widget
-                in a separate window so the default is `None`.
+            parent (Optional[PySide6.QtWidgets.QWidget]): Widget's parent. Default = `None`.
         """
 
         super().__init__(parent)

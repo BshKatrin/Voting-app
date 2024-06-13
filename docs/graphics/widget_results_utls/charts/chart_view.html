@@ -38,7 +38,7 @@ from .chart_one_round import ChartOneRound
 
 
 class ChartView(QChartView):
-    &#34;&#34;&#34;Un view qui affiche les diagrammes à bandes des résultats des règles de vote à un ou plusieurs tours.&#34;&#34;&#34;
+    &#34;&#34;&#34;A view to display charts with results of the one &amp; multi-round voting rules.&#34;&#34;&#34;
 
     sig_chart_view_destroying = Signal()
     sig_poll_conducted = Signal(str)
@@ -50,12 +50,11 @@ class ChartView(QChartView):
         self.sig_poll_conducted.connect(self.updateScores)
 
     def initOneRoundChart(self, one_round_set: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Initialise les diagrammes à bandes pour les règles de vote à un tour.
-        Construit un dictionnaire qui associe une constante d&#39;une règle de vote à son diagramme à bandes.
+        &#34;&#34;&#34;Initialize charts of one round voting rules.
+            Initialize and fill a dictionary which associates a constant related to the voting rule and its chart.
 
         Args:
-            one_round_set (Set[str]): Un ensemble des constantes des règles du vote à un tour
-                dont les diagrammes il faut représenter.
+            one_round_set (Set[str]): A set of constants related to one round voting rules whose charts should be initialized. 
         &#34;&#34;&#34;
 
         self.charts_one_rounds = {
@@ -63,12 +62,11 @@ class ChartView(QChartView):
         }
 
     def initMultiRoundChart(self, multi_round_set: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Initialise les diagrammes à bandes pour des règles de vote à plusieurs tours.
-        Construit un dictionnaire qui associe une constante d&#39;une règle de vote à son diagramme à bandes.
+        &#34;&#34;&#34;Initialize charts of multi-round voting rules.
+            Initialize and fill a dictionary which associates a constant related to the voting rule and its chart.
 
         Args:
-            multi_round_set (Set[str]): Un ensemble des constantes des règles du vote à plusieurs tours
-                dont les diagrammes il faut représenter.
+            multi_round_set (Set[str]): A set of constants related to multi-round voting rules whose charts should be initialized. 
         &#34;&#34;&#34;
 
         self.charts_multi_rounds = {
@@ -77,10 +75,9 @@ class ChartView(QChartView):
 
     @Slot(str)
     def setChartBySig(self, voting_rule: str) -&gt; None:
-        &#34;&#34;&#34;Change le chart affiché dans un view.
-
+        &#34;&#34;&#34;Change the chart displayd in the view.
         Args:
-            voting_rule (str): Une constante d&#39;une règle du vote dont le diagramme il faut afficher.
+            voting_rule (str): A constant related to the voting rule whose chart should be shown.
         &#34;&#34;&#34;
 
         if voting_rule in VotingRulesConstants.MULTI_ROUND:
@@ -92,17 +89,17 @@ class ChartView(QChartView):
 
     @Slot(str)
     def updateScores(self, voting_rule: str) -&gt; None:
-        &#34;&#34;&#34;MAJ les scores des candidats selon une règle de vote `voting_rule`. Utile pour les sondages.
+        &#34;&#34;&#34;Update candidates&#39; scores in the given voting rule. Useful for polls.
 
         Args:
-            voting_rule (str): Une constante associée à une règle du vote.
+            voting_rule (str): A constant related to the voting rule.
         &#34;&#34;&#34;
 
         self.charts_one_rounds[voting_rule].updateData()
 
     @Slot()
     def delete_children(self) -&gt; None:
-        &#34;&#34;&#34;Supprime tous les charts qui ont été initialisés&#34;&#34;&#34;
+        &#34;&#34;&#34;Delete all initialized charts.&#34;&#34;&#34;
 
         self.setChart(None)  # because setChart takes ownership
         for multi_chart in self.charts_multi_rounds.values():
@@ -124,7 +121,7 @@ class ChartView(QChartView):
 <span>class <span class="ident">ChartView</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Un view qui affiche les diagrammes à bandes des résultats des règles de vote à un ou plusieurs tours.</p>
+<div class="desc"><p>A view to display charts with results of the one &amp; multi-round voting rules.</p>
 <p><strong>init</strong>(self, chart: PySide6.QtCharts.QChart, parent: Optional[PySide6.QtWidgets.QWidget] = None) -&gt; None
 <strong>init</strong>(self, parent: Optional[PySide6.QtWidgets.QWidget] = None) -&gt; None</p>
 <p>Initialize self.
@@ -134,7 +131,7 @@ See help(type(self)) for accurate signature.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ChartView(QChartView):
-    &#34;&#34;&#34;Un view qui affiche les diagrammes à bandes des résultats des règles de vote à un ou plusieurs tours.&#34;&#34;&#34;
+    &#34;&#34;&#34;A view to display charts with results of the one &amp; multi-round voting rules.&#34;&#34;&#34;
 
     sig_chart_view_destroying = Signal()
     sig_poll_conducted = Signal(str)
@@ -146,12 +143,11 @@ See help(type(self)) for accurate signature.</p></div>
         self.sig_poll_conducted.connect(self.updateScores)
 
     def initOneRoundChart(self, one_round_set: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Initialise les diagrammes à bandes pour les règles de vote à un tour.
-        Construit un dictionnaire qui associe une constante d&#39;une règle de vote à son diagramme à bandes.
+        &#34;&#34;&#34;Initialize charts of one round voting rules.
+            Initialize and fill a dictionary which associates a constant related to the voting rule and its chart.
 
         Args:
-            one_round_set (Set[str]): Un ensemble des constantes des règles du vote à un tour
-                dont les diagrammes il faut représenter.
+            one_round_set (Set[str]): A set of constants related to one round voting rules whose charts should be initialized. 
         &#34;&#34;&#34;
 
         self.charts_one_rounds = {
@@ -159,12 +155,11 @@ See help(type(self)) for accurate signature.</p></div>
         }
 
     def initMultiRoundChart(self, multi_round_set: Set[str]) -&gt; None:
-        &#34;&#34;&#34;Initialise les diagrammes à bandes pour des règles de vote à plusieurs tours.
-        Construit un dictionnaire qui associe une constante d&#39;une règle de vote à son diagramme à bandes.
+        &#34;&#34;&#34;Initialize charts of multi-round voting rules.
+            Initialize and fill a dictionary which associates a constant related to the voting rule and its chart.
 
         Args:
-            multi_round_set (Set[str]): Un ensemble des constantes des règles du vote à plusieurs tours
-                dont les diagrammes il faut représenter.
+            multi_round_set (Set[str]): A set of constants related to multi-round voting rules whose charts should be initialized. 
         &#34;&#34;&#34;
 
         self.charts_multi_rounds = {
@@ -173,10 +168,9 @@ See help(type(self)) for accurate signature.</p></div>
 
     @Slot(str)
     def setChartBySig(self, voting_rule: str) -&gt; None:
-        &#34;&#34;&#34;Change le chart affiché dans un view.
-
+        &#34;&#34;&#34;Change the chart displayd in the view.
         Args:
-            voting_rule (str): Une constante d&#39;une règle du vote dont le diagramme il faut afficher.
+            voting_rule (str): A constant related to the voting rule whose chart should be shown.
         &#34;&#34;&#34;
 
         if voting_rule in VotingRulesConstants.MULTI_ROUND:
@@ -188,17 +182,17 @@ See help(type(self)) for accurate signature.</p></div>
 
     @Slot(str)
     def updateScores(self, voting_rule: str) -&gt; None:
-        &#34;&#34;&#34;MAJ les scores des candidats selon une règle de vote `voting_rule`. Utile pour les sondages.
+        &#34;&#34;&#34;Update candidates&#39; scores in the given voting rule. Useful for polls.
 
         Args:
-            voting_rule (str): Une constante associée à une règle du vote.
+            voting_rule (str): A constant related to the voting rule.
         &#34;&#34;&#34;
 
         self.charts_one_rounds[voting_rule].updateData()
 
     @Slot()
     def delete_children(self) -&gt; None:
-        &#34;&#34;&#34;Supprime tous les charts qui ont été initialisés&#34;&#34;&#34;
+        &#34;&#34;&#34;Delete all initialized charts.&#34;&#34;&#34;
 
         self.setChart(None)  # because setChart takes ownership
         for multi_chart in self.charts_multi_rounds.values():
@@ -230,14 +224,14 @@ See help(type(self)) for accurate signature.</p></div>
 <span>def <span class="ident">delete_children</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Supprime tous les charts qui ont été initialisés</p></div>
+<div class="desc"><p>Delete all initialized charts.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@Slot()
 def delete_children(self) -&gt; None:
-    &#34;&#34;&#34;Supprime tous les charts qui ont été initialisés&#34;&#34;&#34;
+    &#34;&#34;&#34;Delete all initialized charts.&#34;&#34;&#34;
 
     self.setChart(None)  # because setChart takes ownership
     for multi_chart in self.charts_multi_rounds.values():
@@ -250,25 +244,23 @@ def delete_children(self) -&gt; None:
 <span>def <span class="ident">initMultiRoundChart</span></span>(<span>self, multi_round_set: Set[str]) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise les diagrammes à bandes pour des règles de vote à plusieurs tours.
-Construit un dictionnaire qui associe une constante d'une règle de vote à son diagramme à bandes.</p>
+<div class="desc"><p>Initialize charts of multi-round voting rules.
+Initialize and fill a dictionary which associates a constant related to the voting rule and its chart.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>multi_round_set</code></strong> :&ensp;<code>Set[str]</code></dt>
-<dd>Un ensemble des constantes des règles du vote à plusieurs tours
-dont les diagrammes il faut représenter.</dd>
+<dd>A set of constants related to multi-round voting rules whose charts should be initialized.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initMultiRoundChart(self, multi_round_set: Set[str]) -&gt; None:
-    &#34;&#34;&#34;Initialise les diagrammes à bandes pour des règles de vote à plusieurs tours.
-    Construit un dictionnaire qui associe une constante d&#39;une règle de vote à son diagramme à bandes.
+    &#34;&#34;&#34;Initialize charts of multi-round voting rules.
+        Initialize and fill a dictionary which associates a constant related to the voting rule and its chart.
 
     Args:
-        multi_round_set (Set[str]): Un ensemble des constantes des règles du vote à plusieurs tours
-            dont les diagrammes il faut représenter.
+        multi_round_set (Set[str]): A set of constants related to multi-round voting rules whose charts should be initialized. 
     &#34;&#34;&#34;
 
     self.charts_multi_rounds = {
@@ -280,25 +272,23 @@ dont les diagrammes il faut représenter.</dd>
 <span>def <span class="ident">initOneRoundChart</span></span>(<span>self, one_round_set: Set[str]) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise les diagrammes à bandes pour les règles de vote à un tour.
-Construit un dictionnaire qui associe une constante d'une règle de vote à son diagramme à bandes.</p>
+<div class="desc"><p>Initialize charts of one round voting rules.
+Initialize and fill a dictionary which associates a constant related to the voting rule and its chart.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>one_round_set</code></strong> :&ensp;<code>Set[str]</code></dt>
-<dd>Un ensemble des constantes des règles du vote à un tour
-dont les diagrammes il faut représenter.</dd>
+<dd>A set of constants related to one round voting rules whose charts should be initialized.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initOneRoundChart(self, one_round_set: Set[str]) -&gt; None:
-    &#34;&#34;&#34;Initialise les diagrammes à bandes pour les règles de vote à un tour.
-    Construit un dictionnaire qui associe une constante d&#39;une règle de vote à son diagramme à bandes.
+    &#34;&#34;&#34;Initialize charts of one round voting rules.
+        Initialize and fill a dictionary which associates a constant related to the voting rule and its chart.
 
     Args:
-        one_round_set (Set[str]): Un ensemble des constantes des règles du vote à un tour
-            dont les diagrammes il faut représenter.
+        one_round_set (Set[str]): A set of constants related to one round voting rules whose charts should be initialized. 
     &#34;&#34;&#34;
 
     self.charts_one_rounds = {
@@ -310,11 +300,11 @@ dont les diagrammes il faut représenter.</dd>
 <span>def <span class="ident">setChartBySig</span></span>(<span>self, voting_rule: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Change le chart affiché dans un view.</p>
+<div class="desc"><p>Change the chart displayd in the view.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une constante d'une règle du vote dont le diagramme il faut afficher.</dd>
+<dd>A constant related to the voting rule whose chart should be shown.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -322,10 +312,9 @@ dont les diagrammes il faut représenter.</dd>
 </summary>
 <pre><code class="python">@Slot(str)
 def setChartBySig(self, voting_rule: str) -&gt; None:
-    &#34;&#34;&#34;Change le chart affiché dans un view.
-
+    &#34;&#34;&#34;Change the chart displayd in the view.
     Args:
-        voting_rule (str): Une constante d&#39;une règle du vote dont le diagramme il faut afficher.
+        voting_rule (str): A constant related to the voting rule whose chart should be shown.
     &#34;&#34;&#34;
 
     if voting_rule in VotingRulesConstants.MULTI_ROUND:
@@ -352,11 +341,11 @@ def setChartBySig(self, voting_rule: str) -&gt; None:
 <span>def <span class="ident">updateScores</span></span>(<span>self, voting_rule: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MAJ les scores des candidats selon une règle de vote <code>voting_rule</code>. Utile pour les sondages.</p>
+<div class="desc"><p>Update candidates' scores in the given voting rule. Useful for polls.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une constante associée à une règle du vote.</dd>
+<dd>A constant related to the voting rule.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -364,10 +353,10 @@ def setChartBySig(self, voting_rule: str) -&gt; None:
 </summary>
 <pre><code class="python">@Slot(str)
 def updateScores(self, voting_rule: str) -&gt; None:
-    &#34;&#34;&#34;MAJ les scores des candidats selon une règle de vote `voting_rule`. Utile pour les sondages.
+    &#34;&#34;&#34;Update candidates&#39; scores in the given voting rule. Useful for polls.
 
     Args:
-        voting_rule (str): Une constante associée à une règle du vote.
+        voting_rule (str): A constant related to the voting rule.
     &#34;&#34;&#34;
 
     self.charts_one_rounds[voting_rule].updateData()</code></pre>

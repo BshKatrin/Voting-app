@@ -39,15 +39,15 @@ from PySide6.QtCore import Qt, QPointF
 
 
 class Edge(QGraphicsPathItem):
-    &#34;&#34;&#34;Une classe qui représente une arête d&#39;un graphe orienté.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class which represents an edge of the oriented graph.&#34;&#34;&#34;
 
     def __init__(self, painter_path: QPainterPath, start_point: QPointF, end_point: QPointF):
-        &#34;&#34;&#34;Initialise une arête noire et une tête d&#39;une flèche qui sort de `start_point` et arrive dans `end_point`.
+        &#34;&#34;&#34;Initialize the black edge. Is it an arrow pointing from `start_point` to `end_point`.
         
         Args:
-            painter_path (PySide6.QtGui.QPainterPath): Un painter qui dessinera une arête.
-            start_point (PySide6.QtCore.QPointF): Un point de départ.
-            end_point (PySide6.QtCore.QPointF): Un point d&#39;arrivée.
+            painter_path (PySide6.QtGui.QPainterPath): The painter which will draw the edge.
+            start_point (PySide6.QtCore.QPointF): Edge&#39;s starting point.
+            end_point (PySide6.QtCore.QPointF): Edge&#39;s ending point.
         &#34;&#34;&#34;
         
         super().__init__(painter_path, None)  # Scene will take ownership
@@ -60,7 +60,7 @@ class Edge(QGraphicsPathItem):
         self.initArrowHead()
 
     def initArrowHead(self) -&gt; None:
-        &#34;&#34;&#34;Initialise une tête d&#39;une flèche noire.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the arrow head. The head is filled with black.&#34;&#34;&#34;
 
         # Calculate arrowHead
         arrowHeadPolygon = self.calculateArrowHead(self.start_point, self.end_point)
@@ -72,10 +72,10 @@ class Edge(QGraphicsPathItem):
         arrowHead.setZValue(2)
 
     def setWeight(self, weight: int) -&gt; None:
-        &#34;&#34;&#34;Met le poids `weight` au milleu d&#39;une arête.
+        &#34;&#34;&#34;Put the weight in a middle of the edge.
 
         Args:
-            weight (int): Le poids d&#39;une arête.
+            weight (int): Edge&#39;s weight.
         &#34;&#34;&#34;
 
         middle = (self.start_point + self.end_point) / 2
@@ -86,14 +86,14 @@ class Edge(QGraphicsPathItem):
         self.text.setPos(middle + textOffset)
 
     def calculateArrowHead(self, start_pos: QPointF, end_pos: QPointF) -&gt; QPolygonF:
-        &#34;&#34;&#34;Calcule les coordonnées d&#39;une tête d&#39;une flèche.
+        &#34;&#34;&#34;Calculate the coordinates of the arrow&#39;s head.
 
         Args:
-            start_pos (PySide6.QtCore.QPointF): Un point de début.
-            end_pos (PySide6.QtCore.QPointF): Un point de l&#39;arrivé.
+            start_pos (PySide6.QtCore.QPointF): Starting point.
+            end_pos (PySide6.QtCore.QPointF): Ending point. 
 
         Returns:
-            PySide6.QtGui.QPolygonF: Une figure d&#39;une flèche.
+            PySide6.QtGui.QPolygonF: A figure of the arrow&#39;s head.
         &#34;&#34;&#34;
 
         arrowSize = 20
@@ -131,31 +131,31 @@ class Edge(QGraphicsPathItem):
 <span>(</span><span>painter_path: PySide6.QtGui.QPainterPath, start_point: PySide6.QtCore.QPointF, end_point: PySide6.QtCore.QPointF)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Une classe qui représente une arête d'un graphe orienté.</p>
-<p>Initialise une arête noire et une tête d'une flèche qui sort de <code>start_point</code> et arrive dans <code>end_point</code>.</p>
+<div class="desc"><p>A class which represents an edge of the oriented graph.</p>
+<p>Initialize the black edge. Is it an arrow pointing from <code>start_point</code> to <code>end_point</code>.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>painter_path</code></strong> :&ensp;<code>PySide6.QtGui.QPainterPath</code></dt>
-<dd>Un painter qui dessinera une arête.</dd>
+<dd>The painter which will draw the edge.</dd>
 <dt><strong><code>start_point</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
-<dd>Un point de départ.</dd>
+<dd>Edge's starting point.</dd>
 <dt><strong><code>end_point</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
-<dd>Un point d'arrivée.</dd>
+<dd>Edge's ending point.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Edge(QGraphicsPathItem):
-    &#34;&#34;&#34;Une classe qui représente une arête d&#39;un graphe orienté.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class which represents an edge of the oriented graph.&#34;&#34;&#34;
 
     def __init__(self, painter_path: QPainterPath, start_point: QPointF, end_point: QPointF):
-        &#34;&#34;&#34;Initialise une arête noire et une tête d&#39;une flèche qui sort de `start_point` et arrive dans `end_point`.
+        &#34;&#34;&#34;Initialize the black edge. Is it an arrow pointing from `start_point` to `end_point`.
         
         Args:
-            painter_path (PySide6.QtGui.QPainterPath): Un painter qui dessinera une arête.
-            start_point (PySide6.QtCore.QPointF): Un point de départ.
-            end_point (PySide6.QtCore.QPointF): Un point d&#39;arrivée.
+            painter_path (PySide6.QtGui.QPainterPath): The painter which will draw the edge.
+            start_point (PySide6.QtCore.QPointF): Edge&#39;s starting point.
+            end_point (PySide6.QtCore.QPointF): Edge&#39;s ending point.
         &#34;&#34;&#34;
         
         super().__init__(painter_path, None)  # Scene will take ownership
@@ -168,7 +168,7 @@ class Edge(QGraphicsPathItem):
         self.initArrowHead()
 
     def initArrowHead(self) -&gt; None:
-        &#34;&#34;&#34;Initialise une tête d&#39;une flèche noire.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the arrow head. The head is filled with black.&#34;&#34;&#34;
 
         # Calculate arrowHead
         arrowHeadPolygon = self.calculateArrowHead(self.start_point, self.end_point)
@@ -180,10 +180,10 @@ class Edge(QGraphicsPathItem):
         arrowHead.setZValue(2)
 
     def setWeight(self, weight: int) -&gt; None:
-        &#34;&#34;&#34;Met le poids `weight` au milleu d&#39;une arête.
+        &#34;&#34;&#34;Put the weight in a middle of the edge.
 
         Args:
-            weight (int): Le poids d&#39;une arête.
+            weight (int): Edge&#39;s weight.
         &#34;&#34;&#34;
 
         middle = (self.start_point + self.end_point) / 2
@@ -194,14 +194,14 @@ class Edge(QGraphicsPathItem):
         self.text.setPos(middle + textOffset)
 
     def calculateArrowHead(self, start_pos: QPointF, end_pos: QPointF) -&gt; QPolygonF:
-        &#34;&#34;&#34;Calcule les coordonnées d&#39;une tête d&#39;une flèche.
+        &#34;&#34;&#34;Calculate the coordinates of the arrow&#39;s head.
 
         Args:
-            start_pos (PySide6.QtCore.QPointF): Un point de début.
-            end_pos (PySide6.QtCore.QPointF): Un point de l&#39;arrivé.
+            start_pos (PySide6.QtCore.QPointF): Starting point.
+            end_pos (PySide6.QtCore.QPointF): Ending point. 
 
         Returns:
-            PySide6.QtGui.QPolygonF: Une figure d&#39;une flèche.
+            PySide6.QtGui.QPolygonF: A figure of the arrow&#39;s head.
         &#34;&#34;&#34;
 
         arrowSize = 20
@@ -237,32 +237,32 @@ class Edge(QGraphicsPathItem):
 <span>def <span class="ident">calculateArrowHead</span></span>(<span>self, start_pos: PySide6.QtCore.QPointF, end_pos: PySide6.QtCore.QPointF) ‑> PySide6.QtGui.QPolygonF</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calcule les coordonnées d'une tête d'une flèche.</p>
+<div class="desc"><p>Calculate the coordinates of the arrow's head.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>start_pos</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
-<dd>Un point de début.</dd>
+<dd>Starting point.</dd>
 <dt><strong><code>end_pos</code></strong> :&ensp;<code>PySide6.QtCore.QPointF</code></dt>
-<dd>Un point de l'arrivé.</dd>
+<dd>Ending point. </dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>PySide6.QtGui.QPolygonF</code></dt>
-<dd>Une figure d'une flèche.</dd>
+<dd>A figure of the arrow's head.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def calculateArrowHead(self, start_pos: QPointF, end_pos: QPointF) -&gt; QPolygonF:
-    &#34;&#34;&#34;Calcule les coordonnées d&#39;une tête d&#39;une flèche.
+    &#34;&#34;&#34;Calculate the coordinates of the arrow&#39;s head.
 
     Args:
-        start_pos (PySide6.QtCore.QPointF): Un point de début.
-        end_pos (PySide6.QtCore.QPointF): Un point de l&#39;arrivé.
+        start_pos (PySide6.QtCore.QPointF): Starting point.
+        end_pos (PySide6.QtCore.QPointF): Ending point. 
 
     Returns:
-        PySide6.QtGui.QPolygonF: Une figure d&#39;une flèche.
+        PySide6.QtGui.QPolygonF: A figure of the arrow&#39;s head.
     &#34;&#34;&#34;
 
     arrowSize = 20
@@ -290,13 +290,13 @@ class Edge(QGraphicsPathItem):
 <span>def <span class="ident">initArrowHead</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise une tête d'une flèche noire.</p></div>
+<div class="desc"><p>Initialize the arrow head. The head is filled with black.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initArrowHead(self) -&gt; None:
-    &#34;&#34;&#34;Initialise une tête d&#39;une flèche noire.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the arrow head. The head is filled with black.&#34;&#34;&#34;
 
     # Calculate arrowHead
     arrowHeadPolygon = self.calculateArrowHead(self.start_point, self.end_point)
@@ -312,21 +312,21 @@ class Edge(QGraphicsPathItem):
 <span>def <span class="ident">setWeight</span></span>(<span>self, weight: int) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Met le poids <code>weight</code> au milleu d'une arête.</p>
+<div class="desc"><p>Put the weight in a middle of the edge.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>weight</code></strong> :&ensp;<code>int</code></dt>
-<dd>Le poids d'une arête.</dd>
+<dd>Edge's weight.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def setWeight(self, weight: int) -&gt; None:
-    &#34;&#34;&#34;Met le poids `weight` au milleu d&#39;une arête.
+    &#34;&#34;&#34;Put the weight in a middle of the edge.
 
     Args:
-        weight (int): Le poids d&#39;une arête.
+        weight (int): Edge&#39;s weight.
     &#34;&#34;&#34;
 
     middle = (self.start_point + self.end_point) / 2

@@ -7,18 +7,17 @@ from ..widget_map_utls import QuadrantMap
 
 
 class MapImage(QWidget):
-    """Un widget qui affiche la carte politique non interactive (i.e. qui ne répond pas au cliques du souris)."""
+    """A widget which represents the non-interactive political map."""
 
     closed = Signal()
-    """Un signal émis lorsque le widget est fermé."""
+    """A signal emitted if the widget has been closed."""
 
     def __init__(self, size, parent: QWidget = None):
-        """Initialise une instance d'élection (pour le partage des données).
+        """Initialize an instance of the election (for data sharing).
 
         Args:
-            size (PySide6.QtCore.QSize): La taille d'un widget.
-            parent (PySide6.QtWidgets.QWidget): Un parent d'un widget. Puisque l'idée est d'afficher le checkbox 
-                dans une fenêtre séparée parent est remis à `None` par défaut.
+            size (PySide6.QtCore.QSize): Widget's size.
+            parent (PySide6.QtWidgets.QWidget): Widget's parent. Default = `None`.
         """
 
         super().__init__(parent)
@@ -28,7 +27,7 @@ class MapImage(QWidget):
         self.disableMouseEvent()
 
     def initImage(self) -> None:
-        """Initialise la layout, la carte politique."""
+        """Initialize the layout, the political map."""
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -40,17 +39,17 @@ class MapImage(QWidget):
         self.layout.addWidget(self.quadrant_map, 0, Qt.AlignVCenter | Qt.AlignHCenter)
 
     def update(self) -> None:
-        """Redessine la carte politique."""
+        """Redraw the political map."""
 
         self.quadrant_map.update()
 
     def disableMouseEvent(self) -> None:
-        """Désactive l'interaction avec la souris."""
+        """Desactivate the interaction with the mouse."""
 
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
 
     def closeEvent(self, event: QCloseEvent):
-        """Redéfinition d'un `closeEvent`. Ferme le widget (mais ne le supprime pas). Émet le signal `closed`."""
+        """Redefinition of the `closeEvent`. Close the widget (but not delete it). Emit the signal `closed`."""
 
         self.closed.emit()
         self.close()

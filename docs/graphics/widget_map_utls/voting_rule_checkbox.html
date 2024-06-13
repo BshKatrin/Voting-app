@@ -30,15 +30,15 @@
 
 
 class VotingRuleCheckbox(QCheckBox):
-    &#34;&#34;&#34;Un widget qui représente un checkbox pour une règle de vote.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class representing a single checkbox corresponding to the voting rule.&#34;&#34;&#34;
 
     def __init__(self, label: str, nb_cand_min: int, parent: QWidget):
-        &#34;&#34;&#34;Initialise un checkbox pour une règle de vote.
+        &#34;&#34;&#34;Initialize the checkbox corresponding to the voting rule.
 
         Args:
-            label (str): Un nom d&#39;une règle de vote (nom pour UI).
-            nb_cand_min (int): Un nombre minimum de candidats pour une règle de vote.
-            parent (PySide6.QtWidgets.QWidget): Le parent d&#39;un widget.
+            label (str): A name of the voting rule (UI version).
+            nb_cand_min (int): A minimum number of candidates for the voting rule. 
+            parent (PySide6.QtWidgets.QWidget): Widget&#39;s parent. Default = `None`.
         &#34;&#34;&#34;
 
         super().__init__(label, parent)
@@ -59,31 +59,31 @@ class VotingRuleCheckbox(QCheckBox):
 <span>(</span><span>label: str, nb_cand_min: int, parent: PySide6.QtWidgets.QWidget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Un widget qui représente un checkbox pour une règle de vote.</p>
-<p>Initialise un checkbox pour une règle de vote.</p>
+<div class="desc"><p>A class representing a single checkbox corresponding to the voting rule.</p>
+<p>Initialize the checkbox corresponding to the voting rule.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>label</code></strong> :&ensp;<code>str</code></dt>
-<dd>Un nom d'une règle de vote (nom pour UI).</dd>
+<dd>A name of the voting rule (UI version).</dd>
 <dt><strong><code>nb_cand_min</code></strong> :&ensp;<code>int</code></dt>
-<dd>Un nombre minimum de candidats pour une règle de vote.</dd>
+<dd>A minimum number of candidates for the voting rule. </dd>
 <dt><strong><code>parent</code></strong> :&ensp;<code>PySide6.QtWidgets.QWidget</code></dt>
-<dd>Le parent d'un widget.</dd>
+<dd>Widget's parent. Default = <code>None</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class VotingRuleCheckbox(QCheckBox):
-    &#34;&#34;&#34;Un widget qui représente un checkbox pour une règle de vote.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class representing a single checkbox corresponding to the voting rule.&#34;&#34;&#34;
 
     def __init__(self, label: str, nb_cand_min: int, parent: QWidget):
-        &#34;&#34;&#34;Initialise un checkbox pour une règle de vote.
+        &#34;&#34;&#34;Initialize the checkbox corresponding to the voting rule.
 
         Args:
-            label (str): Un nom d&#39;une règle de vote (nom pour UI).
-            nb_cand_min (int): Un nombre minimum de candidats pour une règle de vote.
-            parent (PySide6.QtWidgets.QWidget): Le parent d&#39;un widget.
+            label (str): A name of the voting rule (UI version).
+            nb_cand_min (int): A minimum number of candidates for the voting rule. 
+            parent (PySide6.QtWidgets.QWidget): Widget&#39;s parent. Default = `None`.
         &#34;&#34;&#34;
 
         super().__init__(label, parent)

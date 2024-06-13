@@ -42,19 +42,17 @@ from electoral_systems import RandomConstants
 
 
 class WidgetRandomSettings(QWidget):
-    &#34;&#34;&#34;Un widget qui contient des graphiques de loi normale et les sliders pour configurer des paramètres de la génération
-    de données.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class representing the widget with all graphics of the normal distribution
+    and sliders to configure the parameters of data generation.&#34;&#34;&#34;
 
     def __init__(self, main_window_size: QSize, parent: Optional[QWidget] = None):
-        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Initiliase les sliders et graphiques pour chaque paramètre de la génération de données.
+        &#34;&#34;&#34;Initialize an instance of the election (for data sharing).
+        Initialize sliders and graphics for each data generation parameter.
 
 
         Args:
-            main_window_size (PySide6.QtCore.QSize): La taille de la fenêtre principale. La taille du widget est fixée en fonction 
-                de cet argument.
-            parent (Optional[PySide6.QtWidgets.QWidget]): Un parent d&#39;un widget. Puisque l&#39;idée est d&#39;afficher le checkbox 
-                dans une fenêtre séparée parent est remis à `None` par défaut.
+            main_window_size (PySide6.QtCore.QSize): A size of the main window. A size of the widget will be determined by this arg.
+            parent (Optional[PySide6.QtWidgets.QWidget]): Widget&#39;s parent. Default = `None`.
         &#34;&#34;&#34;
 
         super().__init__(parent)
@@ -69,7 +67,7 @@ class WidgetRandomSettings(QWidget):
         self.initUI()
 
     def initUI(self):
-        &#34;&#34;&#34;Initialise le layout, une zone de défilement et tous les graphes avec sliders.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the layout, scrolling zone, all graphics with sliders.&#34;&#34;&#34;
 
         main_layout = QVBoxLayout()
         self.setLayout(main_layout)
@@ -104,37 +102,33 @@ class WidgetRandomSettings(QWidget):
 <span>(</span><span>main_window_size: PySide6.QtCore.QSize, parent: Optional[PySide6.QtWidgets.QWidget] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Un widget qui contient des graphiques de loi normale et les sliders pour configurer des paramètres de la génération
-de données.</p>
-<p>Initialise une instance d'élection (pour le partage des données).
-Initiliase les sliders et graphiques pour chaque paramètre de la génération de données.</p>
+<div class="desc"><p>A class representing the widget with all graphics of the normal distribution
+and sliders to configure the parameters of data generation.</p>
+<p>Initialize an instance of the election (for data sharing).
+Initialize sliders and graphics for each data generation parameter.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>main_window_size</code></strong> :&ensp;<code>PySide6.QtCore.QSize</code></dt>
-<dd>La taille de la fenêtre principale. La taille du widget est fixée en fonction
-de cet argument.</dd>
+<dd>A size of the main window. A size of the widget will be determined by this arg.</dd>
 <dt><strong><code>parent</code></strong> :&ensp;<code>Optional[PySide6.QtWidgets.QWidget]</code></dt>
-<dd>Un parent d'un widget. Puisque l'idée est d'afficher le checkbox
-dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</dd>
+<dd>Widget's parent. Default = <code>None</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class WidgetRandomSettings(QWidget):
-    &#34;&#34;&#34;Un widget qui contient des graphiques de loi normale et les sliders pour configurer des paramètres de la génération
-    de données.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class representing the widget with all graphics of the normal distribution
+    and sliders to configure the parameters of data generation.&#34;&#34;&#34;
 
     def __init__(self, main_window_size: QSize, parent: Optional[QWidget] = None):
-        &#34;&#34;&#34;Initialise une instance d&#39;élection (pour le partage des données).
-        Initiliase les sliders et graphiques pour chaque paramètre de la génération de données.
+        &#34;&#34;&#34;Initialize an instance of the election (for data sharing).
+        Initialize sliders and graphics for each data generation parameter.
 
 
         Args:
-            main_window_size (PySide6.QtCore.QSize): La taille de la fenêtre principale. La taille du widget est fixée en fonction 
-                de cet argument.
-            parent (Optional[PySide6.QtWidgets.QWidget]): Un parent d&#39;un widget. Puisque l&#39;idée est d&#39;afficher le checkbox 
-                dans une fenêtre séparée parent est remis à `None` par défaut.
+            main_window_size (PySide6.QtCore.QSize): A size of the main window. A size of the widget will be determined by this arg.
+            parent (Optional[PySide6.QtWidgets.QWidget]): Widget&#39;s parent. Default = `None`.
         &#34;&#34;&#34;
 
         super().__init__(parent)
@@ -149,7 +143,7 @@ dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</
         self.initUI()
 
     def initUI(self):
-        &#34;&#34;&#34;Initialise le layout, une zone de défilement et tous les graphes avec sliders.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the layout, scrolling zone, all graphics with sliders.&#34;&#34;&#34;
 
         main_layout = QVBoxLayout()
         self.setLayout(main_layout)
@@ -189,13 +183,13 @@ dans une fenêtre séparée parent est remis à <code>None</code> par défaut.</
 <span>def <span class="ident">initUI</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise le layout, une zone de défilement et tous les graphes avec sliders.</p></div>
+<div class="desc"><p>Initialize the layout, scrolling zone, all graphics with sliders.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initUI(self):
-    &#34;&#34;&#34;Initialise le layout, une zone de défilement et tous les graphes avec sliders.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the layout, scrolling zone, all graphics with sliders.&#34;&#34;&#34;
 
     main_layout = QVBoxLayout()
     self.setLayout(main_layout)

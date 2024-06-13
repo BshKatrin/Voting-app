@@ -32,18 +32,18 @@ from PySide6.QtGui import QColor
 
 
 class Node(QGraphicsEllipseItem):
-    &#34;&#34;&#34;Une classe qui représente un noeud d&#39;un graphe orienté.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class which represents a node of the oriented graph.&#34;&#34;&#34;
 
     RADIUS:float = 40.0
-    &#34;&#34;&#34;Un rayon d&#39;un noeud.&#34;&#34;&#34;
+    &#34;&#34;&#34;A node&#39;s radius.&#34;&#34;&#34;
 
     def __init__(self, x:float, y:float, title: str):
-        &#34;&#34;&#34;Initialise un noeud d&#39;un graphe orienté.
+        &#34;&#34;&#34;Initialize the node of the oriented graph.
 
         Args:
-            x (float): La coordonnée horizontale dans le système des coordonnées de l&#39;ordinateur.
-            y (float): La coordonnée horizontale dans le système des coordonnées de l&#39;ordinateur.
-            title (str): Un titre d&#39;un noeud.
+            x (float): A horizontal coordinate in the computer coordinate system.
+            y (float): A vertical coordinate in the computer coordinate system.
+            title (str): A text to put inside the node.
         &#34;&#34;&#34;
 
         # Scene will take ownership
@@ -65,7 +65,7 @@ class Node(QGraphicsEllipseItem):
         self.title.setPos(titleOffset)
 
     def highlight(self) -&gt; None:
-        &#34;&#34;&#34;Change le d&#39;un noeud couleur en vert pâle.&#34;&#34;&#34;
+        &#34;&#34;&#34;Change the node&#39;s color to the pale green.&#34;&#34;&#34;
 
         self.setBrush(QColor(152,251,152))</code></pre>
 </details>
@@ -84,34 +84,34 @@ class Node(QGraphicsEllipseItem):
 <span>(</span><span>x: float, y: float, title: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Une classe qui représente un noeud d'un graphe orienté.</p>
-<p>Initialise un noeud d'un graphe orienté.</p>
+<div class="desc"><p>A class which represents a node of the oriented graph.</p>
+<p>Initialize the node of the oriented graph.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
-<dd>La coordonnée horizontale dans le système des coordonnées de l'ordinateur.</dd>
+<dd>A horizontal coordinate in the computer coordinate system.</dd>
 <dt><strong><code>y</code></strong> :&ensp;<code>float</code></dt>
-<dd>La coordonnée horizontale dans le système des coordonnées de l'ordinateur.</dd>
+<dd>A vertical coordinate in the computer coordinate system.</dd>
 <dt><strong><code>title</code></strong> :&ensp;<code>str</code></dt>
-<dd>Un titre d'un noeud.</dd>
+<dd>A text to put inside the node.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Node(QGraphicsEllipseItem):
-    &#34;&#34;&#34;Une classe qui représente un noeud d&#39;un graphe orienté.&#34;&#34;&#34;
+    &#34;&#34;&#34;A class which represents a node of the oriented graph.&#34;&#34;&#34;
 
     RADIUS:float = 40.0
-    &#34;&#34;&#34;Un rayon d&#39;un noeud.&#34;&#34;&#34;
+    &#34;&#34;&#34;A node&#39;s radius.&#34;&#34;&#34;
 
     def __init__(self, x:float, y:float, title: str):
-        &#34;&#34;&#34;Initialise un noeud d&#39;un graphe orienté.
+        &#34;&#34;&#34;Initialize the node of the oriented graph.
 
         Args:
-            x (float): La coordonnée horizontale dans le système des coordonnées de l&#39;ordinateur.
-            y (float): La coordonnée horizontale dans le système des coordonnées de l&#39;ordinateur.
-            title (str): Un titre d&#39;un noeud.
+            x (float): A horizontal coordinate in the computer coordinate system.
+            y (float): A vertical coordinate in the computer coordinate system.
+            title (str): A text to put inside the node.
         &#34;&#34;&#34;
 
         # Scene will take ownership
@@ -133,7 +133,7 @@ class Node(QGraphicsEllipseItem):
         self.title.setPos(titleOffset)
 
     def highlight(self) -&gt; None:
-        &#34;&#34;&#34;Change le d&#39;un noeud couleur en vert pâle.&#34;&#34;&#34;
+        &#34;&#34;&#34;Change the node&#39;s color to the pale green.&#34;&#34;&#34;
 
         self.setBrush(QColor(152,251,152))</code></pre>
 </details>
@@ -148,7 +148,7 @@ class Node(QGraphicsEllipseItem):
 <dl>
 <dt id="graphics.widget_results_utls.directed_graphs.node.Node.RADIUS"><code class="name">var <span class="ident">RADIUS</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Un rayon d'un noeud.</p></div>
+<div class="desc"><p>A node's radius.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -157,13 +157,13 @@ class Node(QGraphicsEllipseItem):
 <span>def <span class="ident">highlight</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Change le d'un noeud couleur en vert pâle.</p></div>
+<div class="desc"><p>Change the node's color to the pale green.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def highlight(self) -&gt; None:
-    &#34;&#34;&#34;Change le d&#39;un noeud couleur en vert pâle.&#34;&#34;&#34;
+    &#34;&#34;&#34;Change the node&#39;s color to the pale green.&#34;&#34;&#34;
 
     self.setBrush(QColor(152,251,152))</code></pre>
 </details>

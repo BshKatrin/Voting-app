@@ -42,15 +42,15 @@ from electoral_systems import Election, VotingRulesConstants
 
 
 class ChartOneRound(QChart):
-    &#34;&#34;&#34;Un chart (un diagramme à bandes) pour des règles de vote à un tour.&#34;&#34;&#34;
+    &#34;&#34;&#34;A chart (simple bar chart) for one round voting rules.&#34;&#34;&#34;
 
     def __init__(self, voting_rule: str, parent: QGraphicsItem = None):
-        &#34;&#34;&#34;Initialise le diagramme à bandes. Initialise une instance d&#39;élection (pour le partage des données).
-        Remplit le diagramme avec les résultats d&#39;une règle de vote `voting_rule`.
+        &#34;&#34;&#34;Initialize the chart. Initialize an instance of the election (for data sharing).
+            Initialize axes and bars. Fill the chart with data (i.e. results of the given voting rule).
 
         Args:
-            voting_rule (str): Une constante d&#39;une règle de vote.
-            parent (PySide6.QtWidgets.QGraphicsItem): Un parent d&#39;un diagramme. Default = `None`.
+            voting_rule (str): A constant related to the voting rule. 
+            parent (PySide6.QtWidgets.QGraphicsItem): Chart&#39;s parent. Default = `None`.
         &#34;&#34;&#34;
 
         super().__init__(parent)
@@ -64,11 +64,11 @@ class ChartOneRound(QChart):
         self.initAxes()
 
     def initBarSets(self) -&gt; None:
-        &#34;&#34;&#34;Initialise les bars pour chaque candidat avec leurs scores. Ajoute une bordure noire (highlight)
-        pour le bar du candidat-gagnant.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the bars for each candidate with his scores. Highlight (i.e. add black border) the bar of the winner.
+            Initialize and fill the dictionary which associates a candidate with his bar.&#34;&#34;&#34;
 
         self.winner_barset = None
-        # Barset pour chaque candidat
+        # Barset for each candidate
         self.candidates_barsets = dict()
 
         for cand in self.election.candidates:
@@ -83,13 +83,13 @@ class ChartOneRound(QChart):
                 continue
             self.series.append(barSet)
 
-        # Highlight gagnant, ajouter en dernier pour qu&#39;il soit en haut
+        # Highlight winner, add it last so it can be on top
         if self.winner_barset:
             self.series.append(self.winner_barset)
             self.winner_barset.setBorderColor(QColor(&#34;black&#34;))
 
     def initAxes(self) -&gt; None:
-        &#34;&#34;&#34;Initialise les axes. L&#39;axe verticale correspond aux scores. Les valeurs de l&#39;axe horizontal sont cachées.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the axes: vertical axe shows scores, values on the horizontal axe are hidden.&#34;&#34;&#34;
 
         # X axis
         self.axisX = QBarCategoryAxis(self)
@@ -107,15 +107,15 @@ class ChartOneRound(QChart):
         self.series.attachAxis(self.axisY)
 
     def _setYRange(self) -&gt; None:
-        &#34;&#34;&#34;Fixe un intervalle des valeurs des scores.&#34;&#34;&#34;
+        &#34;&#34;&#34;Fix the minimum and maximum values on the vertical axe.&#34;&#34;&#34;
         mx = self._findMax()
         self.axisY.setRange(0, mx)
 
     def _findMax(self) -&gt; int:
-        &#34;&#34;&#34;Trouve le score maximale.
+        &#34;&#34;&#34;Find a maximum score value.
 
         Returns:
-            int: Un score maximale.
+            int: A maximum score.
         &#34;&#34;&#34;
 
         mx = -1
@@ -124,8 +124,8 @@ class ChartOneRound(QChart):
         return mx
 
     def updateData(self) -&gt; None:
-        &#34;&#34;&#34;MAJ les données sur les scores des candidats. MAJ de l&#39;intervalle des scores. Change le highlight (bordure) si nécessaire 
-        (si le gagnant a changé). Utile pour les sondages.&#34;&#34;&#34;
+        &#34;&#34;&#34;Update candidates&#39; scores. Update vertical axe range. Hightlight another bar if necessary (i.e. if the winner has changed). 
+            Useful for polls.&#34;&#34;&#34;
 
         self._setYRange()
         self.removeBarsets()
@@ -134,9 +134,8 @@ class ChartOneRound(QChart):
             barset = self.candidates_barsets[cand]
             barset.replace(0, cand.scores[self.voting_rule])
 
-    # For polls
     def removeBarsets(self):
-        &#34;&#34;&#34;Supprime les bars des candidats qui ont abandonné une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Delete bars of candidates who no longer participate in the election. Useful for polls.&#34;&#34;&#34;
 
         for cand, barset in self.candidates_barsets.items():
             if cand not in self.election.candidates and barset:
@@ -144,7 +143,7 @@ class ChartOneRound(QChart):
                 self.candidates_barsets[cand] = None
 
     def reHighlight(self):
-        &#34;&#34;&#34;Change le highlight d&#39;un bar (si le gagnant a changé).&#34;&#34;&#34;
+        &#34;&#34;&#34;Highlight another bar. Delete previous highlight.&#34;&#34;&#34;
         
         winner = self.election.choose_winner(self.voting_rule)
         if self.winner_barset != self.candidates_barsets[winner]:
@@ -167,30 +166,30 @@ class ChartOneRound(QChart):
 <span>(</span><span>voting_rule: str, parent: PySide6.QtWidgets.QGraphicsItem = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Un chart (un diagramme à bandes) pour des règles de vote à un tour.</p>
-<p>Initialise le diagramme à bandes. Initialise une instance d'élection (pour le partage des données).
-Remplit le diagramme avec les résultats d'une règle de vote <code>voting_rule</code>.</p>
+<div class="desc"><p>A chart (simple bar chart) for one round voting rules.</p>
+<p>Initialize the chart. Initialize an instance of the election (for data sharing).
+Initialize axes and bars. Fill the chart with data (i.e. results of the given voting rule).</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>voting_rule</code></strong> :&ensp;<code>str</code></dt>
-<dd>Une constante d'une règle de vote.</dd>
+<dd>A constant related to the voting rule. </dd>
 <dt><strong><code>parent</code></strong> :&ensp;<code>PySide6.QtWidgets.QGraphicsItem</code></dt>
-<dd>Un parent d'un diagramme. Default = <code>None</code>.</dd>
+<dd>Chart's parent. Default = <code>None</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ChartOneRound(QChart):
-    &#34;&#34;&#34;Un chart (un diagramme à bandes) pour des règles de vote à un tour.&#34;&#34;&#34;
+    &#34;&#34;&#34;A chart (simple bar chart) for one round voting rules.&#34;&#34;&#34;
 
     def __init__(self, voting_rule: str, parent: QGraphicsItem = None):
-        &#34;&#34;&#34;Initialise le diagramme à bandes. Initialise une instance d&#39;élection (pour le partage des données).
-        Remplit le diagramme avec les résultats d&#39;une règle de vote `voting_rule`.
+        &#34;&#34;&#34;Initialize the chart. Initialize an instance of the election (for data sharing).
+            Initialize axes and bars. Fill the chart with data (i.e. results of the given voting rule).
 
         Args:
-            voting_rule (str): Une constante d&#39;une règle de vote.
-            parent (PySide6.QtWidgets.QGraphicsItem): Un parent d&#39;un diagramme. Default = `None`.
+            voting_rule (str): A constant related to the voting rule. 
+            parent (PySide6.QtWidgets.QGraphicsItem): Chart&#39;s parent. Default = `None`.
         &#34;&#34;&#34;
 
         super().__init__(parent)
@@ -204,11 +203,11 @@ Remplit le diagramme avec les résultats d'une règle de vote <code>voting_rule<
         self.initAxes()
 
     def initBarSets(self) -&gt; None:
-        &#34;&#34;&#34;Initialise les bars pour chaque candidat avec leurs scores. Ajoute une bordure noire (highlight)
-        pour le bar du candidat-gagnant.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the bars for each candidate with his scores. Highlight (i.e. add black border) the bar of the winner.
+            Initialize and fill the dictionary which associates a candidate with his bar.&#34;&#34;&#34;
 
         self.winner_barset = None
-        # Barset pour chaque candidat
+        # Barset for each candidate
         self.candidates_barsets = dict()
 
         for cand in self.election.candidates:
@@ -223,13 +222,13 @@ Remplit le diagramme avec les résultats d'une règle de vote <code>voting_rule<
                 continue
             self.series.append(barSet)
 
-        # Highlight gagnant, ajouter en dernier pour qu&#39;il soit en haut
+        # Highlight winner, add it last so it can be on top
         if self.winner_barset:
             self.series.append(self.winner_barset)
             self.winner_barset.setBorderColor(QColor(&#34;black&#34;))
 
     def initAxes(self) -&gt; None:
-        &#34;&#34;&#34;Initialise les axes. L&#39;axe verticale correspond aux scores. Les valeurs de l&#39;axe horizontal sont cachées.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the axes: vertical axe shows scores, values on the horizontal axe are hidden.&#34;&#34;&#34;
 
         # X axis
         self.axisX = QBarCategoryAxis(self)
@@ -247,15 +246,15 @@ Remplit le diagramme avec les résultats d'une règle de vote <code>voting_rule<
         self.series.attachAxis(self.axisY)
 
     def _setYRange(self) -&gt; None:
-        &#34;&#34;&#34;Fixe un intervalle des valeurs des scores.&#34;&#34;&#34;
+        &#34;&#34;&#34;Fix the minimum and maximum values on the vertical axe.&#34;&#34;&#34;
         mx = self._findMax()
         self.axisY.setRange(0, mx)
 
     def _findMax(self) -&gt; int:
-        &#34;&#34;&#34;Trouve le score maximale.
+        &#34;&#34;&#34;Find a maximum score value.
 
         Returns:
-            int: Un score maximale.
+            int: A maximum score.
         &#34;&#34;&#34;
 
         mx = -1
@@ -264,8 +263,8 @@ Remplit le diagramme avec les résultats d'une règle de vote <code>voting_rule<
         return mx
 
     def updateData(self) -&gt; None:
-        &#34;&#34;&#34;MAJ les données sur les scores des candidats. MAJ de l&#39;intervalle des scores. Change le highlight (bordure) si nécessaire 
-        (si le gagnant a changé). Utile pour les sondages.&#34;&#34;&#34;
+        &#34;&#34;&#34;Update candidates&#39; scores. Update vertical axe range. Hightlight another bar if necessary (i.e. if the winner has changed). 
+            Useful for polls.&#34;&#34;&#34;
 
         self._setYRange()
         self.removeBarsets()
@@ -274,9 +273,8 @@ Remplit le diagramme avec les résultats d'une règle de vote <code>voting_rule<
             barset = self.candidates_barsets[cand]
             barset.replace(0, cand.scores[self.voting_rule])
 
-    # For polls
     def removeBarsets(self):
-        &#34;&#34;&#34;Supprime les bars des candidats qui ont abandonné une élection.&#34;&#34;&#34;
+        &#34;&#34;&#34;Delete bars of candidates who no longer participate in the election. Useful for polls.&#34;&#34;&#34;
 
         for cand, barset in self.candidates_barsets.items():
             if cand not in self.election.candidates and barset:
@@ -284,7 +282,7 @@ Remplit le diagramme avec les résultats d'une règle de vote <code>voting_rule<
                 self.candidates_barsets[cand] = None
 
     def reHighlight(self):
-        &#34;&#34;&#34;Change le highlight d&#39;un bar (si le gagnant a changé).&#34;&#34;&#34;
+        &#34;&#34;&#34;Highlight another bar. Delete previous highlight.&#34;&#34;&#34;
         
         winner = self.election.choose_winner(self.voting_rule)
         if self.winner_barset != self.candidates_barsets[winner]:
@@ -315,13 +313,13 @@ Remplit le diagramme avec les résultats d'une règle de vote <code>voting_rule<
 <span>def <span class="ident">initAxes</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise les axes. L'axe verticale correspond aux scores. Les valeurs de l'axe horizontal sont cachées.</p></div>
+<div class="desc"><p>Initialize the axes: vertical axe shows scores, values on the horizontal axe are hidden.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initAxes(self) -&gt; None:
-    &#34;&#34;&#34;Initialise les axes. L&#39;axe verticale correspond aux scores. Les valeurs de l&#39;axe horizontal sont cachées.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the axes: vertical axe shows scores, values on the horizontal axe are hidden.&#34;&#34;&#34;
 
     # X axis
     self.axisX = QBarCategoryAxis(self)
@@ -343,18 +341,18 @@ Remplit le diagramme avec les résultats d'une règle de vote <code>voting_rule<
 <span>def <span class="ident">initBarSets</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialise les bars pour chaque candidat avec leurs scores. Ajoute une bordure noire (highlight)
-pour le bar du candidat-gagnant.</p></div>
+<div class="desc"><p>Initialize the bars for each candidate with his scores. Highlight (i.e. add black border) the bar of the winner.
+Initialize and fill the dictionary which associates a candidate with his bar.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initBarSets(self) -&gt; None:
-    &#34;&#34;&#34;Initialise les bars pour chaque candidat avec leurs scores. Ajoute une bordure noire (highlight)
-    pour le bar du candidat-gagnant.&#34;&#34;&#34;
+    &#34;&#34;&#34;Initialize the bars for each candidate with his scores. Highlight (i.e. add black border) the bar of the winner.
+        Initialize and fill the dictionary which associates a candidate with his bar.&#34;&#34;&#34;
 
     self.winner_barset = None
-    # Barset pour chaque candidat
+    # Barset for each candidate
     self.candidates_barsets = dict()
 
     for cand in self.election.candidates:
@@ -369,7 +367,7 @@ pour le bar du candidat-gagnant.</p></div>
             continue
         self.series.append(barSet)
 
-    # Highlight gagnant, ajouter en dernier pour qu&#39;il soit en haut
+    # Highlight winner, add it last so it can be on top
     if self.winner_barset:
         self.series.append(self.winner_barset)
         self.winner_barset.setBorderColor(QColor(&#34;black&#34;))</code></pre>
@@ -379,13 +377,13 @@ pour le bar du candidat-gagnant.</p></div>
 <span>def <span class="ident">reHighlight</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Change le highlight d'un bar (si le gagnant a changé).</p></div>
+<div class="desc"><p>Highlight another bar. Delete previous highlight.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def reHighlight(self):
-    &#34;&#34;&#34;Change le highlight d&#39;un bar (si le gagnant a changé).&#34;&#34;&#34;
+    &#34;&#34;&#34;Highlight another bar. Delete previous highlight.&#34;&#34;&#34;
     
     winner = self.election.choose_winner(self.voting_rule)
     if self.winner_barset != self.candidates_barsets[winner]:
@@ -398,13 +396,13 @@ pour le bar du candidat-gagnant.</p></div>
 <span>def <span class="ident">removeBarsets</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Supprime les bars des candidats qui ont abandonné une élection.</p></div>
+<div class="desc"><p>Delete bars of candidates who no longer participate in the election. Useful for polls.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def removeBarsets(self):
-    &#34;&#34;&#34;Supprime les bars des candidats qui ont abandonné une élection.&#34;&#34;&#34;
+    &#34;&#34;&#34;Delete bars of candidates who no longer participate in the election. Useful for polls.&#34;&#34;&#34;
 
     for cand, barset in self.candidates_barsets.items():
         if cand not in self.election.candidates and barset:
@@ -416,15 +414,15 @@ pour le bar du candidat-gagnant.</p></div>
 <span>def <span class="ident">updateData</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MAJ les données sur les scores des candidats. MAJ de l'intervalle des scores. Change le highlight (bordure) si nécessaire
-(si le gagnant a changé). Utile pour les sondages.</p></div>
+<div class="desc"><p>Update candidates' scores. Update vertical axe range. Hightlight another bar if necessary (i.e. if the winner has changed).
+Useful for polls.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def updateData(self) -&gt; None:
-    &#34;&#34;&#34;MAJ les données sur les scores des candidats. MAJ de l&#39;intervalle des scores. Change le highlight (bordure) si nécessaire 
-    (si le gagnant a changé). Utile pour les sondages.&#34;&#34;&#34;
+    &#34;&#34;&#34;Update candidates&#39; scores. Update vertical axe range. Hightlight another bar if necessary (i.e. if the winner has changed). 
+        Useful for polls.&#34;&#34;&#34;
 
     self._setYRange()
     self.removeBarsets()

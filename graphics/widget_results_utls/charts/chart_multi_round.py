@@ -12,15 +12,15 @@ from PySide6.QtWidgets import QGraphicsItem
 from electoral_systems import Election, VotingRulesConstants
 
 class ChartMultiRound(QChart):
-    """Un chart (un diagramme à barres empilées) pour des règles de vote à plusieurs tours"""
+    """A chart (stacked bar chart) for multi-round voting rules."""
 
     def __init__(self, voting_rule: str, parent: QGraphicsItem = None):
-        """Initialise un diagramme à barres empilées. Initialise une instance d'élection (pour le partage des données).
-        Initialise les axes, les bars. Remplit le diagramme avec les résultats d'une règle de vote `voting_rule`.
+        """Initialize the chart. Initialize an instance of the election (for data sharing).
+            Initialize axes and bars. Fill the chart with data (i.e. results of the given voting rule).
 
         Args:
-            voting_rule (str): Une constante d'une règle du vote.
-            parent (PySide6.QtWidgets.QGraphicsItem): Un parent d'un diagramme. Default = `None`.
+            voting_rule (str): A constant related to the voting rule. Une constante d'une règle du vote.
+            parent (PySide6.QtWidgets.QGraphicsItem): Chart's parent. Default = `None`.
         """
 
         super().__init__(parent)
@@ -35,10 +35,10 @@ class ChartMultiRound(QChart):
         self.initAxis()
 
     def initBarSets(self) -> None:
-        """Initialise les bars pour chaque candidat avec leurs scores. Ajoute une bordure
-        pour le bar du candidat-gagnant. Construit un dictionnaire qui associe un candidat avec son barset."""
+        """Initialize the bars for each candidate with his scores. Highlight (i.e. add black border) the bar of the winner.
+            Initialize and fill the dictionary which associates a candidate with his bar."""
 
-        # Dict: key = candidat, value = sont barset
+        # Dict: key = candidat, value = his barset
         barset_dict = dict()
         winner = self.election.choose_winner(self.voting_rule)
 
@@ -46,14 +46,14 @@ class ChartMultiRound(QChart):
             barSet = QBarSet(f"{cand.first_name} {cand.last_name}", parent=self)
             barset_dict[cand] = barSet
 
-        # Ajouter des scores aux barset
+        # Add scores to barsets 
         for i in range(len(self.election.results[self.voting_rule])):
             result_round = self.election.results[self.voting_rule][i]
             for cand in result_round:
                 candBarSet = barset_dict[cand]
                 candBarSet.append(cand.scores[self.voting_rule][i])
 
-        # Ajouter des barset à series avec le barset du gagnant en haut
+        # Add winner' barset on the top 
         for candidate, barset in barset_dict.items():
             if candidate != winner:
                 self.series.append(barset)
@@ -62,7 +62,7 @@ class ChartMultiRound(QChart):
         barset_dict[winner].setBorderColor(QColor("black"))
 
     def initAxis(self) -> None:
-        """Initialise les axes. L'axe verticale corredpond aux scores. L'axe horizontal correspond aux tours."""
+        """Initialize the axes: vertical axe shows scores, horizontal axe shows rounds."""
 
         # Set axis X
         self.axisX = QBarCategoryAxis(parent=self)
@@ -80,10 +80,10 @@ class ChartMultiRound(QChart):
         self.series.attachAxis(self.axisY)
 
     def findMax(self) -> int:
-        """Calcule le maximum de l'axe vertical. Le maximum est le nombre d'électeurs qui participent à l'élection.
+        """Calculate the maximum value for the vertical axe. The maximum is the number of electors who participated in the election. 
 
         Returns:
-            int: Un maximum pour l'axe vertical.
+            int: A maximum for the vertical axe.
         """
 
         return len(self.election.electors)
